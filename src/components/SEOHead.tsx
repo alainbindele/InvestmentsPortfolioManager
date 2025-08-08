@@ -26,7 +26,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   const finalTitle = title || defaultTitle;
   const finalDescription = description || defaultDescription;
   const finalKeywords = keywords || defaultKeywords;
-  const finalCanonicalUrl = canonicalUrl || 'https://portfolio-rebalancer.netlify.app/';
+  const finalCanonicalUrl = canonicalUrl || 'https://portfolio-balancer.netlify.app/';
 
   React.useEffect(() => {
     // Update document title
