@@ -8,6 +8,7 @@ import { getTranslation } from '../utils/translations';
 interface AssetFormProps {
   onAddAsset: (asset: Omit<Asset, 'id'>) => void;
   onRemoveAsset: (assetId: string) => void;
+  onAssetClick: (asset: Asset) => void;
   assets: Asset[];
   pacs: PACPlan[];
   onAddPACAsAsset: (pacId: string, customReturn: number) => void;
@@ -17,6 +18,7 @@ interface AssetFormProps {
 export const AssetForm: React.FC<AssetFormProps> = ({ 
   onAddAsset, 
   onRemoveAsset, 
+  onAssetClick,
   assets, 
   pacs, 
   onAddPACAsAsset, 
@@ -279,7 +281,11 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       {assets.length > 0 && (
         <div className="space-y-3">
           {assets.map((asset) => (
-            <div key={asset.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div 
+              key={asset.id} 
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
+              onClick={() => onAssetClick(asset)}
+            >
               <div className="flex-1">
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
@@ -305,6 +311,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   </div>
                 </div>
               </div>
+                  e.stopPropagation();
               <button
                 onClick={() => onRemoveAsset(asset.id)}
                 className="ml-4 p-2 text-gray-400 hover:text-red-500 transition-colors"

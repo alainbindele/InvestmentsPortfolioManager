@@ -19,8 +19,9 @@ function App() {
   const [assets, setAssets] = useState<Asset[]>(mockAssets);
   const [strategies, setStrategies] = useState<Strategy[]>(mockStrategies);
   const [pacs, setPacs] = useState<PACPlan[]>([]);
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'comparison' | 'pac' | 'ai'>('portfolio');
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'comparison' | 'ai'>('portfolio');
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [language, setLanguage] = useState<Language>('it');
 
   const portfolioMetrics = calculatePortfolioMetrics(assets);
@@ -107,7 +108,6 @@ function App() {
     { id: 'portfolio', label: t('portfolio'), icon: BarChart3 },
     { id: 'strategies', label: t('strategies'), icon: Target },
     { id: 'comparison', label: t('comparison'), icon: TrendingUp },
-    { id: 'pac', label: t('pac'), icon: Calendar },
     { id: 'ai', label: t('aiAssistant'), icon: Bot }
   ];
 
@@ -187,6 +187,7 @@ function App() {
               onAddAsset={handleAddAsset}
               onRemoveAsset={handleRemoveAsset}
               onAddPACAsAsset={handleAddPACAsAsset}
+              onAssetClick={setSelectedAsset}
               language={language}
             />
             
@@ -278,17 +279,6 @@ function App() {
           </div>
         )}
 
-        {activeTab === 'pac' && (
-          <PACManager
-            assets={assets}
-            language={language}
-            pacs={pacs}
-            onAddPAC={handleAddPAC}
-            onRemovePAC={handleRemovePAC}
-            onUpdatePAC={handleUpdatePAC}
-          />
-        )}
-
         {activeTab === 'ai' && (
           <div className="space-y-8">
             <div>
@@ -304,6 +294,15 @@ function App() {
           </div>
         )}
       </main>
+
+      {/* Asset Modal */}
+      {selectedAsset && (
+        <AssetModal
+          asset={selectedAsset}
+          language={language}
+          onClose={() => setSelectedAsset(null)}
+        />
+      )}
     </div>
   );
 }
