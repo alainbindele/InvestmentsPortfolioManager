@@ -16,6 +16,12 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
   const t = (key: string) => getTranslation(language, key);
   const [selectedYears, setSelectedYears] = useState(10);
 
+  // Time scale options: 5, 10, 15, ..., 100 years (5-year increments)
+  const timeScaleOptions = Array.from({ length: 20 }, (_, i) => ({
+    value: (i + 1) * 5,
+    label: `${(i + 1) * 5}`
+  }));
+
   // Generate projection data for the asset
   const generateAssetProjection = (years: number) => {
     const projections = [];
@@ -35,14 +41,6 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
   const projectionData = generateAssetProjection(selectedYears);
   const finalValue = projectionData[selectedYears].value;
   const totalGrowth = ((finalValue / asset.currentValue - 1) * 100);
-
-  const timeScaleOptions = [
-    { value: 5, label: '5' },
-    { value: 10, label: '10' },
-    { value: 20, label: '20' },
-    { value: 30, label: '30' },
-    { value: 40, label: '40' }
-  ];
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -102,17 +100,17 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
                 <input
                   type="range"
                   min="0"
-                  max="4"
+                  max="19"
                   value={timeScaleOptions.findIndex(option => option.value === selectedYears)}
                   onChange={(e) => setSelectedYears(timeScaleOptions[parseInt(e.target.value)].value)}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                   style={{
-                    background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(timeScaleOptions.findIndex(option => option.value === selectedYears) / 4) * 100}%, #e5e7eb ${(timeScaleOptions.findIndex(option => option.value === selectedYears) / 4) * 100}%, #e5e7eb 100%)`
+                    background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(timeScaleOptions.findIndex(option => option.value === selectedYears) / 19) * 100}%, #e5e7eb ${(timeScaleOptions.findIndex(option => option.value === selectedYears) / 19) * 100}%, #e5e7eb 100%)`
                   }}
                 />
-                <div className="flex justify-between text-sm text-gray-500 mt-1">
-                  {timeScaleOptions.map((option) => (
-                    <span key={option.value} className="text-center">
+                <div className="flex justify-between text-xs text-gray-500 mt-1 overflow-hidden">
+                  {timeScaleOptions.filter((_, index) => index % 4 === 0 || index === timeScaleOptions.length - 1).map((option) => (
+                    <span key={option.value} className="text-center flex-shrink-0">
                       {option.label}
                     </span>
                   ))}

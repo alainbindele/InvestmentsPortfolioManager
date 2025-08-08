@@ -20,13 +20,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   const t = (key: string) => getTranslation(language, key);
   const [selectedYears, setSelectedYears] = React.useState(10);
   
-  const timeScaleOptions = [
-    { value: 5, label: '5 anni' },
-    { value: 10, label: '10 anni' },
-    { value: 20, label: '20 anni' },
-    { value: 30, label: '30 anni' },
-    { value: 40, label: '40 anni' }
-  ];
+  // Time scale options: 5, 10, 15, ..., 100 years (5-year increments)
+  const timeScaleOptions = Array.from({ length: 20 }, (_, i) => ({
+    value: (i + 1) * 5,
+    label: `${(i + 1) * 5} anni`
+  }));
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   const currentReturn = assets.reduce((sum, asset) => {
