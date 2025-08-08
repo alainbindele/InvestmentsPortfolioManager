@@ -332,6 +332,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
               const totalContribution = totalAnnualContribution * pac.duration;
               const projections = calculatePACProjection(pac, assets);
               const finalProjection = projections[projections.length - 1];
+              const displayReturn = pac.customReturn || pac.expectedReturn;
               
               return (
                 <div 
@@ -409,15 +410,6 @@ export const PACManager: React.FC<PACManagerProps> = ({
                           <p className="text-gray-600">{t('totalInvested')}</p>
                           <p className="font-semibold text-primary-600">{formatCurrency(totalContribution)}</p>
                         </div>
-                        <div>
-                          <p className="text-gray-600">{t('portfolioValue')}</p>
-                          <p className="font-semibold text-success-600">
-                            {formatCurrency(finalProjection?.portfolioValue || 0)}
-                          </p>
-                        </div>
-                      </div>
-                  const displayReturn = pac.customReturn || pac.expectedReturn;
-                    </div>
                     
                     <button
                       onClick={(e) => {
