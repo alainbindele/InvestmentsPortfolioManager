@@ -166,3 +166,9 @@ export class ChatGPTService {
             insight: "Analisi AI temporaneamente non disponibile. Configura l'API key OpenAI per ottenere insights di mercato in tempo reale.",
             confidence: 0.5,
             timeframe: "N/A"
+          }
+        ]
+      }
+    }
+  }
+}
