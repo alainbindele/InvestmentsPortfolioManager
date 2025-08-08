@@ -33,11 +33,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   }, 0);
 
   // Generate projections for current portfolio
-  const currentProjection = projectPortfolioGrowth(totalValue, currentReturn, selectedYears);
+  const currentProjection = projectPortfolioGrowth(totalValue, currentReturn, selectedYears, assets);
   
   // Generate projections for strategies
   const strategyProjections = strategies.map(strategy => 
-    projectPortfolioGrowth(totalValue, strategy.expectedReturn, selectedYears)
+    projectPortfolioGrowth(totalValue, strategy.expectedReturn, selectedYears, assets)
   );
 
   // Combine data for chart

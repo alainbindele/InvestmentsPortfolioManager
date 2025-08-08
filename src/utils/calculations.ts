@@ -92,17 +92,74 @@ export const calculateRebalancingActions = (
 export const projectPortfolioGrowth = (
   initialValue: number,
   expectedReturn: number,
-  years: number = 10
+  years: number = 10,
+  assets?: Asset[]
 ): { year: number; value: number }[] => {
   const projections = [];
-  let currentValue = initialValue;
   
-  for (let year = 0; year <= years; year++) {
-    projections.push({
-      year,
-      value: Math.round(currentValue)
-    });
-    currentValue *= (1 + expectedReturn / 100);
+  // Se abbiamo gli asset, calcola separatamente PAC e non-PAC
+  if (assets && assets.length > 0) {
+    const pacAssets = assets.filter(asset => asset.isPAC);
+    const nonPacAssets = assets.filter(asset => !asset.isPAC);
+    
+    // Valore iniziale dai non-PAC assets + valore di partenza dei PAC
+    let nonPacValue = nonPacAssets.reduce((sum, asset) => sum + asset.currentValue, 0);
+    let pacValue = pacAssets.reduce((sum, asset) => sum + (asset.pacStartingValue || 0), 0);
+    
+    // Contributi mensili totali dai PAC
+    const totalMonthlyContributions = pacAssets.reduce((sum, asset) => 
+      sum + (asset.pacMonthlyAmount || 0), 0
+    );
+    
+    // Rendimenti pesati
+    const totalInitialValue = nonPacValue + pacValue;
+    const nonPacReturn = totalInitialValue > 0 ? 
+      nonPacAssets.reduce((sum, asset) => 
+        sum + (asset.expectedReturn * asset.currentValue / totalInitialValue), 0
+      ) : 0;
+    const pacReturn = totalInitialValue > 0 ? 
+      pacAssets.reduce((sum, asset) => 
+        sum + (asset.expectedReturn * (asset.pacStartingValue || 0) / totalInitialValue), 0
+      ) : expectedReturn;
+    
+    const monthlyNonPacReturn = nonPacReturn / 100 / 12;
+    const monthlyPacReturn = pacReturn / 100 / 12;
+    
+    for (let year = 0; year <= years; year++) {
+      // Per il primo anno, usa i valori iniziali
+      if (year === 0) {
+        projections.push({
+          year: 0,
+          value: Math.round(nonPacValue + pacValue)
+        });
+      } else {
+        // Calcola crescita mese per mese per questo anno
+        for (let month = 1; month <= 12; month++) {
+          // Aggiungi contributi mensili PAC
+          pacValue += totalMonthlyContributions;
+          
+          // Applica crescita compound mensile
+          nonPacValue *= (1 + monthlyNonPacReturn);
+          pacValue *= (1 + monthlyPacReturn);
+        }
+        
+        projections.push({
+          year,
+          value: Math.round(nonPacValue + pacValue)
+        });
+      }
+    }
+  } else {
+    // Calcolo semplice senza PAC (backward compatibility)
+    let currentValue = initialValue;
+    
+    for (let year = 0; year <= years; year++) {
+      projections.push({
+        year,
+        value: Math.round(currentValue)
+      });
+      currentValue *= (1 + expectedReturn / 100);
+    }
   }
   
   return projections;
