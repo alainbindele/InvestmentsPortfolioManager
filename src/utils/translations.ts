@@ -4,16 +4,16 @@ export const translations = {
   it: {
     // Header
     appTitle: 'Portfolio Rebalancer',
-    appSubtitle: 'Ottimizza i tuoi investimenti con l\'AI',
+    appSubtitle: "Ottimizza i tuoi investimenti con l'AI",
     totalValue: 'Valore Totale',
     expectedReturn: 'Rendimento Atteso',
-    
+
     // Navigation
     portfolio: 'Portfolio',
     strategies: 'Strategie',
     comparison: 'Confronto',
     aiAssistant: 'AI Assistant',
-    
+
     // Asset Form
     yourAssets: 'I Tuoi Asset',
     addAsset: 'Aggiungi Asset',
@@ -24,8 +24,9 @@ export const translations = {
     riskLevel: 'Livello di Rischio',
     addAssetButton: 'Aggiungi Asset',
     cancel: 'Annulla',
-    noAssetsMessage: 'Nessun asset aggiunto. Inizia creando il tuo portafoglio!',
-    
+    noAssetsMessage:
+      'Nessun asset aggiunto. Inizia creando il tuo portafoglio!',
+
     // Portfolio Metrics
     portfolioMetrics: 'Metriche Portfolio',
     riskScore: 'Livello Rischio',
@@ -33,18 +34,20 @@ export const translations = {
     totalAssets: 'Asset Totali',
     currentAllocation: 'Allocazione Attuale',
     totalPortfolioValue: 'Valore Totale Portafoglio',
-    
+
     // Strategies
     investmentStrategies: 'Strategie di Investimento',
-    strategiesDescription: 'Confronta diverse strategie per ottimizzare il tuo portafoglio',
+    strategiesDescription:
+      'Confronta diverse strategie per ottimizzare il tuo portafoglio',
     conservativeStrategy: 'Strategia Conservativa',
     balancedStrategy: 'Strategia Bilanciata',
     aggressiveStrategy: 'Strategia Aggressiva',
     selectedStrategy: '✓ Strategia Selezionata',
-    
+
     // Strategy Comparison
     strategyComparison: 'Confronto Strategie',
-    comparisonDescription: 'Analizza e confronta le performance delle diverse strategie',
+    comparisonDescription:
+      'Analizza e confronta le performance delle diverse strategie',
     bestReturn: 'Miglior Rendimento',
     lowestRisk: 'Minor Rischio',
     bestSharpe: 'Miglior Sharpe',
@@ -56,14 +59,16 @@ export const translations = {
     sharpe: 'Sharpe',
     volatility: 'Volatilità',
     maxDrawdown: 'Max Drawdown',
-    
+
     // AI Assistant
     aiAssistantTitle: 'AI Assistant',
-    aiDescription: 'Utilizza l\'intelligenza artificiale per ottimizzare il tuo portafoglio',
+    aiDescription:
+      "Utilizza l'intelligenza artificiale per ottimizzare il tuo portafoglio",
     chatgptConfig: 'Configurazione ChatGPT',
     apiKey: 'API Key OpenAI (Opzionale)',
     apiKeyPlaceholder: 'sk-...',
-    apiKeyDescription: 'Inserisci la tua API key per analisi AI reali. Senza API key verranno utilizzate analisi simulate.',
+    apiKeyDescription:
+      'Inserisci la tua API key per analisi AI reali. Senza API key verranno utilizzate analisi simulate.',
     portfolioAnalysis: 'Analisi Portafoglio AI',
     analyzePortfolio: 'Analizza Portafoglio',
     analyzing: 'Analizzando...',
@@ -80,7 +85,7 @@ export const translations = {
     investmentGoals: 'Obiettivi di Investimento',
     generateStrategy: 'Genera Strategia AI',
     generatingStrategy: 'Generando Strategia AI...',
-    
+
     // Projections
     portfolioProjection: 'Proiezione Crescita Portafoglio',
     years: 'anni',
@@ -88,7 +93,7 @@ export const translations = {
     currentValue: 'Valore Attuale',
     projection: 'Proiezione',
     totalGrowth: 'Crescita Totale',
-    
+
     // Asset Types
     stocks: 'Azioni',
     bonds: 'Obbligazioni',
@@ -98,23 +103,24 @@ export const translations = {
     crypto: 'Criptovalute',
     cash: 'Liquidità',
     other: 'Altro',
-    
+
     // Risk Levels
     low: 'Basso',
     medium: 'Medio',
     high: 'Alto',
-    
+
     // Investment Goals
     longTermGrowth: 'Crescita a Lungo Termine',
     passiveIncome: 'Reddito Passivo',
     capitalPreservation: 'Preservazione del Capitale',
     diversificationGoal: 'Diversificazione',
-    inflationProtection: 'Protezione dall\'Inflazione',
-    
+    inflationProtection: "Protezione dall'Inflazione",
+
     // PAC
     pac: 'PAC',
     pacTitle: 'Piano di Accumulo del Capitale',
-    pacDescription: 'Simula l\'effetto compound dei versamenti ricorrenti nel tempo',
+    pacDescription:
+      "Simula l'effetto compound dei versamenti ricorrenti nel tempo",
     createPac: 'Crea PAC',
     pacName: 'Nome PAC',
     monthlyAmount: 'Importo Mensile (€)',
@@ -131,25 +137,26 @@ export const translations = {
     compoundEffect: 'Effetto Compound',
     pacAllocation: 'Allocazione PAC',
     activePacs: 'PAC Attivi',
-    noPacsMessage: 'Nessun PAC creato. Inizia a pianificare i tuoi investimenti ricorrenti!',
+    noPacsMessage:
+      'Nessun PAC creato. Inizia a pianificare i tuoi investimenti ricorrenti!',
     pacFrequencyDesc: 'Frequenza dei versamenti automatici',
     pacDurationDesc: 'Durata del piano in anni',
-    pacAllocationDesc: 'Come distribuire i versamenti tra gli asset'
+    pacAllocationDesc: 'Come distribuire i versamenti tra gli asset',
   },
-  
+
   en: {
     // Header
     appTitle: 'Portfolio Rebalancer',
     appSubtitle: 'Optimize your investments with AI',
     totalValue: 'Total Value',
     expectedReturn: 'Expected Return',
-    
+
     // Navigation
     portfolio: 'Portfolio',
     strategies: 'Strategies',
     comparison: 'Comparison',
     aiAssistant: 'AI Assistant',
-    
+
     // Asset Form
     yourAssets: 'Your Assets',
     addAsset: 'Add Asset',
@@ -161,7 +168,7 @@ export const translations = {
     addAssetButton: 'Add Asset',
     cancel: 'Cancel',
     noAssetsMessage: 'No assets added. Start building your portfolio!',
-    
+
     // Portfolio Metrics
     portfolioMetrics: 'Portfolio Metrics',
     riskScore: 'Risk Level',
@@ -169,18 +176,20 @@ export const translations = {
     totalAssets: 'Total Assets',
     currentAllocation: 'Current Allocation',
     totalPortfolioValue: 'Total Portfolio Value',
-    
+
     // Strategies
     investmentStrategies: 'Investment Strategies',
-    strategiesDescription: 'Compare different strategies to optimize your portfolio',
+    strategiesDescription:
+      'Compare different strategies to optimize your portfolio',
     conservativeStrategy: 'Conservative Strategy',
     balancedStrategy: 'Balanced Strategy',
     aggressiveStrategy: 'Aggressive Strategy',
     selectedStrategy: '✓ Selected Strategy',
-    
+
     // Strategy Comparison
     strategyComparison: 'Strategy Comparison',
-    comparisonDescription: 'Analyze and compare performance of different strategies',
+    comparisonDescription:
+      'Analyze and compare performance of different strategies',
     bestReturn: 'Best Return',
     lowestRisk: 'Lowest Risk',
     bestSharpe: 'Best Sharpe',
@@ -192,14 +201,15 @@ export const translations = {
     sharpe: 'Sharpe',
     volatility: 'Volatility',
     maxDrawdown: 'Max Drawdown',
-    
+
     // AI Assistant
     aiAssistantTitle: 'AI Assistant',
     aiDescription: 'Use artificial intelligence to optimize your portfolio',
     chatgptConfig: 'ChatGPT Configuration',
     apiKey: 'OpenAI API Key (Optional)',
     apiKeyPlaceholder: 'sk-...',
-    apiKeyDescription: 'Enter your API key for real AI analysis. Without API key, simulated analysis will be used.',
+    apiKeyDescription:
+      'Enter your API key for real AI analysis. Without API key, simulated analysis will be used.',
     portfolioAnalysis: 'AI Portfolio Analysis',
     analyzePortfolio: 'Analyze Portfolio',
     analyzing: 'Analyzing...',
@@ -216,7 +226,7 @@ export const translations = {
     investmentGoals: 'Investment Goals',
     generateStrategy: 'Generate AI Strategy',
     generatingStrategy: 'Generating AI Strategy...',
-    
+
     // Projections
     portfolioProjection: 'Portfolio Growth Projection',
     years: 'years',
@@ -224,7 +234,7 @@ export const translations = {
     currentValue: 'Current Value',
     projection: 'Projection',
     totalGrowth: 'Total Growth',
-    
+
     // Asset Types
     stocks: 'Stocks',
     bonds: 'Bonds',
@@ -234,23 +244,24 @@ export const translations = {
     crypto: 'Cryptocurrency',
     cash: 'Cash',
     other: 'Other',
-    
+
     // Risk Levels
     low: 'Low',
     medium: 'Medium',
     high: 'High',
-    
+
     // Investment Goals
     longTermGrowth: 'Long Term Growth',
     passiveIncome: 'Passive Income',
     capitalPreservation: 'Capital Preservation',
     diversificationGoal: 'Diversification',
     inflationProtection: 'Inflation Protection',
-    
+
     // PAC
     pac: 'DCA',
     pacTitle: 'Dollar Cost Averaging Plan',
-    pacDescription: 'Simulate the compound effect of recurring investments over time',
+    pacDescription:
+      'Simulate the compound effect of recurring investments over time',
     createPac: 'Create DCA',
     pacName: 'DCA Name',
     monthlyAmount: 'Monthly Amount ($)',
@@ -267,25 +278,26 @@ export const translations = {
     compoundEffect: 'Compound Effect',
     pacAllocation: 'DCA Allocation',
     activePacs: 'Active DCAs',
-    noPacsMessage: 'No DCA plans created. Start planning your recurring investments!',
+    noPacsMessage:
+      'No DCA plans created. Start planning your recurring investments!',
     pacFrequencyDesc: 'Frequency of automatic contributions',
     pacDurationDesc: 'Plan duration in years',
-    pacAllocationDesc: 'How to distribute contributions among assets'
+    pacAllocationDesc: 'How to distribute contributions among assets',
   },
-  
+
   es: {
     // Header
     appTitle: 'Rebalanceador de Cartera',
     appSubtitle: 'Optimiza tus inversiones con IA',
     totalValue: 'Valor Total',
     expectedReturn: 'Rendimiento Esperado',
-    
+
     // Navigation
     portfolio: 'Cartera',
     strategies: 'Estrategias',
     comparison: 'Comparación',
     aiAssistant: 'Asistente IA',
-    
+
     // Asset Form
     yourAssets: 'Tus Activos',
     addAsset: 'Añadir Activo',
@@ -297,7 +309,7 @@ export const translations = {
     addAssetButton: 'Añadir Activo',
     cancel: 'Cancelar',
     noAssetsMessage: '¡No hay activos añadidos. Comienza creando tu cartera!',
-    
+
     // Portfolio Metrics
     portfolioMetrics: 'Métricas de Cartera',
     riskScore: 'Nivel de Riesgo',
@@ -305,18 +317,20 @@ export const translations = {
     totalAssets: 'Activos Totales',
     currentAllocation: 'Asignación Actual',
     totalPortfolioValue: 'Valor Total de la Cartera',
-    
+
     // Strategies
     investmentStrategies: 'Estrategias de Inversión',
-    strategiesDescription: 'Compara diferentes estrategias para optimizar tu cartera',
+    strategiesDescription:
+      'Compara diferentes estrategias para optimizar tu cartera',
     conservativeStrategy: 'Estrategia Conservadora',
     balancedStrategy: 'Estrategia Equilibrada',
     aggressiveStrategy: 'Estrategia Agresiva',
     selectedStrategy: '✓ Estrategia Seleccionada',
-    
+
     // Strategy Comparison
     strategyComparison: 'Comparación de Estrategias',
-    comparisonDescription: 'Analiza y compara el rendimiento de diferentes estrategias',
+    comparisonDescription:
+      'Analiza y compara el rendimiento de diferentes estrategias',
     bestReturn: 'Mejor Rendimiento',
     lowestRisk: 'Menor Riesgo',
     bestSharpe: 'Mejor Sharpe',
@@ -328,14 +342,15 @@ export const translations = {
     sharpe: 'Sharpe',
     volatility: 'Volatilidad',
     maxDrawdown: 'Pérdida Máxima',
-    
+
     // AI Assistant
     aiAssistantTitle: 'Asistente IA',
     aiDescription: 'Utiliza inteligencia artificial para optimizar tu cartera',
     chatgptConfig: 'Configuración ChatGPT',
     apiKey: 'Clave API OpenAI (Opcional)',
     apiKeyPlaceholder: 'sk-...',
-    apiKeyDescription: 'Introduce tu clave API para análisis IA reales. Sin clave API se utilizarán análisis simulados.',
+    apiKeyDescription:
+      'Introduce tu clave API para análisis IA reales. Sin clave API se utilizarán análisis simulados.',
     portfolioAnalysis: 'Análisis de Cartera IA',
     analyzePortfolio: 'Analizar Cartera',
     analyzing: 'Analizando...',
@@ -352,7 +367,7 @@ export const translations = {
     investmentGoals: 'Objetivos de Inversión',
     generateStrategy: 'Generar Estrategia IA',
     generatingStrategy: 'Generando Estrategia IA...',
-    
+
     // Projections
     portfolioProjection: 'Proyección de Crecimiento de Cartera',
     years: 'años',
@@ -360,7 +375,7 @@ export const translations = {
     currentValue: 'Valor Actual',
     projection: 'Proyección',
     totalGrowth: 'Crecimiento Total',
-    
+
     // Asset Types
     stocks: 'Acciones',
     bonds: 'Bonos',
@@ -370,23 +385,24 @@ export const translations = {
     crypto: 'Criptomonedas',
     cash: 'Efectivo',
     other: 'Otro',
-    
+
     // Risk Levels
     low: 'Bajo',
     medium: 'Medio',
     high: 'Alto',
-    
+
     // Investment Goals
     longTermGrowth: 'Crecimiento a Largo Plazo',
     passiveIncome: 'Ingresos Pasivos',
     capitalPreservation: 'Preservación del Capital',
     diversificationGoal: 'Diversificación',
     inflationProtection: 'Protección contra Inflación',
-    
+
     // PAC
     pac: 'PAC',
     pacTitle: 'Plan de Acumulación de Capital',
-    pacDescription: 'Simula el efecto compuesto de las inversiones recurrentes en el tiempo',
+    pacDescription:
+      'Simula el efecto compuesto de las inversiones recurrentes en el tiempo',
     createPac: 'Crear PAC',
     pacName: 'Nombre PAC',
     monthlyAmount: 'Cantidad Mensual (€)',
@@ -403,37 +419,39 @@ export const translations = {
     compoundEffect: 'Efecto Compuesto',
     pacAllocation: 'Asignación PAC',
     activePacs: 'PACs Activos',
-    noPacsMessage: '¡No hay PACs creados. Comienza a planificar tus inversiones recurrentes!',
+    noPacsMessage:
+      '¡No hay PACs creados. Comienza a planificar tus inversiones recurrentes!',
     pacFrequencyDesc: 'Frecuencia de las contribuciones automáticas',
     pacDurationDesc: 'Duración del plan en años',
-    pacAllocationDesc: 'Cómo distribuir las contribuciones entre los activos'
+    pacAllocationDesc: 'Cómo distribuir las contribuciones entre los activos',
   },
-  
+
   fr: {
     // Header
     appTitle: 'Rééquilibreur de Portefeuille',
-    appSubtitle: 'Optimisez vos investissements avec l\'IA',
+    appSubtitle: "Optimisez vos investissements avec l'IA",
     totalValue: 'Valeur Totale',
     expectedReturn: 'Rendement Attendu',
-    
+
     // Navigation
     portfolio: 'Portefeuille',
     strategies: 'Stratégies',
     comparison: 'Comparaison',
     aiAssistant: 'Assistant IA',
-    
+
     // Asset Form
     yourAssets: 'Vos Actifs',
     addAsset: 'Ajouter un Actif',
-    assetName: 'Nom de l\'Actif',
-    assetType: 'Type d\'Actif',
+    assetName: "Nom de l'Actif",
+    assetType: "Type d'Actif",
     currentValue: 'Valeur Actuelle (€)',
     expectedReturnLabel: 'Rendement Attendu (% annuel)',
     riskLevel: 'Niveau de Risque',
     addAssetButton: 'Ajouter un Actif',
     cancel: 'Annuler',
-    noAssetsMessage: 'Aucun actif ajouté. Commencez à créer votre portefeuille !',
-    
+    noAssetsMessage:
+      'Aucun actif ajouté. Commencez à créer votre portefeuille !',
+
     // Portfolio Metrics
     portfolioMetrics: 'Métriques du Portefeuille',
     riskScore: 'Niveau de Risque',
@@ -441,18 +459,20 @@ export const translations = {
     totalAssets: 'Actifs Totaux',
     currentAllocation: 'Allocation Actuelle',
     totalPortfolioValue: 'Valeur Totale du Portefeuille',
-    
+
     // Strategies
-    investmentStrategies: 'Stratégies d\'Investissement',
-    strategiesDescription: 'Comparez différentes stratégies pour optimiser votre portefeuille',
+    investmentStrategies: "Stratégies d'Investissement",
+    strategiesDescription:
+      'Comparez différentes stratégies pour optimiser votre portefeuille',
     conservativeStrategy: 'Stratégie Conservatrice',
     balancedStrategy: 'Stratégie Équilibrée',
     aggressiveStrategy: 'Stratégie Agressive',
     selectedStrategy: '✓ Stratégie Sélectionnée',
-    
+
     // Strategy Comparison
     strategyComparison: 'Comparaison des Stratégies',
-    comparisonDescription: 'Analysez et comparez les performances de différentes stratégies',
+    comparisonDescription:
+      'Analysez et comparez les performances de différentes stratégies',
     bestReturn: 'Meilleur Rendement',
     lowestRisk: 'Risque le Plus Faible',
     bestSharpe: 'Meilleur Sharpe',
@@ -464,14 +484,16 @@ export const translations = {
     sharpe: 'Sharpe',
     volatility: 'Volatilité',
     maxDrawdown: 'Perte Maximale',
-    
+
     // AI Assistant
     aiAssistantTitle: 'Assistant IA',
-    aiDescription: 'Utilisez l\'intelligence artificielle pour optimiser votre portefeuille',
+    aiDescription:
+      "Utilisez l'intelligence artificielle pour optimiser votre portefeuille",
     chatgptConfig: 'Configuration ChatGPT',
     apiKey: 'Clé API OpenAI (Optionnel)',
     apiKeyPlaceholder: 'sk-...',
-    apiKeyDescription: 'Entrez votre clé API pour des analyses IA réelles. Sans clé API, des analyses simulées seront utilisées.',
+    apiKeyDescription:
+      'Entrez votre clé API pour des analyses IA réelles. Sans clé API, des analyses simulées seront utilisées.',
     portfolioAnalysis: 'Analyse de Portefeuille IA',
     analyzePortfolio: 'Analyser le Portefeuille',
     analyzing: 'Analyse en cours...',
@@ -485,10 +507,10 @@ export const translations = {
     lowRisk: 'Risque faible',
     mediumRisk: 'Risque moyen',
     highRisk: 'Risque élevé',
-    investmentGoals: 'Objectifs d\'Investissement',
+    investmentGoals: "Objectifs d'Investissement",
     generateStrategy: 'Générer une Stratégie IA',
     generatingStrategy: 'Génération de Stratégie IA...',
-    
+
     // Projections
     portfolioProjection: 'Projection de Croissance du Portefeuille',
     years: 'ans',
@@ -496,7 +518,7 @@ export const translations = {
     currentValue: 'Valeur Actuelle',
     projection: 'Projection',
     totalGrowth: 'Croissance Totale',
-    
+
     // Asset Types
     stocks: 'Actions',
     bonds: 'Obligations',
@@ -506,23 +528,24 @@ export const translations = {
     crypto: 'Cryptomonnaies',
     cash: 'Liquidités',
     other: 'Autre',
-    
+
     // Risk Levels
     low: 'Faible',
     medium: 'Moyen',
     high: 'Élevé',
-    
+
     // Investment Goals
     longTermGrowth: 'Croissance à Long Terme',
     passiveIncome: 'Revenus Passifs',
     capitalPreservation: 'Préservation du Capital',
     diversificationGoal: 'Diversification',
-    inflationProtection: 'Protection contre l\'Inflation',
-    
+    inflationProtection: "Protection contre l'Inflation",
+
     // PAC
     pac: 'PAC',
-    pacTitle: 'Plan d\'Accumulation de Capital',
-    pacDescription: 'Simulez l\'effet composé des investissements récurrents dans le temps',
+    pacTitle: "Plan d'Accumulation de Capital",
+    pacDescription:
+      "Simulez l'effet composé des investissements récurrents dans le temps",
     createPac: 'Créer PAC',
     pacName: 'Nom PAC',
     monthlyAmount: 'Montant Mensuel (€)',
@@ -539,25 +562,26 @@ export const translations = {
     compoundEffect: 'Effet Composé',
     pacAllocation: 'Allocation PAC',
     activePacs: 'PACs Actifs',
-    noPacsMessage: 'Aucun PAC créé. Commencez à planifier vos investissements récurrents !',
+    noPacsMessage:
+      'Aucun PAC créé. Commencez à planifier vos investissements récurrents !',
     pacFrequencyDesc: 'Fréquence des contributions automatiques',
     pacDurationDesc: 'Durée du plan en années',
-    pacAllocationDesc: 'Comment distribuer les contributions entre les actifs'
+    pacAllocationDesc: 'Comment distribuer les contributions entre les actifs',
   },
-  
+
   de: {
     // Header
     appTitle: 'Portfolio Rebalancer',
     appSubtitle: 'Optimieren Sie Ihre Investitionen mit KI',
     totalValue: 'Gesamtwert',
     expectedReturn: 'Erwartete Rendite',
-    
+
     // Navigation
     portfolio: 'Portfolio',
     strategies: 'Strategien',
     comparison: 'Vergleich',
     aiAssistant: 'KI-Assistent',
-    
+
     // Asset Form
     yourAssets: 'Ihre Vermögenswerte',
     addAsset: 'Vermögenswert hinzufügen',
@@ -568,8 +592,9 @@ export const translations = {
     riskLevel: 'Risikoniveau',
     addAssetButton: 'Vermögenswert hinzufügen',
     cancel: 'Abbrechen',
-    noAssetsMessage: 'Keine Vermögenswerte hinzugefügt. Beginnen Sie mit der Erstellung Ihres Portfolios!',
-    
+    noAssetsMessage:
+      'Keine Vermögenswerte hinzugefügt. Beginnen Sie mit der Erstellung Ihres Portfolios!',
+
     // Portfolio Metrics
     portfolioMetrics: 'Portfolio-Kennzahlen',
     riskScore: 'Risikoniveau',
@@ -577,18 +602,20 @@ export const translations = {
     totalAssets: 'Gesamte Vermögenswerte',
     currentAllocation: 'Aktuelle Allokation',
     totalPortfolioValue: 'Gesamter Portfolio-Wert',
-    
+
     // Strategies
     investmentStrategies: 'Anlagestrategien',
-    strategiesDescription: 'Vergleichen Sie verschiedene Strategien zur Optimierung Ihres Portfolios',
+    strategiesDescription:
+      'Vergleichen Sie verschiedene Strategien zur Optimierung Ihres Portfolios',
     conservativeStrategy: 'Konservative Strategie',
     balancedStrategy: 'Ausgewogene Strategie',
     aggressiveStrategy: 'Aggressive Strategie',
     selectedStrategy: '✓ Ausgewählte Strategie',
-    
+
     // Strategy Comparison
     strategyComparison: 'Strategievergleich',
-    comparisonDescription: 'Analysieren und vergleichen Sie die Performance verschiedener Strategien',
+    comparisonDescription:
+      'Analysieren und vergleichen Sie die Performance verschiedener Strategien',
     bestReturn: 'Beste Rendite',
     lowestRisk: 'Niedrigstes Risiko',
     bestSharpe: 'Beste Sharpe',
@@ -600,14 +627,16 @@ export const translations = {
     sharpe: 'Sharpe',
     volatility: 'Volatilität',
     maxDrawdown: 'Maximaler Drawdown',
-    
+
     // AI Assistant
     aiAssistantTitle: 'KI-Assistent',
-    aiDescription: 'Nutzen Sie künstliche Intelligenz zur Optimierung Ihres Portfolios',
+    aiDescription:
+      'Nutzen Sie künstliche Intelligenz zur Optimierung Ihres Portfolios',
     chatgptConfig: 'ChatGPT-Konfiguration',
     apiKey: 'OpenAI API-Schlüssel (Optional)',
     apiKeyPlaceholder: 'sk-...',
-    apiKeyDescription: 'Geben Sie Ihren API-Schlüssel für echte KI-Analysen ein. Ohne API-Schlüssel werden simulierte Analysen verwendet.',
+    apiKeyDescription:
+      'Geben Sie Ihren API-Schlüssel für echte KI-Analysen ein. Ohne API-Schlüssel werden simulierte Analysen verwendet.',
     portfolioAnalysis: 'KI-Portfolio-Analyse',
     analyzePortfolio: 'Portfolio analysieren',
     analyzing: 'Analysiere...',
@@ -624,7 +653,7 @@ export const translations = {
     investmentGoals: 'Anlageziele',
     generateStrategy: 'KI-Strategie generieren',
     generatingStrategy: 'Generiere KI-Strategie...',
-    
+
     // Projections
     portfolioProjection: 'Portfolio-Wachstumsprognose',
     years: 'Jahre',
@@ -632,7 +661,7 @@ export const translations = {
     currentValue: 'Aktueller Wert',
     projection: 'Prognose',
     totalGrowth: 'Gesamtwachstum',
-    
+
     // Asset Types
     stocks: 'Aktien',
     bonds: 'Anleihen',
@@ -642,23 +671,24 @@ export const translations = {
     crypto: 'Kryptowährungen',
     cash: 'Bargeld',
     other: 'Andere',
-    
+
     // Risk Levels
     low: 'Niedrig',
     medium: 'Mittel',
     high: 'Hoch',
-    
+
     // Investment Goals
     longTermGrowth: 'Langfristiges Wachstum',
     passiveIncome: 'Passives Einkommen',
     capitalPreservation: 'Kapitalerhaltung',
     diversificationGoal: 'Diversifikation',
     inflationProtection: 'Inflationsschutz',
-    
+
     // PAC
     pac: 'Sparplan',
     pacTitle: 'Kapitalaufbau-Plan',
-    pacDescription: 'Simulieren Sie den Zinseszinseffekt wiederkehrender Investitionen über die Zeit',
+    pacDescription:
+      'Simulieren Sie den Zinseszinseffekt wiederkehrender Investitionen über die Zeit',
     createPac: 'Sparplan erstellen',
     pacName: 'Sparplan Name',
     monthlyAmount: 'Monatlicher Betrag (€)',
@@ -675,25 +705,27 @@ export const translations = {
     compoundEffect: 'Zinseszinseffekt',
     pacAllocation: 'Sparplan Allokation',
     activePacs: 'Aktive Sparpläne',
-    noPacsMessage: 'Keine Sparpläne erstellt. Beginnen Sie mit der Planung Ihrer wiederkehrenden Investitionen!',
+    noPacsMessage:
+      'Keine Sparpläne erstellt. Beginnen Sie mit der Planung Ihrer wiederkehrenden Investitionen!',
     pacFrequencyDesc: 'Häufigkeit der automatischen Beiträge',
     pacDurationDesc: 'Plandauer in Jahren',
-    pacAllocationDesc: 'Wie die Beiträge auf die Vermögenswerte verteilt werden'
+    pacAllocationDesc:
+      'Wie die Beiträge auf die Vermögenswerte verteilt werden',
   },
-  
+
   zh: {
     // Header
     appTitle: '投资组合再平衡器',
     appSubtitle: '用AI优化您的投资',
     totalValue: '总价值',
     expectedReturn: '预期收益',
-    
+
     // Navigation
     portfolio: '投资组合',
     strategies: '策略',
     comparison: '比较',
     aiAssistant: 'AI助手',
-    
+
     // Asset Form
     yourAssets: '您的资产',
     addAsset: '添加资产',
@@ -705,7 +737,7 @@ export const translations = {
     addAssetButton: '添加资产',
     cancel: '取消',
     noAssetsMessage: '未添加资产。开始构建您的投资组合！',
-    
+
     // Portfolio Metrics
     portfolioMetrics: '投资组合指标',
     riskScore: '风险等级',
@@ -713,7 +745,7 @@ export const translations = {
     totalAssets: '总资产',
     currentAllocation: '当前配置',
     totalPortfolioValue: '投资组合总价值',
-    
+
     // Strategies
     investmentStrategies: '投资策略',
     strategiesDescription: '比较不同策略以优化您的投资组合',
@@ -721,7 +753,7 @@ export const translations = {
     balancedStrategy: '平衡策略',
     aggressiveStrategy: '激进策略',
     selectedStrategy: '✓ 已选择策略',
-    
+
     // Strategy Comparison
     strategyComparison: '策略比较',
     comparisonDescription: '分析和比较不同策略的表现',
@@ -736,14 +768,15 @@ export const translations = {
     sharpe: '夏普',
     volatility: '波动率',
     maxDrawdown: '最大回撤',
-    
+
     // AI Assistant
     aiAssistantTitle: 'AI助手',
     aiDescription: '使用人工智能优化您的投资组合',
     chatgptConfig: 'ChatGPT配置',
     apiKey: 'OpenAI API密钥 (可选)',
     apiKeyPlaceholder: 'sk-...',
-    apiKeyDescription: '输入您的API密钥进行真实AI分析。没有API密钥将使用模拟分析。',
+    apiKeyDescription:
+      '输入您的API密钥进行真实AI分析。没有API密钥将使用模拟分析。',
     portfolioAnalysis: 'AI投资组合分析',
     analyzePortfolio: '分析投资组合',
     analyzing: '分析中...',
@@ -760,7 +793,7 @@ export const translations = {
     investmentGoals: '投资目标',
     generateStrategy: '生成AI策略',
     generatingStrategy: '正在生成AI策略...',
-    
+
     // Projections
     portfolioProjection: '投资组合增长预测',
     years: '年',
@@ -768,7 +801,7 @@ export const translations = {
     currentValue: '当前价值',
     projection: '预测',
     totalGrowth: '总增长',
-    
+
     // Asset Types
     stocks: '股票',
     bonds: '债券',
@@ -778,19 +811,19 @@ export const translations = {
     crypto: '加密货币',
     cash: '现金',
     other: '其他',
-    
+
     // Risk Levels
     low: '低',
     medium: '中',
     high: '高',
-    
+
     // Investment Goals
     longTermGrowth: '长期增长',
     passiveIncome: '被动收入',
     capitalPreservation: '资本保值',
     diversificationGoal: '多样化',
     inflationProtection: '通胀保护',
-    
+
     // PAC
     pac: '定投计划',
     pacTitle: '资本积累计划',
@@ -814,10 +847,13 @@ export const translations = {
     noPacsMessage: '未创建定投计划。开始规划您的定期投资！',
     pacFrequencyDesc: '自动投资频率',
     pacDurationDesc: '计划期限（年）',
-    pacAllocationDesc: '如何在资产间分配投资'
-  }
+    pacAllocationDesc: '如何在资产间分配投资',
+  },
 };
 
 export const getTranslation = (language: Language, key: string): string => {
-  return translations[language]?.[key as keyof typeof translations[Language]] || key;
+  return (
+    translations[language]?.[key as keyof (typeof translations)[Language]] ||
+    key
+  );
 };

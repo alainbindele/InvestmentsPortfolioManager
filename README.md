@@ -15,33 +15,39 @@ Un'applicazione web avanzata per l'ottimizzazione e il ribilanciamento di portaf
 ## Installazione
 
 1. Clona il repository:
+
 ```bash
 git clone <repository-url>
 cd portfolio-rebalancer
 ```
 
 2. Installa le dipendenze:
+
 ```bash
 npm install
 ```
 
 3. Configura le variabili d'ambiente:
+
 ```bash
 cp .env.example .env
 ```
 
 4. Modifica il file `.env` e inserisci la tua API key di OpenAI:
+
 ```
 VITE_OPENAI_API_KEY=sk-your-actual-api-key-here
 ```
 
 Per ottenere una API key di OpenAI:
+
 - Vai su [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
 - Crea un account o accedi
 - Genera una nuova API key
 - Copia la chiave nel file `.env`
 
 5. Avvia l'applicazione:
+
 ```bash
 npm run dev
 ```
@@ -49,20 +55,24 @@ npm run dev
 ## Utilizzo
 
 ### Gestione Asset
+
 - Aggiungi i tuoi asset di investimento specificando nome, tipo, valore attuale, rendimento atteso e livello di rischio
 - Visualizza l'allocazione attuale del portafoglio tramite grafici interattivi
 
 ### Strategie di Investimento
+
 - Esplora strategie predefinite (Conservativa, Bilanciata, Aggressiva)
 - Confronta le metriche di performance tra diverse strategie
 - Visualizza proiezioni di crescita a lungo termine
 
 ### AI Assistant
+
 - Analizza il tuo portafoglio con l'intelligenza artificiale
 - Ricevi raccomandazioni personalizzate
 - Genera strategie ottimizzate basate sul tuo profilo di rischio
 
 ### Piano di Accumulo (PAC)
+
 - Crea piani di investimento ricorrenti
 - Simula l'effetto compound nel tempo
 - Visualizza proiezioni dettagliate dei tuoi investimenti periodici

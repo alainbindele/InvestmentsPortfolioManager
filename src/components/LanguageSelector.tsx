@@ -9,16 +9,20 @@ interface LanguageSelectorProps {
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   currentLanguage,
-  onLanguageChange
+  onLanguageChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const currentLang = LANGUAGES.find(lang => lang.code === currentLanguage) || LANGUAGES[0];
+  const currentLang =
+    LANGUAGES.find((lang) => lang.code === currentLanguage) || LANGUAGES[0];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -43,9 +47,11 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         <span className="text-sm font-medium text-gray-700 hidden sm:block">
           {currentLang.name}
         </span>
-        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
-          isOpen ? 'rotate-180' : ''
-        }`} />
+        <ChevronDown
+          className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
       </button>
 
       {isOpen && (
@@ -56,7 +62,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                 key={language.code}
                 onClick={() => handleLanguageSelect(language.code)}
                 className={`w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-150 ${
-                  currentLanguage === language.code ? 'bg-primary-50 text-primary-700' : 'text-gray-700'
+                  currentLanguage === language.code
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700'
                 }`}
               >
                 <span className="text-lg">{language.flag}</span>

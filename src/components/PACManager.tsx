@@ -1,10 +1,32 @@
 import React, { useState } from 'react';
-import { Plus, Calendar, TrendingUp, DollarSign, X, BarChart3 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Area, AreaChart } from 'recharts';
+import {
+  Plus,
+  Calendar,
+  TrendingUp,
+  DollarSign,
+  X,
+  BarChart3,
+} from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  Area,
+  AreaChart,
+} from 'recharts';
 import { Asset, PACPlan, PACProjection } from '../types/portfolio';
 import { Language } from '../types/language';
 import { getTranslation } from '../utils/translations';
-import { calculatePACProjection, formatCurrency, getContributionFrequencyMultiplier } from '../utils/calculations';
+import {
+  calculatePACProjection,
+  formatCurrency,
+  getContributionFrequencyMultiplier,
+} from '../utils/calculations';
 
 interface PACManagerProps {
   assets: Asset[];
@@ -19,10 +41,10 @@ export const PACManager: React.FC<PACManagerProps> = ({
   language,
   pacs,
   onAddPAC,
-  onRemovePAC
+  onRemovePAC,
 }) => {
   const t = (key: string) => getTranslation(language, key);
-  
+
   const [showForm, setShowForm] = useState(false);
   const [selectedPAC, setSelectedPAC] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -30,12 +52,12 @@ export const PACManager: React.FC<PACManagerProps> = ({
     monthlyAmount: '',
     frequency: 'monthly' as PACPlan['frequency'],
     duration: '10',
-    targetAllocations: {} as { [assetId: string]: number }
+    targetAllocations: {} as { [assetId: string]: number },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.monthlyAmount || !formData.duration) {
       return;
     }
@@ -44,12 +66,16 @@ export const PACManager: React.FC<PACManagerProps> = ({
     let allocations = formData.targetAllocations;
     if (Object.keys(allocations).length === 0 && assets.length > 0) {
       const equalAllocation = Math.floor(100 / assets.length);
-      allocations = assets.reduce((acc, asset, index) => {
-        acc[asset.id] = index === assets.length - 1 
-          ? 100 - (equalAllocation * (assets.length - 1)) // Last asset gets remainder
-          : equalAllocation;
-        return acc;
-      }, {} as { [assetId: string]: number });
+      allocations = assets.reduce(
+        (acc, asset, index) => {
+          acc[asset.id] =
+            index === assets.length - 1
+              ? 100 - equalAllocation * (assets.length - 1) // Last asset gets remainder
+              : equalAllocation;
+          return acc;
+        },
+        {} as { [assetId: string]: number }
+      );
     }
 
     const newPAC: Omit<PACPlan, 'id'> = {
@@ -60,54 +86,66 @@ export const PACManager: React.FC<PACManagerProps> = ({
       targetAllocations: allocations,
       expectedReturn: calculateWeightedReturn(allocations),
       startDate: new Date(),
-      isActive: true
+      isActive: true,
     };
 
     onAddPAC(newPAC);
-    
+
     // Reset form
     setFormData({
       name: '',
       monthlyAmount: '',
       frequency: 'monthly',
       duration: '10',
-      targetAllocations: {}
+      targetAllocations: {},
     });
     setShowForm(false);
   };
 
-  const calculateWeightedReturn = (allocations: { [assetId: string]: number }): number => {
+  const calculateWeightedReturn = (allocations: {
+    [assetId: string]: number;
+  }): number => {
     return Object.entries(allocations).reduce((sum, [assetId, allocation]) => {
-      const asset = assets.find(a => a.id === assetId);
+      const asset = assets.find((a) => a.id === assetId);
       if (!asset) return sum;
-      return sum + (asset.expectedReturn * allocation / 100);
+      return sum + (asset.expectedReturn * allocation) / 100;
     }, 0);
   };
 
   const handleAllocationChange = (assetId: string, value: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       targetAllocations: {
         ...prev.targetAllocations,
-        [assetId]: value
-      }
+        [assetId]: value,
+      },
     }));
   };
 
   const normalizeAllocations = () => {
-    const total = Object.values(formData.targetAllocations).reduce((sum, val) => sum + val, 0);
+    const total = Object.values(formData.targetAllocations).reduce(
+      (sum, val) => sum + val,
+      0
+    );
     if (total === 0) return;
-    
-    const normalized = Object.entries(formData.targetAllocations).reduce((acc, [assetId, value]) => {
-      acc[assetId] = Math.round((value / total) * 100);
-      return acc;
-    }, {} as { [assetId: string]: number });
-    
-    setFormData(prev => ({ ...prev, targetAllocations: normalized }));
+
+    const normalized = Object.entries(formData.targetAllocations).reduce(
+      (acc, [assetId, value]) => {
+        acc[assetId] = Math.round((value / total) * 100);
+        return acc;
+      },
+      {} as { [assetId: string]: number }
+    );
+
+    setFormData((prev) => ({ ...prev, targetAllocations: normalized }));
   };
 
-  const selectedPACData = selectedPAC ? pacs.find(p => p.id === selectedPAC) : null;
-  const projectionData = selectedPACData ? calculatePACProjection(selectedPACData, assets) : [];
+  const selectedPACData = selectedPAC
+    ? pacs.find((p) => p.id === selectedPAC)
+    : null;
+  const projectionData = selectedPACData
+    ? calculatePACProjection(selectedPACData, assets)
+    : [];
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -122,7 +160,8 @@ export const PACManager: React.FC<PACManagerProps> = ({
             {t('portfolioValue')}: {formatCurrency(data.portfolioValue)}
           </p>
           <p className="text-sm text-warning-600">
-            {t('totalGain')}: {formatCurrency(data.totalGain)} ({data.gainPercentage.toFixed(1)}%)
+            {t('totalGain')}: {formatCurrency(data.totalGain)} (
+            {data.gainPercentage.toFixed(1)}%)
           </p>
         </div>
       );
@@ -138,10 +177,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
           <h2 className="text-2xl font-bold text-gray-900">{t('pacTitle')}</h2>
           <p className="text-gray-600">{t('pacDescription')}</p>
         </div>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="btn-primary"
-        >
+        <button onClick={() => setShowForm(!showForm)} className="btn-primary">
           <Plus className="w-4 h-4" />
           {t('createPac')}
         </button>
@@ -159,13 +195,15 @@ export const PACManager: React.FC<PACManagerProps> = ({
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, name: e.target.value }))
+                  }
                   className="input-field"
                   placeholder="PAC ETF Mondo"
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('monthlyAmount')}
@@ -173,7 +211,12 @@ export const PACManager: React.FC<PACManagerProps> = ({
                 <input
                   type="number"
                   value={formData.monthlyAmount}
-                  onChange={(e) => setFormData(prev => ({ ...prev, monthlyAmount: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      monthlyAmount: e.target.value,
+                    }))
+                  }
                   className="input-field"
                   placeholder="500"
                   min="1"
@@ -181,14 +224,19 @@ export const PACManager: React.FC<PACManagerProps> = ({
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('frequency')}
                 </label>
                 <select
                   value={formData.frequency}
-                  onChange={(e) => setFormData(prev => ({ ...prev, frequency: e.target.value as PACPlan['frequency'] }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      frequency: e.target.value as PACPlan['frequency'],
+                    }))
+                  }
                   className="select-field"
                 >
                   <option value="monthly">{t('monthly')}</option>
@@ -196,9 +244,11 @@ export const PACManager: React.FC<PACManagerProps> = ({
                   <option value="biannual">{t('biannual')}</option>
                   <option value="annual">{t('annual')}</option>
                 </select>
-                <p className="text-xs text-gray-500 mt-1">{t('pacFrequencyDesc')}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {t('pacFrequencyDesc')}
+                </p>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('duration')}
@@ -206,14 +256,21 @@ export const PACManager: React.FC<PACManagerProps> = ({
                 <input
                   type="number"
                   value={formData.duration}
-                  onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      duration: e.target.value,
+                    }))
+                  }
                   className="input-field"
                   placeholder="10"
                   min="1"
                   max="50"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">{t('pacDurationDesc')}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {t('pacDurationDesc')}
+                </p>
               </div>
             </div>
 
@@ -231,20 +288,34 @@ export const PACManager: React.FC<PACManagerProps> = ({
                   Normalizza al 100%
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mb-3">{t('pacAllocationDesc')}</p>
-              
+              <p className="text-xs text-gray-500 mb-3">
+                {t('pacAllocationDesc')}
+              </p>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {assets.map((asset) => (
-                  <div key={asset.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div
+                    key={asset.id}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  >
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900 text-sm">{asset.name}</p>
-                      <p className="text-xs text-gray-600">{asset.expectedReturn}% annuo</p>
+                      <p className="font-medium text-gray-900 text-sm">
+                        {asset.name}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        {asset.expectedReturn}% annuo
+                      </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <input
                         type="number"
                         value={formData.targetAllocations[asset.id] || 0}
-                        onChange={(e) => handleAllocationChange(asset.id, parseInt(e.target.value) || 0)}
+                        onChange={(e) =>
+                          handleAllocationChange(
+                            asset.id,
+                            parseInt(e.target.value) || 0
+                          )
+                        }
                         className="w-16 px-2 py-1 border border-gray-300 rounded text-sm text-center"
                         min="0"
                         max="100"
@@ -254,12 +325,17 @@ export const PACManager: React.FC<PACManagerProps> = ({
                   </div>
                 ))}
               </div>
-              
+
               <div className="mt-2 text-sm text-gray-600">
-                Totale: {Object.values(formData.targetAllocations).reduce((sum, val) => sum + val, 0)}%
+                Totale:{' '}
+                {Object.values(formData.targetAllocations).reduce(
+                  (sum, val) => sum + val,
+                  0
+                )}
+                %
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               <button type="submit" className="btn-primary">
                 {t('createPac')}
@@ -278,55 +354,73 @@ export const PACManager: React.FC<PACManagerProps> = ({
 
       {/* Active PACs */}
       <div className="card">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('activePacs')}</h3>
-        
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          {t('activePacs')}
+        </h3>
+
         {pacs.length > 0 ? (
           <div className="space-y-3">
             {pacs.map((pac) => {
-              const totalAnnualContribution = pac.monthlyAmount * getContributionFrequencyMultiplier(pac.frequency);
+              const totalAnnualContribution =
+                pac.monthlyAmount *
+                getContributionFrequencyMultiplier(pac.frequency);
               const totalContribution = totalAnnualContribution * pac.duration;
               const projections = calculatePACProjection(pac, assets);
               const finalProjection = projections[projections.length - 1];
-              
+
               return (
-                <div 
-                  key={pac.id} 
+                <div
+                  key={pac.id}
                   className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    selectedPAC === pac.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-gray-300'
+                    selectedPAC === pac.id
+                      ? 'border-primary-500 bg-primary-50'
+                      : 'border-gray-200 hover:border-gray-300'
                   }`}
-                  onClick={() => setSelectedPAC(selectedPAC === pac.id ? null : pac.id)}
+                  onClick={() =>
+                    setSelectedPAC(selectedPAC === pac.id ? null : pac.id)
+                  }
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h4 className="font-semibold text-gray-900">{pac.name}</h4>
+                        <h4 className="font-semibold text-gray-900">
+                          {pac.name}
+                        </h4>
                         <span className="px-2 py-1 bg-success-100 text-success-700 rounded-full text-xs">
                           {t(pac.frequency)}
                         </span>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div>
                           <p className="text-gray-600">{t('monthlyAmount')}</p>
-                          <p className="font-semibold">{formatCurrency(pac.monthlyAmount)}</p>
+                          <p className="font-semibold">
+                            {formatCurrency(pac.monthlyAmount)}
+                          </p>
                         </div>
                         <div>
                           <p className="text-gray-600">{t('duration')}</p>
-                          <p className="font-semibold">{pac.duration} {t('years')}</p>
+                          <p className="font-semibold">
+                            {pac.duration} {t('years')}
+                          </p>
                         </div>
                         <div>
                           <p className="text-gray-600">{t('totalInvested')}</p>
-                          <p className="font-semibold text-primary-600">{formatCurrency(totalContribution)}</p>
+                          <p className="font-semibold text-primary-600">
+                            {formatCurrency(totalContribution)}
+                          </p>
                         </div>
                         <div>
                           <p className="text-gray-600">{t('portfolioValue')}</p>
                           <p className="font-semibold text-success-600">
-                            {formatCurrency(finalProjection?.portfolioValue || 0)}
+                            {formatCurrency(
+                              finalProjection?.portfolioValue || 0
+                            )}
                           </p>
                         </div>
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -355,25 +449,25 @@ export const PACManager: React.FC<PACManagerProps> = ({
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             {t('pacProjection')}: {selectedPACData.name}
           </h3>
-          
+
           <div className="h-80 mb-6">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={projectionData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-                <XAxis 
-                  dataKey="month" 
+                <XAxis
+                  dataKey="month"
                   stroke="#6b7280"
                   tick={{ fontSize: 12 }}
                   tickFormatter={(value) => `${Math.floor(value / 12)}a`}
                 />
-                <YAxis 
+                <YAxis
                   stroke="#6b7280"
                   tick={{ fontSize: 12 }}
                   tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
-                
+
                 <Area
                   type="monotone"
                   dataKey="totalInvested"
@@ -404,37 +498,47 @@ export const PACManager: React.FC<PACManagerProps> = ({
                 <p className="text-sm text-gray-600">{t('totalInvested')}</p>
               </div>
               <p className="text-xl font-bold text-gray-900">
-                {formatCurrency(projectionData[projectionData.length - 1]?.totalInvested || 0)}
+                {formatCurrency(
+                  projectionData[projectionData.length - 1]?.totalInvested || 0
+                )}
               </p>
             </div>
-            
+
             <div className="metric-card">
               <div className="flex items-center gap-2 mb-1">
                 <BarChart3 className="w-4 h-4 text-success-600" />
                 <p className="text-sm text-gray-600">{t('portfolioValue')}</p>
               </div>
               <p className="text-xl font-bold text-success-600">
-                {formatCurrency(projectionData[projectionData.length - 1]?.portfolioValue || 0)}
+                {formatCurrency(
+                  projectionData[projectionData.length - 1]?.portfolioValue || 0
+                )}
               </p>
             </div>
-            
+
             <div className="metric-card">
               <div className="flex items-center gap-2 mb-1">
                 <TrendingUp className="w-4 h-4 text-primary-600" />
                 <p className="text-sm text-gray-600">{t('totalGain')}</p>
               </div>
               <p className="text-xl font-bold text-primary-600">
-                {formatCurrency(projectionData[projectionData.length - 1]?.totalGain || 0)}
+                {formatCurrency(
+                  projectionData[projectionData.length - 1]?.totalGain || 0
+                )}
               </p>
             </div>
-            
+
             <div className="metric-card">
               <div className="flex items-center gap-2 mb-1">
                 <TrendingUp className="w-4 h-4 text-warning-600" />
                 <p className="text-sm text-gray-600">Rendimento %</p>
               </div>
               <p className="text-xl font-bold text-warning-600">
-                +{projectionData[projectionData.length - 1]?.gainPercentage.toFixed(1) || 0}%
+                +
+                {projectionData[
+                  projectionData.length - 1
+                ]?.gainPercentage.toFixed(1) || 0}
+                %
               </p>
             </div>
           </div>

@@ -1,5 +1,14 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
 import { Asset, Strategy } from '../types/portfolio';
 import { Language } from '../types/language';
 import { projectPortfolioGrowth, formatCurrency } from '../utils/calculations';
@@ -12,25 +21,29 @@ interface ProjectionChartProps {
   years?: number;
 }
 
-export const ProjectionChart: React.FC<ProjectionChartProps> = ({ 
-  assets, 
+export const ProjectionChart: React.FC<ProjectionChartProps> = ({
+  assets,
   language,
-  strategies = [], 
-  years = 10 
+  strategies = [],
+  years = 10,
 }) => {
   const t = (key: string) => getTranslation(language, key);
-  
+
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   const currentReturn = assets.reduce((sum, asset) => {
     const weight = asset.currentValue / totalValue;
-    return sum + (asset.expectedReturn * weight);
+    return sum + asset.expectedReturn * weight;
   }, 0);
 
   // Generate projections for current portfolio
-  const currentProjection = projectPortfolioGrowth(totalValue, currentReturn, years);
-  
+  const currentProjection = projectPortfolioGrowth(
+    totalValue,
+    currentReturn,
+    years
+  );
+
   // Generate projections for strategies
-  const strategyProjections = strategies.map(strategy => 
+  const strategyProjections = strategies.map((strategy) =>
     projectPortfolioGrowth(totalValue, strategy.expectedReturn, years)
   );
 
@@ -38,13 +51,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   const chartData = currentProjection.map((point, index) => {
     const dataPoint: any = {
       year: point.year,
-      current: point.value
+      current: point.value,
     };
-    
+
     strategies.forEach((strategy, strategyIndex) => {
-      dataPoint[strategy.name] = strategyProjections[strategyIndex][index].value;
+      dataPoint[strategy.name] =
+        strategyProjections[strategyIndex][index].value;
     });
-    
+
     return dataPoint;
   });
 
@@ -54,10 +68,15 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900 mb-2">{t('years')} {label}</p>
+          <p className="font-medium text-gray-900 mb-2">
+            {t('years')} {label}
+          </p>
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.dataKey === 'current' ? t('currentPortfolio') : entry.dataKey}: {formatCurrency(entry.value)}
+              {entry.dataKey === 'current'
+                ? t('currentPortfolio')
+                : entry.dataKey}
+              : {formatCurrency(entry.value)}
             </p>
           ))}
         </div>
@@ -71,24 +90,20 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       <h3 className="text-lg font-semibold text-gray-900 mb-4">
         {t('portfolioProjection')} ({years} {t('years')})
       </h3>
-      
+
       <div className="h-80 mb-4">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-            <XAxis 
-              dataKey="year" 
-              stroke="#6b7280"
-              tick={{ fontSize: 12 }}
-            />
-            <YAxis 
+            <XAxis dataKey="year" stroke="#6b7280" tick={{ fontSize: 12 }} />
+            <YAxis
               stroke="#6b7280"
               tick={{ fontSize: 12 }}
               tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
-            
+
             <Line
               type="monotone"
               dataKey="current"
@@ -97,7 +112,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
               dot={{ r: 4 }}
               name={t('currentPortfolio')}
             />
-            
+
             {strategies.map((strategy, index) => (
               <Line
                 key={strategy.id}
@@ -120,18 +135,24 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             {formatCurrency(totalValue)}
           </p>
         </div>
-        
+
         <div className="metric-card">
-          <p className="text-sm text-gray-600">{t('projection')} {years} {t('years')}</p>
+          <p className="text-sm text-gray-600">
+            {t('projection')} {years} {t('years')}
+          </p>
           <p className="text-xl font-bold text-success-600">
             {formatCurrency(currentProjection[years].value)}
           </p>
         </div>
-        
+
         <div className="metric-card">
           <p className="text-sm text-gray-600">{t('totalGrowth')}</p>
           <p className="text-xl font-bold text-primary-600">
-            +{((currentProjection[years].value / totalValue - 1) * 100).toFixed(1)}%
+            +
+            {((currentProjection[years].value / totalValue - 1) * 100).toFixed(
+              1
+            )}
+            %
           </p>
         </div>
       </div>

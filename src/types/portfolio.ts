@@ -8,14 +8,14 @@ export interface Asset {
   allocation?: number; // Percentage of total portfolio
 }
 
-export type AssetType = 
-  | 'stocks' 
-  | 'bonds' 
-  | 'etf' 
-  | 'real_estate' 
-  | 'commodities' 
-  | 'crypto' 
-  | 'cash' 
+export type AssetType =
+  | 'stocks'
+  | 'bonds'
+  | 'etf'
+  | 'real_estate'
+  | 'commodities'
+  | 'crypto'
+  | 'cash'
   | 'other';
 
 export type RiskLevel = 'low' | 'medium' | 'high';
@@ -94,6 +94,13 @@ export interface PACProjection {
   gainPercentage: number;
 }
 
+export interface PortfolioMetrics {
+  totalValue: number;
+  expectedReturn: number;
+  riskScore: number;
+  diversificationScore: number;
+}
+
 export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   stocks: 'Stocks',
   bonds: 'Bonds',
@@ -102,13 +109,13 @@ export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   commodities: 'Commodities',
   crypto: 'Cryptocurrency',
   cash: 'Cash',
-  other: 'Other'
+  other: 'Other',
 };
 
 export const RISK_LEVEL_LABELS: Record<RiskLevel, string> = {
   low: 'Low',
   medium: 'Medium',
-  high: 'High'
+  high: 'High',
 };
 
 export const ASSET_COLORS: Record<AssetType, string> = {
@@ -119,5 +126,5 @@ export const ASSET_COLORS: Record<AssetType, string> = {
   commodities: '#ef4444',
   crypto: '#f97316',
   cash: '#6b7280',
-  other: '#ec4899'
+  other: '#ec4899',
 };

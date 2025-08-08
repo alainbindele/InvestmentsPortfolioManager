@@ -1,5 +1,12 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from 'recharts';
 import { Asset, ASSET_TYPE_LABELS, ASSET_COLORS } from '../types/portfolio';
 import { Language } from '../types/language';
 import { formatCurrency } from '../utils/calculations';
@@ -11,18 +18,22 @@ interface PortfolioChartProps {
   title?: string;
 }
 
-export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, language, title }) => {
+export const PortfolioChart: React.FC<PortfolioChartProps> = ({
+  assets,
+  language,
+  title,
+}) => {
   const t = (key: string) => getTranslation(language, key);
   const chartTitle = title || t('currentAllocation');
-  
+
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
-  
-  const chartData = assets.map(asset => ({
+
+  const chartData = assets.map((asset) => ({
     name: asset.name,
     value: asset.currentValue,
     percentage: ((asset.currentValue / totalValue) * 100).toFixed(1),
     type: asset.type,
-    color: ASSET_COLORS[asset.type]
+    color: ASSET_COLORS[asset.type],
   }));
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -31,7 +42,9 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, language
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium text-gray-900">{data.name}</p>
-          <p className="text-sm text-gray-600">{ASSET_TYPE_LABELS[data.type]}</p>
+          <p className="text-sm text-gray-600">
+            {ASSET_TYPE_LABELS[data.type]}
+          </p>
           <p className="text-sm font-semibold text-primary-600">
             {formatCurrency(data.value)} ({data.percentage}%)
           </p>
@@ -46,12 +59,13 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, language
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-2">
-            <div 
-              className="w-3 h-3 rounded-full" 
+            <div
+              className="w-3 h-3 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-sm text-gray-600">
-              {ASSET_TYPE_LABELS[entry.payload.type]} ({entry.payload.percentage}%)
+              {ASSET_TYPE_LABELS[entry.payload.type]} (
+              {entry.payload.percentage}%)
             </span>
           </div>
         ))}
@@ -62,7 +76,9 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, language
   if (assets.length === 0) {
     return (
       <div className="card">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">{chartTitle}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          {chartTitle}
+        </h3>
         <div className="flex items-center justify-center h-64 text-gray-500">
           <p>{t('noAssetsMessage')}</p>
         </div>

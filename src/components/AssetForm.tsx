@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
-import { Asset, AssetType, RiskLevel, ASSET_TYPE_LABELS, RISK_LEVEL_LABELS } from '../types/portfolio';
+import {
+  Asset,
+  AssetType,
+  RiskLevel,
+  ASSET_TYPE_LABELS,
+  RISK_LEVEL_LABELS,
+} from '../types/portfolio';
 import { Language } from '../types/language';
 import { getTranslation } from '../utils/translations';
 
@@ -11,13 +17,18 @@ interface AssetFormProps {
   language: Language;
 }
 
-export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset, assets, language }) => {
+export const AssetForm: React.FC<AssetFormProps> = ({
+  onAddAsset,
+  onRemoveAsset,
+  assets,
+  language,
+}) => {
   const [formData, setFormData] = useState({
     name: '',
     type: 'etf' as AssetType,
     currentValue: '',
     expectedReturn: '',
-    riskLevel: 'medium' as RiskLevel
+    riskLevel: 'medium' as RiskLevel,
   });
 
   const [showForm, setShowForm] = useState(false);
@@ -26,7 +37,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.currentValue || !formData.expectedReturn) {
       return;
     }
@@ -36,34 +47,33 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
       type: formData.type,
       currentValue: parseFloat(formData.currentValue),
       expectedReturn: parseFloat(formData.expectedReturn),
-      riskLevel: formData.riskLevel
+      riskLevel: formData.riskLevel,
     };
 
     onAddAsset(newAsset);
-    
+
     // Reset form
     setFormData({
       name: '',
       type: 'etf',
       currentValue: '',
       expectedReturn: '',
-      riskLevel: 'medium'
+      riskLevel: 'medium',
     });
     setShowForm(false);
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">{t('yourAssets')}</h2>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="btn-primary"
-        >
+        <h2 className="text-xl font-semibold text-gray-900">
+          {t('yourAssets')}
+        </h2>
+        <button onClick={() => setShowForm(!showForm)} className="btn-primary">
           <Plus className="w-4 h-4" />
           {t('addAsset')}
         </button>
@@ -86,7 +96,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('assetType')}
@@ -97,11 +107,13 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
                   className="select-field"
                 >
                   {Object.entries(ASSET_TYPE_LABELS).map(([key, label]) => (
-                    <option key={key} value={key}>{label}</option>
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
                   ))}
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('currentValue')}
@@ -109,7 +121,9 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
                 <input
                   type="number"
                   value={formData.currentValue}
-                  onChange={(e) => handleInputChange('currentValue', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange('currentValue', e.target.value)
+                  }
                   className="input-field"
                   placeholder="50000"
                   min="0"
@@ -117,7 +131,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('expectedReturnLabel')}
@@ -125,7 +139,9 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
                 <input
                   type="number"
                   value={formData.expectedReturn}
-                  onChange={(e) => handleInputChange('expectedReturn', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange('expectedReturn', e.target.value)
+                  }
                   className="input-field"
                   placeholder="7.5"
                   min="0"
@@ -134,23 +150,27 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('riskLevel')}
                 </label>
                 <select
                   value={formData.riskLevel}
-                  onChange={(e) => handleInputChange('riskLevel', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange('riskLevel', e.target.value)
+                  }
                   className="select-field"
                 >
                   {Object.entries(RISK_LEVEL_LABELS).map(([key, label]) => (
-                    <option key={key} value={key}>{label}</option>
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               <button type="submit" className="btn-primary">
                 {t('addAssetButton')}
@@ -170,13 +190,17 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
       {assets.length > 0 && (
         <div className="space-y-3">
           {assets.map((asset) => (
-            <div key={asset.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div
+              key={asset.id}
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+            >
               <div className="flex-1">
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
                     <h3 className="font-medium text-gray-900">{asset.name}</h3>
                     <p className="text-sm text-gray-600">
-                      {ASSET_TYPE_LABELS[asset.type]} • {RISK_LEVEL_LABELS[asset.riskLevel]} Rischio
+                      {ASSET_TYPE_LABELS[asset.type]} •{' '}
+                      {RISK_LEVEL_LABELS[asset.riskLevel]} Rischio
                     </p>
                   </div>
                   <div className="text-right">

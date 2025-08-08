@@ -1,6 +1,18 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Strategy, Asset, ASSET_COLORS, ASSET_TYPE_LABELS } from '../types/portfolio';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from 'recharts';
+import {
+  Strategy,
+  Asset,
+  ASSET_COLORS,
+  ASSET_TYPE_LABELS,
+} from '../types/portfolio';
 import { Language } from '../types/language';
 import { formatCurrency, formatPercentage } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
@@ -14,29 +26,32 @@ interface StrategyCardProps {
   onClick?: () => void;
 }
 
-export const StrategyCard: React.FC<StrategyCardProps> = ({ 
-  strategy, 
-  assets, 
+export const StrategyCard: React.FC<StrategyCardProps> = ({
+  strategy,
+  assets,
   language,
-  isActive = false, 
-  onClick 
+  isActive = false,
+  onClick,
 }) => {
   const t = (key: string) => getTranslation(language, key);
-  
+
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
-  
+
   // Create chart data for target allocation
   const chartData = Object.entries(strategy.targetAllocations)
     .filter(([assetId, allocation]) => allocation > 0)
     .map(([assetId, allocation]) => {
-      const asset = assets.find(a => a.id === assetId);
+      const asset = assets.find((a) => a.id === assetId);
       if (!asset) return null;
       return {
-        name: asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name,
+        name:
+          asset.name.length > 20
+            ? asset.name.substring(0, 20) + '...'
+            : asset.name,
         fullName: asset.name,
         value: allocation,
         color: ASSET_COLORS[asset.type],
-        type: asset.type
+        type: asset.type,
       };
     })
     .filter(Boolean);
@@ -47,7 +62,9 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium text-gray-900">{data.fullName}</p>
-          <p className="text-sm text-gray-600">{ASSET_TYPE_LABELS[data.type]}</p>
+          <p className="text-sm text-gray-600">
+            {ASSET_TYPE_LABELS[data.type]}
+          </p>
           <p className="text-sm font-semibold text-primary-600">
             {data.value}%
           </p>
@@ -59,13 +76,13 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
 
   const CustomLegend = ({ payload }: any) => {
     if (!payload || payload.length === 0) return null;
-    
+
     return (
       <div className="flex flex-wrap justify-center gap-2 mt-2">
         {payload.slice(0, 3).map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-1">
-            <div 
-              className="w-2 h-2 rounded-full" 
+            <div
+              className="w-2 h-2 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-xs text-gray-600">
@@ -74,7 +91,9 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           </div>
         ))}
         {payload.length > 3 && (
-          <span className="text-xs text-gray-500">+{payload.length - 3} altri</span>
+          <span className="text-xs text-gray-500">
+            +{payload.length - 3} altri
+          </span>
         )}
       </div>
     );
@@ -93,7 +112,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`card cursor-pointer transition-all duration-200 hover:shadow-md ${
         isActive ? 'ring-2 ring-primary-500 bg-primary-50' : ''
       }`}
@@ -102,7 +121,9 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-lg font-semibold text-gray-900">{strategy.name}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {strategy.name}
+            </h3>
             {strategy.isAIGenerated && (
               <div className="flex items-center gap-1 px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
                 <Bot className="w-3 h-3" />
@@ -158,7 +179,9 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
             <Shield className={`w-4 h-4 ${getRiskColor(strategy.riskScore)}`} />
             <div>
               <p className="text-xs text-gray-600">{t('risk')}</p>
-              <p className={`font-semibold ${getRiskColor(strategy.riskScore)}`}>
+              <p
+                className={`font-semibold ${getRiskColor(strategy.riskScore)}`}
+              >
                 {getRiskLabel(strategy.riskScore)}
               </p>
             </div>
