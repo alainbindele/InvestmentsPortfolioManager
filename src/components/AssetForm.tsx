@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { Asset, AssetType, RiskLevel, ASSET_TYPE_LABELS, RISK_LEVEL_LABELS } from '../types/portfolio';
+import { Language } from '../types/language';
+import { getTranslation } from '../utils/translations';
 
 interface AssetFormProps {
   onAddAsset: (asset: Omit<Asset, 'id'>) => void;
   onRemoveAsset: (assetId: string) => void;
   assets: Asset[];
+  language: Language;
 }
 
-export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset, assets }) => {
+export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset, assets, language }) => {
   const [formData, setFormData] = useState({
     name: '',
     type: 'etf' as AssetType,
@@ -18,6 +21,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
   });
 
   const [showForm, setShowForm] = useState(false);
+
+  const t = (key: string) => getTranslation(language, key);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,13 +59,13 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">I Tuoi Asset</h2>
+        <h2 className="text-xl font-semibold text-gray-900">{t('yourAssets')}</h2>
         <button
           onClick={() => setShowForm(!showForm)}
           className="btn-primary"
         >
           <Plus className="w-4 h-4" />
-          Aggiungi Asset
+          {t('addAsset')}
         </button>
       </div>
 
@@ -70,7 +75,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Nome Asset
+                  {t('assetName')}
                 </label>
                 <input
                   type="text"
@@ -84,7 +89,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tipo Asset
+                  {t('assetType')}
                 </label>
                 <select
                   value={formData.type}
@@ -99,7 +104,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valore Attuale (€)
+                  {t('currentValue')}
                 </label>
                 <input
                   type="number"
@@ -115,7 +120,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Rendimento Atteso (% annuo)
+                  {t('expectedReturnLabel')}
                 </label>
                 <input
                   type="number"
@@ -132,7 +137,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Livello di Rischio
+                  {t('riskLevel')}
                 </label>
                 <select
                   value={formData.riskLevel}
@@ -148,14 +153,14 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
             
             <div className="flex gap-2">
               <button type="submit" className="btn-primary">
-                Aggiungi Asset
+                {t('addAssetButton')}
               </button>
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
                 className="btn-secondary"
               >
-                Annulla
+                {t('cancel')}
               </button>
             </div>
           </form>
@@ -197,7 +202,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
 
       {assets.length === 0 && !showForm && (
         <div className="text-center py-8 text-gray-500">
-          <p>Nessun asset aggiunto. Inizia creando il tuo portafoglio!</p>
+          <p>{t('noAssetsMessage')}</p>
         </div>
       )}
     </div>

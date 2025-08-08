@@ -1,12 +1,15 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Strategy, Asset, ASSET_COLORS, ASSET_TYPE_LABELS } from '../types/portfolio';
+import { Language } from '../types/language';
 import { formatCurrency, formatPercentage } from '../utils/calculations';
+import { getTranslation } from '../utils/translations';
 import { TrendingUp, Shield, Target, BarChart3, Bot } from 'lucide-react';
 
 interface StrategyCardProps {
   strategy: Strategy;
   assets: Asset[];
+  language: Language;
   isActive?: boolean;
   onClick?: () => void;
 }
@@ -14,9 +17,12 @@ interface StrategyCardProps {
 export const StrategyCard: React.FC<StrategyCardProps> = ({ 
   strategy, 
   assets, 
+  language,
   isActive = false, 
   onClick 
 }) => {
+  const t = (key: string) => getTranslation(language, key);
+  
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
   // Create chart data for target allocation
@@ -105,7 +111,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-success-600" />
             <div>
-              <p className="text-xs text-gray-600">Rendimento Atteso</p>
+              <p className="text-xs text-gray-600">{t('expectedReturn')}</p>
               <p className="font-semibold text-success-600">
                 {formatPercentage(strategy.expectedReturn)}
               </p>
@@ -115,7 +121,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           <div className="flex items-center gap-2">
             <Shield className={`w-4 h-4 ${getRiskColor(strategy.riskScore)}`} />
             <div>
-              <p className="text-xs text-gray-600">Rischio</p>
+              <p className="text-xs text-gray-600">{t('risk')}</p>
               <p className={`font-semibold ${getRiskColor(strategy.riskScore)}`}>
                 {getRiskLabel(strategy.riskScore)}
               </p>
@@ -125,7 +131,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4 text-primary-600" />
             <div>
-              <p className="text-xs text-gray-600">Sharpe Ratio</p>
+              <p className="text-xs text-gray-600">{t('sharpe')}</p>
               <p className="font-semibold text-primary-600">
                 {strategy.sharpeRatio.toFixed(2)}
               </p>
@@ -136,13 +142,13 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
 
       <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
         <div className="text-center">
-          <p className="text-xs text-gray-600">Max Drawdown</p>
+          <p className="text-xs text-gray-600">{t('maxDrawdown')}</p>
           <p className="font-semibold text-error-600">
             -{formatPercentage(strategy.maxDrawdown)}
           </p>
         </div>
         <div className="text-center">
-          <p className="text-xs text-gray-600">Volatilità</p>
+          <p className="text-xs text-gray-600">{t('volatility')}</p>
           <p className="font-semibold text-warning-600">
             {formatPercentage(strategy.volatility)}
           </p>
@@ -152,7 +158,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       {isActive && (
         <div className="mt-4 pt-4 border-t border-primary-200">
           <p className="text-sm text-primary-700 font-medium">
-            ✓ Strategia Selezionata
+            {t('selectedStrategy')}
           </p>
         </div>
       )}

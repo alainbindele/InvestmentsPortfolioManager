@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { Bot, Loader2, Key, TrendingUp, AlertCircle, Lightbulb } from 'lucide-react';
 import { Asset, Strategy, PortfolioAnalysis } from '../types/portfolio';
+import { Language } from '../types/language';
 import { ChatGPTService } from '../services/chatgpt';
+import { getTranslation } from '../utils/translations';
 
 interface ChatGPTIntegrationProps {
   assets: Asset[];
+  language: Language;
   onStrategyGenerated: (strategy: Strategy) => void;
 }
 
 export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({ 
   assets, 
+  language,
   onStrategyGenerated 
 }) => {
+  const t = (key: string) => getTranslation(language, key);
+  
   const [apiKey, setApiKey] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGeneratingStrategy, setIsGeneratingStrategy] = useState(false);
@@ -23,7 +29,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   const handleAnalyzePortfolio = async () => {
     if (assets.length === 0) {
-      alert('Aggiungi almeno un asset per analizzare il portafoglio');
+      alert(t('noAssetsMessage'));
       return;
     }
 
@@ -44,7 +50,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   const handleGenerateStrategy = async () => {
     if (assets.length === 0) {
-      alert('Aggiungi almeno un asset per generare una strategia');
+      alert(t('noAssetsMessage'));
       return;
     }
 
@@ -72,11 +78,11 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
   };
 
   const availableGoals = [
-    { id: 'crescita_lungo_termine', label: 'Crescita a Lungo Termine' },
-    { id: 'reddito_passivo', label: 'Reddito Passivo' },
-    { id: 'preservazione_capitale', label: 'Preservazione del Capitale' },
-    { id: 'diversificazione', label: 'Diversificazione' },
-    { id: 'protezione_inflazione', label: 'Protezione dall\'Inflazione' }
+    { id: 'crescita_lungo_termine', label: t('longTermGrowth') },
+    { id: 'reddito_passivo', label: t('passiveIncome') },
+    { id: 'preservazione_capitale', label: t('capitalPreservation') },
+    { id: 'diversificazione', label: t('diversificationGoal') },
+    { id: 'protezione_inflazione', label: t('inflationProtection') }
   ];
 
   return (
@@ -93,17 +99,17 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              API Key OpenAI (Opzionale)
+              {t('apiKey')}
             </label>
             <input
               type="password"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="input-field"
-              placeholder="sk-..."
+              placeholder={t('apiKeyPlaceholder')}
             />
             <p className="text-xs text-gray-500 mt-1">
-              Inserisci la tua API key per analisi AI reali. Senza API key verranno utilizzate analisi simulate.
+              {t('apiKeyDescription')}
             </p>
           </div>
         </div>
@@ -126,12 +132,12 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
           {isAnalyzing ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Analizzando...
+              {t('analyzing')}
             </>
           ) : (
             <>
               <Bot className="w-4 h-4" />
-              Analizza Portafoglio
+              {t('analyzePortfolio')}
             </>
           )}
         </button>
@@ -141,25 +147,25 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             {/* Current Metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="metric-card">
-                <p className="text-sm text-gray-600">Valore Totale</p>
+                <p className="text-sm text-gray-600">{t('totalValue')}</p>
                 <p className="text-lg font-bold text-gray-900">
                   €{analysis.currentMetrics.totalValue.toLocaleString('it-IT')}
                 </p>
               </div>
               <div className="metric-card">
-                <p className="text-sm text-gray-600">Rendimento Atteso</p>
+                <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
                 <p className="text-lg font-bold text-success-600">
                   {analysis.currentMetrics.expectedReturn.toFixed(1)}%
                 </p>
               </div>
               <div className="metric-card">
-                <p className="text-sm text-gray-600">Rischio</p>
+                <p className="text-sm text-gray-600">{t('risk')}</p>
                 <p className="text-lg font-bold text-warning-600">
                   {analysis.currentMetrics.riskScore.toFixed(1)}/5
                 </p>
               </div>
               <div className="metric-card">
-                <p className="text-sm text-gray-600">Diversificazione</p>
+                <p className="text-sm text-gray-600">{t('diversification')}</p>
                 <p className="text-lg font-bold text-primary-600">
                   {analysis.currentMetrics.diversificationScore}/100
                 </p>
@@ -170,7 +176,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb className="w-5 h-5 text-blue-600" />
-                <h4 className="font-semibold text-blue-900">Raccomandazioni AI</h4>
+                <h4 className="font-semibold text-blue-900">{t('aiRecommendations')}</h4>
               </div>
               <ul className="space-y-2">
                 {analysis.recommendations.map((rec, index) => (
@@ -186,7 +192,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             <div className="space-y-3">
               <h4 className="font-semibold text-gray-900 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-gray-600" />
-                Insights di Mercato
+                {t('marketInsights')}
               </h4>
               {analysis.marketInsights.map((insight, index) => (
                 <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -221,13 +227,13 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
           {/* Risk Profile Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Profilo di Rischio
+              {t('riskProfile')}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { id: 'conservative', label: 'Conservativo', desc: 'Basso rischio' },
-                { id: 'balanced', label: 'Bilanciato', desc: 'Rischio medio' },
-                { id: 'aggressive', label: 'Aggressivo', desc: 'Alto rischio' }
+                { id: 'conservative', label: t('conservative'), desc: t('lowRisk') },
+                { id: 'balanced', label: t('balanced'), desc: t('mediumRisk') },
+                { id: 'aggressive', label: t('aggressive'), desc: t('highRisk') }
               ].map((profile) => (
                 <button
                   key={profile.id}
@@ -248,7 +254,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
           {/* Goals Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Obiettivi di Investimento
+              {t('investmentGoals')}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {availableGoals.map((goal) => (
@@ -275,12 +281,12 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             {isGeneratingStrategy ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Generando Strategia AI...
+                {t('generatingStrategy')}
               </>
             ) : (
               <>
                 <Bot className="w-4 h-4" />
-                Genera Strategia AI
+                {t('generateStrategy')}
               </>
             )}
           </button>

@@ -75,20 +75,20 @@ export interface PortfolioAnalysis {
 }
 
 export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
-  stocks: 'Azioni',
-  bonds: 'Obbligazioni',
+  stocks: 'Stocks',
+  bonds: 'Bonds',
   etf: 'ETF',
-  real_estate: 'Immobiliare',
-  commodities: 'Materie Prime',
-  crypto: 'Criptovalute',
-  cash: 'Liquidità',
-  other: 'Altro'
+  real_estate: 'Real Estate',
+  commodities: 'Commodities',
+  crypto: 'Cryptocurrency',
+  cash: 'Cash',
+  other: 'Other'
 };
 
 export const RISK_LEVEL_LABELS: Record<RiskLevel, string> = {
-  low: 'Basso',
-  medium: 'Medio',
-  high: 'Alto'
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High'
 };
 
 export const ASSET_COLORS: Record<AssetType, string> = {

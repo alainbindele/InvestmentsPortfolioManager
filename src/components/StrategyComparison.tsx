@@ -1,20 +1,25 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Strategy } from '../types/portfolio';
+import { Language } from '../types/language';
 import { formatPercentage } from '../utils/calculations';
+import { getTranslation } from '../utils/translations';
 import { Trophy, TrendingUp, Shield, Target } from 'lucide-react';
 
 interface StrategyComparisonProps {
   strategies: Strategy[];
+  language: Language;
 }
 
-export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategies }) => {
+export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategies, language }) => {
+  const t = (key: string) => getTranslation(language, key);
+  
   if (strategies.length === 0) {
     return (
       <div className="card">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Confronto Strategie</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('strategyComparison')}</h3>
         <div className="text-center py-8 text-gray-500">
-          <p>Nessuna strategia da confrontare</p>
+          <p>{t('noAssetsMessage')}</p>
         </div>
       </div>
     );
@@ -71,7 +76,7 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
               <TrendingUp className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm text-success-700 font-medium">Miglior Rendimento</p>
+              <p className="text-sm text-success-700 font-medium">{t('bestReturn')}</p>
               <p className="text-lg font-bold text-success-800">{bestReturn.name}</p>
             </div>
           </div>
@@ -86,7 +91,7 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
               <Shield className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm text-primary-700 font-medium">Minor Rischio</p>
+              <p className="text-sm text-primary-700 font-medium">{t('lowestRisk')}</p>
               <p className="text-lg font-bold text-primary-800">{bestRisk.name}</p>
             </div>
           </div>
@@ -101,7 +106,7 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
               <Target className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm text-warning-700 font-medium">Miglior Sharpe</p>
+              <p className="text-sm text-warning-700 font-medium">{t('bestSharpe')}</p>
               <p className="text-lg font-bold text-warning-800">{bestSharpe.name}</p>
             </div>
           </div>
@@ -114,7 +119,7 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
       {/* Comparison Chart */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Confronto Metriche Strategie
+          {t('comparisonMetrics')}
         </h3>
         
         <div className="h-80">
@@ -136,13 +141,13 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
               <Bar 
                 dataKey="rendimento" 
                 fill="#10b981" 
-                name="Rendimento (%)"
+               name={`${t('return')} (%)`}
                 radius={[2, 2, 0, 0]}
               />
               <Bar 
                 dataKey="sharpe" 
                 fill="#3b82f6" 
-                name="Sharpe Ratio"
+               name={`${t('sharpe')} Ratio`}
                 radius={[2, 2, 0, 0]}
               />
             </BarChart>
@@ -153,19 +158,19 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
       {/* Detailed Comparison Table */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Tabella Comparativa Dettagliata
+          {t('detailedComparison')}
         </h3>
         
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-medium text-gray-900">Strategia</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-900">Rendimento</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-900">Rischio</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-900">Sharpe</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-900">Volatilità</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-900">Max Drawdown</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-900">{t('strategy')}</th>
+                <th className="text-right py-3 px-4 font-medium text-gray-900">{t('return')}</th>
+                <th className="text-right py-3 px-4 font-medium text-gray-900">{t('risk')}</th>
+                <th className="text-right py-3 px-4 font-medium text-gray-900">{t('sharpe')}</th>
+                <th className="text-right py-3 px-4 font-medium text-gray-900">{t('volatility')}</th>
+                <th className="text-right py-3 px-4 font-medium text-gray-900">{t('maxDrawdown')}</th>
               </tr>
             </thead>
             <tbody>

@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { PlusCircle, BarChart3, TrendingUp, Bot, Target } from 'lucide-react';
 import { Asset, Strategy } from './types/portfolio';
+import { Language } from './types/language';
 import { AssetForm } from './components/AssetForm';
 import { PortfolioChart } from './components/PortfolioChart';
 import { ProjectionChart } from './components/ProjectionChart';
 import { StrategyCard } from './components/StrategyCard';
 import { StrategyComparison } from './components/StrategyComparison';
 import { ChatGPTIntegration } from './components/ChatGPTIntegration';
+import { LanguageSelector } from './components/LanguageSelector';
 import { mockAssets, mockStrategies } from './utils/mockData';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage } from './utils/calculations';
+import { getTranslation } from './utils/translations';
 
 function App() {
   const [assets, setAssets] = useState<Asset[]>(mockAssets);
   const [strategies, setStrategies] = useState<Strategy[]>(mockStrategies);
   const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'comparison' | 'ai'>('portfolio');
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);
+  const [language, setLanguage] = useState<Language>('it');
 
   const portfolioMetrics = calculatePortfolioMetrics(assets);
 
@@ -35,11 +39,13 @@ function App() {
     setActiveTab('strategies');
   };
 
+  const t = (key: string) => getTranslation(language, key);
+
   const tabs = [
-    { id: 'portfolio', label: 'Portfolio', icon: BarChart3 },
-    { id: 'strategies', label: 'Strategie', icon: Target },
-    { id: 'comparison', label: 'Confronto', icon: TrendingUp },
-    { id: 'ai', label: 'AI Assistant', icon: Bot }
+    { id: 'portfolio', label: t('portfolio'), icon: BarChart3 },
+    { id: 'strategies', label: t('strategies'), icon: Target },
+    { id: 'comparison', label: t('comparison'), icon: TrendingUp },
+    { id: 'ai', label: t('aiAssistant'), icon: Bot }
   ];
 
   return (
@@ -53,20 +59,25 @@ function App() {
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Portfolio Rebalancer</h1>
-                <p className="text-sm text-gray-600">Ottimizza i tuoi investimenti con l'AI</p>
+                <h1 className="text-xl font-bold text-gray-900">{t('appTitle')}</h1>
+                <p className="text-sm text-gray-600">{t('appSubtitle')}</p>
               </div>
             </div>
             
             <div className="flex items-center gap-4">
+              <LanguageSelector 
+                currentLanguage={language}
+                onLanguageChange={setLanguage}
+              />
+              
               <div className="text-right">
-                <p className="text-sm text-gray-600">Valore Totale</p>
+                <p className="text-sm text-gray-600">{t('totalValue')}</p>
                 <p className="text-lg font-bold text-gray-900">
                   {formatCurrency(portfolioMetrics.totalValue)}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-600">Rendimento Atteso</p>
+                <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
                 <p className="text-lg font-bold text-success-600">
                   {formatPercentage(portfolioMetrics.expectedReturn)}
                 </p>
@@ -109,34 +120,35 @@ function App() {
               assets={assets}
               onAddAsset={handleAddAsset}
               onRemoveAsset={handleRemoveAsset}
+              language={language}
             />
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <PortfolioChart assets={assets} />
+              <PortfolioChart assets={assets} language={language} />
               <div className="space-y-6">
                 <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Metriche Portfolio</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioMetrics')}</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="metric-card">
-                      <p className="text-sm text-gray-600">Rendimento Atteso</p>
+                      <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
                       <p className="text-xl font-bold text-success-600">
                         {formatPercentage(portfolioMetrics.expectedReturn)}
                       </p>
                     </div>
                     <div className="metric-card">
-                      <p className="text-sm text-gray-600">Livello Rischio</p>
+                      <p className="text-sm text-gray-600">{t('riskScore')}</p>
                       <p className="text-xl font-bold text-warning-600">
                         {portfolioMetrics.riskScore.toFixed(1)}/5
                       </p>
                     </div>
                     <div className="metric-card">
-                      <p className="text-sm text-gray-600">Diversificazione</p>
+                      <p className="text-sm text-gray-600">{t('diversification')}</p>
                       <p className="text-xl font-bold text-primary-600">
                         {portfolioMetrics.diversificationScore}/100
                       </p>
                     </div>
                     <div className="metric-card">
-                      <p className="text-sm text-gray-600">Asset Totali</p>
+                      <p className="text-sm text-gray-600">{t('totalAssets')}</p>
                       <p className="text-xl font-bold text-gray-900">
                         {assets.length}
                       </p>
@@ -146,7 +158,7 @@ function App() {
               </div>
             </div>
             
-            <ProjectionChart assets={assets} />
+            <ProjectionChart assets={assets} language={language} />
           </div>
         )}
 
@@ -154,8 +166,8 @@ function App() {
           <div className="space-y-8">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Strategie di Investimento</h2>
-                <p className="text-gray-600">Confronta diverse strategie per ottimizzare il tuo portafoglio</p>
+                <h2 className="text-2xl font-bold text-gray-900">{t('investmentStrategies')}</h2>
+                <p className="text-gray-600">{t('strategiesDescription')}</p>
               </div>
             </div>
 
@@ -165,6 +177,7 @@ function App() {
                   key={strategy.id}
                   strategy={strategy}
                   assets={assets}
+                  language={language}
                   isActive={selectedStrategy === strategy.id}
                   onClick={() => setSelectedStrategy(
                     selectedStrategy === strategy.id ? null : strategy.id
@@ -177,6 +190,7 @@ function App() {
               <div className="space-y-6">
                 <ProjectionChart 
                   assets={assets} 
+                  language={language}
                   strategies={strategies.filter(s => s.id === selectedStrategy)} 
                 />
               </div>
@@ -187,25 +201,26 @@ function App() {
         {activeTab === 'comparison' && (
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Confronto Strategie</h2>
-              <p className="text-gray-600">Analizza e confronta le performance delle diverse strategie</p>
+              <h2 className="text-2xl font-bold text-gray-900">{t('strategyComparison')}</h2>
+              <p className="text-gray-600">{t('comparisonDescription')}</p>
             </div>
             
-            <StrategyComparison strategies={strategies} />
+            <StrategyComparison strategies={strategies} language={language} />
             
-            <ProjectionChart assets={assets} strategies={strategies} />
+            <ProjectionChart assets={assets} language={language} strategies={strategies} />
           </div>
         )}
 
         {activeTab === 'ai' && (
           <div className="space-y-8">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">AI Assistant</h2>
-              <p className="text-gray-600">Utilizza l'intelligenza artificiale per ottimizzare il tuo portafoglio</p>
+              <h2 className="text-2xl font-bold text-gray-900">{t('aiAssistantTitle')}</h2>
+              <p className="text-gray-600">{t('aiDescription')}</p>
             </div>
             
             <ChatGPTIntegration 
               assets={assets}
+              language={language}
               onStrategyGenerated={handleStrategyGenerated}
             />
           </div>

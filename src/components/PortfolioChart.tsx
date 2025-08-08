@@ -1,14 +1,20 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Asset, ASSET_TYPE_LABELS, ASSET_COLORS } from '../types/portfolio';
+import { Language } from '../types/language';
 import { formatCurrency } from '../utils/calculations';
+import { getTranslation } from '../utils/translations';
 
 interface PortfolioChartProps {
   assets: Asset[];
+  language: Language;
   title?: string;
 }
 
-export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, title = "Allocazione Attuale" }) => {
+export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, language, title }) => {
+  const t = (key: string) => getTranslation(language, key);
+  const chartTitle = title || t('currentAllocation');
+  
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
   const chartData = assets.map(asset => ({
@@ -56,9 +62,9 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, title = 
   if (assets.length === 0) {
     return (
       <div className="card">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">{chartTitle}</h3>
         <div className="flex items-center justify-center h-64 text-gray-500">
-          <p>Aggiungi asset per visualizzare il grafico</p>
+          <p>{t('noAssetsMessage')}</p>
         </div>
       </div>
     );
@@ -66,7 +72,7 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, title = 
 
   return (
     <div className="card">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">{chartTitle}</h3>
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -92,7 +98,7 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({ assets, title = 
         <p className="text-2xl font-bold text-gray-900">
           {formatCurrency(totalValue)}
         </p>
-        <p className="text-sm text-gray-600">Valore Totale Portafoglio</p>
+        <p className="text-sm text-gray-600">{t('totalPortfolioValue')}</p>
       </div>
     </div>
   );
