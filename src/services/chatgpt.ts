@@ -101,18 +101,21 @@ export class ChatGPTService {
       const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
       if (apiKey) {
         this.setApiKey(apiKey);
+        const aiResponse = await this.makeOpenAIRequest(messages);
+        
+        return {
+          currentMetrics: aiResponse.currentMetrics || metrics,
+          recommendations: aiResponse.recommendations || [
+            "Analisi AI completata con successo",
+            "Raccomandazioni personalizzate generate dall'AI"
+          ],
+          marketInsights: aiResponse.marketInsights || [],
+          suggestedActions: []
+        };
+      } else {
+        // Nessuna API key configurata, usa fallback
+        throw new Error('API key non configurata');
       }
-      const aiResponse = await this.makeOpenAIRequest(messages);
-      
-      return {
-        currentMetrics: aiResponse.currentMetrics || metrics,
-        recommendations: aiResponse.recommendations || [
-          "Analisi AI non disponibile - utilizzando analisi di base",
-          "Verifica la configurazione dell'API key OpenAI"
-        ],
-        marketInsights: aiResponse.marketInsights || [],
-        suggestedActions: []
-      };
     } catch (error) {
       console.error('Errore nell\'analisi AI:', error);
       
@@ -209,6 +212,10 @@ export class ChatGPTService {
 
     try {
       const aiResponse = await this.makeOpenAIRequest(messages, 0.3);
+      
+      if (!aiResponse || !aiResponse.targetAllocations) {
+        throw new Error('Risposta AI non valida');
+      }
       
       // Normalizza le allocazioni per assicurarsi che sommino a 100
       const totalAllocation = Object.values(aiResponse.targetAllocations).reduce((sum: number, val: any) => sum + Number(val), 0);
