@@ -24,8 +24,7 @@ export class ChatGPTService {
         model: 'gpt-4',
         messages,
         temperature,
-        max_tokens: 2000,
-        response_format: { type: "json_object" }
+        max_tokens: 2000
       })
     });
 
@@ -35,7 +34,34 @@ export class ChatGPTService {
     }
 
     const data = await response.json();
-    return JSON.parse(data.choices[0].message.content);
+    
+    try {
+      return JSON.parse(data.choices[0].message.content);
+    } catch (parseError) {
+      // Se il parsing JSON fallisce, restituisci la risposta raw
+      console.warn('Risposta non in formato JSON, usando parsing manuale');
+      return this.parseResponseManually(data.choices[0].message.content);
+    }
+  }
+
+  private parseResponseManually(content: string): any {
+    // Cerca di estrarre JSON dalla risposta anche se non è perfettamente formattata
+    try {
+      // Cerca il primo { e l'ultimo }
+      const start = content.indexOf('{');
+      const end = content.lastIndexOf('}');
+      
+      if (start !== -1 && end !== -1 && end > start) {
+        const jsonStr = content.substring(start, end + 1);
+        return JSON.parse(jsonStr);
+      }
+      
+      // Se non trova JSON, restituisce un oggetto di fallback
+      throw new Error('Nessun JSON trovato nella risposta');
+    } catch (error) {
+      console.warn('Parsing manuale fallito:', error);
+      return null;
+    }
   }
 
   async analyzePortfolio(assets: Asset[]): Promise<PortfolioAnalysis> {
@@ -84,6 +110,7 @@ export class ChatGPTService {
           ]
         }
         
+        IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
         Fornisci raccomandazioni specifiche, pratiche e actionable. Gli insights di mercato devono essere attuali e basati su tendenze reali del 2024.`
       },
       {
@@ -102,6 +129,11 @@ export class ChatGPTService {
       if (apiKey) {
         this.setApiKey(apiKey);
         const aiResponse = await this.makeOpenAIRequest(messages);
+        
+        // Se la risposta è null (parsing fallito), usa il fallback
+        if (!aiResponse) {
+          throw new Error('Risposta AI non valida');
+        }
         
         return {
           currentMetrics: aiResponse.currentMetrics || metrics,
@@ -193,6 +225,7 @@ export class ChatGPTService {
         }
         
         Le percentuali in targetAllocations devono sommare a 100. Usa gli ID degli asset forniti.
+        IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
         Basa le tue raccomandazioni su principi di Modern Portfolio Theory e diversificazione ottimale.`
       },
       {
@@ -213,7 +246,7 @@ export class ChatGPTService {
     try {
       const aiResponse = await this.makeOpenAIRequest(messages, 0.3);
       
-      if (!aiResponse || !aiResponse.targetAllocations) {
+      if (!aiResponse || !aiResponse.targetAllocations || typeof aiResponse.targetAllocations !== 'object') {
         throw new Error('Risposta AI non valida');
       }
       
