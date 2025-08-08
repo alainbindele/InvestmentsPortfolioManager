@@ -789,7 +789,7 @@ export const translations = {
     passiveIncome: '被动收入',
     capitalPreservation: '资本保值',
     diversificationGoal: '多样化',
-    inflationProtection: '通胀保护'
+    inflationProtection: '通胀保护',
     
     // PAC
     pac: '定投计划',
