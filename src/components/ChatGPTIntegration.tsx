@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Loader2, Key, TrendingUp, AlertCircle, Lightbulb } from 'lucide-react';
+import { Bot, Loader2, TrendingUp, AlertCircle, Lightbulb } from 'lucide-react';
 import { Asset, Strategy, PortfolioAnalysis } from '../types/portfolio';
 import { Language } from '../types/language';
 import { ChatGPTService } from '../services/chatgpt';
@@ -18,7 +18,6 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 }) => {
   const t = (key: string) => getTranslation(language, key);
   
-  const [apiKey, setApiKey] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGeneratingStrategy, setIsGeneratingStrategy] = useState(false);
   const [analysis, setAnalysis] = useState<PortfolioAnalysis | null>(null);
@@ -35,6 +34,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
     setIsAnalyzing(true);
     try {
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
@@ -56,6 +56,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
     setIsGeneratingStrategy(true);
     try {
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
@@ -87,34 +88,6 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* API Key Configuration */}
-      <div className="card">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-primary-100 rounded-lg">
-            <Key className="w-5 h-5 text-primary-600" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900">Configurazione ChatGPT</h3>
-        </div>
-        
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('apiKey')}
-            </label>
-            <input
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="input-field"
-              placeholder={t('apiKeyPlaceholder')}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              {t('apiKeyDescription')}
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Portfolio Analysis */}
       <div className="card">
         <div className="flex items-center gap-3 mb-4">
