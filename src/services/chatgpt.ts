@@ -98,7 +98,7 @@ export class ChatGPTService {
     ];
 
     try {
-      const aiResponse = await this.makeOpenAIRequest(messages);
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
       
       return {
         currentMetrics: aiResponse.currentMetrics || metrics,
