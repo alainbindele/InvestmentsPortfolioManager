@@ -134,7 +134,11 @@ export const translations = {
     noPacsMessage: 'Nessun PAC creato. Inizia a pianificare i tuoi investimenti ricorrenti!',
     pacFrequencyDesc: 'Frequenza dei versamenti automatici',
     pacDurationDesc: 'Durata del piano in anni',
-    pacAllocationDesc: 'Come distribuire i versamenti tra gli asset'
+    pacAllocationDesc: 'Come distribuire i versamenti tra gli asset',
+    
+    // SEO
+    seoDescription: 'Strumento avanzato per l\'ottimizzazione e il ribilanciamento di portafogli di investimento. Analisi AI, strategie personalizzate, piani di accumulo (PAC) e proiezioni di crescita.',
+    seoKeywords: 'portfolio rebalancer, investimenti, AI, ribilanciamento, PAC, piano accumulo capitale, ETF, azioni, obbligazioni, diversificazione, analisi portafoglio'
   },
   
   en: {
@@ -270,7 +274,11 @@ export const translations = {
     noPacsMessage: 'No DCA plans created. Start planning your recurring investments!',
     pacFrequencyDesc: 'Frequency of automatic contributions',
     pacDurationDesc: 'Plan duration in years',
-    pacAllocationDesc: 'How to distribute contributions among assets'
+    pacAllocationDesc: 'How to distribute contributions among assets',
+    
+    // SEO
+    seoDescription: 'Advanced tool for investment portfolio optimization and rebalancing. AI analysis, personalized strategies, dollar cost averaging (DCA) plans and growth projections.',
+    seoKeywords: 'portfolio rebalancer, investments, AI, rebalancing, DCA, dollar cost averaging, ETF, stocks, bonds, diversification, portfolio analysis'
   },
   
   es: {
@@ -406,7 +414,11 @@ export const translations = {
     noPacsMessage: '¡No hay PACs creados. Comienza a planificar tus inversiones recurrentes!',
     pacFrequencyDesc: 'Frecuencia de las contribuciones automáticas',
     pacDurationDesc: 'Duración del plan en años',
-    pacAllocationDesc: 'Cómo distribuir las contribuciones entre los activos'
+    pacAllocationDesc: 'Cómo distribuir las contribuciones entre los activos',
+    
+    // SEO
+    seoDescription: 'Herramienta avanzada para la optimización y rebalanceo de carteras de inversión. Análisis IA, estrategias personalizadas, planes de acumulación (PAC) y proyecciones de crecimiento.',
+    seoKeywords: 'rebalanceador cartera, inversiones, IA, rebalanceo, PAC, plan acumulación capital, ETF, acciones, bonos, diversificación, análisis cartera'
   },
   
   fr: {
@@ -542,7 +554,11 @@ export const translations = {
     noPacsMessage: 'Aucun PAC créé. Commencez à planifier vos investissements récurrents !',
     pacFrequencyDesc: 'Fréquence des contributions automatiques',
     pacDurationDesc: 'Durée du plan en années',
-    pacAllocationDesc: 'Comment distribuer les contributions entre les actifs'
+    pacAllocationDesc: 'Comment distribuer les contributions entre les actifs',
+    
+    // SEO
+    seoDescription: 'Outil avancé pour l\'optimisation et le rééquilibrage de portefeuilles d\'investissement. Analyse IA, stratégies personnalisées, plans d\'accumulation (PAC) et projections de croissance.',
+    seoKeywords: 'rééquilibreur portefeuille, investissements, IA, rééquilibrage, PAC, plan accumulation capital, ETF, actions, obligations, diversification, analyse portefeuille'
   },
   
   de: {
@@ -678,7 +694,11 @@ export const translations = {
     noPacsMessage: 'Keine Sparpläne erstellt. Beginnen Sie mit der Planung Ihrer wiederkehrenden Investitionen!',
     pacFrequencyDesc: 'Häufigkeit der automatischen Beiträge',
     pacDurationDesc: 'Plandauer in Jahren',
-    pacAllocationDesc: 'Wie die Beiträge auf die Vermögenswerte verteilt werden'
+    pacAllocationDesc: 'Wie die Beiträge auf die Vermögenswerte verteilt werden',
+    
+    // SEO
+    seoDescription: 'Erweiterte Tool für die Optimierung und Neugewichtung von Anlageportfolios. KI-Analyse, personalisierte Strategien, Sparpläne und Wachstumsprognosen.',
+    seoKeywords: 'Portfolio Rebalancer, Investitionen, KI, Neugewichtung, Sparplan, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse'
   },
   
   zh: {
@@ -814,7 +834,11 @@ export const translations = {
     noPacsMessage: '未创建定投计划。开始规划您的定期投资！',
     pacFrequencyDesc: '自动投资频率',
     pacDurationDesc: '计划期限（年）',
-    pacAllocationDesc: '如何在资产间分配投资'
+    pacAllocationDesc: '如何在资产间分配投资',
+    
+    // SEO
+    seoDescription: '先进的投资组合优化和再平衡工具。AI分析、个性化策略、定投计划和增长预测。',
+    seoKeywords: '投资组合再平衡器, 投资, AI, 再平衡, 定投计划, ETF, 股票, 债券, 多样化, 投资组合分析'
   }
 };
 

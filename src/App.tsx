@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PlusCircle, BarChart3, TrendingUp, Bot, Target, Calendar } from 'lucide-react';
 import { Asset, Strategy, PACPlan } from './types/portfolio';
 import { Language } from './types/language';
+import { SEOHead } from './components/SEOHead';
 import { AssetForm } from './components/AssetForm';
 import { PortfolioChart } from './components/PortfolioChart';
 import { ProjectionChart } from './components/ProjectionChart';
@@ -65,6 +66,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead language={language} />
+      
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
