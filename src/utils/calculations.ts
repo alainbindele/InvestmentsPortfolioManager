@@ -1,4 +1,5 @@
 import { Asset, Portfolio, Strategy, RebalancingAction } from '../types/portfolio';
+import { PACPlan, PACProjection } from '../types/portfolio';
 
 export const calculatePortfolioMetrics = (assets: Asset[]): {
   totalValue: number;
@@ -158,4 +159,65 @@ export const formatCurrency = (amount: number): string => {
 
 export const formatPercentage = (value: number): string => {
   return `${value.toFixed(1)}%`;
+};
+
+export const calculatePACProjection = (
+  pacPlan: PACPlan,
+  assets: Asset[]
+): PACProjection[] => {
+  const projections: PACProjection[] = [];
+  const monthsPerContribution = pacPlan.frequency === 'monthly' ? 1 : 
+                                pacPlan.frequency === 'quarterly' ? 3 :
+                                pacPlan.frequency === 'biannual' ? 6 : 12;
+  
+  const totalMonths = pacPlan.duration * 12;
+  const contributionAmount = pacPlan.monthlyAmount * monthsPerContribution;
+  
+  // Calculate weighted expected return based on PAC allocation
+  const weightedReturn = Object.entries(pacPlan.targetAllocations).reduce((sum, [assetId, allocation]) => {
+    const asset = assets.find(a => a.id === assetId);
+    if (!asset) return sum;
+    return sum + (asset.expectedReturn * allocation / 100);
+  }, 0);
+  
+  const monthlyReturn = weightedReturn / 100 / 12;
+  
+  let totalInvested = 0;
+  let portfolioValue = 0;
+  
+  for (let month = 0; month <= totalMonths; month++) {
+    // Add contribution at the right frequency
+    if (month > 0 && month % monthsPerContribution === 0) {
+      totalInvested += contributionAmount;
+      portfolioValue += contributionAmount;
+    }
+    
+    // Apply compound growth
+    if (month > 0 && portfolioValue > 0) {
+      portfolioValue *= (1 + monthlyReturn);
+    }
+    
+    const totalGain = portfolioValue - totalInvested;
+    const gainPercentage = totalInvested > 0 ? (totalGain / totalInvested) * 100 : 0;
+    
+    projections.push({
+      month,
+      totalInvested: Math.round(totalInvested),
+      portfolioValue: Math.round(portfolioValue),
+      totalGain: Math.round(totalGain),
+      gainPercentage: Math.round(gainPercentage * 100) / 100
+    });
+  }
+  
+  return projections;
+};
+
+export const getContributionFrequencyMultiplier = (frequency: PACPlan['frequency']): number => {
+  switch (frequency) {
+    case 'monthly': return 12;
+    case 'quarterly': return 4;
+    case 'biannual': return 2;
+    case 'annual': return 1;
+    default: return 12;
+  }
 };

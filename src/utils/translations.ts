@@ -110,6 +110,31 @@ export const translations = {
     capitalPreservation: 'Preservazione del Capitale',
     diversificationGoal: 'Diversificazione',
     inflationProtection: 'Protezione dall\'Inflazione'
+    
+    // PAC
+    pac: 'PAC',
+    pacTitle: 'Piano di Accumulo del Capitale',
+    pacDescription: 'Simula l\'effetto compound dei versamenti ricorrenti nel tempo',
+    createPac: 'Crea PAC',
+    pacName: 'Nome PAC',
+    monthlyAmount: 'Importo Mensile (€)',
+    frequency: 'Frequenza',
+    duration: 'Durata (anni)',
+    monthly: 'Mensile',
+    quarterly: 'Trimestrale',
+    biannual: 'Semestrale',
+    annual: 'Annuale',
+    pacProjection: 'Proiezione PAC',
+    totalInvested: 'Totale Investito',
+    portfolioValue: 'Valore Portfolio',
+    totalGain: 'Guadagno Totale',
+    compoundEffect: 'Effetto Compound',
+    pacAllocation: 'Allocazione PAC',
+    activePacs: 'PAC Attivi',
+    noPacsMessage: 'Nessun PAC creato. Inizia a pianificare i tuoi investimenti ricorrenti!',
+    pacFrequencyDesc: 'Frequenza dei versamenti automatici',
+    pacDurationDesc: 'Durata del piano in anni',
+    pacAllocationDesc: 'Come distribuire i versamenti tra gli asset'
   },
   
   en: {
@@ -221,6 +246,31 @@ export const translations = {
     capitalPreservation: 'Capital Preservation',
     diversificationGoal: 'Diversification',
     inflationProtection: 'Inflation Protection'
+    
+    // PAC
+    pac: 'DCA',
+    pacTitle: 'Dollar Cost Averaging Plan',
+    pacDescription: 'Simulate the compound effect of recurring investments over time',
+    createPac: 'Create DCA',
+    pacName: 'DCA Name',
+    monthlyAmount: 'Monthly Amount ($)',
+    frequency: 'Frequency',
+    duration: 'Duration (years)',
+    monthly: 'Monthly',
+    quarterly: 'Quarterly',
+    biannual: 'Biannual',
+    annual: 'Annual',
+    pacProjection: 'DCA Projection',
+    totalInvested: 'Total Invested',
+    portfolioValue: 'Portfolio Value',
+    totalGain: 'Total Gain',
+    compoundEffect: 'Compound Effect',
+    pacAllocation: 'DCA Allocation',
+    activePacs: 'Active DCAs',
+    noPacsMessage: 'No DCA plans created. Start planning your recurring investments!',
+    pacFrequencyDesc: 'Frequency of automatic contributions',
+    pacDurationDesc: 'Plan duration in years',
+    pacAllocationDesc: 'How to distribute contributions among assets'
   },
   
   es: {
@@ -332,6 +382,31 @@ export const translations = {
     capitalPreservation: 'Preservación del Capital',
     diversificationGoal: 'Diversificación',
     inflationProtection: 'Protección contra Inflación'
+    
+    // PAC
+    pac: 'PAC',
+    pacTitle: 'Plan de Acumulación de Capital',
+    pacDescription: 'Simula el efecto compuesto de las inversiones recurrentes en el tiempo',
+    createPac: 'Crear PAC',
+    pacName: 'Nombre PAC',
+    monthlyAmount: 'Cantidad Mensual (€)',
+    frequency: 'Frecuencia',
+    duration: 'Duración (años)',
+    monthly: 'Mensual',
+    quarterly: 'Trimestral',
+    biannual: 'Semestral',
+    annual: 'Anual',
+    pacProjection: 'Proyección PAC',
+    totalInvested: 'Total Invertido',
+    portfolioValue: 'Valor del Portfolio',
+    totalGain: 'Ganancia Total',
+    compoundEffect: 'Efecto Compuesto',
+    pacAllocation: 'Asignación PAC',
+    activePacs: 'PACs Activos',
+    noPacsMessage: '¡No hay PACs creados. Comienza a planificar tus inversiones recurrentes!',
+    pacFrequencyDesc: 'Frecuencia de las contribuciones automáticas',
+    pacDurationDesc: 'Duración del plan en años',
+    pacAllocationDesc: 'Cómo distribuir las contribuciones entre los activos'
   },
   
   fr: {
@@ -443,6 +518,31 @@ export const translations = {
     capitalPreservation: 'Préservation du Capital',
     diversificationGoal: 'Diversification',
     inflationProtection: 'Protection contre l\'Inflation'
+    
+    // PAC
+    pac: 'PAC',
+    pacTitle: 'Plan d\'Accumulation de Capital',
+    pacDescription: 'Simulez l\'effet composé des investissements récurrents dans le temps',
+    createPac: 'Créer PAC',
+    pacName: 'Nom PAC',
+    monthlyAmount: 'Montant Mensuel (€)',
+    frequency: 'Fréquence',
+    duration: 'Durée (années)',
+    monthly: 'Mensuel',
+    quarterly: 'Trimestriel',
+    biannual: 'Semestriel',
+    annual: 'Annuel',
+    pacProjection: 'Projection PAC',
+    totalInvested: 'Total Investi',
+    portfolioValue: 'Valeur du Portefeuille',
+    totalGain: 'Gain Total',
+    compoundEffect: 'Effet Composé',
+    pacAllocation: 'Allocation PAC',
+    activePacs: 'PACs Actifs',
+    noPacsMessage: 'Aucun PAC créé. Commencez à planifier vos investissements récurrents !',
+    pacFrequencyDesc: 'Fréquence des contributions automatiques',
+    pacDurationDesc: 'Durée du plan en années',
+    pacAllocationDesc: 'Comment distribuer les contributions entre les actifs'
   },
   
   de: {
@@ -554,6 +654,31 @@ export const translations = {
     capitalPreservation: 'Kapitalerhaltung',
     diversificationGoal: 'Diversifikation',
     inflationProtection: 'Inflationsschutz'
+    
+    // PAC
+    pac: 'Sparplan',
+    pacTitle: 'Kapitalaufbau-Plan',
+    pacDescription: 'Simulieren Sie den Zinseszinseffekt wiederkehrender Investitionen über die Zeit',
+    createPac: 'Sparplan erstellen',
+    pacName: 'Sparplan Name',
+    monthlyAmount: 'Monatlicher Betrag (€)',
+    frequency: 'Häufigkeit',
+    duration: 'Laufzeit (Jahre)',
+    monthly: 'Monatlich',
+    quarterly: 'Vierteljährlich',
+    biannual: 'Halbjährlich',
+    annual: 'Jährlich',
+    pacProjection: 'Sparplan Projektion',
+    totalInvested: 'Gesamt Investiert',
+    portfolioValue: 'Portfolio-Wert',
+    totalGain: 'Gesamtgewinn',
+    compoundEffect: 'Zinseszinseffekt',
+    pacAllocation: 'Sparplan Allokation',
+    activePacs: 'Aktive Sparpläne',
+    noPacsMessage: 'Keine Sparpläne erstellt. Beginnen Sie mit der Planung Ihrer wiederkehrenden Investitionen!',
+    pacFrequencyDesc: 'Häufigkeit der automatischen Beiträge',
+    pacDurationDesc: 'Plandauer in Jahren',
+    pacAllocationDesc: 'Wie die Beiträge auf die Vermögenswerte verteilt werden'
   },
   
   zh: {
@@ -665,6 +790,31 @@ export const translations = {
     capitalPreservation: '资本保值',
     diversificationGoal: '多样化',
     inflationProtection: '通胀保护'
+    
+    // PAC
+    pac: '定投计划',
+    pacTitle: '资本积累计划',
+    pacDescription: '模拟定期投资的复利效应',
+    createPac: '创建定投',
+    pacName: '定投名称',
+    monthlyAmount: '月投金额 (¥)',
+    frequency: '频率',
+    duration: '期限（年）',
+    monthly: '月度',
+    quarterly: '季度',
+    biannual: '半年',
+    annual: '年度',
+    pacProjection: '定投预测',
+    totalInvested: '总投入',
+    portfolioValue: '组合价值',
+    totalGain: '总收益',
+    compoundEffect: '复利效应',
+    pacAllocation: '定投配置',
+    activePacs: '活跃定投',
+    noPacsMessage: '未创建定投计划。开始规划您的定期投资！',
+    pacFrequencyDesc: '自动投资频率',
+    pacDurationDesc: '计划期限（年）',
+    pacAllocationDesc: '如何在资产间分配投资'
   }
 };
 

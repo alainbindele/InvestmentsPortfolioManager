@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PlusCircle, BarChart3, TrendingUp, Bot, Target } from 'lucide-react';
-import { Asset, Strategy } from './types/portfolio';
+import { PlusCircle, BarChart3, TrendingUp, Bot, Target, Calendar } from 'lucide-react';
+import { Asset, Strategy, PACPlan } from './types/portfolio';
 import { Language } from './types/language';
 import { AssetForm } from './components/AssetForm';
 import { PortfolioChart } from './components/PortfolioChart';
@@ -8,6 +8,7 @@ import { ProjectionChart } from './components/ProjectionChart';
 import { StrategyCard } from './components/StrategyCard';
 import { StrategyComparison } from './components/StrategyComparison';
 import { ChatGPTIntegration } from './components/ChatGPTIntegration';
+import { PACManager } from './components/PACManager';
 import { LanguageSelector } from './components/LanguageSelector';
 import { mockAssets, mockStrategies } from './utils/mockData';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage } from './utils/calculations';
@@ -16,7 +17,8 @@ import { getTranslation } from './utils/translations';
 function App() {
   const [assets, setAssets] = useState<Asset[]>(mockAssets);
   const [strategies, setStrategies] = useState<Strategy[]>(mockStrategies);
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'comparison' | 'ai'>('portfolio');
+  const [pacs, setPacs] = useState<PACPlan[]>([]);
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'comparison' | 'pac' | 'ai'>('portfolio');
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);
   const [language, setLanguage] = useState<Language>('it');
 
@@ -39,12 +41,25 @@ function App() {
     setActiveTab('strategies');
   };
 
+  const handleAddPAC = (newPAC: Omit<PACPlan, 'id'>) => {
+    const pac: PACPlan = {
+      ...newPAC,
+      id: Date.now().toString()
+    };
+    setPacs(prev => [...prev, pac]);
+  };
+
+  const handleRemovePAC = (pacId: string) => {
+    setPacs(prev => prev.filter(pac => pac.id !== pacId));
+  };
+
   const t = (key: string) => getTranslation(language, key);
 
   const tabs = [
     { id: 'portfolio', label: t('portfolio'), icon: BarChart3 },
     { id: 'strategies', label: t('strategies'), icon: Target },
     { id: 'comparison', label: t('comparison'), icon: TrendingUp },
+    { id: 'pac', label: t('pac'), icon: Calendar },
     { id: 'ai', label: t('aiAssistant'), icon: Bot }
   ];
 
@@ -209,6 +224,16 @@ function App() {
             
             <ProjectionChart assets={assets} language={language} strategies={strategies} />
           </div>
+        )}
+
+        {activeTab === 'pac' && (
+          <PACManager
+            assets={assets}
+            language={language}
+            pacs={pacs}
+            onAddPAC={handleAddPAC}
+            onRemovePAC={handleRemovePAC}
+          />
         )}
 
         {activeTab === 'ai' && (

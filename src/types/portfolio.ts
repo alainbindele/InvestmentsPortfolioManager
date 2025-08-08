@@ -74,6 +74,26 @@ export interface PortfolioAnalysis {
   suggestedActions: RebalancingAction[];
 }
 
+export interface PACPlan {
+  id: string;
+  name: string;
+  monthlyAmount: number;
+  frequency: 'monthly' | 'quarterly' | 'biannual' | 'annual';
+  duration: number; // in years
+  targetAllocations: { [assetId: string]: number };
+  expectedReturn: number;
+  startDate: Date;
+  isActive: boolean;
+}
+
+export interface PACProjection {
+  month: number;
+  totalInvested: number;
+  portfolioValue: number;
+  totalGain: number;
+  gainPercentage: number;
+}
+
 export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   stocks: 'Stocks',
   bonds: 'Bonds',
