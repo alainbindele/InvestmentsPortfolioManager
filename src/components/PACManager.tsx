@@ -12,6 +12,7 @@ interface PACManagerProps {
   pacs: PACPlan[];
   onAddPAC: (pac: Omit<PACPlan, 'id'>) => void;
   onRemovePAC: (pacId: string) => void;
+  onUpdatePAC: (pacId: string, updates: Partial<PACPlan>) => void;
 }
 
 export const PACManager: React.FC<PACManagerProps> = ({
@@ -19,17 +20,21 @@ export const PACManager: React.FC<PACManagerProps> = ({
   language,
   pacs,
   onAddPAC,
-  onRemovePAC
+  onRemovePAC,
+  onUpdatePAC
 }) => {
   const t = (key: string) => getTranslation(language, key);
   
   const [showForm, setShowForm] = useState(false);
   const [selectedPAC, setSelectedPAC] = useState<string | null>(null);
+  const [editingReturn, setEditingReturn] = useState<string | null>(null);
+  const [tempReturn, setTempReturn] = useState<string>('');
   const [formData, setFormData] = useState({
     name: '',
     monthlyAmount: '',
     frequency: 'monthly' as PACPlan['frequency'],
     duration: '10',
+    customReturn: '',
     targetAllocations: {} as { [assetId: string]: number }
   });
 
@@ -59,8 +64,10 @@ export const PACManager: React.FC<PACManagerProps> = ({
       duration: parseInt(formData.duration),
       targetAllocations: allocations,
       expectedReturn: calculateWeightedReturn(allocations),
+      customReturn: formData.customReturn ? parseFloat(formData.customReturn) : undefined,
       startDate: new Date(),
-      isActive: true
+      isActive: true,
+      asAsset: false
     };
 
     onAddPAC(newPAC);
@@ -71,11 +78,30 @@ export const PACManager: React.FC<PACManagerProps> = ({
       monthlyAmount: '',
       frequency: 'monthly',
       duration: '10',
+      customReturn: '',
       targetAllocations: {}
     });
     setShowForm(false);
   };
 
+  const handleReturnEdit = (pacId: string, currentReturn: number) => {
+    setEditingReturn(pacId);
+    setTempReturn(currentReturn.toString());
+  };
+
+  const handleReturnSave = (pacId: string) => {
+    const newReturn = parseFloat(tempReturn);
+    if (!isNaN(newReturn) && newReturn >= 0) {
+      onUpdatePAC(pacId, { customReturn: newReturn });
+    }
+    setEditingReturn(null);
+    setTempReturn('');
+  };
+
+  const handleReturnCancel = () => {
+    setEditingReturn(null);
+    setTempReturn('');
+  };
   const calculateWeightedReturn = (allocations: { [assetId: string]: number }): number => {
     return Object.entries(allocations).reduce((sum, [assetId, allocation]) => {
       const asset = assets.find(a => a.id === assetId);
@@ -215,6 +241,25 @@ export const PACManager: React.FC<PACManagerProps> = ({
                 />
                 <p className="text-xs text-gray-500 mt-1">{t('pacDurationDesc')}</p>
               </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Rendimento Personalizzato (% annuo)
+                </label>
+                <input
+                  type="number"
+                  value={formData.customReturn}
+                  onChange={(e) => setFormData(prev => ({ ...prev, customReturn: e.target.value }))}
+                  className="input-field"
+                  placeholder="6.5"
+                  min="0"
+                  max="50"
+                  step="0.1"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Opzionale: sovrascrivi il rendimento calcolato automaticamente
+                </p>
+              </div>
             </div>
 
             {/* Asset Allocation */}
@@ -304,9 +349,14 @@ export const PACManager: React.FC<PACManagerProps> = ({
                           {t(pac.frequency)}
                         </span>
                       </div>
+                            {pac.asAsset && (
+                              <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
+                                In Portfolio
+                              </span>
+                            )}
                       
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div>
+                          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                           <p className="text-gray-600">{t('monthlyAmount')}</p>
                           <p className="font-semibold">{formatCurrency(pac.monthlyAmount)}</p>
                         </div>
@@ -315,6 +365,47 @@ export const PACManager: React.FC<PACManagerProps> = ({
                           <p className="font-semibold">{pac.duration} {t('years')}</p>
                         </div>
                         <div>
+                            <div>
+                              <p className="text-gray-600">Rendimento</p>
+                              {editingReturn === pac.id ? (
+                                <div className="flex items-center gap-1">
+                                  <input
+                                    type="number"
+                                    value={tempReturn}
+                                    onChange={(e) => setTempReturn(e.target.value)}
+                                    className="w-16 px-1 py-0.5 text-xs border border-gray-300 rounded"
+                                    step="0.1"
+                                    min="0"
+                                    max="50"
+                                  />
+                                  <button
+                                    onClick={() => handleReturnSave(pac.id)}
+                                    className="text-xs text-success-600 hover:text-success-700"
+                                  >
+                                    ✓
+                                  </button>
+                                  <button
+                                    onClick={handleReturnCancel}
+                                    className="text-xs text-error-600 hover:text-error-700"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleReturnEdit(pac.id, displayReturn);
+                                  }}
+                                  className="font-semibold text-primary-600 hover:text-primary-700 text-left"
+                                >
+                                  {displayReturn.toFixed(1)}%
+                                  {pac.customReturn && (
+                                    <span className="text-xs text-gray-500 ml-1">(custom)</span>
+                                  )}
+                                </button>
+                              )}
+                            </div>
                           <p className="text-gray-600">{t('totalInvested')}</p>
                           <p className="font-semibold text-primary-600">{formatCurrency(totalContribution)}</p>
                         </div>
@@ -325,6 +416,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
                           </p>
                         </div>
                       </div>
+                  const displayReturn = pac.customReturn || pac.expectedReturn;
                     </div>
                     
                     <button

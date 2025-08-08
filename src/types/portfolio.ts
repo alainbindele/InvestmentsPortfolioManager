@@ -82,8 +82,10 @@ export interface PACPlan {
   duration: number; // in years
   targetAllocations: { [assetId: string]: number };
   expectedReturn: number;
+  customReturn?: number; // Override per il rendimento personalizzato
   startDate: Date;
   isActive: boolean;
+  asAsset?: boolean; // Flag per indicare se è stato aggiunto come asset
 }
 
 export interface PACProjection {

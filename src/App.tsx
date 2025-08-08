@@ -52,6 +52,53 @@ function App() {
 
   const handleRemovePAC = (pacId: string) => {
     setPacs(prev => prev.filter(pac => pac.id !== pacId));
+    // Rimuovi anche l'asset corrispondente se esiste
+    setAssets(prev => prev.filter(asset => !asset.name.includes(`PAC: ${pacs.find(p => p.id === pacId)?.name}`)));
+  };
+
+  const handleUpdatePAC = (pacId: string, updates: Partial<PACPlan>) => {
+    setPacs(prev => prev.map(pac => 
+      pac.id === pacId ? { ...pac, ...updates } : pac
+    ));
+    
+    // Aggiorna anche l'asset corrispondente se esiste
+    const pac = pacs.find(p => p.id === pacId);
+    if (pac && pac.asAsset && updates.customReturn) {
+      setAssets(prev => prev.map(asset => 
+        asset.name.includes(`PAC: ${pac.name}`) 
+          ? { ...asset, expectedReturn: updates.customReturn! }
+          : asset
+      ));
+    }
+  };
+
+  const handleAddPACAsAsset = (pacId: string, customReturn: number) => {
+    const pac = pacs.find(p => p.id === pacId);
+    if (!pac) return;
+
+    // Calcola il valore totale del PAC
+    const totalAnnualContribution = pac.monthlyAmount * getContributionFrequencyMultiplier(pac.frequency);
+    const totalValue = totalAnnualContribution * pac.duration;
+
+    // Crea l'asset dal PAC
+    const pacAsset: Asset = {
+      id: `pac-${pac.id}`,
+      name: `PAC: ${pac.name}`,
+      type: 'other',
+      currentValue: totalValue,
+      expectedReturn: customReturn,
+      riskLevel: 'medium'
+    };
+
+    // Aggiungi l'asset
+    setAssets(prev => [...prev, pacAsset]);
+    
+    // Marca il PAC come aggiunto al portfolio
+    setPacs(prev => prev.map(p => 
+      p.id === pacId 
+        ? { ...p, asAsset: true, customReturn }
+        : p
+    ));
   };
 
   const t = (key: string) => getTranslation(language, key);
@@ -136,8 +183,10 @@ function App() {
           <div className="space-y-8">
             <AssetForm 
               assets={assets}
+              pacs={pacs}
               onAddAsset={handleAddAsset}
               onRemoveAsset={handleRemoveAsset}
+              onAddPACAsAsset={handleAddPACAsAsset}
               language={language}
             />
             
@@ -236,6 +285,7 @@ function App() {
             pacs={pacs}
             onAddPAC={handleAddPAC}
             onRemovePAC={handleRemovePAC}
+            onUpdatePAC={handleUpdatePAC}
           />
         )}
 
@@ -257,5 +307,8 @@ function App() {
     </div>
   );
 }
+
+// Importa la funzione mancante
+import { getContributionFrequencyMultiplier } from './utils/calculations';
 
 export default App;

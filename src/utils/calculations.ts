@@ -174,7 +174,8 @@ export const calculatePACProjection = (
   const contributionAmount = pacPlan.monthlyAmount * monthsPerContribution;
   
   // Calculate weighted expected return based on PAC allocation
-  const weightedReturn = Object.entries(pacPlan.targetAllocations).reduce((sum, [assetId, allocation]) => {
+  // Use custom return if specified, otherwise calculate weighted return
+  const weightedReturn = pacPlan.customReturn || Object.entries(pacPlan.targetAllocations).reduce((sum, [assetId, allocation]) => {
     const asset = assets.find(a => a.id === assetId);
     if (!asset) return sum;
     return sum + (asset.expectedReturn * allocation / 100);
