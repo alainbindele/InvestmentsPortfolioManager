@@ -1,4 +1,5 @@
 import React from 'react';
+import { Calendar } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Asset, Strategy } from '../types/portfolio';
 import { Language } from '../types/language';
@@ -9,16 +10,23 @@ interface ProjectionChartProps {
   assets: Asset[];
   language: Language;
   strategies?: Strategy[];
-  years?: number;
 }
 
 export const ProjectionChart: React.FC<ProjectionChartProps> = ({ 
   assets, 
   language,
-  strategies = [], 
-  years = 10 
+  strategies = []
 }) => {
   const t = (key: string) => getTranslation(language, key);
+  const [selectedYears, setSelectedYears] = React.useState(10);
+  
+  const timeScaleOptions = [
+    { value: 5, label: '5 anni' },
+    { value: 10, label: '10 anni' },
+    { value: 20, label: '20 anni' },
+    { value: 30, label: '30 anni' },
+    { value: 40, label: '40 anni' }
+  ];
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   const currentReturn = assets.reduce((sum, asset) => {
@@ -27,11 +35,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   }, 0);
 
   // Generate projections for current portfolio
-  const currentProjection = projectPortfolioGrowth(totalValue, currentReturn, years);
+  const currentProjection = projectPortfolioGrowth(totalValue, currentReturn, selectedYears);
   
   // Generate projections for strategies
   const strategyProjections = strategies.map(strategy => 
-    projectPortfolioGrowth(totalValue, strategy.expectedReturn, years)
+    projectPortfolioGrowth(totalValue, strategy.expectedReturn, selectedYears)
   );
 
   // Combine data for chart
@@ -68,9 +76,26 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
 
   return (
     <div className="card">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        {t('portfolioProjection')} ({years} {t('years')})
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-900">
+          {t('portfolioProjection')} ({selectedYears} {t('years')})
+        </h3>
+        
+        <div className="flex items-center gap-2">
+          <Calendar className="w-4 h-4 text-gray-600" />
+          <select
+            value={selectedYears}
+            onChange={(e) => setSelectedYears(Number(e.target.value))}
+            className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          >
+            {timeScaleOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       
       <div className="h-80 mb-4">
         <ResponsiveContainer width="100%" height="100%">
@@ -122,16 +147,16 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
         </div>
         
         <div className="metric-card">
-          <p className="text-sm text-gray-600">{t('projection')} {years} {t('years')}</p>
+          <p className="text-sm text-gray-600">{t('projection')} {selectedYears} {t('years')}</p>
           <p className="text-xl font-bold text-success-600">
-            {formatCurrency(currentProjection[years].value)}
+            {formatCurrency(currentProjection[selectedYears].value)}
           </p>
         </div>
         
         <div className="metric-card">
           <p className="text-sm text-gray-600">{t('totalGrowth')}</p>
           <p className="text-xl font-bold text-primary-600">
-            +{((currentProjection[years].value / totalValue - 1) * 100).toFixed(1)}%
+            +{((currentProjection[selectedYears].value / totalValue - 1) * 100).toFixed(1)}%
           </p>
         </div>
       </div>
