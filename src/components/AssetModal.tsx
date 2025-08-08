@@ -25,14 +25,26 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
   // Generate projection data for the asset
   const generateAssetProjection = (years: number) => {
     const projections = [];
-    let currentValue = asset.currentValue;
+    let currentValue = asset.pacStartingValue || asset.currentValue;
+    const monthlyContribution = asset.isPAC ? (asset.pacMonthlyAmount || 0) : 0;
+    const monthlyReturn = asset.expectedReturn / 100 / 12;
     
     for (let year = 0; year <= years; year++) {
+      // For PAC assets, add monthly contributions throughout the year
+      if (asset.isPAC && year > 0) {
+        for (let month = 1; month <= 12; month++) {
+          currentValue += monthlyContribution;
+          currentValue *= (1 + monthlyReturn);
+        }
+      } else if (!asset.isPAC) {
+        // For non-PAC assets, simple compound growth
+        currentValue *= (1 + asset.expectedReturn / 100);
+      }
+      
       projections.push({
         year,
         value: Math.round(currentValue)
       });
-      currentValue *= (1 + asset.expectedReturn / 100);
     }
     
     return projections;
@@ -175,7 +187,7 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
           {/* Asset Details */}
           <div className="bg-gray-50 rounded-lg p-4">
             <h4 className="font-medium text-gray-900 mb-3">Dettagli Asset</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
               <div>
                 <p className="text-gray-600">Tipo</p>
                 <p className="font-semibold text-gray-900">{asset.type.toUpperCase()}</p>
@@ -200,7 +212,35 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
                   {formatCurrency(finalValue)}
                 </p>
               </div>
+              {asset.isPAC && (
+                <div>
+                  <p className="text-gray-600">PAC Mensile</p>
+                  <p className="font-semibold text-blue-600">
+                    €{asset.pacMonthlyAmount?.toLocaleString('it-IT') || 0}
+                  </p>
+                </div>
+              )}
             </div>
+            
+            {asset.isPAC && (
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <h5 className="font-medium text-blue-900 mb-2">Informazioni PAC</h5>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-blue-700">Valore di Partenza</p>
+                    <p className="font-semibold text-blue-900">
+                      €{asset.pacStartingValue?.toLocaleString('it-IT') || 0}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-blue-700">Contributi Annuali</p>
+                    <p className="font-semibold text-blue-900">
+                      €{((asset.pacMonthlyAmount || 0) * 12).toLocaleString('it-IT')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

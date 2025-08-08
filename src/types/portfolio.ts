@@ -6,6 +6,9 @@ export interface Asset {
   expectedReturn: number; // Annual percentage
   riskLevel: RiskLevel;
   allocation?: number; // Percentage of total portfolio
+  isPAC?: boolean; // Indicates if this is a PAC asset
+  pacMonthlyAmount?: number; // Monthly contribution amount for PAC
+  pacStartingValue?: number; // Starting value for PAC calculations
 }
 
 export type AssetType = 

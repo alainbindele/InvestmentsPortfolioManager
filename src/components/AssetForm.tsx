@@ -29,7 +29,10 @@ export const AssetForm: React.FC<AssetFormProps> = ({
     type: 'etf' as AssetType,
     currentValue: '',
     expectedReturn: '',
-    riskLevel: 'medium' as RiskLevel
+    riskLevel: 'medium' as RiskLevel,
+    isPAC: false,
+    pacMonthlyAmount: '',
+    pacStartingValue: ''
   });
 
   const [showForm, setShowForm] = useState(false);
@@ -51,7 +54,10 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       type: formData.type,
       currentValue: parseFloat(formData.currentValue),
       expectedReturn: parseFloat(formData.expectedReturn),
-      riskLevel: formData.riskLevel
+      riskLevel: formData.riskLevel,
+      isPAC: formData.isPAC,
+      pacMonthlyAmount: formData.isPAC ? parseFloat(formData.pacMonthlyAmount) : undefined,
+      pacStartingValue: formData.isPAC ? parseFloat(formData.pacStartingValue) : undefined
     };
 
     onAddAsset(newAsset);
@@ -62,7 +68,10 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       type: 'etf',
       currentValue: '',
       expectedReturn: '',
-      riskLevel: 'medium'
+      riskLevel: 'medium',
+      isPAC: false,
+      pacMonthlyAmount: '',
+      pacStartingValue: ''
     });
     setShowForm(false);
   };
@@ -192,7 +201,67 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   ))}
                 </select>
               </div>
+              
+              <div className="md:col-span-2">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.isPAC}
+                    onChange={(e) => handleInputChange('isPAC', e.target.checked.toString())}
+                    className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2"
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    Piano di Accumulo (PAC)
+                  </span>
+                </label>
+                <p className="text-xs text-gray-500 mt-1">
+                  Attiva se questo asset prevede versamenti ricorrenti
+                </p>
+              </div>
             </div>
+            
+            {formData.isPAC && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="md:col-span-2">
+                  <h4 className="font-medium text-blue-900 mb-2">Configurazione PAC</h4>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Versamenti Mensili (€)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.pacMonthlyAmount}
+                    onChange={(e) => handleInputChange('pacMonthlyAmount', e.target.value)}
+                    className="input-field"
+                    placeholder="500"
+                    min="0"
+                    step="0.01"
+                    required={formData.isPAC}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Valore di Partenza (€)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.pacStartingValue}
+                    onChange={(e) => handleInputChange('pacStartingValue', e.target.value)}
+                    className="input-field"
+                    placeholder="0"
+                    min="0"
+                    step="0.01"
+                    required={formData.isPAC}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Importo già investito all'inizio del PAC
+                  </p>
+                </div>
+              </div>
+            )}
             
             <div className="flex gap-2">
               <button type="submit" className="btn-primary">
@@ -291,7 +360,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-medium text-gray-900">{asset.name}</h3>
-                      {asset.name.includes('PAC') && (
+                      {asset.isPAC && (
                         <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
                           PAC
                         </span>
@@ -299,6 +368,9 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                     </div>
                     <p className="text-sm text-gray-600">
                       {ASSET_TYPE_LABELS[asset.type]} • {RISK_LEVEL_LABELS[asset.riskLevel]} Rischio
+                      {asset.isPAC && asset.pacMonthlyAmount && (
+                        <> • €{asset.pacMonthlyAmount}/mese</>
+                      )}
                     </p>
                   </div>
                   <div className="text-right">
