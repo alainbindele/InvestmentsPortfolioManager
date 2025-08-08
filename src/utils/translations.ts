@@ -109,7 +109,7 @@ export const translations = {
     passiveIncome: 'Reddito Passivo',
     capitalPreservation: 'Preservazione del Capitale',
     diversificationGoal: 'Diversificazione',
-    inflationProtection: 'Protezione dall\'Inflazione'
+    inflationProtection: 'Protezione dall\'Inflazione',
     
     // PAC
     pac: 'PAC',
