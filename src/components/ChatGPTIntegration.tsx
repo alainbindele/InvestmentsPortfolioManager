@@ -34,7 +34,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
     setIsAnalyzing(true);
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
@@ -56,7 +56,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
     setIsGeneratingStrategy(true);
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
