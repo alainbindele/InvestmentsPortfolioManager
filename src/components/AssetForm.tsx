@@ -311,9 +311,11 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   </div>
                 </div>
               </div>
-                  e.stopPropagation();
               <button
-                onClick={() => onRemoveAsset(asset.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemoveAsset(asset.id);
+                }}
                 className="ml-4 p-2 text-gray-400 hover:text-red-500 transition-colors"
               >
                 <X className="w-4 h-4" />
