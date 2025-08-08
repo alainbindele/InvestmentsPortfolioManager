@@ -104,7 +104,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, onRemoveAsset,
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('currentValue')}
+                  {t('assetCurrentValue')}
                 </label>
                 <input
                   type="number"
