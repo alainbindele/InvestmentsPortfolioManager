@@ -1,4 +1,4 @@
-# Portfolio Rebalancer
+# Portfolio Balancer
 
 Un'applicazione web avanzata per l'ottimizzazione e il ribilanciamento di portafogli di investimento, potenziata dall'intelligenza artificiale.
 
@@ -17,7 +17,7 @@ Un'applicazione web avanzata per l'ottimizzazione e il ribilanciamento di portaf
 1. Clona il repository:
 ```bash
 git clone <repository-url>
-cd portfolio-rebalancer
+cd portfolio-balancer
 ```
 
 2. Installa le dipendenze:

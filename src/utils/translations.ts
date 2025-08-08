@@ -3,7 +3,7 @@ import { Language } from '../types/language';
 export const translations = {
   it: {
     // Header
-    appTitle: 'Portfolio Rebalancer',
+    appTitle: 'Portfolio Balancer',
     appSubtitle: 'Ottimizza i tuoi investimenti con l\'AI',
     totalValue: 'Valore Totale',
     expectedReturn: 'Rendimento Atteso',
@@ -143,7 +143,7 @@ export const translations = {
   
   en: {
     // Header
-    appTitle: 'Portfolio Rebalancer',
+    appTitle: 'Portfolio Balancer',
     appSubtitle: 'Optimize your investments with AI',
     totalValue: 'Total Value',
     expectedReturn: 'Expected Return',
@@ -283,7 +283,7 @@ export const translations = {
   
   es: {
     // Header
-    appTitle: 'Rebalanceador de Cartera',
+    appTitle: 'Balanceador de Cartera',
     appSubtitle: 'Optimiza tus inversiones con IA',
     totalValue: 'Valor Total',
     expectedReturn: 'Rendimiento Esperado',
@@ -423,7 +423,7 @@ export const translations = {
   
   fr: {
     // Header
-    appTitle: 'Rééquilibreur de Portefeuille',
+    appTitle: 'Équilibreur de Portefeuille',
     appSubtitle: 'Optimisez vos investissements avec l\'IA',
     totalValue: 'Valeur Totale',
     expectedReturn: 'Rendement Attendu',
@@ -563,7 +563,7 @@ export const translations = {
   
   de: {
     // Header
-    appTitle: 'Portfolio Rebalancer',
+    appTitle: 'Portfolio Balancer',
     appSubtitle: 'Optimieren Sie Ihre Investitionen mit KI',
     totalValue: 'Gesamtwert',
     expectedReturn: 'Erwartete Rendite',
@@ -703,7 +703,7 @@ export const translations = {
   
   zh: {
     // Header
-    appTitle: '投资组合再平衡器',
+    appTitle: '投资组合平衡器',
     appSubtitle: '用AI优化您的投资',
     totalValue: '总价值',
     expectedReturn: '预期收益',

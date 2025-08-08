@@ -16,7 +16,7 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },
-  "name": "portfolio-rebalancer",
+  "name": "portfolio-balancer",
   "private": true,
   "version": "0.0.0",
   "type": "module",
