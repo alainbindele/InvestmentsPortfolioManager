@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Loader2, TrendingUp, AlertCircle, Lightbulb } from 'lucide-react';
+import { Bot, Loader2, TrendingUp, AlertCircle, Lightbulb, CheckCircle, XCircle } from 'lucide-react';
 import { Asset, Strategy, PortfolioAnalysis } from '../types/portfolio';
 import { Language } from '../types/language';
 import { ChatGPTService } from '../services/chatgpt';
@@ -21,6 +21,8 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGeneratingStrategy, setIsGeneratingStrategy] = useState(false);
   const [analysis, setAnalysis] = useState<PortfolioAnalysis | null>(null);
+  const [apiStatus, setApiStatus] = useState<'unknown' | 'working' | 'error'>('unknown');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [selectedRiskProfile, setSelectedRiskProfile] = useState<'conservative' | 'balanced' | 'aggressive'>('balanced');
   const [goals, setGoals] = useState<string[]>(['crescita_lungo_termine']);
 
@@ -33,16 +35,26 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
     }
 
     setIsAnalyzing(true);
+    setErrorMessage('');
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
       const portfolioAnalysis = await chatGPTService.analyzePortfolio(assets);
       setAnalysis(portfolioAnalysis);
+      setApiStatus('working');
     } catch (error) {
       console.error('Errore nell\'analisi del portafoglio:', error);
-      alert('Errore nell\'analisi del portafoglio. Riprova più tardi.');
+      setApiStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Errore sconosciuto');
+      // Mostra comunque l'analisi di fallback
+      try {
+        const portfolioAnalysis = await chatGPTService.analyzePortfolio(assets);
+        setAnalysis(portfolioAnalysis);
+      } catch (fallbackError) {
+        console.error('Errore anche nel fallback:', fallbackError);
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -55,16 +67,26 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
     }
 
     setIsGeneratingStrategy(true);
+    setErrorMessage('');
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
       const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals);
       onStrategyGenerated(strategy);
+      setApiStatus('working');
     } catch (error) {
       console.error('Errore nella generazione della strategia:', error);
-      alert('Errore nella generazione della strategia. Riprova più tardi.');
+      setApiStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Errore sconosciuto');
+      // Genera comunque una strategia di fallback
+      try {
+        const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals);
+        onStrategyGenerated(strategy);
+      } catch (fallbackError) {
+        console.error('Errore anche nel fallback:', fallbackError);
+      }
     } finally {
       setIsGeneratingStrategy(false);
     }
@@ -88,6 +110,41 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* API Status Indicator */}
+      <div className="card">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              {apiStatus === 'working' && <CheckCircle className="w-5 h-5 text-success-600" />}
+              {apiStatus === 'error' && <XCircle className="w-5 h-5 text-error-600" />}
+              {apiStatus === 'unknown' && <AlertCircle className="w-5 h-5 text-gray-400" />}
+              <span className="font-medium text-gray-900">
+                Stato API OpenAI: {
+                  apiStatus === 'working' ? 'Connessa' :
+                  apiStatus === 'error' ? 'Errore' : 'Non testata'
+                }
+              </span>
+            </div>
+          </div>
+          <div className="text-sm text-gray-600">
+            {import.meta.env.VITE_OPENAI_API_KEY ? 
+              'API Key configurata' : 
+              'API Key non configurata - usando fallback'
+            }
+          </div>
+        </div>
+        {errorMessage && (
+          <div className="mt-3 p-3 bg-error-50 border border-error-200 rounded-lg">
+            <p className="text-sm text-error-700">
+              <strong>Errore API:</strong> {errorMessage}
+            </p>
+            <p className="text-xs text-error-600 mt-1">
+              L'applicazione continuerà a funzionare con analisi di fallback.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Portfolio Analysis */}
       <div className="card">
         <div className="flex items-center gap-3 mb-4">
@@ -149,7 +206,11 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb className="w-5 h-5 text-blue-600" />
-                <h4 className="font-semibold text-blue-900">{t('aiRecommendations')}</h4>
+                <h4 className="font-semibold text-blue-900">
+                  {t('aiRecommendations')}
+                  {apiStatus === 'working' && <span className="ml-2 text-xs bg-success-100 text-success-700 px-2 py-1 rounded-full">AI</span>}
+                  {apiStatus === 'error' && <span className="ml-2 text-xs bg-warning-100 text-warning-700 px-2 py-1 rounded-full">Fallback</span>}
+                </h4>
               </div>
               <ul className="space-y-2">
                 {analysis.recommendations.map((rec, index) => (
@@ -166,6 +227,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
               <h4 className="font-semibold text-gray-900 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-gray-600" />
                 {t('marketInsights')}
+                {apiStatus === 'working' && <span className="text-xs bg-success-100 text-success-700 px-2 py-1 rounded-full">AI</span>}
               </h4>
               {analysis.marketInsights.map((insight, index) => (
                 <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -193,7 +255,10 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
           <div className="p-2 bg-warning-100 rounded-lg">
             <Bot className="w-5 h-5 text-warning-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900">Generazione Strategia AI</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Generazione Strategia AI
+            {apiStatus === 'working' && <span className="ml-2 text-xs bg-success-100 text-success-700 px-2 py-1 rounded-full">AI Attiva</span>}
+          </h3>
         </div>
 
         <div className="space-y-4">
@@ -249,7 +314,13 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
           <button
             onClick={handleGenerateStrategy}
             disabled={isGeneratingStrategy || assets.length === 0}
-            className="btn-primary w-full"
+            className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+              isGeneratingStrategy || assets.length === 0
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : apiStatus === 'working'
+                ? 'bg-success-600 hover:bg-success-700 text-white'
+                : 'bg-primary-600 hover:bg-primary-700 text-white'
+            }`}
           >
             {isGeneratingStrategy ? (
               <>
@@ -259,10 +330,21 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             ) : (
               <>
                 <Bot className="w-4 h-4" />
-                {t('generateStrategy')}
+                {apiStatus === 'working' ? 'Genera Strategia AI Reale' : t('generateStrategy')}
               </>
             )}
           </button>
+          
+          {!import.meta.env.VITE_OPENAI_API_KEY && (
+            <div className="mt-3 p-3 bg-warning-50 border border-warning-200 rounded-lg">
+              <p className="text-sm text-warning-700">
+                <strong>Nota:</strong> Per utilizzare l'AI reale, configura la tua API key OpenAI nel file .env
+              </p>
+              <p className="text-xs text-warning-600 mt-1">
+                Senza API key, verranno generate strategie di fallback basate su regole predefinite.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
