@@ -5,6 +5,7 @@ import { Asset } from '../types/portfolio';
 import { Language } from '../types/language';
 import { getTranslation } from '../utils/translations';
 import { formatCurrency } from '../utils/calculations';
+import { getFrequencyMonths } from '../utils/calculations';
 
 interface AssetModalProps {
   asset: Asset;
@@ -26,14 +27,21 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
   const generateAssetProjection = (years: number) => {
     const projections = [];
     let currentValue = asset.pacStartingValue || asset.currentValue;
-    const monthlyContribution = asset.isPAC ? (asset.pacMonthlyAmount || 0) : 0;
+    const monthlyContribution = asset.isPAC && asset.pacAmount && asset.pacFrequency ? 
+      (asset.pacAmount / getFrequencyMonths(asset.pacFrequency)) : 0;
     const monthlyReturn = asset.expectedReturn / 100 / 12;
     
     for (let year = 0; year <= years; year++) {
       // For PAC assets, add monthly contributions throughout the year
       if (asset.isPAC && year > 0) {
         for (let month = 1; month <= 12; month++) {
-          currentValue += monthlyContribution;
+          // Add contribution based on frequency
+          if (asset.pacAmount && asset.pacFrequency) {
+            const monthsPerContribution = getFrequencyMonths(asset.pacFrequency);
+            if (month % monthsPerContribution === 0) {
+              currentValue += asset.pacAmount;
+            }
+          }
           currentValue *= (1 + monthlyReturn);
         }
       } else if (!asset.isPAC) {
@@ -214,9 +222,15 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
               </div>
               {asset.isPAC && (
                 <div>
-                  <p className="text-gray-600">PAC Mensile</p>
+                  <p className="text-gray-600">PAC {
+                    asset.pacFrequency === 'monthly' ? 'Mensile' :
+                    asset.pacFrequency === 'bimonthly' ? 'Bimestrale' :
+                    asset.pacFrequency === 'quarterly' ? 'Trimestrale' :
+                    asset.pacFrequency === 'fourmonthly' ? 'Quadrimestrale' :
+                    asset.pacFrequency === 'biannual' ? 'Semestrale' : 'Annuale'
+                  }</p>
                   <p className="font-semibold text-blue-600">
-                    €{asset.pacMonthlyAmount?.toLocaleString('it-IT') || 0}
+                    €{asset.pacAmount?.toLocaleString('it-IT') || 0}
                   </p>
                 </div>
               )}
@@ -235,7 +249,13 @@ export const AssetModal: React.FC<AssetModalProps> = ({ asset, language, onClose
                   <div>
                     <p className="text-blue-700">Contributi Annuali</p>
                     <p className="font-semibold text-blue-900">
-                      €{((asset.pacMonthlyAmount || 0) * 12).toLocaleString('it-IT')}
+                      €{((asset.pacAmount || 0) * (
+                        asset.pacFrequency === 'monthly' ? 12 :
+                        asset.pacFrequency === 'bimonthly' ? 6 :
+                        asset.pacFrequency === 'quarterly' ? 4 :
+                        asset.pacFrequency === 'fourmonthly' ? 3 :
+                        asset.pacFrequency === 'biannual' ? 2 : 1
+                      )).toLocaleString('it-IT')}
                     </p>
                   </div>
                 </div>

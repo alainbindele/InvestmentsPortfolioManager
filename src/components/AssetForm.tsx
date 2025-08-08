@@ -31,7 +31,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({
     expectedReturn: '',
     riskLevel: 'medium' as RiskLevel,
     isPAC: false,
-    pacMonthlyAmount: '',
+    pacAmount: '',
+    pacFrequency: 'monthly',
     pacStartingValue: ''
   });
 
@@ -56,7 +57,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       expectedReturn: parseFloat(formData.expectedReturn),
       riskLevel: formData.riskLevel,
       isPAC: formData.isPAC,
-      pacMonthlyAmount: formData.isPAC ? parseFloat(formData.pacMonthlyAmount) : undefined,
+      pacAmount: formData.isPAC ? parseFloat(formData.pacAmount) : undefined,
+      pacFrequency: formData.isPAC ? formData.pacFrequency as any : undefined,
       pacStartingValue: formData.isPAC ? parseFloat(formData.pacStartingValue) : undefined
     };
 
@@ -70,7 +72,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       expectedReturn: '',
       riskLevel: 'medium',
       isPAC: false,
-      pacMonthlyAmount: '',
+      pacAmount: '',
+      pacFrequency: 'monthly',
       pacStartingValue: ''
     });
     setShowForm(false);
@@ -212,7 +215,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                       handleInputChange('isPAC', isChecked.toString());
                       // Reset PAC fields when unchecked
                       if (!isChecked) {
-                        handleInputChange('pacMonthlyAmount', '');
+                        handleInputChange('pacAmount', '');
+                        handleInputChange('pacFrequency', 'monthly');
                         handleInputChange('pacStartingValue', '');
                       }
                     }}
@@ -236,18 +240,37 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Versamenti Mensili (€)
+                    Importo Versamento (€)
                   </label>
                   <input
                     type="number"
-                    value={formData.pacMonthlyAmount}
-                    onChange={(e) => handleInputChange('pacMonthlyAmount', e.target.value)}
+                    value={formData.pacAmount}
+                    onChange={(e) => handleInputChange('pacAmount', e.target.value)}
                     className="input-field"
                     placeholder="500"
                     min="0"
                     step="0.01"
                     required={formData.isPAC === 'true'}
                   />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Frequenza Versamenti
+                  </label>
+                  <select
+                    value={formData.pacFrequency}
+                    onChange={(e) => handleInputChange('pacFrequency', e.target.value)}
+                    className="select-field"
+                    required={formData.isPAC === 'true'}
+                  >
+                    <option value="monthly">Mensile</option>
+                    <option value="bimonthly">Bimestrale</option>
+                    <option value="quarterly">Trimestrale</option>
+                    <option value="fourmonthly">Quadrimestrale</option>
+                    <option value="biannual">Semestrale</option>
+                    <option value="annual">Annuale</option>
+                  </select>
                 </div>
                 
                 <div>
@@ -267,6 +290,25 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   <p className="text-xs text-gray-500 mt-1">
                     Importo già investito all'inizio del PAC
                   </p>
+                </div>
+                
+                <div className="md:col-span-2">
+                  <div className="bg-blue-100 rounded-lg p-3">
+                    <p className="text-sm text-blue-800">
+                      <strong>Riepilogo:</strong> Versamento di €{formData.pacAmount || '0'} ogni{' '}
+                      {formData.pacFrequency === 'monthly' ? 'mese' :
+                       formData.pacFrequency === 'bimonthly' ? '2 mesi' :
+                       formData.pacFrequency === 'quarterly' ? '3 mesi' :
+                       formData.pacFrequency === 'fourmonthly' ? '4 mesi' :
+                       formData.pacFrequency === 'biannual' ? '6 mesi' : 'anno'}
+                      {' '}• Contributo annuale: €{(parseFloat(formData.pacAmount || '0') * 
+                        (formData.pacFrequency === 'monthly' ? 12 :
+                         formData.pacFrequency === 'bimonthly' ? 6 :
+                         formData.pacFrequency === 'quarterly' ? 4 :
+                         formData.pacFrequency === 'fourmonthly' ? 3 :
+                         formData.pacFrequency === 'biannual' ? 2 : 1)).toLocaleString('it-IT')}
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
@@ -376,8 +418,14 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                     </div>
                     <p className="text-sm text-gray-600">
                       {ASSET_TYPE_LABELS[asset.type]} • {RISK_LEVEL_LABELS[asset.riskLevel]} Rischio
-                      {asset.isPAC && asset.pacMonthlyAmount && (
-                        <> • €{asset.pacMonthlyAmount}/mese</>
+                      {asset.isPAC && asset.pacAmount && (
+                        <> • €{asset.pacAmount}/{
+                          asset.pacFrequency === 'monthly' ? 'mese' :
+                          asset.pacFrequency === 'bimonthly' ? '2 mesi' :
+                          asset.pacFrequency === 'quarterly' ? '3 mesi' :
+                          asset.pacFrequency === 'fourmonthly' ? '4 mesi' :
+                          asset.pacFrequency === 'biannual' ? '6 mesi' : 'anno'
+                        }</>
                       )}
                     </p>
                   </div>

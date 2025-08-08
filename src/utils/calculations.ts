@@ -110,9 +110,13 @@ export const projectPortfolioGrowth = (
     }, 0);
     
     // Contributi mensili totali dai PAC
-    const totalMonthlyContributions = pacAssets.reduce((sum, asset) => 
-      sum + (asset.pacMonthlyAmount || 0), 0
-    );
+    const totalMonthlyContributions = pacAssets.reduce((sum, asset) => {
+      if (!asset.pacAmount || !asset.pacFrequency) return sum;
+      
+      const monthsPerContribution = getFrequencyMonths(asset.pacFrequency);
+      const monthlyEquivalent = asset.pacAmount / monthsPerContribution;
+      return sum + monthlyEquivalent;
+    }, 0);
     
     // Calcola i rendimenti medi per ogni categoria
     const nonPacReturn = nonPacAssets.length > 0 ? 
@@ -135,9 +139,15 @@ export const projectPortfolioGrowth = (
         // Calcola crescita mese per mese per questo anno
         for (let month = 1; month <= 12; month++) {
           // Aggiungi contributi mensili PAC
-          if (totalMonthlyContributions > 0) {
-            pacValue += totalMonthlyContributions;
-          }
+          // Aggiungi contributi PAC in base alla frequenza
+          pacAssets.forEach(asset => {
+            if (asset.pacAmount && asset.pacFrequency) {
+              const monthsPerContribution = getFrequencyMonths(asset.pacFrequency);
+              if (month % monthsPerContribution === 0) {
+                pacValue += asset.pacAmount;
+              }
+            }
+          });
           
           // Applica crescita compound mensile
           if (nonPacValue > 0 && monthlyNonPacReturn > 0) {
@@ -170,6 +180,18 @@ export const projectPortfolioGrowth = (
   }
   
   return projections;
+};
+
+export const getFrequencyMonths = (frequency: string): number => {
+  switch (frequency) {
+    case 'monthly': return 1;
+    case 'bimonthly': return 2;
+    case 'quarterly': return 3;
+    case 'fourmonthly': return 4;
+    case 'biannual': return 6;
+    case 'annual': return 12;
+    default: return 1;
+  }
 };
 
 export const compareStrategies = (strategies: Strategy[]): {

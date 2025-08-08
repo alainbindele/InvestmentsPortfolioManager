@@ -7,9 +7,12 @@ export interface Asset {
   riskLevel: RiskLevel;
   allocation?: number; // Percentage of total portfolio
   isPAC?: boolean; // Indicates if this is a PAC asset
-  pacMonthlyAmount?: number; // Monthly contribution amount for PAC
+  pacAmount?: number; // Contribution amount for PAC
+  pacFrequency?: PACFrequency; // Frequency of PAC contributions
   pacStartingValue?: number; // Starting value for PAC calculations
 }
+
+export type PACFrequency = 'monthly' | 'bimonthly' | 'quarterly' | 'fourmonthly' | 'biannual' | 'annual';
 
 export type AssetType = 
   | 'stocks' 
