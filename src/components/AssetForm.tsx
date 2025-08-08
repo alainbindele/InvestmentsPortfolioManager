@@ -207,7 +207,15 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   <input
                     type="checkbox"
                     checked={formData.isPAC}
-                    onChange={(e) => handleInputChange('isPAC', e.target.checked.toString())}
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+                      handleInputChange('isPAC', isChecked.toString());
+                      // Reset PAC fields when unchecked
+                      if (!isChecked) {
+                        handleInputChange('pacMonthlyAmount', '');
+                        handleInputChange('pacStartingValue', '');
+                      }
+                    }}
                     className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 focus:ring-2"
                   />
                   <span className="text-sm font-medium text-gray-700">
@@ -220,7 +228,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
               </div>
             </div>
             
-            {formData.isPAC && (
+            {formData.isPAC === 'true' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <div className="md:col-span-2">
                   <h4 className="font-medium text-blue-900 mb-2">Configurazione PAC</h4>
@@ -238,7 +246,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                     placeholder="500"
                     min="0"
                     step="0.01"
-                    required={formData.isPAC}
+                    required={formData.isPAC === 'true'}
                   />
                 </div>
                 
@@ -254,7 +262,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                     placeholder="0"
                     min="0"
                     step="0.01"
-                    required={formData.isPAC}
+                    required={formData.isPAC === 'true'}
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Importo già investito all'inizio del PAC
