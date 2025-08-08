@@ -357,7 +357,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
                             )}
                       
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                        <div>
                           <p className="text-gray-600">{t('monthlyAmount')}</p>
                           <p className="font-semibold">{formatCurrency(pac.monthlyAmount)}</p>
                         </div>
@@ -366,51 +366,52 @@ export const PACManager: React.FC<PACManagerProps> = ({
                           <p className="font-semibold">{pac.duration} {t('years')}</p>
                         </div>
                         <div>
-                            <div>
-                              <p className="text-gray-600">Rendimento</p>
-                              {editingReturn === pac.id ? (
-                                <div className="flex items-center gap-1">
-                                  <input
-                                    type="number"
-                                    value={tempReturn}
-                                    onChange={(e) => setTempReturn(e.target.value)}
-                                    className="w-16 px-1 py-0.5 text-xs border border-gray-300 rounded"
-                                    step="0.1"
-                                    min="0"
-                                    max="50"
-                                  />
-                                  <button
-                                    onClick={() => handleReturnSave(pac.id)}
-                                    className="text-xs text-success-600 hover:text-success-700"
-                                  >
-                                    ✓
-                                  </button>
-                                  <button
-                                    onClick={handleReturnCancel}
-                                    className="text-xs text-error-600 hover:text-error-700"
-                                  >
-                                    ✕
-                                  </button>
-                                </div>
-                              ) : (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleReturnEdit(pac.id, displayReturn);
-                                  }}
-                                  className="font-semibold text-primary-600 hover:text-primary-700 text-left"
-                                >
-                                  {displayReturn.toFixed(1)}%
-                                  {pac.customReturn && (
-                                    <span className="text-xs text-gray-500 ml-1">(custom)</span>
-                                  )}
-                                </button>
-                              )}
+                          <p className="text-gray-600">Rendimento</p>
+                          {editingReturn === pac.id ? (
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="number"
+                                value={tempReturn}
+                                onChange={(e) => setTempReturn(e.target.value)}
+                                className="w-16 px-1 py-0.5 text-xs border border-gray-300 rounded"
+                                step="0.1"
+                                min="0"
+                                max="50"
+                              />
+                              <button
+                                onClick={() => handleReturnSave(pac.id)}
+                                className="text-xs text-success-600 hover:text-success-700"
+                              >
+                                ✓
+                              </button>
+                              <button
+                                onClick={handleReturnCancel}
+                                className="text-xs text-error-600 hover:text-error-700"
+                              >
+                                ✕
+                              </button>
                             </div>
+                          ) : (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleReturnEdit(pac.id, displayReturn);
+                              }}
+                              className="font-semibold text-primary-600 hover:text-primary-700 text-left"
+                            >
+                              {displayReturn.toFixed(1)}%
+                              {pac.customReturn && (
+                                <span className="text-xs text-gray-500 ml-1">(custom)</span>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                        <div>
                           <p className="text-gray-600">{t('totalInvested')}</p>
                           <p className="font-semibold text-primary-600">{formatCurrency(totalContribution)}</p>
                         </div>
-                    
+                      </div>
+                    </div>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -421,7 +422,6 @@ export const PACManager: React.FC<PACManagerProps> = ({
                       <X className="w-4 h-4" />
                     </button>
                   </div>
-                </div>
               );
             })}
           </div>
