@@ -102,25 +102,24 @@ export const projectPortfolioGrowth = (
     const pacAssets = assets.filter(asset => asset.isPAC);
     const nonPacAssets = assets.filter(asset => !asset.isPAC);
     
-    // Valore iniziale dai non-PAC assets + valore di partenza dei PAC
+    // Calcola i valori iniziali correttamente
     let nonPacValue = nonPacAssets.reduce((sum, asset) => sum + asset.currentValue, 0);
-    let pacValue = pacAssets.reduce((sum, asset) => sum + (asset.pacStartingValue || 0), 0);
+    let pacValue = pacAssets.reduce((sum, asset) => {
+      // Per i PAC, usa pacStartingValue se disponibile, altrimenti currentValue
+      return sum + (asset.pacStartingValue !== undefined ? asset.pacStartingValue : asset.currentValue);
+    }, 0);
     
     // Contributi mensili totali dai PAC
     const totalMonthlyContributions = pacAssets.reduce((sum, asset) => 
       sum + (asset.pacMonthlyAmount || 0), 0
     );
     
-    // Rendimenti pesati
-    const totalInitialValue = nonPacValue + pacValue;
-    const nonPacReturn = totalInitialValue > 0 ? 
-      nonPacAssets.reduce((sum, asset) => 
-        sum + (asset.expectedReturn * asset.currentValue / totalInitialValue), 0
-      ) : 0;
-    const pacReturn = totalInitialValue > 0 ? 
-      pacAssets.reduce((sum, asset) => 
-        sum + (asset.expectedReturn * (asset.pacStartingValue || 0) / totalInitialValue), 0
-      ) : expectedReturn;
+    // Calcola i rendimenti medi per ogni categoria
+    const nonPacReturn = nonPacAssets.length > 0 ? 
+      nonPacAssets.reduce((sum, asset) => sum + asset.expectedReturn, 0) / nonPacAssets.length : 0;
+    
+    const pacReturn = pacAssets.length > 0 ? 
+      pacAssets.reduce((sum, asset) => sum + asset.expectedReturn, 0) / pacAssets.length : 0;
     
     const monthlyNonPacReturn = nonPacReturn / 100 / 12;
     const monthlyPacReturn = pacReturn / 100 / 12;
@@ -136,11 +135,17 @@ export const projectPortfolioGrowth = (
         // Calcola crescita mese per mese per questo anno
         for (let month = 1; month <= 12; month++) {
           // Aggiungi contributi mensili PAC
-          pacValue += totalMonthlyContributions;
+          if (totalMonthlyContributions > 0) {
+            pacValue += totalMonthlyContributions;
+          }
           
           // Applica crescita compound mensile
-          nonPacValue *= (1 + monthlyNonPacReturn);
-          pacValue *= (1 + monthlyPacReturn);
+          if (nonPacValue > 0 && monthlyNonPacReturn > 0) {
+            nonPacValue *= (1 + monthlyNonPacReturn);
+          }
+          if (pacValue > 0 && monthlyPacReturn > 0) {
+            pacValue *= (1 + monthlyPacReturn);
+          }
         }
         
         projections.push({
@@ -158,7 +163,9 @@ export const projectPortfolioGrowth = (
         year,
         value: Math.round(currentValue)
       });
-      currentValue *= (1 + expectedReturn / 100);
+      if (year < years) {
+        currentValue *= (1 + expectedReturn / 100);
+      }
     }
   }
   
