@@ -102,6 +102,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
     setEditingReturn(null);
     setTempReturn('');
   };
+  
   const calculateWeightedReturn = (allocations: { [assetId: string]: number }): number => {
     return Object.entries(allocations).reduce((sum, [assetId, allocation]) => {
       const asset = assets.find(a => a.id === assetId);
@@ -349,14 +350,14 @@ export const PACManager: React.FC<PACManagerProps> = ({
                         <span className="px-2 py-1 bg-success-100 text-success-700 rounded-full text-xs">
                           {t(pac.frequency)}
                         </span>
+                        {pac.asAsset && (
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
+                            In Portfolio
+                          </span>
+                        )}
                       </div>
-                            {pac.asAsset && (
-                              <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-                                In Portfolio
-                              </span>
-                            )}
                       
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                         <div>
                           <p className="text-gray-600">{t('monthlyAmount')}</p>
                           <p className="font-semibold">{formatCurrency(pac.monthlyAmount)}</p>
@@ -412,6 +413,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
                         </div>
                       </div>
                     </div>
+                    
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -422,6 +424,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
                       <X className="w-4 h-4" />
                     </button>
                   </div>
+                </div>
               );
             })}
           </div>
