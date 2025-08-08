@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Strategy, Asset, ASSET_COLORS, ASSET_TYPE_LABELS } from '../types/portfolio';
 import { Language } from '../types/language';
 import { formatCurrency, formatPercentage } from '../utils/calculations';
@@ -26,21 +26,27 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
   // Create chart data for target allocation
-  const chartData = assets
-    .filter(asset => strategy.targetAllocations[asset.id] > 0)
-    .map(asset => ({
-      name: asset.name,
-      value: strategy.targetAllocations[asset.id],
-      color: ASSET_COLORS[asset.type],
-      type: asset.type
-    }));
+  const chartData = Object.entries(strategy.targetAllocations)
+    .filter(([assetId, allocation]) => allocation > 0)
+    .map(([assetId, allocation]) => {
+      const asset = assets.find(a => a.id === assetId);
+      if (!asset) return null;
+      return {
+        name: asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name,
+        fullName: asset.name,
+        value: allocation,
+        color: ASSET_COLORS[asset.type],
+        type: asset.type
+      };
+    })
+    .filter(Boolean);
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900">{data.name}</p>
+          <p className="font-medium text-gray-900">{data.fullName}</p>
           <p className="text-sm text-gray-600">{ASSET_TYPE_LABELS[data.type]}</p>
           <p className="text-sm font-semibold text-primary-600">
             {data.value}%
@@ -49,6 +55,29 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       );
     }
     return null;
+  };
+
+  const CustomLegend = ({ payload }: any) => {
+    if (!payload || payload.length === 0) return null;
+    
+    return (
+      <div className="flex flex-wrap justify-center gap-2 mt-2">
+        {payload.slice(0, 3).map((entry: any, index: number) => (
+          <div key={index} className="flex items-center gap-1">
+            <div 
+              className="w-2 h-2 rounded-full" 
+              style={{ backgroundColor: entry.color }}
+            />
+            <span className="text-xs text-gray-600">
+              {entry.payload.value}%
+            </span>
+          </div>
+        ))}
+        {payload.length > 3 && (
+          <span className="text-xs text-gray-500">+{payload.length - 3} altri</span>
+        )}
+      </div>
+    );
   };
 
   const getRiskColor = (riskScore: number) => {
@@ -86,25 +115,32 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="h-32">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={chartData}
-                cx="50%"
-                cy="50%"
-                innerRadius={25}
-                outerRadius={50}
-                paddingAngle={2}
-                dataKey="value"
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomTooltip />} />
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="h-40">
+          {chartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="45%"
+                  innerRadius={20}
+                  outerRadius={45}
+                  paddingAngle={1}
+                  dataKey="value"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend content={<CustomLegend />} />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+              Nessuna allocazione
+            </div>
+          )}
         </div>
 
         <div className="space-y-3">
