@@ -335,7 +335,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             )}
           </button>
           
-          {!import.meta.env.VITE_OPENAI_API_KEY && (
+          {!import.meta.env.VITE_OPENAI_API_KEY_PFB && (
             <div className="mt-3 p-3 bg-warning-50 border border-warning-200 rounded-lg">
               <p className="text-sm text-warning-700">
                 <strong>Nota:</strong> Per utilizzare l'AI reale, configura la tua API key OpenAI nel file .env

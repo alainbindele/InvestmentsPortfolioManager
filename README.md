@@ -32,7 +32,7 @@ cp .env.example .env
 
 4. Modifica il file `.env` e inserisci la tua API key di OpenAI:
 ```
-VITE_OPENAI_API_KEY=sk-your-actual-api-key-here
+VITE_OPENAI_API_KEY_PFB=sk-your-actual-api-key-here
 ```
 
 Per ottenere una API key di OpenAI:
