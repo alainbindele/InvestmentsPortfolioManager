@@ -111,7 +111,7 @@ export class ChatGPTService {
         }
         
         IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
-        Fornisci raccomandazioni specifiche, pratiche e actionable. Gli insights di mercato devono essere attuali e basati su tendenze reali del 2025.`
+        Fornisci raccomandazioni specifiche, pratiche e actionable. Gli insights di mercato devono essere attuali e basati su tendenze reali del 2024.`
       },
       {
         role: 'user',
