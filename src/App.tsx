@@ -10,6 +10,7 @@ import { StrategyCard } from './components/StrategyCard';
 import { StrategyComparison } from './components/StrategyComparison';
 import { ChatGPTIntegration } from './components/ChatGPTIntegration';
 import { PACManager } from './components/PACManager';
+import { AssetModal } from './components/AssetModal';
 import { LanguageSelector } from './components/LanguageSelector';
 import { mockAssets, mockStrategies } from './utils/mockData';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage } from './utils/calculations';
