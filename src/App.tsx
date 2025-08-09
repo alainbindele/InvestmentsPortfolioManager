@@ -1,399 +1,445 @@
-import React, { useState, useEffect } from 'react';
-import { PieChart, BarChart3, Bot, TrendingUp, Wallet, Calendar } from 'lucide-react';
-import { Asset, Strategy, PACPlan } from './types/portfolio';
-import { Language } from './types/language';
-import { AssetForm } from './components/AssetForm';
-import { PortfolioChart } from './components/PortfolioChart';
-import { StrategyCard } from './components/StrategyCard';
-import { ProjectionChart } from './components/ProjectionChart';
-import { MultiStrategyProjectionChart } from './components/MultiStrategyProjectionChart';
-import { StrategyComparison } from './components/StrategyComparison';
-import { ChatGPTIntegration } from './components/ChatGPTIntegration';
-import { PACManager } from './components/PACManager';
-import { LanguageSelector } from './components/LanguageSelector';
-import { SEOHead } from './components/SEOHead';
-import { calculatePortfolioMetrics, generateCurrentStrategy, formatCurrency, formatPercentage } from './utils/calculations';
-import { getTranslation } from './utils/translations';
+import { Asset, Strategy, PortfolioAnalysis, MarketInsight } from '../types/portfolio';
+import { calculatePortfolioMetrics } from '../utils/calculations';
 
-export const App: React.FC = () => {
-  const [language, setLanguage] = useState<Language>('it');
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'ai' | 'pac'>('portfolio');
-  const [assets, setAssets] = useState<Asset[]>([]);
-  const [strategies, setStrategies] = useState<Strategy[]>([]);
-  const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set());
-  const [pacPlans, setPacPlans] = useState<PACPlan[]>([]);
+export class ChatGPTService {
+  private apiKey: string | null = null;
+  private baseURL = 'https://api.openai.com/v1/chat/completions';
 
-  const t = (key: string) => getTranslation(language, key);
+  setApiKey(apiKey: string) {
+    this.apiKey = apiKey;
+  }
 
-  // Generate current strategy based on assets
-  const currentStrategy = generateCurrentStrategy(assets);
-  const allStrategies = [currentStrategy, ...strategies];
+  private async makeOpenAIRequest(messages: any[], temperature: number = 0.7): Promise<any> {
+    if (!this.apiKey) {
+      throw new Error('API key non configurata');
+    }
 
-  // Calculate portfolio metrics
-  const portfolioMetrics = calculatePortfolioMetrics(assets);
-
-  const handleAddAsset = (assetData: Omit<Asset, 'id'>) => {
-    const newAsset: Asset = {
-      ...assetData,
-      id: `asset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    };
-    setAssets(prev => [...prev, newAsset]);
-  };
-
-  const handleRemoveAsset = (assetId: string) => {
-    setAssets(prev => prev.filter(asset => asset.id !== assetId));
-  };
-
-  const handleStrategyGenerated = (strategy: Strategy) => {
-    setStrategies(prev => {
-      const filtered = prev.filter(s => s.id !== strategy.id);
-      return [...filtered, strategy];
+    const response = await fetch(this.baseURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-4',
+        messages,
+        temperature,
+        max_tokens: 2000
+      })
     });
-  };
 
-  const handleStrategySelect = (strategyId: string) => {
-    setSelectedStrategies(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(strategyId)) {
-        newSet.delete(strategyId);
-      } else {
-        newSet.add(strategyId);
-      }
-      return newSet;
-    });
-  };
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`OpenAI API Error: ${error.error?.message || 'Unknown error'}`);
+    }
 
-  const handleAddPAC = (pacData: Omit<PACPlan, 'id'>) => {
-    const newPAC: PACPlan = {
-      ...pacData,
-      id: `pac-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    };
-    setPacPlans(prev => [...prev, newPAC]);
-  };
+    const data = await response.json();
+    
+    try {
+      return JSON.parse(data.choices[0].message.content);
+    } catch (parseError) {
+      // Se il parsing JSON fallisce, restituisci la risposta raw
+      console.warn('Risposta non in formato JSON, usando parsing manuale');
+      return this.parseResponseManually(data.choices[0].message.content);
+    }
+  }
 
-  const handleRemovePAC = (pacId: string) => {
-    setPacPlans(prev => prev.filter(pac => pac.id !== pacId));
-  };
-
-  const selectedStrategiesList = allStrategies.filter(s => selectedStrategies.has(s.id));
-
-  const tabs = [
-    { id: 'portfolio' as const, label: t('portfolio'), icon: Wallet },
-    { id: 'strategies' as const, label: t('strategies'), icon: BarChart3 },
-    { id: 'ai' as const, label: t('aiAssistant'), icon: Bot },
-    { id: 'pac' as const, label: t('pac'), icon: Calendar }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <SEOHead language={language} />
+  private parseResponseManually(content: string): any {
+    // Cerca di estrarre JSON dalla risposta anche se non è perfettamente formattata
+    try {
+      // Cerca il primo { e l'ultimo }
+      const start = content.indexOf('{');
+      const end = content.lastIndexOf('}');
       
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary-600 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">{t('appTitle')}</h1>
-                <p className="text-sm text-gray-600">{t('appSubtitle')}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              {assets.length > 0 && (
-                <div className="hidden sm:flex items-center gap-6 text-sm">
-                  <div className="text-center">
-                    <p className="text-gray-600">{t('totalValue')}</p>
-                    <p className="font-bold text-gray-900">
-                      {formatCurrency(portfolioMetrics.totalValue)}
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-gray-600">{t('expectedReturn')}</p>
-                    <p className="font-bold text-success-600">
-                      {formatPercentage(portfolioMetrics.expectedReturn)}
-                    </p>
-                  </div>
-                </div>
-              )}
-              
-              <LanguageSelector 
-                currentLanguage={language}
-                onLanguageChange={setLanguage}
-              />
-            </div>
-          </div>
-        </div>
-      </header>
+      if (start !== -1 && end !== -1 && end > start) {
+        const jsonStr = content.substring(start, end + 1);
+        return JSON.parse(jsonStr);
+      }
+      
+      // Se non trova JSON, restituisce un oggetto di fallback
+      throw new Error('Nessun JSON trovato nella risposta');
+    } catch (error) {
+      console.warn('Parsing manuale fallito:', error);
+      return null;
+    }
+  }
 
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
+  async analyzePortfolio(assets: Asset[]): Promise<PortfolioAnalysis> {
+    const metrics = calculatePortfolioMetrics(assets);
+    
+    const portfolioData = {
+      assets: assets.map(asset => ({
+        name: asset.name,
+        type: asset.type,
+        value: asset.currentValue,
+        expectedReturn: asset.expectedReturn,
+        riskLevel: asset.riskLevel,
+        allocation: ((asset.currentValue / metrics.totalValue) * 100).toFixed(1)
+      })),
+      totalValue: metrics.totalValue,
+      expectedReturn: metrics.expectedReturn,
+      riskScore: metrics.riskScore,
+      diversificationScore: metrics.diversificationScore
+    };
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'portfolio' && (
-          <div className="space-y-8">
-            {/* Asset Form */}
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('yourAssets')}</h2>
-              <AssetForm onAddAsset={handleAddAsset} language={language} />
-            </div>
+    const messages = [
+      {
+        role: 'system',
+        content: `Sei un esperto consulente finanziario specializzato nell'analisi di portafogli di investimento. 
+        Analizza il portafoglio fornito e restituisci SOLO un JSON valido con questa struttura esatta:
+        {
+          "currentMetrics": {
+            "totalValue": number,
+            "expectedReturn": number,
+            "riskScore": number,
+            "diversificationScore": number
+          },
+          "recommendations": [
+            "string di raccomandazione 1",
+            "string di raccomandazione 2",
+            "string di raccomandazione 3",
+            "string di raccomandazione 4"
+          ],
+          "marketInsights": [
+            {
+              "asset": "nome categoria asset",
+              "insight": "insight dettagliato sul mercato",
+              "confidence": 0.75,
+              "timeframe": "6-12 mesi"
+            }
+          ]
+        }
+        
+        IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
+        Fornisci raccomandazioni specifiche, pratiche e actionable. Gli insights di mercato devono essere attuali e basati su tendenze reali del 2025.`
+      },
+      {
+        role: 'user',
+        content: `Analizza questo portafoglio di investimenti:
+        
+        PORTAFOGLIO:
+        ${JSON.stringify(portfolioData, null, 2)}
+        
+        Fornisci un'analisi completa con raccomandazioni specifiche per ottimizzare questo portafoglio.`
+      }
+    ];
 
-            {/* Assets List */}
-            {assets.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Asset Aggiunti ({assets.length})</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {assets.map((asset) => (
-                    <div key={asset.id} className="card">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900">{asset.name}</h4>
-                          <p className="text-sm text-gray-600 capitalize">{t(asset.type)}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {asset.isPAC && (
-                            <div className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
-                              PAC
-                            </div>
-                          )}
-                          <button
-                            onClick={() => handleRemoveAsset(asset.id)}
-                            className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Valore:</span>
-                          <span className="font-semibold">{formatCurrency(asset.currentValue)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Rendimento:</span>
-                          <span className="font-semibold text-success-600">{formatPercentage(asset.expectedReturn)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Rischio:</span>
-                          <span className={`font-semibold ${
-                            asset.riskLevel === 'low' ? 'text-success-600' :
-                            asset.riskLevel === 'medium' ? 'text-warning-600' : 'text-error-600'
-                          }`}>
-                            {t(asset.riskLevel)}
-                          </span>
-                        </div>
-                        {asset.isPAC && asset.pacAmount && (
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">PAC:</span>
-                            <span className="font-semibold text-primary-600">
-                              {formatCurrency(asset.pacAmount)}/{asset.pacFrequency === 'monthly' ? 'mese' : 
-                               asset.pacFrequency === 'quarterly' ? 'trimestre' : 
-                               asset.pacFrequency === 'biannual' ? 'semestre' : 'anno'}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+    try {
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
+      if (apiKey) {
+        this.setApiKey(apiKey);
+        const aiResponse = await this.makeOpenAIRequest(messages);
+        
+        // Se la risposta è null (parsing fallito), usa il fallback
+        if (!aiResponse) {
+          throw new Error('Risposta AI non valida');
+        }
+        
+        return {
+          currentMetrics: aiResponse.currentMetrics || metrics,
+          recommendations: aiResponse.recommendations || [
+            "Analisi AI completata con successo",
+            "Raccomandazioni personalizzate generate dall'AI"
+          ],
+          marketInsights: aiResponse.marketInsights || [],
+          suggestedActions: []
+        };
+      } else {
+        // Nessuna API key configurata, usa fallback
+        throw new Error('API key non configurata');
+      }
+    } catch (error) {
+      console.error('Errore nell\'analisi AI:', error);
+      
+      // Fallback con analisi mock migliorata
+      return {
+        currentMetrics: metrics,
+        recommendations: [
+          "⚠️ Analisi AI non disponibile - verifica la configurazione API",
+          "Il portafoglio mostra una diversificazione discreta tra asset class",
+          "Considera di rivedere l'allocazione in base ai tuoi obiettivi di rischio",
+          "Monitora regolarmente le performance e riequilibra se necessario"
+        ],
+        marketInsights: [
+          {
+            asset: "Analisi di Mercato",
+            insight: "Analisi AI temporaneamente non disponibile. Configura l'API key OpenAI per ottenere insights di mercato in tempo reale.",
+            confidence: 0.5,
+            timeframe: "N/A"
+          }
+        ],
+        suggestedActions: []
+      };
+    }
+  }
 
-            {assets.length === 0 && (
-              <div className="text-center py-12">
-                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <Wallet className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Nessun Asset</h3>
-                <p className="text-gray-600">{t('noAssetsMessage')}</p>
-              </div>
-            )}
+  async generateStrategy(
+    assets: Asset[], 
+    riskProfile: 'conservative' | 'balanced' | 'aggressive',
+    goals: string[]
+  ): Promise<Strategy> {
+    const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
+    
+    const portfolioData = {
+      assets: assets.map(asset => ({
+        id: asset.id,
+        name: asset.name,
+        type: asset.type,
+        currentValue: asset.currentValue,
+        expectedReturn: asset.expectedReturn,
+        riskLevel: asset.riskLevel
+      })),
+      totalValue,
+      riskProfile,
+      goals
+    };
 
-            {/* Portfolio Analysis */}
-            {assets.length > 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Portfolio Chart */}
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h3>
-                  <PortfolioChart assets={assets} language={language} />
-                </div>
+    const riskProfileDescriptions = {
+      conservative: 'conservativo - focus su preservazione del capitale e rendimenti stabili',
+      balanced: 'bilanciato - equilibrio tra crescita e stabilità',
+      aggressive: 'aggressivo - focus su massimizzazione dei rendimenti con tolleranza al rischio'
+    };
 
-                {/* Portfolio Metrics */}
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioMetrics')}</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('totalPortfolioValue')}</p>
-                      <p className="text-xl font-bold text-gray-900">
-                        {formatCurrency(portfolioMetrics.totalValue)}
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-                      <p className="text-xl font-bold text-success-600">
-                        {formatPercentage(portfolioMetrics.expectedReturn)}
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('riskScore')}</p>
-                      <p className="text-xl font-bold text-warning-600">
-                        {portfolioMetrics.riskScore.toFixed(1)}/5
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('diversification')}</p>
-                      <p className="text-xl font-bold text-primary-600">
-                        {portfolioMetrics.diversificationScore}/100
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+    const messages = [
+      {
+        role: 'system',
+        content: `Sei un esperto consulente finanziario specializzato nella creazione di strategie di investimento ottimali.
+        Crea una strategia di investimento personalizzata e restituisci SOLO un JSON valido con questa struttura esatta:
+        {
+          "name": "Nome della strategia",
+          "description": "Descrizione dettagliata della strategia (max 200 caratteri)",
+          "targetAllocations": {
+            "asset_id_1": percentuale_numero,
+            "asset_id_2": percentuale_numero
+          },
+          "expectedReturn": numero_rendimento_atteso,
+          "riskScore": numero_da_1_a_5,
+          "sharpeRatio": numero_sharpe_ratio,
+          "maxDrawdown": numero_max_drawdown_percentuale,
+          "volatility": numero_volatilita_percentuale,
+          "reasoning": [
+            "Ragione 1 per questa allocazione",
+            "Ragione 2 per questa allocazione",
+            "Ragione 3 per questa allocazione"
+          ]
+        }
+        
+        Le percentuali in targetAllocations devono sommare a 100. Usa gli ID degli asset forniti.
+        IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
+        Basa le tue raccomandazioni su principi di Modern Portfolio Theory e diversificazione ottimale.`
+      },
+      {
+        role: 'user',
+        content: `Crea una strategia di investimento ottimale per questo portafoglio:
+        
+        DATI PORTAFOGLIO:
+        ${JSON.stringify(portfolioData, null, 2)}
+        
+        PROFILO DI RISCHIO: ${riskProfileDescriptions[riskProfile]}
+        
+        OBIETTIVI: ${goals.join(', ')}
+        
+        Crea una strategia che ottimizzi il rapporto rischio-rendimento per questo profilo specifico.`
+      }
+    ];
 
-            {/* Portfolio Projection */}
-            {assets.length > 0 && (
-              <ProjectionChart
-                currentStrategy={currentStrategy}
-                selectedStrategy={null}
-                assets={assets}
-                language={language}
-              />
-            )}
-          </div>
-        )}
+    try {
+      const aiResponse = await this.makeOpenAIRequest(messages, 0.3);
+      
+      if (!aiResponse || !aiResponse.targetAllocations || typeof aiResponse.targetAllocations !== 'object') {
+        throw new Error('Risposta AI non valida');
+      }
+      
+      // Normalizza le allocazioni per assicurarsi che sommino a 100
+      const totalAllocation = Object.values(aiResponse.targetAllocations).reduce((sum: number, val: any) => sum + Number(val), 0);
+      const normalizedAllocations: { [key: string]: number } = {};
+      
+      Object.entries(aiResponse.targetAllocations).forEach(([assetId, allocation]) => {
+        normalizedAllocations[assetId] = Math.round((Number(allocation) / totalAllocation) * 100);
+      });
 
-        {activeTab === 'strategies' && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('investmentStrategies')}</h2>
-              <p className="text-gray-600 mb-6">{t('strategiesDescription')}</p>
-            </div>
+      const strategy: Strategy = {
+        id: `ai-${riskProfile}-${Date.now()}`,
+        name: aiResponse.name || `Strategia AI ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)}`,
+        description: aiResponse.description || `Strategia ottimizzata dall'AI per profilo ${riskProfile}`,
+        targetAllocations: normalizedAllocations,
+        expectedReturn: Number(aiResponse.expectedReturn) || this.getDefaultReturn(riskProfile),
+        riskScore: Number(aiResponse.riskScore) || this.getDefaultRisk(riskProfile),
+        sharpeRatio: Number(aiResponse.sharpeRatio) || this.calculateDefaultSharpe(riskProfile),
+        maxDrawdown: Number(aiResponse.maxDrawdown) || this.getDefaultDrawdown(riskProfile),
+        volatility: Number(aiResponse.volatility) || this.getDefaultVolatility(riskProfile),
+        createdAt: new Date(),
+        isAIGenerated: true
+      };
 
-            {/* Strategies Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {allStrategies.map((strategy) => (
-                <div key={strategy.id} className="space-y-4">
-                  <StrategyCard
-                    strategy={strategy}
-                    assets={assets}
-                    isSelected={selectedStrategies.has(strategy.id)}
-                    onSelect={() => handleStrategySelect(strategy.id)}
-                    language={language}
-                  />
-                  
-                  {/* Pie Chart for Strategy */}
-                  {assets.length > 0 && Object.keys(strategy.targetAllocations).length > 0 && (
-                    <div className="card">
-                      <h4 className="text-sm font-medium text-gray-700 mb-3">Allocazione Target</h4>
-                      <PortfolioChart 
-                        assets={assets} 
-                        language={language} 
-                        targetAllocations={strategy.targetAllocations}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+      return strategy;
+    } catch (error) {
+      console.error('Errore nella generazione strategia AI:', error);
+      
+      // Fallback con strategia mock migliorata
+      return this.generateFallbackStrategy(assets, riskProfile);
+    }
+  }
 
-            {assets.length === 0 && (
-              <div className="text-center py-12">
-                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <BarChart3 className="w-12 h-12 text-gray-400" />
-                </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Nessuna Strategia</h3>
-                <p className="text-gray-600">Aggiungi asset nella sezione Portfolio per vedere le strategie</p>
-              </div>
-            )}
+  private getDefaultReturn(riskProfile: string): number {
+    switch (riskProfile) {
+      case 'conservative': return 4.5;
+      case 'balanced': return 6.8;
+      case 'aggressive': return 9.2;
+      default: return 6.0;
+    }
+  }
 
-            {/* Strategy Comparison */}
-            {selectedStrategiesList.length > 0 && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Confronto Strategie Selezionate</h3>
-                  <p className="text-gray-600">
-                    Confronta le performance delle {selectedStrategiesList.length} strategie selezionate
-                  </p>
-                </div>
+  private getDefaultRisk(riskProfile: string): number {
+    switch (riskProfile) {
+      case 'conservative': return 1.5;
+      case 'balanced': return 2.2;
+      case 'aggressive': return 2.8;
+      default: return 2.0;
+    }
+  }
 
-                {/* Multi-Strategy Projection Chart */}
-                <div className="card">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Proiezione Crescita Comparativa</h4>
-                  <MultiStrategyProjectionChart
-                    strategies={selectedStrategiesList}
-                    assets={assets}
-                    language={language}
-                  />
-                </div>
+  private calculateDefaultSharpe(riskProfile: string): number {
+    const returns = this.getDefaultReturn(riskProfile);
+    const risk = this.getDefaultRisk(riskProfile);
+    return (returns - 2) / (risk * 5);
+  }
 
-                {/* Strategy Comparison Table */}
-                <StrategyComparison strategies={selectedStrategiesList} language={language} />
-              </div>
-            )}
-          </div>
-        )}
+  private getDefaultDrawdown(riskProfile: string): number {
+    switch (riskProfile) {
+      case 'conservative': return 12;
+      case 'balanced': return 18;
+      case 'aggressive': return 25;
+      default: return 18;
+    }
+  }
 
-        {activeTab === 'ai' && (
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('aiAssistantTitle')}</h2>
-            <p className="text-gray-600 mb-6">{t('aiDescription')}</p>
-            
-            <ChatGPTIntegration
-              assets={assets}
-              language={language}
-              onStrategyGenerated={handleStrategyGenerated}
-            />
-          </div>
-        )}
+  private getDefaultVolatility(riskProfile: string): number {
+    switch (riskProfile) {
+      case 'conservative': return 8.5;
+      case 'balanced': return 12.3;
+      case 'aggressive': return 16.8;
+      default: return 12.0;
+    }
+  }
 
-        {activeTab === 'pac' && (
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('pacTitle')}</h2>
-            <p className="text-gray-600 mb-6">{t('pacDescription')}</p>
-            
-            <PACManager
-              assets={assets}
-              pacPlans={pacPlans}
-              onAddPAC={handleAddPAC}
-              onRemovePAC={handleRemovePAC}
-              language={language}
-            />
-          </div>
-        )}
-      </main>
-    </div>
-  );
-};
+  private generateFallbackStrategy(assets: Asset[], riskProfile: string): Strategy {
+    let targetAllocations: { [assetId: string]: number } = {};
+    
+    // Strategia di fallback basata sul profilo di rischio
+    assets.forEach(asset => {
+      switch (riskProfile) {
+        case 'conservative':
+          switch (asset.type) {
+            case 'bonds':
+            case 'cash':
+              targetAllocations[asset.id] = 35;
+              break;
+            case 'etf':
+            case 'stocks':
+              targetAllocations[asset.id] = 25;
+              break;
+            case 'real_estate':
+              targetAllocations[asset.id] = 20;
+              break;
+            default:
+              targetAllocations[asset.id] = 5;
+          }
+          break;
+          
+        case 'balanced':
+          switch (asset.type) {
+            case 'etf':
+            case 'stocks':
+              targetAllocations[asset.id] = 40;
+              break;
+            case 'bonds':
+              targetAllocations[asset.id] = 25;
+              break;
+            case 'real_estate':
+              targetAllocations[asset.id] = 20;
+              break;
+            case 'cash':
+              targetAllocations[asset.id] = 10;
+              break;
+            default:
+              targetAllocations[asset.id] = 5;
+          }
+          break;
+          
+        case 'aggressive':
+          switch (asset.type) {
+            case 'etf':
+            case 'stocks':
+              targetAllocations[asset.id] = 55;
+              break;
+            case 'crypto':
+              targetAllocations[asset.id] = 15;
+              break;
+            case 'real_estate':
+              targetAllocations[asset.id] = 15;
+              break;
+            case 'bonds':
+              targetAllocations[asset.id] = 10;
+              break;
+            default:
+              targetAllocations[asset.id] = 5;
+          }
+          break;
+      }
+    });
 
-export default App;
+    // Normalizza le allocazioni
+    const totalAllocation = Object.values(targetAllocations).reduce((sum, val) => sum + val, 0);
+    Object.keys(targetAllocations).forEach(key => {
+      targetAllocations[key] = Math.round((targetAllocations[key] / totalAllocation) * 100);
+    });
+
+    return {
+      id: `fallback-${riskProfile}-${Date.now()}`,
+      name: `⚠️ Strategia ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)} (Fallback)`,
+      description: `Strategia di fallback - configura l'API OpenAI per strategie AI personalizzate`,
+      targetAllocations,
+      expectedReturn: this.getDefaultReturn(riskProfile),
+      riskScore: this.getDefaultRisk(riskProfile),
+      sharpeRatio: this.calculateDefaultSharpe(riskProfile),
+      maxDrawdown: this.getDefaultDrawdown(riskProfile),
+      volatility: this.getDefaultVolatility(riskProfile),
+      createdAt: new Date(),
+      isAIGenerated: false
+    };
+  }
+
+  async getMarketResearch(assetType: string): Promise<string> {
+    if (!this.apiKey) {
+      return `Ricerca di mercato non disponibile per ${assetType}. Configura l'API key OpenAI per insights in tempo reale.`;
+    }
+
+    const messages = [
+      {
+        role: 'system',
+        content: `Sei un analista finanziario esperto. Fornisci una ricerca di mercato concisa e attuale per la categoria di asset richiesta.
+        Restituisci SOLO un JSON con questa struttura:
+        {
+          "research": "Analisi di mercato dettagliata e attuale (max 300 caratteri)",
+          "outlook": "positive|neutral|negative",
+          "keyFactors": ["fattore1", "fattore2", "fattore3"]
+        }`
+      },
+      {
+        role: 'user',
+        content: `Fornisci una ricerca di mercato aggiornata per: ${assetType}
+        
+        Include tendenze attuali, outlook e fattori chiave da considerare per il 2024.`
+      }
+    ];
+
+    try {
+      const aiResponse = await this.makeOpenAIRequest(messages);
+      return aiResponse.research || `Analisi di mercato per ${assetType} temporaneamente non disponibile.`;
+    } catch (error) {
+      console.error('Errore nella ricerca di mercato:', error);
+      return `Errore nel recupero della ricerca di mercato per ${assetType}. Verifica la configurazione API.`;
+    }
+  }
+}
