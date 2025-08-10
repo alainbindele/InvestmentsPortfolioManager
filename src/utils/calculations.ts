@@ -1,4 +1,5 @@
 import { Asset, Strategy, PortfolioMetrics } from '../types/portfolio';
+import { Currency, getCurrencyByCode } from '../types/currency';
 
 // Risk level mappings
 const RISK_MULTIPLIERS = {
@@ -147,12 +148,43 @@ export const projectPortfolioGrowth = (
   return projections;
 };
 
-export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('it-IT', {
+export const formatCurrency = (amount: number, currency: Currency = 'EUR'): string => {
+  const currencyData = getCurrencyByCode(currency);
+  
+  // For currencies with specific formatting needs
+  const formatOptions: Intl.NumberFormatOptions = {
     style: 'currency',
-    currency: 'EUR',
+    currency: currency,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
+  };
+  
+  // Special handling for certain currencies
+  if (['JPY', 'KRW', 'VND', 'IDR'].includes(currency)) {
+    // These currencies typically don't use decimal places
+    formatOptions.minimumFractionDigits = 0;
+    formatOptions.maximumFractionDigits = 0;
+  } else if (['BHD', 'KWD', 'OMR'].includes(currency)) {
+    // These currencies use 3 decimal places
+    formatOptions.minimumFractionDigits = 3;
+    formatOptions.maximumFractionDigits = 3;
+  }
+  
+  // Determine locale based on currency
+  let locale = 'en-US';
+  if (currency === 'EUR') locale = 'it-IT';
+  else if (currency === 'GBP') locale = 'en-GB';
+  else if (currency === 'JPY') locale = 'ja-JP';
+  else if (currency === 'CNY') locale = 'zh-CN';
+  else if (currency === 'INR') locale = 'hi-IN';
+  else if (currency === 'BRL') locale = 'pt-BR';
+  else if (currency === 'RUB') locale = 'ru-RU';
+  else if (currency === 'KRW') locale = 'ko-KR';
+  
+  return new Intl.NumberFormat('it-IT', {
+    style: 'currency',
+    currency: currency,
+    ...formatOptions
   }).format(amount);
 };
 

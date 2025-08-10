@@ -1,6 +1,7 @@
 import React from 'react';
 import { Strategy, Asset } from '../types/portfolio';
 import { Language } from '../types/language';
+import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
 import { Target, TrendingUp, Shield, Zap, Bot } from 'lucide-react';
@@ -8,6 +9,7 @@ import { Target, TrendingUp, Shield, Zap, Bot } from 'lucide-react';
 interface StrategyCardProps {
   strategy: Strategy;
   assets: Asset[];
+  currency: Currency;
   isSelected: boolean;
   onSelect: () => void;
   language: Language;
@@ -16,6 +18,7 @@ interface StrategyCardProps {
 export const StrategyCard: React.FC<StrategyCardProps> = ({
   strategy,
   assets,
+  currency,
   isSelected,
   onSelect,
   language
@@ -145,7 +148,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                     <div className="text-xs text-gray-500">
                       {new Intl.NumberFormat('it-IT', {
                         style: 'currency',
-                        currency: 'EUR',
+                        currency: currency,
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0
                       }).format(monetaryValue)}
@@ -161,7 +164,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium text-gray-700">Totale Portfolio:</span>
               <span className="font-bold text-gray-900">
-                {formatCurrency(totalValue)}
+                {formatCurrency(totalValue, currency)}
               </span>
             </div>
           </div>

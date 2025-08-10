@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit } from 'lucide-react';
 import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
+import { Currency } from './types/currency';
 import { AssetForm } from './components/AssetForm';
 import { PortfolioChart } from './components/PortfolioChart';
 import { StrategyCard } from './components/StrategyCard';
@@ -10,12 +11,14 @@ import { MultiStrategyProjectionChart } from './components/MultiStrategyProjecti
 import { ChatGPTIntegration } from './components/ChatGPTIntegration';
 import { ProjectionChart } from './components/ProjectionChart';
 import { LanguageSelector } from './components/LanguageSelector';
+import { CurrencySelector } from './components/CurrencySelector';
 import { SEOHead } from './components/SEOHead';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage, generateCurrentStrategy } from './utils/calculations';
 import { getTranslation } from './utils/translations';
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('it');
+  const [currency, setCurrency] = useState<Currency>('EUR');
   const [assets, setAssets] = useState<Asset[]>([]);
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set());
   const [aiStrategies, setAiStrategies] = useState<Strategy[]>([]);
@@ -107,7 +110,7 @@ export const App: React.FC = () => {
                 <div className="hidden sm:flex items-center gap-6 text-sm">
                   <div className="text-center">
                     <p className="text-gray-600">{t('totalValue')}</p>
-                    <p className="font-bold text-gray-900">{formatCurrency(metrics.totalValue)}</p>
+                    <p className="font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
                   </div>
                   <div className="text-center">
                     <p className="text-gray-600">{t('expectedReturn')}</p>
@@ -115,6 +118,7 @@ export const App: React.FC = () => {
                   </div>
                 </div>
               )}
+              <CurrencySelector currentCurrency={currency} onCurrencyChange={setCurrency} />
               <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
             </div>
           </div>
@@ -197,7 +201,7 @@ export const App: React.FC = () => {
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">{t('currentValue')}:</span>
-                          <span className="font-semibold">{formatCurrency(asset.currentValue)}</span>
+                          <span className="font-semibold">{formatCurrency(asset.currentValue, currency)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">{t('expectedReturn')}:</span>
@@ -219,7 +223,7 @@ export const App: React.FC = () => {
                               <span className="text-xs font-medium text-primary-700">{t('pacActive')}</span>
                             </div>
                             <div className="text-xs text-gray-600">
-                              {formatCurrency(asset.pacAmount || 0)}/{
+                              {formatCurrency(asset.pacAmount || 0, currency)}/{
                                 asset.pacFrequency === 'monthly' ? t('monthly') :
                                 asset.pacFrequency === 'quarterly' ? t('quarterly') :
                                 asset.pacFrequency === 'biannual' ? t('biannual') : t('annual')
@@ -242,7 +246,7 @@ export const App: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="metric-card">
                       <p className="text-sm text-gray-600">{t('totalValue')}</p>
-                      <p className="text-xl font-bold text-gray-900">{formatCurrency(metrics.totalValue)}</p>
+                      <p className="text-xl font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
                     </div>
                     <div className="metric-card">
                       <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
@@ -305,6 +309,7 @@ export const App: React.FC = () => {
                 <StrategyCard
                   strategy={currentStrategy}
                   assets={assets}
+                  currency={currency}
                   isSelected={false}
                   onSelect={() => {}}
                   language={language}
@@ -328,6 +333,7 @@ export const App: React.FC = () => {
                       <StrategyCard
                         strategy={strategy}
                         assets={assets}
+                        currency={currency}
                         isSelected={selectedStrategies.has(strategy.id)}
                         onSelect={() => handleToggleStrategy(strategy.id)}
                         language={language}

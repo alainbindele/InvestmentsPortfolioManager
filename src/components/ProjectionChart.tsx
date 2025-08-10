@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Strategy, Asset } from '../types/portfolio';
 import { Language } from '../types/language';
+import { Currency } from '../types/currency';
 import { formatCurrency, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
 import { TrendingUp } from 'lucide-react';
@@ -10,6 +11,7 @@ interface ProjectionChartProps {
   currentStrategy: Strategy;
   selectedStrategy: Strategy | null;
   assets: Asset[];
+  currency: Currency;
   language: Language;
 }
 
@@ -17,6 +19,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   currentStrategy,
   selectedStrategy,
   assets,
+  currency,
   language
 }) => {
   const t = (key: string) => getTranslation(language, key);
@@ -133,7 +136,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             <YAxis 
               stroke="#6b7280"
               tick={{ fontSize: 12 }}
-              tickFormatter={(value) => formatCurrency(value)}
+              tickFormatter={(value) => formatCurrency(value, currency)}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
@@ -167,14 +170,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
         <div className="metric-card">
           <p className="text-sm text-gray-600">{t('currentValue')}</p>
           <p className="text-lg font-bold text-gray-900">
-            {formatCurrency(totalValue)}
+            {formatCurrency(totalValue, currency)}
           </p>
         </div>
         
         <div className="metric-card">
           <p className="text-sm text-gray-600">{currentStrategy.name}</p>
           <p className="text-lg font-bold text-gray-600">
-            {formatCurrency(finalCurrentValue)}
+            {formatCurrency(finalCurrentValue, currency)}
           </p>
         </div>
         
@@ -182,11 +185,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           <div className="metric-card">
             <p className="text-sm text-gray-600">{selectedStrategy.name}</p>
             <p className="text-lg font-bold text-primary-600">
-              {formatCurrency(finalSelectedValue)}
+              {formatCurrency(finalSelectedValue, currency)}
             </p>
             {difference !== 0 && (
               <p className={`text-sm font-medium ${difference > 0 ? 'text-success-600' : 'text-error-600'}`}>
-                {difference > 0 ? '+' : ''}{formatCurrency(difference)} ({differencePercentage > 0 ? '+' : ''}{differencePercentage.toFixed(1)}%)
+                {difference > 0 ? '+' : ''}{formatCurrency(difference, currency)} ({differencePercentage > 0 ? '+' : ''}{differencePercentage.toFixed(1)}%)
               </p>
             )}
           </div>

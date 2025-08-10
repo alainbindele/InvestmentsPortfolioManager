@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Strategy, Asset } from '../types/portfolio';
 import { Language } from '../types/language';
+import { Currency } from '../types/currency';
 import { formatCurrency, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
 
 interface MultiStrategyProjectionChartProps {
   strategies: Strategy[];
   assets: Asset[];
+  currency: Currency;
   language: Language;
 }
 
@@ -25,6 +27,7 @@ const STRATEGY_COLORS = [
 export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChartProps> = ({
   strategies,
   assets,
+  currency,
   language
 }) => {
   const t = (key: string) => getTranslation(language, key);
@@ -151,7 +154,7 @@ export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChart
             <YAxis 
               stroke="#6b7280"
               tick={{ fontSize: 12 }}
-              tickFormatter={(value) => formatCurrency(value)}
+              tickFormatter={(value) => formatCurrency(value, currency)}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend content={<CustomLegend />} />
@@ -186,16 +189,16 @@ export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChart
                   style={{ backgroundColor: projection.color }}
                 />
                 <p className="text-sm text-gray-600 font-medium">
-                  {projection.strategy.name}
+                  {strategy?.name}: {formatCurrency(entry.value, currency)}
                 </p>
               </div>
               <p className="text-lg font-bold text-gray-900">
-                {formatCurrency(finalValue)}
+                {formatCurrency(finalValue, currency)}
               </p>
               <p className={`text-sm font-medium ${
                 totalGrowth > 0 ? 'text-success-600' : 'text-error-600'
               }`}>
-                {totalGrowth > 0 ? '+' : ''}{formatCurrency(totalGrowth)} ({growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%)
+                {totalGrowth > 0 ? '+' : ''}{formatCurrency(totalGrowth, currency)} ({growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%)
               </p>
             </div>
           );
