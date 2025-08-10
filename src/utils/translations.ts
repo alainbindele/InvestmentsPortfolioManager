@@ -183,7 +183,7 @@ export const translations: Record<string, Translation> = {
     error: "Error",
     success: "Success",
     confirm: "Confirm",
-    close: "Close"
+    close: "Close",
     
     // App specific
     appTitle: "Portfolio Balancer",
@@ -317,7 +317,7 @@ export const translations: Record<string, Translation> = {
     error: "Errore",
     success: "Successo",
     confirm: "Conferma",
-    close: "Chiudi"
+    close: "Chiudi",
     
     // App specific
     appTitle: "Portfolio Balancer",
@@ -451,7 +451,7 @@ export const translations: Record<string, Translation> = {
     error: "Error",
     success: "Éxito",
     confirm: "Confirmar",
-    close: "Cerrar"
+    close: "Cerrar",
     
     // App specific
     appTitle: "Portfolio Balancer",
@@ -585,7 +585,7 @@ export const translations: Record<string, Translation> = {
     error: "Erreur",
     success: "Succès",
     confirm: "Confirmer",
-    close: "Fermer"
+    close: "Fermer",
     
     // App specific
     appTitle: "Portfolio Balancer",
@@ -719,7 +719,7 @@ export const translations: Record<string, Translation> = {
     error: "Fehler",
     success: "Erfolg",
     confirm: "Bestätigen",
-    close: "Schließen"
+    close: "Schließen",
     
     // App specific
     appTitle: "Portfolio Balancer",
@@ -853,7 +853,7 @@ export const translations: Record<string, Translation> = {
     error: "Erro",
     success: "Sucesso",
     confirm: "Confirmar",
-    close: "Fechar"
+    close: "Fechar",
     
     // App specific
     appTitle: "Portfolio Balancer",
