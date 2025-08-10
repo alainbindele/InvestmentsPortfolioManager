@@ -133,7 +133,6 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
               const asset = assets.find(a => a.id === assetId);
               if (!asset) return null;
               
-              const totalValue = assets.reduce((sum, a) => sum + a.currentValue, 0);
               const monetaryValue = (allocation / 100) * totalValue;
               
               return (
@@ -155,6 +154,16 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                 </div>
               );
             })}
+          </div>
+          
+          {/* Portfolio Total */}
+          <div className="pt-2 mt-2 border-t border-gray-200">
+            <div className="flex items-center justify-between text-sm">
+              <span className="font-medium text-gray-700">Totale Portfolio:</span>
+              <span className="font-bold text-gray-900">
+                {formatCurrency(totalValue)}
+              </span>
+            </div>
           </div>
         </div>
       )}
