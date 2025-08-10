@@ -265,6 +265,28 @@ export const App: React.FC = () => {
               </div>
             )}
           </div>
+            {/* Portfolio Growth Projection */}
+            {assets.length > 0 && (
+              <div className="card">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 bg-success-100 rounded-lg">
+                    <TrendingUp className="w-5 h-5 text-success-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">{t('portfolioGrowthProjection')}</h3>
+                    <p className="text-sm text-gray-600">
+                      {t('portfolioGrowthDescription')}
+                    </p>
+                  </div>
+                </div>
+                <ProjectionChart
+                  currentStrategy={currentStrategy}
+                  selectedStrategy={null}
+                  assets={assets}
+                  language={language}
+                />
+              </div>
+            )}
         )}
 
         {activeTab === 'strategies' && (
