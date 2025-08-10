@@ -8,6 +8,7 @@ import { StrategyCard } from './components/StrategyCard';
 import { StrategyComparison } from './components/StrategyComparison';
 import { MultiStrategyProjectionChart } from './components/MultiStrategyProjectionChart';
 import { ChatGPTIntegration } from './components/ChatGPTIntegration';
+import { ProjectionChart } from './components/ProjectionChart';
 import { LanguageSelector } from './components/LanguageSelector';
 import { SEOHead } from './components/SEOHead';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage, generateCurrentStrategy } from './utils/calculations';
