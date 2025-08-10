@@ -264,7 +264,7 @@ export const App: React.FC = () => {
                 </div>
               </div>
             )}
-          </div>
+
             {/* Portfolio Growth Projection */}
             {assets.length > 0 && (
               <div className="card">
@@ -287,6 +287,7 @@ export const App: React.FC = () => {
                 />
               </div>
             )}
+          </div>
         )}
 
         {activeTab === 'strategies' && (
