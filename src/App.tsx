@@ -341,9 +341,10 @@ export const App: React.FC = () => {
                       />
                       <div className="card">
                         <h4 className="font-semibold text-gray-900 mb-4">{t('targetAllocation')}</h4>
-                        <PortfolioChart assets={assets} language={language} currency={currency} />
+                        <PortfolioChart 
                           assets={assets} 
                           language={language} 
+                          currency={currency}
                           targetAllocations={strategy.targetAllocations}
                         />
                       </div>
