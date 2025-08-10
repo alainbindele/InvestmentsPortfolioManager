@@ -2,6 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Asset } from '../types/portfolio';
 import { Language } from '../types/language';
+import { Currency } from '../types/currency';
 import { ASSET_COLORS } from '../types/portfolio';
 import { formatCurrency, formatPercentage } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
@@ -9,12 +10,14 @@ import { getTranslation } from '../utils/translations';
 interface PortfolioChartProps {
   assets: Asset[];
   language: Language;
+  currency: Currency;
   targetAllocations?: { [assetId: string]: number };
 }
 
 export const PortfolioChart: React.FC<PortfolioChartProps> = ({ 
   assets, 
   language, 
+  currency,
   targetAllocations 
 }) => {
   const t = (key: string) => getTranslation(language, key);
@@ -54,7 +57,7 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
           </p>
           {!targetAllocations && (
             <p className="text-sm text-gray-600">
-              Valore: {formatCurrency(data.actualValue)}
+              Valore: {formatCurrency(data.actualValue, currency)}
             </p>
           )}
         </div>

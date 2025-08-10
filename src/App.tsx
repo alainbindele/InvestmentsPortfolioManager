@@ -175,6 +175,7 @@ export const App: React.FC = () => {
                         <div className="flex items-center gap-3">
                           <div 
                             className="w-4 h-4 rounded-full" 
+                            currency={currency}
                             style={{ backgroundColor: ASSET_COLORS[asset.type] }}
                           />
                           <div>
@@ -265,7 +266,7 @@ export const App: React.FC = () => {
 
                 <div className="card">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h3>
-                  <PortfolioChart assets={assets} language={language} />
+                  <PortfolioChart assets={assets} language={language} currency={currency} />
                 </div>
               </div>
             )}
@@ -340,7 +341,7 @@ export const App: React.FC = () => {
                       />
                       <div className="card">
                         <h4 className="font-semibold text-gray-900 mb-4">{t('targetAllocation')}</h4>
-                        <PortfolioChart 
+                        <PortfolioChart assets={assets} language={language} currency={currency} />
                           assets={assets} 
                           language={language} 
                           targetAllocations={strategy.targetAllocations}
