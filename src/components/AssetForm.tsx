@@ -206,17 +206,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({
               onChange={(e) => setFormData({ ...formData, isPAC: e.target.checked })}
               className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
-              {editingAsset ? (
-                <>
-                  <Edit className="w-4 h-4" />
-                  {t('updateAsset')}
-                </>
-              ) : (
-                <>
-                  <Plus className="w-4 h-4" />
-                  {t('addAssetButton')}
-                </>
-              )}
+            <label htmlFor="isPAC" className="text-sm font-medium text-gray-700">
+              {t('isPAC')}
             </label>
           </div>
           
@@ -273,8 +264,17 @@ export const AssetForm: React.FC<AssetFormProps> = ({
             type="submit"
             className="btn-primary flex-1"
           >
-            <Plus className="w-4 h-4" />
-            {t('addAssetButton')}
+            {editingAsset ? (
+              <>
+                <Edit className="w-4 h-4" />
+                {t('updateAsset')}
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4" />
+                {t('addAssetButton')}
+              </>
+            )}
           </button>
         </div>
       </form>
