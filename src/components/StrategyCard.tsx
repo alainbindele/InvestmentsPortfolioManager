@@ -133,12 +133,25 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
               const asset = assets.find(a => a.id === assetId);
               if (!asset) return null;
               
+              const totalValue = assets.reduce((sum, a) => sum + a.currentValue, 0);
+              const monetaryValue = (allocation / 100) * totalValue;
+              
               return (
                 <div key={assetId} className="flex items-center justify-between text-xs">
                   <span className="text-gray-600 truncate flex-1 mr-2">
                     {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
                   </span>
-                  <span className="font-medium text-gray-900">{allocation}%</span>
+                  <div className="text-right">
+                    <div className="font-medium text-gray-900">{allocation}%</div>
+                    <div className="text-xs text-gray-500">
+                      {new Intl.NumberFormat('it-IT', {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                      }).format(monetaryValue)}
+                    </div>
+                  </div>
                 </div>
               );
             })}
