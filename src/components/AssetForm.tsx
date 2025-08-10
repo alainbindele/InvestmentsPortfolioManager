@@ -190,19 +190,19 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) =>
               className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
             <label htmlFor="isPAC" className="text-sm font-medium text-gray-700">
-              Piano di Accumulo (PAC)
+              {t('isPAC')}
             </label>
           </div>
           
           <p className="text-xs text-gray-500 mb-3">
-            Attiva questa opzione se stai investendo con versamenti ricorrenti
+            {t('pacDescription')}
           </p>
 
           {formData.isPAC && (
             <div className="space-y-3 bg-gray-50 p-3 rounded-lg">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Importo Versamento Ricorrente (€) *
+                  {t('pacAmount')} (€) *
                 </label>
                 <input
                   type="number"
@@ -218,17 +218,17 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) =>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Frequenza Versamenti
+                  {t('pacFrequency')}
                 </label>
                 <select
                   value={formData.pacFrequency}
                   onChange={(e) => setFormData({ ...formData, pacFrequency: e.target.value as any })}
                   className="select-field"
                 >
-                  <option value="monthly">Mensile</option>
-                  <option value="quarterly">Trimestrale</option>
-                  <option value="biannual">Semestrale</option>
-                  <option value="annual">Annuale</option>
+                  <option value="monthly">{t('monthly')}</option>
+                  <option value="quarterly">{t('quarterly')}</option>
+                  <option value="biannual">{t('biannual')}</option>
+                  <option value="annual">{t('annual')}</option>
                 </select>
               </div>
             </div>

@@ -129,7 +129,7 @@ export const App: React.FC = () => {
             {/* Assets List */}
             {assets.length > 0 && (
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Asset del Portfolio</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('portfolioAssets')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {assets.map((asset) => (
                     <div key={asset.id} className="card">
@@ -154,33 +154,33 @@ export const App: React.FC = () => {
                       
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Valore:</span>
+                          <span className="text-gray-600">{t('currentValue')}:</span>
                           <span className="font-semibold">{formatCurrency(asset.currentValue)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Rendimento:</span>
+                          <span className="text-gray-600">{t('expectedReturn')}:</span>
                           <span className="font-semibold text-success-600">{formatPercentage(asset.expectedReturn)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Rischio:</span>
+                          <span className="text-gray-600">{t('risk')}:</span>
                           <span className={`font-semibold capitalize ${
-                            asset.riskLevel === 'low' ? 'text-success-600' :
-                            asset.riskLevel === 'medium' ? 'text-warning-600' : 'text-error-600'
+                            asset.riskLevel === 1 ? 'text-success-600' :
+                            asset.riskLevel <= 3 ? 'text-warning-600' : 'text-error-600'
                           }`}>
-                            {t(asset.riskLevel)}
+                            {asset.riskLevel}/5
                           </span>
                         </div>
                         {asset.isPAC && (
                           <div className="pt-2 border-t border-gray-200">
                             <div className="flex items-center gap-2 mb-1">
                               <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                              <span className="text-xs font-medium text-primary-700">PAC Attivo</span>
+                              <span className="text-xs font-medium text-primary-700">{t('pacActive')}</span>
                             </div>
                             <div className="text-xs text-gray-600">
                               {formatCurrency(asset.pacAmount || 0)}/{
-                                asset.pacFrequency === 'monthly' ? 'mese' :
-                                asset.pacFrequency === 'quarterly' ? 'trimestre' :
-                                asset.pacFrequency === 'biannual' ? 'semestre' : 'anno'
+                                asset.pacFrequency === 'monthly' ? t('monthly') :
+                                asset.pacFrequency === 'quarterly' ? t('quarterly') :
+                                asset.pacFrequency === 'biannual' ? t('biannual') : t('annual')
                               }
                             </div>
                           </div>
@@ -235,7 +235,7 @@ export const App: React.FC = () => {
 
             {/* Current Strategy */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Strategia Attuale</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentStrategy')}</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <StrategyCard
                   strategy={currentStrategy}
@@ -245,7 +245,7 @@ export const App: React.FC = () => {
                   language={language}
                 />
                 <div className="card">
-                  <h4 className="font-semibold text-gray-900 mb-4">Allocazione Attuale</h4>
+                  <h4 className="font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h4>
                   <PortfolioChart assets={assets} language={language} />
                 </div>
               </div>
@@ -255,7 +255,7 @@ export const App: React.FC = () => {
             {aiStrategies.length > 0 && (
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Strategie AI Generate ({aiStrategies.length})
+                  {t('aiGeneratedStrategies')} ({aiStrategies.length})
                 </h3>
                 <div className="space-y-6">
                   {aiStrategies.map((strategy) => (
@@ -268,7 +268,7 @@ export const App: React.FC = () => {
                         language={language}
                       />
                       <div className="card">
-                        <h4 className="font-semibold text-gray-900 mb-4">Allocazione Target</h4>
+                        <h4 className="font-semibold text-gray-900 mb-4">{t('targetAllocation')}</h4>
                         <PortfolioChart 
                           assets={assets} 
                           language={language} 
@@ -286,10 +286,10 @@ export const App: React.FC = () => {
               <div className="border-t border-gray-200 pt-8">
                 <div className="mb-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    Confronto Strategie Selezionate ({strategiesForComparison.length})
+                    {t('compareStrategies')} ({strategiesForComparison.length})
                   </h3>
                   <p className="text-gray-600">
-                    Analizza e confronta le performance delle diverse strategie
+                    {t('strategiesDescription')}
                   </p>
                 </div>
 
@@ -297,7 +297,7 @@ export const App: React.FC = () => {
                   <div className="card">
                     <h4 className="text-lg font-semibold text-gray-900 mb-4">
                       <TrendingUp className="w-5 h-5 inline mr-2" />
-                      Proiezione Crescita Portfolio
+                      {t('portfolioProjection')}
                     </h4>
                     <MultiStrategyProjectionChart
                       strategies={strategiesForComparison}
