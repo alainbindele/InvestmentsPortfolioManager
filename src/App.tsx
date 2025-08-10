@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot } from 'lucide-react';
+import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit } from 'lucide-react';
 import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
 import { AssetForm } from './components/AssetForm';
@@ -19,6 +19,7 @@ export const App: React.FC = () => {
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set());
   const [aiStrategies, setAiStrategies] = useState<Strategy[]>([]);
   const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'ai'>('portfolio');
+  const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
 
   const t = (key: string) => getTranslation(language, key);
 
@@ -32,6 +33,32 @@ export const App: React.FC = () => {
 
   const handleRemoveAsset = (assetId: string) => {
     setAssets(prev => prev.filter(asset => asset.id !== assetId));
+    // If we're editing this asset, cancel the edit
+    if (editingAsset && editingAsset.id === assetId) {
+      setEditingAsset(null);
+    }
+  };
+
+  const handleEditAsset = (asset: Asset) => {
+    setEditingAsset(asset);
+  };
+
+  const handleUpdateAsset = (assetData: Omit<Asset, 'id'>) => {
+    if (!editingAsset) return;
+    
+    const updatedAsset: Asset = {
+      ...assetData,
+      id: editingAsset.id
+    };
+    
+    setAssets(prev => prev.map(asset => 
+      asset.id === editingAsset.id ? updatedAsset : asset
+    ));
+    setEditingAsset(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingAsset(null);
   };
 
   const handleToggleStrategy = (strategyId: string) => {
@@ -124,7 +151,13 @@ export const App: React.FC = () => {
         {activeTab === 'portfolio' && (
           <div className="space-y-8">
             {/* Asset Form */}
-            <AssetForm onAddAsset={handleAddAsset} language={language} />
+            <AssetForm 
+              onAddAsset={handleAddAsset} 
+              onUpdateAsset={handleUpdateAsset}
+              onCancelEdit={handleCancelEdit}
+              editingAsset={editingAsset}
+              language={language} 
+            />
 
             {/* Assets List */}
             {assets.length > 0 && (
@@ -147,8 +180,16 @@ export const App: React.FC = () => {
                         <button
                           onClick={() => handleRemoveAsset(asset.id)}
                           className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                          title={t('delete')}
                         >
                           <Trash2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleEditAsset(asset)}
+                          className="p-1 text-gray-400 hover:text-blue-600 transition-colors ml-1"
+                          title={t('edit')}
+                        >
+                          <Edit className="w-4 h-4" />
                         </button>
                       </div>
                       

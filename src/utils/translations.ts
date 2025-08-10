@@ -13,6 +13,9 @@ export interface Translation {
   addAsset: string;
   assetName: string;
   assetType: string;
+  editAsset: string;
+  updateAsset: string;
+  fillRequiredFields: string;
   currentValue: string;
   expectedReturnLabel: string;
   riskLevel: string;
@@ -131,6 +134,9 @@ export const translations: Record<string, Translation> = {
     addAsset: "Add Asset",
     assetName: "Asset Name",
     assetType: "Asset Type",
+    editAsset: "Edit Asset",
+    updateAsset: "Update Asset",
+    fillRequiredFields: "Fill all required fields",
     currentValue: "Current Value",
     expectedReturnLabel: "Expected Return (%)",
     riskLevel: "Risk Level",
@@ -265,6 +271,9 @@ export const translations: Record<string, Translation> = {
     addAsset: "Aggiungi Asset",
     assetName: "Nome Asset",
     assetType: "Tipo Asset",
+    editAsset: "Modifica Asset",
+    updateAsset: "Aggiorna Asset",
+    fillRequiredFields: "Compila tutti i campi obbligatori",
     currentValue: "Valore Attuale",
     expectedReturnLabel: "Rendimento Atteso (%)",
     riskLevel: "Livello Rischio",
@@ -399,6 +408,9 @@ export const translations: Record<string, Translation> = {
     addAsset: "Agregar Activo",
     assetName: "Nombre del Activo",
     assetType: "Tipo de Activo",
+    editAsset: "Editar Activo",
+    updateAsset: "Actualizar Activo",
+    fillRequiredFields: "Completa todos los campos obligatorios",
     currentValue: "Valor Actual",
     expectedReturnLabel: "Rendimiento Esperado (%)",
     riskLevel: "Nivel de Riesgo",
@@ -533,6 +545,9 @@ export const translations: Record<string, Translation> = {
     addAsset: "Ajouter un Actif",
     assetName: "Nom de l'Actif",
     assetType: "Type d'Actif",
+    editAsset: "Modifier l'Actif",
+    updateAsset: "Mettre à jour l'Actif",
+    fillRequiredFields: "Remplir tous les champs obligatoires",
     currentValue: "Valeur Actuelle",
     expectedReturnLabel: "Rendement Attendu (%)",
     riskLevel: "Niveau de Risque",
@@ -667,6 +682,9 @@ export const translations: Record<string, Translation> = {
     addAsset: "Asset hinzufügen",
     assetName: "Asset-Name",
     assetType: "Asset-Typ",
+    editAsset: "Asset bearbeiten",
+    updateAsset: "Asset aktualisieren",
+    fillRequiredFields: "Alle Pflichtfelder ausfüllen",
     currentValue: "Aktueller Wert",
     expectedReturnLabel: "Erwartete Rendite (%)",
     riskLevel: "Risikolevel",
@@ -801,6 +819,9 @@ export const translations: Record<string, Translation> = {
     addAsset: "Adicionar Ativo",
     assetName: "Nome do Ativo",
     assetType: "Tipo de Ativo",
+    editAsset: "Editar Ativo",
+    updateAsset: "Atualizar Ativo",
+    fillRequiredFields: "Preencher todos os campos obrigatórios",
     currentValue: "Valor Atual",
     expectedReturnLabel: "Retorno Esperado (%)",
     riskLevel: "Nível de Risco",

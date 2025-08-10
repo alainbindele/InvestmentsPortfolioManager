@@ -1,34 +1,59 @@
 import React, { useState } from 'react';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Edit } from 'lucide-react';
 import { Asset, AssetType, RiskLevel, ASSET_TYPE_LABELS, RISK_LEVEL_LABELS } from '../types/portfolio';
 import { Language } from '../types/language';
 import { getTranslation } from '../utils/translations';
 
 interface AssetFormProps {
   onAddAsset: (asset: Omit<Asset, 'id'>) => void;
+  onUpdateAsset?: (asset: Omit<Asset, 'id'>) => void;
+  onCancelEdit?: () => void;
+  editingAsset?: Asset | null;
   language: Language;
 }
 
-export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) => {
+export const AssetForm: React.FC<AssetFormProps> = ({ 
+  onAddAsset, 
+  onUpdateAsset, 
+  onCancelEdit, 
+  editingAsset, 
+  language 
+}) => {
   const t = (key: string) => getTranslation(language, key);
   
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    type: 'stocks' as AssetType,
-    currentValue: '',
-    expectedReturn: '',
-    riskLevel: 'medium' as RiskLevel,
-    isPAC: false,
-    pacAmount: '',
-    pacFrequency: 'monthly' as 'monthly' | 'quarterly' | 'biannual' | 'annual'
+  
+  // Initialize form with editing asset data if provided
+  const initializeFormData = (asset?: Asset | null) => ({
+    name: asset?.name || '',
+    type: asset?.type || 'stocks' as AssetType,
+    currentValue: asset?.currentValue?.toString() || '',
+    expectedReturn: asset?.expectedReturn?.toString() || '',
+    riskLevel: asset?.riskLevel || 'medium' as RiskLevel,
+    isPAC: asset?.isPAC || false,
+    pacAmount: asset?.pacAmount?.toString() || '',
+    pacFrequency: asset?.pacFrequency || 'monthly' as 'monthly' | 'quarterly' | 'biannual' | 'annual'
   });
+  
+  const [formData, setFormData] = useState({
+    ...initializeFormData()
+  });
+
+  // Update form when editingAsset changes
+  React.useEffect(() => {
+    if (editingAsset) {
+      setFormData(initializeFormData(editingAsset));
+      setIsOpen(true);
+    } else {
+      setFormData(initializeFormData());
+    }
+  }, [editingAsset]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.currentValue || !formData.expectedReturn) {
-      alert('Compila tutti i campi obbligatori');
+      alert(t('fillRequiredFields'));
       return;
     }
 
@@ -43,33 +68,22 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) =>
       pacFrequency: formData.isPAC ? formData.pacFrequency : undefined
     };
 
-    onAddAsset(asset);
+    if (editingAsset && onUpdateAsset) {
+      onUpdateAsset(asset);
+    } else {
+      onAddAsset(asset);
+    }
     
     // Reset form
-    setFormData({
-      name: '',
-      type: 'stocks',
-      currentValue: '',
-      expectedReturn: '',
-      riskLevel: 'medium',
-      isPAC: false,
-      pacAmount: '',
-      pacFrequency: 'monthly'
-    });
+    setFormData(initializeFormData());
     setIsOpen(false);
   };
 
   const handleCancel = () => {
-    setFormData({
-      name: '',
-      type: 'stocks',
-      currentValue: '',
-      expectedReturn: '',
-      riskLevel: 'medium',
-      isPAC: false,
-      pacAmount: '',
-      pacFrequency: 'monthly'
-    });
+    if (editingAsset && onCancelEdit) {
+      onCancelEdit();
+    }
+    setFormData(initializeFormData());
     setIsOpen(false);
   };
 
@@ -78,6 +92,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) =>
       <button
         onClick={() => setIsOpen(true)}
         className="btn-primary w-full"
+        disabled={!!editingAsset}
       >
         <Plus className="w-4 h-4" />
         {t('addAsset')}
@@ -88,7 +103,9 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) =>
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">{t('addAsset')}</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          {editingAsset ? t('editAsset') : t('addAsset')}
+        </h3>
         <button
           onClick={handleCancel}
           className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
@@ -189,8 +206,17 @@ export const AssetForm: React.FC<AssetFormProps> = ({ onAddAsset, language }) =>
               onChange={(e) => setFormData({ ...formData, isPAC: e.target.checked })}
               className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
-            <label htmlFor="isPAC" className="text-sm font-medium text-gray-700">
-              {t('isPAC')}
+              {editingAsset ? (
+                <>
+                  <Edit className="w-4 h-4" />
+                  {t('updateAsset')}
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4" />
+                  {t('addAssetButton')}
+                </>
+              )}
             </label>
           </div>
           
