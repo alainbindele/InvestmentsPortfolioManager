@@ -128,20 +128,20 @@ export const App: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 min-h-[64px]">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary-600 rounded-lg">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <h1 className="text-xl font-bold text-gray-900">{t('appTitle')}</h1>
-                <p className="text-sm text-gray-600">{t('appSubtitle')}</p>
+                <p className="text-sm text-gray-600 hidden sm:block">{t('appSubtitle')}</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {assets.length > 0 && (
-                <div className="hidden sm:flex items-center gap-6 text-sm">
+                <div className="hidden lg:flex items-center gap-6 text-sm">
                   <div className="text-center">
                     <p className="text-gray-600">{t('totalValue')}</p>
                     <p className="font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
@@ -149,6 +149,15 @@ export const App: React.FC = () => {
                   <div className="text-center">
                     <p className="text-gray-600">{t('expectedReturn')}</p>
                     <p className="font-bold text-success-600">{formatPercentage(metrics.expectedReturn)}</p>
+                  </div>
+                </div>
+              )}
+              {/* Mobile metrics - compact version */}
+              {assets.length > 0 && (
+                <div className="flex lg:hidden items-center text-xs">
+                  <div className="text-center">
+                    <p className="text-gray-600 text-xs">{formatCurrency(metrics.totalValue, currency)}</p>
+                    <p className="text-success-600 font-medium">{formatPercentage(metrics.expectedReturn)}</p>
                   </div>
                 </div>
               )}
@@ -163,7 +172,7 @@ export const App: React.FC = () => {
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
+          <div className="flex space-x-4 sm:space-x-8 overflow-x-auto">
             {[
               { id: 'portfolio', label: t('portfolio'), icon: PieChart },
               { id: 'strategies', label: t('strategies'), icon: Target },
@@ -172,13 +181,13 @@ export const App: React.FC = () => {
               <button
                 key={id}
                 onClick={() => setActiveTab(id as any)}
-                className={`flex items-center gap-2 px-3 py-4 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center gap-2 px-3 py-4 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                   activeTab === id
                     ? 'border-primary-500 text-primary-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-4 h-4 flex-shrink-0" />
                 {label}
               </button>
             ))}
@@ -187,7 +196,7 @@ export const App: React.FC = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {activeTab === 'portfolio' && (
           <div className="space-y-8">
             {/* Asset Form */}
@@ -203,7 +212,7 @@ export const App: React.FC = () => {
             {assets.length > 0 && (
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('portfolioAssets')}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {assets.map((asset) => (
                     <div key={asset.id} className="card">
                       <div className="flex items-start justify-between mb-3">
@@ -218,20 +227,22 @@ export const App: React.FC = () => {
                             <p className="text-sm text-gray-600 capitalize">{t(asset.type)}</p>
                           </div>
                         </div>
-                        <button
-                          onClick={() => handleRemoveAsset(asset.id)}
-                          className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                          title={t('delete')}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleEditAsset(asset)}
-                          className="p-1 text-gray-400 hover:text-blue-600 transition-colors ml-1"
-                          title={t('edit')}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleEditAsset(asset)}
+                            className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                            title={t('edit')}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleRemoveAsset(asset.id)}
+                            className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                            title={t('delete')}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                       
                       <div className="space-y-2">
@@ -276,25 +287,25 @@ export const App: React.FC = () => {
 
             {/* Portfolio Metrics */}
             {assets.length > 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                 <div className="card">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioMetrics')}</h3>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-4">
                     <div className="metric-card">
                       <p className="text-sm text-gray-600">{t('totalValue')}</p>
-                      <p className="text-xl font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
+                      <p className="text-lg sm:text-xl font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
                     </div>
                     <div className="metric-card">
                       <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-                      <p className="text-xl font-bold text-success-600">{formatPercentage(metrics.expectedReturn)}</p>
+                      <p className="text-lg sm:text-xl font-bold text-success-600">{formatPercentage(metrics.expectedReturn)}</p>
                     </div>
                     <div className="metric-card">
                       <p className="text-sm text-gray-600">{t('riskScore')}</p>
-                      <p className="text-xl font-bold text-warning-600">{metrics.riskScore.toFixed(1)}/5</p>
+                      <p className="text-lg sm:text-xl font-bold text-warning-600">{metrics.riskScore.toFixed(1)}/5</p>
                     </div>
                     <div className="metric-card">
                       <p className="text-sm text-gray-600">{t('diversification')}</p>
-                      <p className="text-xl font-bold text-primary-600">{metrics.diversificationScore}/100</p>
+                      <p className="text-lg sm:text-xl font-bold text-primary-600">{metrics.diversificationScore}/100</p>
                     </div>
                   </div>
                 </div>
@@ -342,7 +353,7 @@ export const App: React.FC = () => {
             {/* Current Strategy */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentStrategy')}</h3>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <StrategyCard
                   strategy={currentStrategy}
                   assets={assets}
@@ -366,7 +377,7 @@ export const App: React.FC = () => {
                 </h3>
                 <div className="space-y-6">
                   {aiStrategies.map((strategy) => (
-                    <div key={strategy.id} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div key={strategy.id} className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <StrategyCard
                         strategy={strategy}
                         assets={assets}

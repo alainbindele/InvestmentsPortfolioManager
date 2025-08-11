@@ -27,14 +27,14 @@ export const ResetButton: React.FC<ResetButtonProps> = ({ language }) => {
       {!showConfirm ? (
         <button
           onClick={() => setShowConfirm(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors duration-200 text-sm"
+          className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors duration-200 text-sm"
           title={t('resetData')}
         >
           <RotateCcw className="w-4 h-4" />
-          <span className="hidden sm:inline">{t('reset')}</span>
+          <span className="hidden md:inline">{t('reset')}</span>
         </button>
       ) : (
-        <div className="absolute top-0 right-0 bg-white border border-red-300 rounded-lg shadow-lg p-4 z-50 min-w-80">
+        <div className="absolute top-0 right-0 bg-white border border-red-300 rounded-lg shadow-lg p-3 sm:p-4 z-50 w-72 sm:min-w-80">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-red-100 rounded-full">
               <AlertTriangle className="w-5 h-5 text-red-600" />

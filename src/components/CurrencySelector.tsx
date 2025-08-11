@@ -52,7 +52,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm min-w-[120px]"
+        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm min-w-[100px] sm:min-w-[120px]"
       >
         <DollarSign className="w-4 h-4 text-gray-600" />
         <span className="text-lg">{currentCurrencyData.flag}</span>
@@ -60,7 +60,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           <span className="text-sm font-medium text-gray-700">
             {currentCurrencyData.code}
           </span>
-          <span className="text-xs text-gray-500 hidden sm:block">
+          <span className="text-xs text-gray-500 hidden md:block">
             {currentCurrencyData.symbol}
           </span>
         </div>
@@ -70,9 +70,9 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-slide-up">
+        <div className="absolute top-full right-0 mt-2 w-72 sm:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-slide-up max-h-96 overflow-hidden">
           {/* Search and Filter Header */}
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-3 sm:p-4 border-b border-gray-200">
             <div className="relative mb-3">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
