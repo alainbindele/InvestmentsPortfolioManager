@@ -1,0 +1,15 @@
+Contact: https://portfolio-balancer.netlify.app/
+Expires: 2025-12-31T23:59:59.000Z
+Acknowledgments: https://portfolio-balancer.netlify.app/
+Preferred-Languages: it, en
+Canonical: https://portfolio-balancer.netlify.app/.well-known/security.txt
+
+# Security Policy
+# 
+# If you discover a security vulnerability, please report it responsibly.
+# We appreciate your efforts to improve the security of our application.
+#
+# Please do not publicly disclose the vulnerability until we have had
+# a chance to address it.
+#
+# Thank you for helping keep Portfolio Balancer secure!

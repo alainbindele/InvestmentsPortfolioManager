@@ -124,6 +124,12 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <SEOHead language={language} />
+      <SEOHead 
+        language={language} 
+        assets={assets}
+        strategies={aiStrategies}
+        activeTab={activeTab}
+      />
       
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">

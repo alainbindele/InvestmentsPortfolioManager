@@ -1,6 +1,7 @@
 import React from 'react';
 import { Language } from '../types/language';
 import { getTranslation } from '../utils/translations';
+import { Asset, Strategy } from '../types/portfolio';
 
 interface SEOHeadProps {
   language: Language;
@@ -8,6 +9,9 @@ interface SEOHeadProps {
   description?: string;
   keywords?: string;
   canonicalUrl?: string;
+  assets?: Asset[];
+  strategies?: Strategy[];
+  activeTab?: string;
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
@@ -15,7 +19,10 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   title,
   description,
   keywords,
-  canonicalUrl
+  canonicalUrl,
+  assets = [],
+  strategies = [],
+  activeTab = 'portfolio'
 }) => {
   const t = (key: string) => getTranslation(language, key);
   
@@ -27,6 +34,8 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
   const finalDescription = description || defaultDescription;
   const finalKeywords = keywords || defaultKeywords;
   const finalCanonicalUrl = canonicalUrl || 'https://portfolio-balancer.netlify.app/';
+
+  const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
 
   React.useEffect(() => {
     // Update document title
@@ -44,6 +53,11 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       metaKeywords.setAttribute('content', finalKeywords);
     }
     
+    // Update page description based on content
+    const dynamicDescription = assets.length > 0 
+      ? `Gestisci ${assets.length} asset per un valore di €${totalValue.toLocaleString('it-IT')}. ${finalDescription}`
+      : finalDescription;
+    
     // Update language
     document.documentElement.lang = language;
     
@@ -55,7 +69,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     
     const ogDescription = document.querySelector('meta[property="og:description"]');
     if (ogDescription) {
-      ogDescription.setAttribute('content', finalDescription);
+      ogDescription.setAttribute('content', dynamicDescription);
     }
     
     const ogUrl = document.querySelector('meta[property="og:url"]');
@@ -71,7 +85,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     
     const twitterDescription = document.querySelector('meta[property="twitter:description"]');
     if (twitterDescription) {
-      twitterDescription.setAttribute('content', finalDescription);
+      twitterDescription.setAttribute('content', dynamicDescription);
     }
     
     const twitterUrl = document.querySelector('meta[property="twitter:url"]');
@@ -88,7 +102,59 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     }
     canonical.setAttribute('href', finalCanonicalUrl);
     
-  }, [language, finalTitle, finalDescription, finalKeywords, finalCanonicalUrl]);
+    // Add structured data for current page state
+    const existingStructuredData = document.querySelector('#dynamic-structured-data');
+    if (existingStructuredData) {
+      existingStructuredData.remove();
+    }
+    
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": finalTitle,
+      "description": dynamicDescription,
+      "url": finalCanonicalUrl,
+      "inLanguage": language,
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Portfolio Balancer",
+        "url": "https://portfolio-balancer.netlify.app/"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://portfolio-balancer.netlify.app/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": t(activeTab),
+            "item": `https://portfolio-balancer.netlify.app/#${activeTab}`
+          }
+        ]
+      },
+      "mainEntity": assets.length > 0 ? {
+        "@type": "FinancialProduct",
+        "name": "Portfolio di Investimenti",
+        "description": `Portfolio con ${assets.length} asset per un valore totale di €${totalValue.toLocaleString('it-IT')}`,
+        "provider": {
+          "@type": "Organization",
+          "name": "Portfolio Balancer"
+        }
+      } : undefined
+    };
+    
+    const script = document.createElement('script');
+    script.id = 'dynamic-structured-data';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+    
+  }, [language, finalTitle, finalDescription, finalKeywords, finalCanonicalUrl, assets, strategies, activeTab, totalValue]);
 
   return null;
 };

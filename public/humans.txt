@@ -1,0 +1,20 @@
+/* TEAM */
+Developer: Portfolio Balancer Team
+Contact: https://portfolio-balancer.netlify.app/
+From: Italy
+
+/* THANKS */
+OpenAI: For providing the AI capabilities
+Recharts: For beautiful data visualization
+Tailwind CSS: For the styling framework
+React: For the user interface framework
+Vite: For the build tool
+
+/* SITE */
+Last update: 2025/01/27
+Language: Italian / English / Spanish / French / German / Chinese
+Doctype: HTML5
+IDE: Visual Studio Code
+Standards: HTML5, CSS3, ES2020+
+Components: React, TypeScript, Tailwind CSS
+Software: Vite, Node.js
