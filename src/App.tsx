@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit } from 'lucide-react';
 import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
@@ -12,20 +13,54 @@ import { ChatGPTIntegration } from './components/ChatGPTIntegration';
 import { ProjectionChart } from './components/ProjectionChart';
 import { LanguageSelector } from './components/LanguageSelector';
 import { CurrencySelector } from './components/CurrencySelector';
+import { ResetButton } from './components/ResetButton';
 import { SEOHead } from './components/SEOHead';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage, generateCurrentStrategy } from './utils/calculations';
+import { 
+  saveAssets, 
+  loadAssets, 
+  saveAIStrategies, 
+  loadAIStrategies, 
+  saveLanguage, 
+  loadLanguage, 
+  saveCurrency, 
+  loadCurrency, 
+  saveActiveTab, 
+  loadActiveTab 
+} from './utils/storage';
 import { getTranslation } from './utils/translations';
 
 export const App: React.FC = () => {
-  const [language, setLanguage] = useState<Language>('it');
-  const [currency, setCurrency] = useState<Currency>('EUR');
-  const [assets, setAssets] = useState<Asset[]>([]);
+  const [language, setLanguage] = useState<Language>(loadLanguage());
+  const [currency, setCurrency] = useState<Currency>(loadCurrency());
+  const [assets, setAssets] = useState<Asset[]>(loadAssets());
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set());
-  const [aiStrategies, setAiStrategies] = useState<Strategy[]>([]);
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'ai'>('portfolio');
+  const [aiStrategies, setAiStrategies] = useState<Strategy[]>(loadAIStrategies());
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'ai'>(loadActiveTab() as any);
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
 
   const t = (key: string) => getTranslation(language, key);
+
+  // Save data to cookies whenever state changes
+  useEffect(() => {
+    saveAssets(assets);
+  }, [assets]);
+
+  useEffect(() => {
+    saveAIStrategies(aiStrategies);
+  }, [aiStrategies]);
+
+  useEffect(() => {
+    saveLanguage(language);
+  }, [language]);
+
+  useEffect(() => {
+    saveCurrency(currency);
+  }, [currency]);
+
+  useEffect(() => {
+    saveActiveTab(activeTab);
+  }, [activeTab]);
 
   const handleAddAsset = (assetData: Omit<Asset, 'id'>) => {
     const newAsset: Asset = {
@@ -120,6 +155,7 @@ export const App: React.FC = () => {
               )}
               <CurrencySelector currentCurrency={currency} onCurrencyChange={setCurrency} />
               <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
+              <ResetButton language={language} />
             </div>
           </div>
         </div>
