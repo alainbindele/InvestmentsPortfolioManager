@@ -257,6 +257,12 @@ export const translations: Record<string, Translation> = {
     note: "Note",
     aiConfigNote: "To use real AI, configure your OpenAI API key in the .env file",
     fallbackStrategyNote: "Without API key, fallback strategies based on predefined rules will be generated."
+    
+    // Asset projection
+    selectAssetToAnalyze: "Select Asset to Analyze",
+    entirePortfolio: "Entire Portfolio",
+    assetDetails: "Asset Details",
+    other: "Other"
   },
   
   it: {
@@ -395,6 +401,12 @@ export const translations: Record<string, Translation> = {
     note: "Nota",
     aiConfigNote: "Per utilizzare l'AI reale, configura la tua API key OpenAI nel file .env",
     fallbackStrategyNote: "Senza API key, verranno generate strategie di fallback basate su regole predefinite."
+    
+    // Asset projection
+    selectAssetToAnalyze: "Seleziona Asset da Analizzare",
+    entirePortfolio: "Intero Portfolio",
+    assetDetails: "Dettagli Asset",
+    other: "Altro"
   },
   
   es: {
@@ -533,6 +545,12 @@ export const translations: Record<string, Translation> = {
     note: "Nota",
     aiConfigNote: "Para usar IA real, configura tu API key de OpenAI en el archivo .env",
     fallbackStrategyNote: "Sin API key, se generarán estrategias de respaldo basadas en reglas predefinidas."
+    
+    // Asset projection
+    selectAssetToAnalyze: "Seleccionar Activo para Analizar",
+    entirePortfolio: "Portfolio Completo",
+    assetDetails: "Detalles del Activo",
+    other: "Otro"
   },
   
   fr: {
@@ -671,6 +689,12 @@ export const translations: Record<string, Translation> = {
     note: "Note",
     aiConfigNote: "Pour utiliser l'IA réelle, configurez votre clé API OpenAI dans le fichier .env",
     fallbackStrategyNote: "Sans clé API, des stratégies de secours basées sur des règles prédéfinies seront générées."
+    
+    // Asset projection
+    selectAssetToAnalyze: "Sélectionner l'Actif à Analyser",
+    entirePortfolio: "Portfolio Entier",
+    assetDetails: "Détails de l'Actif",
+    other: "Autre"
   },
   
   de: {
@@ -809,6 +833,12 @@ export const translations: Record<string, Translation> = {
     note: "Hinweis",
     aiConfigNote: "Um echte KI zu verwenden, konfigurieren Sie Ihren OpenAI API-Schlüssel in der .env-Datei",
     fallbackStrategyNote: "Ohne API-Schlüssel werden Fallback-Strategien basierend auf vordefinierten Regeln generiert."
+    
+    // Asset projection
+    selectAssetToAnalyze: "Asset zur Analyse auswählen",
+    entirePortfolio: "Gesamtes Portfolio",
+    assetDetails: "Asset-Details",
+    other: "Andere"
   },
   
   pt: {
@@ -959,6 +989,162 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Idioma e Moeda",
     resetConfirm: "Excluir Tudo",
     portfolioAssets: "Ativos do Portfolio"
+  },
+  
+  zh: {
+    // Navigation
+    portfolio: "投资组合",
+    strategies: "策略",
+    analysis: "分析",
+    settings: "设置",
+
+    // Portfolio
+    totalValue: "总价值",
+    expectedReturn: "预期收益",
+    riskScore: "风险评分",
+    diversification: "多样化",
+    addAsset: "添加资产",
+    assetName: "资产名称",
+    assetType: "资产类型",
+    editAsset: "编辑资产",
+    updateAsset: "更新资产",
+    fillRequiredFields: "填写所有必填字段",
+    currentValue: "当前价值",
+    expectedReturnLabel: "预期收益 (%)",
+    riskLevel: "风险等级",
+    save: "保存",
+    cancel: "取消",
+    edit: "编辑",
+    delete: "删除",
+    
+    // Asset Types
+    stocks: "股票",
+    bonds: "债券",
+    etf: "ETF",
+    crypto: "加密货币",
+    real_estate: "房地产",
+    cash: "现金",
+    commodities: "大宗商品",
+    
+    // Risk Levels
+    low: "低",
+    medium: "中",
+    high: "高",
+    very_low: "很低",
+    very_high: "很高",
+    
+    // Strategies
+    generateStrategy: "生成策略",
+    strategyName: "策略名称",
+    description: "描述",
+    targetAllocation: "目标配置",
+    riskProfile: "风险档案",
+    conservative: "保守",
+    balanced: "平衡",
+    aggressive: "激进",
+    
+    // Analysis
+    recommendations: "建议",
+    marketInsights: "市场洞察",
+    analyzePortfolio: "分析投资组合",
+    
+    // PAC
+    isPAC: "PAC投资",
+    pacAmount: "PAC金额",
+    pacFrequency: "PAC频率",
+    monthly: "每月",
+    quarterly: "每季度",
+    biannual: "每半年",
+    annual: "每年",
+    pacActive: "PAC活跃",
+    
+    // Common
+    loading: "加载中...",
+    error: "错误",
+    success: "成功",
+    confirm: "确认",
+    close: "关闭",
+    
+    // App specific
+    appTitle: "投资组合平衡器",
+    appSubtitle: "用AI优化您的投资",
+    portfolioMetrics: "投资组合指标",
+    currentAllocation: "当前配置",
+    portfolioGrowthProjection: "投资组合增长预测",
+    portfolioGrowthDescription: "基于当前资产的投资组合随时间增长预测",
+    addAssetButton: "添加资产",
+    assetCurrentValue: "当前价值",
+    noAssetsMessage: "投资组合中没有资产",
+    investmentStrategies: "投资策略",
+    strategiesDescription: "比较和分析不同的投资策略",
+    currentStrategy: "当前策略",
+    aiGeneratedStrategies: "AI生成的策略",
+    selectedStrategies: "选定的策略",
+    compareStrategies: "比较策略",
+    portfolioProjection: "投资组合预测",
+    comparisonMetrics: "比较指标",
+    detailedComparison: "详细比较",
+    strategy: "策略",
+    return: "收益",
+    risk: "风险",
+    sharpe: "夏普",
+    volatility: "波动性",
+    maxDrawdown: "最大回撤",
+    selectedStrategy: "已选择",
+    aiAssistantTitle: "AI助手",
+    aiDescription: "获得个性化的投资组合分析和策略建议",
+    analyzing: "分析中...",
+    aiRecommendations: "AI建议",
+    generatingStrategy: "生成中...",
+    investmentGoals: "投资目标",
+    longTermGrowth: "长期增长",
+    passiveIncome: "被动收入",
+    capitalPreservation: "资本保值",
+    diversificationGoal: "多样化",
+    inflationProtection: "通胀保护",
+    lowRisk: "低风险",
+    mediumRisk: "中等风险",
+    highRisk: "高风险",
+    bestReturn: "最佳收益",
+    lowestRisk: "最低风险",
+    bestSharpe: "最佳夏普",
+    years: "年",
+    pacDescription: "如果您正在进行定期投资，请启用此选项",
+    apiStatus: "OpenAI API状态",
+    connected: "已连接",
+    notTested: "未测试",
+    apiKeyConfigured: "API密钥已配置",
+    apiKeyNotConfigured: "API密钥未配置 - 使用备用方案",
+    apiError: "API错误",
+    fallbackMessage: "应用程序将继续使用备用分析。",
+    aiPortfolioAnalysis: "AI投资组合分析",
+    aiStrategyGeneration: "AI策略生成",
+    aiActive: "AI活跃",
+    conservativeDesc: "低风险，稳定收益",
+    balancedDesc: "平衡风险和增长",
+    aggressiveDesc: "高风险，最大收益",
+    generateRealAiStrategy: "生成真实AI策略",
+    note: "注意",
+    aiConfigNote: "要使用真实AI，请在.env文件中配置您的OpenAI API密钥",
+    fallbackStrategyNote: "没有API密钥，将生成基于预定义规则的备用策略。",
+    
+    // Reset functionality
+    reset: "重置",
+    resetData: "重置所有数据",
+    confirmReset: "确认重置",
+    resetWarning: "此操作将永久删除您的所有数据",
+    dataToDelete: "要删除的数据",
+    assets: "资产",
+    aiStrategies: "AI策略",
+    languageAndCurrency: "语言和货币",
+    resetConfirm: "删除全部",
+    portfolioAssets: "投资组合资产",
+    
+    // Asset projection
+    selectAssetToAnalyze: "选择要分析的资产",
+    entirePortfolio: "整个投资组合",
+    assetDetails: "资产详情",
+    other: "其他"
   }
 };
 

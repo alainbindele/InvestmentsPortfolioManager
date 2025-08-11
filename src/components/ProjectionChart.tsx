@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Strategy, Asset } from '../types/portfolio';
+import { Strategy, Asset, ASSET_COLORS } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatCurrency, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, ChevronDown } from 'lucide-react';
 
 interface ProjectionChartProps {
   currentStrategy: Strategy;
@@ -24,23 +24,44 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
 }) => {
   const t = (key: string) => getTranslation(language, key);
   const [timeHorizon, setTimeHorizon] = useState(20);
+  const [selectedAsset, setSelectedAsset] = useState<string>('portfolio');
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
-  // Generate projection data
-  const currentProjection = projectPortfolioGrowth(
-    totalValue,
-    currentStrategy.expectedReturn,
-    timeHorizon,
-    assets
-  );
+  // Generate projection data based on selection
+  let currentProjection, selectedProjection;
   
-  const selectedProjection = selectedStrategy ? projectPortfolioGrowth(
-    totalValue,
-    selectedStrategy.expectedReturn,
-    timeHorizon,
-    assets
-  ) : null;
+  if (selectedAsset === 'portfolio') {
+    // Portfolio projection
+    currentProjection = projectPortfolioGrowth(
+      totalValue,
+      currentStrategy.expectedReturn,
+      timeHorizon,
+      assets
+    );
+    
+    selectedProjection = selectedStrategy ? projectPortfolioGrowth(
+      totalValue,
+      selectedStrategy.expectedReturn,
+      timeHorizon,
+      assets
+    ) : null;
+  } else {
+    // Single asset projection
+    const asset = assets.find(a => a.id === selectedAsset);
+    if (asset) {
+      currentProjection = projectAssetGrowth(
+        asset.currentValue,
+        asset.expectedReturn,
+        timeHorizon,
+        asset
+      );
+      selectedProjection = null; // No strategy comparison for single assets
+    } else {
+      currentProjection = [];
+      selectedProjection = null;
+    }
+  }
   
   // Combine data for chart
   const chartData = currentProjection.map((current, index) => {
@@ -58,19 +79,54 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     return data;
   });
   
-  const finalCurrentValue = currentProjection[currentProjection.length - 1]?.value || 0;
-  const finalSelectedValue = selectedProjection ? selectedProjection[selectedProjection.length - 1]?.value || 0 : 0;
-  const difference = finalSelectedValue - finalCurrentValue;
-  const differencePercentage = finalCurrentValue > 0 ? (difference / finalCurrentValue) * 100 : 0;
+  // Helper function for single asset projection
+  const projectAssetGrowth = (
+    initialValue: number,
+    annualReturn: number,
+    years: number,
+    asset: Asset
+  ): Array<{ year: number; value: number }> => {
+    const projections = [];
+    let currentValue = initialValue;
+    
+    // Add PAC contributions if enabled
+    const pacContribution = asset.isPAC && asset.pacAmount ? 
+      asset.pacAmount * (
+        asset.pacFrequency === 'monthly' ? 12 :
+        asset.pacFrequency === 'quarterly' ? 4 :
+        asset.pacFrequency === 'biannual' ? 2 : 1
+      ) : 0;
+
+    for (let year = 0; year <= years; year++) {
+      projections.push({
+        year,
+        value: Math.round(currentValue)
+      });
+      
+      if (year < years) {
+        // Apply annual return
+        currentValue *= (1 + annualReturn / 100);
+        
+        // Add PAC contributions
+        currentValue += pacContribution;
+      }
+    }
+    
+    return projections;
+  };
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
+      const selectedAssetData = assets.find(a => a.id === selectedAsset);
       return (
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium text-gray-900 mb-2">Anno {label}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.dataKey === 'current' ? currentStrategy.name : selectedStrategy?.name}: {formatCurrency(entry.value, currency)}
+              {entry.dataKey === 'current' ? 
+                (selectedAsset === 'portfolio' ? currentStrategy.name : selectedAssetData?.name) : 
+                selectedStrategy?.name
+              }: {formatCurrency(entry.value, currency)}
             </p>
           ))}
         </div>
@@ -79,6 +135,13 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     return null;
   };
 
+  const finalCurrentValue = currentProjection[currentProjection.length - 1]?.value || 0;
+  const finalSelectedValue = selectedProjection ? selectedProjection[selectedProjection.length - 1]?.value || 0 : 0;
+  const difference = finalSelectedValue - finalCurrentValue;
+  const differencePercentage = finalCurrentValue > 0 ? (difference / finalCurrentValue) * 100 : 0;
+  
+  const selectedAssetData = assets.find(a => a.id === selectedAsset);
+  const initialValue = selectedAsset === 'portfolio' ? totalValue : selectedAssetData?.currentValue || 0;
   return (
     <div className="card">
       <div className="flex items-center gap-3 mb-6">
@@ -88,11 +151,35 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
         <div>
           <h3 className="text-lg font-semibold text-gray-900">{t('portfolioProjection')}</h3>
           <p className="text-sm text-gray-600">
-            Confronto crescita portfolio nel tempo
+            {selectedAsset === 'portfolio' ? 
+              t('portfolioGrowthDescription') : 
+              `Proiezione di crescita per: ${selectedAssetData?.name}`
+            }
           </p>
         </div>
       </div>
 
+      {/* Asset Selector */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          {t('selectAssetToAnalyze')}
+        </label>
+        <div className="relative">
+          <select
+            value={selectedAsset}
+            onChange={(e) => setSelectedAsset(e.target.value)}
+            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none cursor-pointer"
+          >
+            <option value="portfolio">{t('entirePortfolio')}</option>
+            {assets.map((asset) => (
+              <option key={asset.id} value={asset.id}>
+                {asset.name} ({t(asset.type)}) - {formatCurrency(asset.currentValue, currency)}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+        </div>
+      </div>
       {/* Time Horizon Slider */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
@@ -144,14 +231,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             <Line
               type="monotone"
               dataKey="current"
-              stroke="#6b7280"
+              stroke={selectedAsset === 'portfolio' ? "#6b7280" : (ASSET_COLORS[selectedAssetData?.type || 'other'] || '#6b7280')}
               strokeWidth={2}
-              strokeDasharray="5 5"
+              strokeDasharray={selectedAsset === 'portfolio' ? "5 5" : "0"}
               dot={false}
-              name={currentStrategy.name}
+              name={selectedAsset === 'portfolio' ? currentStrategy.name : selectedAssetData?.name}
             />
             
-            {selectedStrategy && (
+            {selectedStrategy && selectedAsset === 'portfolio' && (
               <Line
                 type="monotone"
                 dataKey="selected"
@@ -170,18 +257,22 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
         <div className="metric-card">
           <p className="text-sm text-gray-600">{t('currentValue')}</p>
           <p className="text-lg font-bold text-gray-900">
-            {formatCurrency(totalValue, currency)}
+            {formatCurrency(initialValue, currency)}
           </p>
         </div>
         
         <div className="metric-card">
-          <p className="text-sm text-gray-600">{currentStrategy.name}</p>
-          <p className="text-lg font-bold text-gray-600">
+          <p className="text-sm text-gray-600">
+            {selectedAsset === 'portfolio' ? currentStrategy.name : selectedAssetData?.name}
+          </p>
+          <p className="text-lg font-bold" style={{ 
+            color: selectedAsset === 'portfolio' ? '#6b7280' : (ASSET_COLORS[selectedAssetData?.type || 'other'] || '#6b7280')
+          }}>
             {formatCurrency(finalCurrentValue, currency)}
           </p>
         </div>
         
-        {selectedStrategy && (
+        {selectedStrategy && selectedAsset === 'portfolio' && (
           <div className="metric-card">
             <p className="text-sm text-gray-600">{selectedStrategy.name}</p>
             <p className="text-lg font-bold text-primary-600">
@@ -192,6 +283,25 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
                 {difference > 0 ? '+' : ''}{formatCurrency(difference, currency)} ({differencePercentage > 0 ? '+' : ''}{differencePercentage.toFixed(1)}%)
               </p>
             )}
+          </div>
+        )}
+        
+        {selectedAsset !== 'portfolio' && selectedAssetData && (
+          <div className="metric-card">
+            <p className="text-sm text-gray-600">{t('assetDetails')}</p>
+            <div className="space-y-1">
+              <p className="text-sm text-gray-700">
+                {t('expectedReturn')}: <span className="font-semibold text-success-600">{selectedAssetData.expectedReturn}%</span>
+              </p>
+              <p className="text-sm text-gray-700">
+                {t('riskLevel')}: <span className="font-semibold">{t(selectedAssetData.riskLevel)}</span>
+              </p>
+              {selectedAssetData.isPAC && (
+                <p className="text-sm text-primary-600">
+                  PAC: {formatCurrency(selectedAssetData.pacAmount || 0, currency)}/{t(selectedAssetData.pacFrequency || 'monthly')}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>
