@@ -946,7 +946,19 @@ export const translations: Record<string, Translation> = {
     generateRealAiStrategy: "Gerar Estratégia IA Real",
     note: "Nota",
     aiConfigNote: "Para usar IA real, configure sua chave API OpenAI no arquivo .env",
-    fallbackStrategyNote: "Sem chave API, estratégias de fallback baseadas em regras predefinidas serão geradas."
+    fallbackStrategyNote: "Sem chave API, estratégias de fallback baseadas em regras predefinidas serão geradas.",
+    
+    // Reset functionality
+    reset: "Redefinir",
+    resetData: "Redefinir todos os dados",
+    confirmReset: "Confirmar Redefinição",
+    resetWarning: "Esta ação excluirá permanentemente todos os seus dados",
+    dataToDelete: "Dados a serem excluídos",
+    assets: "ativos",
+    aiStrategies: "estratégias IA",
+    languageAndCurrency: "Idioma e Moeda",
+    resetConfirm: "Excluir Tudo",
+    portfolioAssets: "Ativos do Portfolio"
   }
 };
 
