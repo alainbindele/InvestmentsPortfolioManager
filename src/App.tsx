@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import React, { useState, useEffect } from 'react';
 import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit } from 'lucide-react';
 import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
