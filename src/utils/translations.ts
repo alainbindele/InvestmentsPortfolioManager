@@ -256,7 +256,7 @@ export const translations: Record<string, Translation> = {
     generateRealAiStrategy: "Generate Real AI Strategy",
     note: "Note",
     aiConfigNote: "To use real AI, configure your OpenAI API key in the .env file",
-    fallbackStrategyNote: "Without API key, fallback strategies based on predefined rules will be generated."
+    fallbackStrategyNote: "Without API key, fallback strategies based on predefined rules will be generated.",
     
     // Asset projection
     selectAssetToAnalyze: "Select Asset to Analyze",
