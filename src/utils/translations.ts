@@ -832,7 +832,7 @@ export const translations: Record<string, Translation> = {
     generateRealAiStrategy: "Echte KI-Strategie generieren",
     note: "Hinweis",
     aiConfigNote: "Um echte KI zu verwenden, konfigurieren Sie Ihren OpenAI API-Schlüssel in der .env-Datei",
-    fallbackStrategyNote: "Ohne API-Schlüssel werden Fallback-Strategien basierend auf vordefinierten Regeln generiert."
+    fallbackStrategyNote: "Ohne API-Schlüssel werden Fallback-Strategien basierend auf vordefinierten Regeln generiert.",
     
     // Asset projection
     selectAssetToAnalyze: "Asset zur Analyse auswählen",
