@@ -190,7 +190,7 @@ export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChart
                 />
                 <p className="text-sm text-gray-600 font-medium">
                   {strategy?.name}: {formatCurrency(entry.value, currency)}
-                </p>
+                {projection.strategy.name}
               </div>
               <p className="text-lg font-bold text-gray-900">
                 {formatCurrency(finalValue, currency)}
