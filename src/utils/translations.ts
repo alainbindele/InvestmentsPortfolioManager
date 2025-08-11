@@ -37,6 +37,8 @@ export interface Translation {
   low: string;
   medium: string;
   high: string;
+  very_low: string;
+  very_high: string;
   
   // Strategies
   generateStrategy: string;
@@ -158,6 +160,8 @@ export const translations: Record<string, Translation> = {
     low: "Low",
     medium: "Medium",
     high: "High",
+    very_low: "Very Low",
+    very_high: "Very High",
     
     // Strategies
     generateStrategy: "Generate Strategy",
@@ -294,6 +298,8 @@ export const translations: Record<string, Translation> = {
     low: "Basso",
     medium: "Medio",
     high: "Alto",
+    very_low: "Molto Basso",
+    very_high: "Molto Alto",
     
     // Strategies
     generateStrategy: "Genera Strategia",
@@ -430,6 +436,8 @@ export const translations: Record<string, Translation> = {
     low: "Bajo",
     medium: "Medio",
     high: "Alto",
+    very_low: "Muy Bajo",
+    very_high: "Muy Alto",
     
     // Strategies
     generateStrategy: "Generar Estrategia",
@@ -566,6 +574,8 @@ export const translations: Record<string, Translation> = {
     low: "Faible",
     medium: "Moyen",
     high: "Élevé",
+    very_low: "Très Faible",
+    very_high: "Très Élevé",
     
     // Strategies
     generateStrategy: "Générer une Stratégie",
@@ -702,6 +712,8 @@ export const translations: Record<string, Translation> = {
     low: "Niedrig",
     medium: "Mittel",
     high: "Hoch",
+    very_low: "Sehr Niedrig",
+    very_high: "Sehr Hoch",
     
     // Strategies
     generateStrategy: "Strategie generieren",
@@ -838,6 +850,8 @@ export const translations: Record<string, Translation> = {
     low: "Baixo",
     medium: "Médio",
     high: "Alto",
+    very_low: "Muito Baixo",
+    very_high: "Muito Alto",
     
     // Strategies
     generateStrategy: "Gerar Estratégia",

@@ -1,13 +1,15 @@
 // Asset Types
 export type AssetType = 'stocks' | 'bonds' | 'etf' | 'crypto' | 'real_estate' | 'cash' | 'commodities' | 'other';
 
+export type RiskLevel = 'very_low' | 'low' | 'medium' | 'high' | 'very_high';
+
 export interface Asset {
   id: string;
   name: string;
   type: AssetType;
   currentValue: number;
   expectedReturn: number;
-  riskLevel: number;
+  riskLevel: RiskLevel;
   isPAC?: boolean;
   pacAmount?: number;
   pacFrequency?: 'monthly' | 'quarterly' | 'biannual' | 'annual';
@@ -62,12 +64,12 @@ export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   other: 'Altro'
 };
 
-export const RISK_LEVEL_LABELS: Record<number, string> = {
-  1: 'Molto Basso',
-  2: 'Basso',
-  3: 'Medio',
-  4: 'Alto',
-  5: 'Molto Alto'
+export const RISK_LEVEL_LABELS: Record<RiskLevel, string> = {
+  'very_low': 'Molto Basso',
+  'low': 'Basso', 
+  'medium': 'Medio',
+  'high': 'Alto',
+  'very_high': 'Molto Alto'
 };
 
 export const ASSET_COLORS: Record<AssetType, string> = {

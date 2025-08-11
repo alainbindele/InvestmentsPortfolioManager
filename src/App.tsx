@@ -211,10 +211,10 @@ export const App: React.FC = () => {
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">{t('risk')}:</span>
                           <span className={`font-semibold capitalize ${
-                            asset.riskLevel === 1 ? 'text-success-600' :
-                            asset.riskLevel <= 3 ? 'text-warning-600' : 'text-error-600'
+                            asset.riskLevel === 'very_low' || asset.riskLevel === 'low' ? 'text-success-600' :
+                            asset.riskLevel === 'medium' ? 'text-warning-600' : 'text-error-600'
                           }`}>
-                            {asset.riskLevel}/5
+                            {t(asset.riskLevel)}
                           </span>
                         </div>
                         {asset.isPAC && (

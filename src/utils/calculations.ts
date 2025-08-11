@@ -2,10 +2,12 @@ import { Asset, Strategy, PortfolioMetrics } from '../types/portfolio';
 import { Currency, getCurrencyByCode } from '../types/currency';
 
 // Risk level mappings
-const RISK_MULTIPLIERS = {
-  low: 1,
-  medium: 2,
-  high: 3
+const RISK_MULTIPLIERS: { [key: string]: number } = {
+  'very_low': 1,
+  'low': 2,
+  'medium': 3,
+  'high': 4,
+  'very_high': 5
 };
 
 // Asset type diversification weights
