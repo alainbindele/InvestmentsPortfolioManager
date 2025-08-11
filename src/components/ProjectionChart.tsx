@@ -28,57 +28,6 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
-  // Generate projection data based on selection
-  let currentProjection, selectedProjection;
-  
-  if (selectedAsset === 'portfolio') {
-    // Portfolio projection
-    currentProjection = projectPortfolioGrowth(
-      totalValue,
-      currentStrategy.expectedReturn,
-      timeHorizon,
-      assets
-    );
-    
-    selectedProjection = selectedStrategy ? projectPortfolioGrowth(
-      totalValue,
-      selectedStrategy.expectedReturn,
-      timeHorizon,
-      assets
-    ) : null;
-  } else {
-    // Single asset projection
-    const asset = assets.find(a => a.id === selectedAsset);
-    if (asset) {
-      currentProjection = projectAssetGrowth(
-        asset.currentValue,
-        asset.expectedReturn,
-        timeHorizon,
-        asset
-      );
-      selectedProjection = null; // No strategy comparison for single assets
-    } else {
-      currentProjection = [];
-      selectedProjection = null;
-    }
-  }
-  
-  // Combine data for chart
-  const chartData = currentProjection.map((current, index) => {
-    const data: any = {
-      year: current.year,
-      current: current.value,
-      currentLabel: currentStrategy.name
-    };
-    
-    if (selectedProjection && selectedProjection[index]) {
-      data.selected = selectedProjection[index].value;
-      data.selectedLabel = selectedStrategy!.name;
-    }
-    
-    return data;
-  });
-  
   // Helper function for single asset projection
   const projectAssetGrowth = (
     initialValue: number,
@@ -115,6 +64,55 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     return projections;
   };
 
+  // Generate projection data based on selection
+  let currentProjection: Array<{ year: number; value: number }> = [];
+  let selectedProjection: Array<{ year: number; value: number }> | null = null;
+  
+  if (selectedAsset === 'portfolio') {
+    // Portfolio projection
+    currentProjection = projectPortfolioGrowth(
+      totalValue,
+      currentStrategy.expectedReturn,
+      timeHorizon,
+      assets
+    );
+    
+    selectedProjection = selectedStrategy ? projectPortfolioGrowth(
+      totalValue,
+      selectedStrategy.expectedReturn,
+      timeHorizon,
+      assets
+    ) : null;
+  } else {
+    // Single asset projection
+    const asset = assets.find(a => a.id === selectedAsset);
+    if (asset) {
+      currentProjection = projectAssetGrowth(
+        asset.currentValue,
+        asset.expectedReturn,
+        timeHorizon,
+        asset
+      );
+    }
+    selectedProjection = null; // No strategy comparison for single assets
+  }
+  
+  // Combine data for chart
+  const chartData = currentProjection.map((current, index) => {
+    const data: any = {
+      year: current.year,
+      current: current.value,
+      currentLabel: currentStrategy.name
+    };
+    
+    if (selectedProjection && selectedProjection[index]) {
+      data.selected = selectedProjection[index].value;
+      data.selectedLabel = selectedStrategy!.name;
+    }
+    
+    return data;
+  });
+  
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const selectedAssetData = assets.find(a => a.id === selectedAsset);
