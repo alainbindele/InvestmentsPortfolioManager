@@ -73,7 +73,7 @@ export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChart
             const strategy = allProjections[strategyIndex]?.strategy;
             return (
               <p key={index} className="text-sm" style={{ color: entry.color }}>
-                {strategy?.name}: {formatCurrency(entry.value)}
+                {strategy?.name}: {formatCurrency(entry.value, currency)}
               </p>
             );
           })}
@@ -189,8 +189,8 @@ export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChart
                   style={{ backgroundColor: projection.color }}
                 />
                 <p className="text-sm text-gray-600 font-medium">
-                  {strategy?.name}: {formatCurrency(entry.value, currency)}
-                {projection.strategy.name}
+                  {projection.strategy.name}
+                </p>
               </div>
               <p className="text-lg font-bold text-gray-900">
                 {formatCurrency(finalValue, currency)}
