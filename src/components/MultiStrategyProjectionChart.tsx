@@ -70,10 +70,10 @@ export const MultiStrategyProjectionChart: React.FC<MultiStrategyProjectionChart
           <p className="font-medium text-gray-900 mb-2">Anno {label}</p>
           {payload.map((entry: any, index: number) => {
             const strategyIndex = parseInt(entry.dataKey.split('_')[1]);
-            const strategy = allProjections[strategyIndex]?.strategy;
+            const projectionStrategy = allProjections[strategyIndex]?.strategy;
             return (
               <p key={index} className="text-sm" style={{ color: entry.color }}>
-                {strategy?.name}: {formatCurrency(entry.value, currency)}
+                {projectionStrategy?.name}: {formatCurrency(entry.value, currency)}
               </p>
             );
           })}

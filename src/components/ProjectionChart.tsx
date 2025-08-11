@@ -70,7 +70,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           <p className="font-medium text-gray-900 mb-2">Anno {label}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.dataKey === 'current' ? currentStrategy.name : selectedStrategy?.name}: {formatCurrency(entry.value)}
+              {entry.dataKey === 'current' ? currentStrategy.name : selectedStrategy?.name}: {formatCurrency(entry.value, currency)}
             </p>
           ))}
         </div>

@@ -289,6 +289,7 @@ export const App: React.FC = () => {
                   currentStrategy={currentStrategy}
                   selectedStrategy={null}
                   assets={assets}
+                  currency={currency}
                   language={language}
                 />
               </div>
@@ -375,6 +376,7 @@ export const App: React.FC = () => {
                     <MultiStrategyProjectionChart
                       strategies={strategiesForComparison}
                       assets={assets}
+                      currency={currency}
                       language={language}
                     />
                   </div>
