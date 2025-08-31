@@ -131,37 +131,36 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
             : 'hover:shadow-md'
         }`}
       >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          {showSelectionCheckbox && (
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={onSelect}
-                onClick={(e) => e.stopPropagation()}
-                className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-              />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            {showSelectionCheckbox && (
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={onSelect}
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                />
+              </div>
+            )}
+            <div className={`p-2 rounded-lg ${
+              colorClass === 'primary' ? 'bg-primary-100' :
+              colorClass === 'success' ? 'bg-success-100' :
+              colorClass === 'warning' ? 'bg-warning-100' : 'bg-gray-100'
+            }`}>
+              <Icon className={`w-5 h-5 ${
+                colorClass === 'primary' ? 'text-primary-600' :
+                colorClass === 'success' ? 'text-success-600' :
+                colorClass === 'warning' ? 'text-warning-600' : 'text-gray-600'
+              }`} />
             </div>
-          )}
-          <div className={`p-2 rounded-lg ${
-            colorClass === 'primary' ? 'bg-primary-100' :
-            colorClass === 'success' ? 'bg-success-100' :
-            colorClass === 'warning' ? 'bg-warning-100' : 'bg-gray-100'
-          }`}>
-            <Icon className={`w-5 h-5 ${
-              colorClass === 'primary' ? 'text-primary-600' :
-              colorClass === 'success' ? 'text-success-600' :
-              colorClass === 'warning' ? 'text-warning-600' : 'text-gray-600'
-            }`} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              {!isEditingName ? (
-                <>
-                  <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
-                  {onUpdateName && !isCurrentStrategy && (
-                    <div className="flex items-center gap-1">
+            <div>
+              <div className="flex items-center gap-2">
+                {!isEditingName ? (
+                  <>
+                    <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
+                    {onUpdateName && !isCurrentStrategy && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -172,186 +171,173 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       >
                         <Pencil className="w-3 h-3" />
                       </button>
-                      {onDelete && strategy.isAIGenerated && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowDeleteConfirm(true);
-                          }}
-                          className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                          title={t('deleteStrategy')}
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="flex items-center gap-2 flex-1">
-                  <input
-                    type="text"
-                    value={editedName}
-                    onChange={(e) => setEditedName(e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleNameSave();
-                      if (e.key === 'Escape') handleNameCancel();
-                    }}
-                    autoFocus
-                  />
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleNameSave();
-                    }}
-                    className="p-1 text-green-600 hover:text-green-700 transition-colors"
-                    title={t('save')}
-                  >
-                    <Check className="w-3 h-3" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleNameCancel();
-                    }}
-                    className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                    title={t('cancel')}
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              )}
-            </div>
-            <p className="text-sm text-gray-600">{strategy.description}</p>
-          </div>
-        </div>
-        
-        {isSelected && (
-          <div className="px-3 py-1 bg-primary-600 text-white rounded-full text-xs font-medium">
-            {showSelectionCheckbox ? t('selectedForComparison') : t('selectedStrategy')}
-          </div>
-        )}
-        
-        {strategy.isAIGenerated && !isSelected && (
-          <div className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
-            AI
-          </div>
-        )}
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="text-center">
-          <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-          <p className="text-lg font-bold text-success-600">
-            {formatPercentage(strategy.expectedReturn)}
-          </p>
-        </div>
-        
-        <div className="text-center">
-          <p className="text-sm text-gray-600">{t('riskScore')}</p>
-          <p className={`text-lg font-bold ${
-            strategy.riskScore < 2 ? 'text-success-600' :
-            strategy.riskScore < 3 ? 'text-warning-600' : 'text-error-600'
-          }`}>
-            {strategy.riskScore.toFixed(1)}/5
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="text-center">
-          <p className="text-sm text-gray-600">Sharpe Ratio</p>
-          <p className="text-sm font-semibold text-primary-600">
-            {strategy.sharpeRatio.toFixed(2)}
-          </p>
-        </div>
-        
-        <div className="text-center">
-          <p className="text-sm text-gray-600">{t('volatility')}</p>
-          <p className="text-sm font-semibold text-warning-600">
-            {formatPercentage(strategy.volatility)}
-          </p>
-        </div>
-      </div>
-
-      {/* Asset Allocations */}
-      {Object.keys(strategy.targetAllocations).length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-gray-700">{t('allocationTarget')}</p>
-          <div className="space-y-1">
-            {Object.entries(strategy.targetAllocations).map(([assetId, allocation]) => {
-              const asset = assets.find(a => a.id === assetId);
-              if (!asset) return null;
-              
-              const monetaryValue = (allocation / 100) * totalValue;
-              
-              return (
-                <div key={assetId} className="flex items-center justify-between text-xs">
-                  <span className="text-gray-600 truncate flex-1 mr-2">
-                    {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
-                  </span>
-                  <div className="text-right">
-                    <div className="font-medium text-gray-900">{allocation}%</div>
-                    <div className="text-xs text-gray-500">
-                      {new Intl.NumberFormat('it-IT', {
-                        style: 'currency',
-                        currency: currency,
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                      }).format(monetaryValue)}
-                    </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="flex items-center gap-2 flex-1">
+                    <input
+                      type="text"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleNameSave();
+                        if (e.key === 'Escape') handleNameCancel();
+                      }}
+                      autoFocus
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNameSave();
+                      }}
+                      className="p-1 text-green-600 hover:text-green-700 transition-colors"
+                      title={t('save')}
+                    >
+                      <Check className="w-3 h-3" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNameCancel();
+                      }}
+                      className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                      title={t('cancel')}
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
                   </div>
-                </div>
-              );
-            })}
+                )}
+              </div>
+              <p className="text-sm text-gray-600">{strategy.description}</p>
+            </div>
           </div>
           
-          {/* Portfolio Total */}
-          <div className="pt-2 mt-2 border-t border-gray-200">
-            <div className="flex items-center justify-between text-sm">
-              <span className="font-medium text-gray-700">{t('totalPortfolio')}</span>
-              <span className="font-bold text-gray-900">
-                {formatCurrency(totalValue, currency)}
-              </span>
+          {isSelected && (
+            <div className="px-3 py-1 bg-primary-600 text-white rounded-full text-xs font-medium">
+              {showSelectionCheckbox ? t('selectedForComparison') : t('selectedStrategy')}
             </div>
+          )}
+          
+          {strategy.isAIGenerated && !isSelected && (
+            <div className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
+              AI
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="text-center">
+            <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
+            <p className="text-lg font-bold text-success-600">
+              {formatPercentage(strategy.expectedReturn)}
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-sm text-gray-600">{t('riskScore')}</p>
+            <p className={`text-lg font-bold ${
+              strategy.riskScore < 2 ? 'text-success-600' :
+              strategy.riskScore < 3 ? 'text-warning-600' : 'text-error-600'
+            }`}>
+              {strategy.riskScore.toFixed(1)}/5
+            </p>
           </div>
         </div>
-      )}
 
-      {strategy.isAIGenerated && !isSelected && (
-        <div className="mt-4 pt-3 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
-            {showSelectionCheckbox ? 'Seleziona per confrontare' : 'Clicca per selezionare e vedere il confronto'}
-          </p>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="text-center">
+            <p className="text-sm text-gray-600">Sharpe Ratio</p>
+            <p className="text-sm font-semibold text-primary-600">
+              {strategy.sharpeRatio.toFixed(2)}
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-sm text-gray-600">{t('volatility')}</p>
+            <p className="text-sm font-semibold text-warning-600">
+              {formatPercentage(strategy.volatility)}
+            </p>
+          </div>
         </div>
-      )}
 
-      {isSelected && !showSelectionCheckbox && (
-        <div className="mt-4 pt-3 border-t border-primary-200">
-          <p className="text-xs text-primary-600 text-center font-medium">
-            ✓ {t('selectedForComparison')}
-          </p>
-        </div>
-      )}
+        {/* Asset Allocations */}
+        {Object.keys(strategy.targetAllocations).length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-gray-700">{t('allocationTarget')}</p>
+            <div className="space-y-1">
+              {Object.entries(strategy.targetAllocations).map(([assetId, allocation]) => {
+                const asset = assets.find(a => a.id === assetId);
+                if (!asset) return null;
+                
+                const monetaryValue = (allocation / 100) * totalValue;
+                
+                return (
+                  <div key={assetId} className="flex items-center justify-between text-xs">
+                    <span className="text-gray-600 truncate flex-1 mr-2">
+                      {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
+                    </span>
+                    <div className="text-right">
+                      <div className="font-medium text-gray-900">{allocation}%</div>
+                      <div className="text-xs text-gray-500">
+                        {new Intl.NumberFormat('it-IT', {
+                          style: 'currency',
+                          currency: currency,
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0
+                        }).format(monetaryValue)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Portfolio Total */}
+            <div className="pt-2 mt-2 border-t border-gray-200">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-medium text-gray-700">{t('totalPortfolio')}</span>
+                <span className="font-bold text-gray-900">
+                  {formatCurrency(totalValue, currency)}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
 
-      {/* Clone & Edit Button */}
-      {Object.keys(strategy.targetAllocations).length > 0 && onCloneAndEdit && (
-        <div className="mt-4 pt-3 border-t border-gray-200">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onCloneAndEdit();
-            }}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm font-medium"
-          >
-            <Copy className="w-4 h-4" />
-            {t('cloneAndEdit')}
-          </button>
-        </div>
-      )}
-    </div>
+        {strategy.isAIGenerated && !isSelected && (
+          <div className="mt-4 pt-3 border-t border-gray-200">
+            <p className="text-xs text-gray-500 text-center">
+              {showSelectionCheckbox ? 'Seleziona per confrontare' : 'Clicca per selezionare e vedere il confronto'}
+            </p>
+          </div>
+        )}
+
+        {isSelected && !showSelectionCheckbox && (
+          <div className="mt-4 pt-3 border-t border-primary-200">
+            <p className="text-xs text-primary-600 text-center font-medium">
+              ✓ {t('selectedForComparison')}
+            </p>
+          </div>
+        )}
+
+        {/* Clone & Edit Button */}
+        {Object.keys(strategy.targetAllocations).length > 0 && onCloneAndEdit && (
+          <div className="mt-4 pt-3 border-t border-gray-200">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onCloneAndEdit();
+              }}
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm font-medium"
+            >
+              <Copy className="w-4 h-4" />
+              {t('cloneAndEdit')}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
