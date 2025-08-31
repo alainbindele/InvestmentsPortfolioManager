@@ -4,13 +4,6 @@ import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
 import { Currency } from './types/currency';
 import { AssetForm } from './components/AssetForm';
-import { PortfolioChart } from './components/PortfolioChart';
-import { StrategyCard } from './components/StrategyCard';
-import { AllocationEditor } from './components/AllocationEditor';
-import { StrategyComparison } from './components/StrategyComparison';
-import { MultiStrategyProjectionChart } from './components/MultiStrategyProjectionChart';
-import { ChatGPTIntegration } from './components/ChatGPTIntegration';
-import { ProjectionChart } from './components/ProjectionChart';
 import { LanguageSelector } from './components/LanguageSelector';
 import { CurrencySelector } from './components/CurrencySelector';
 import { ResetButton } from './components/ResetButton';
@@ -32,6 +25,15 @@ import {
   loadDisclaimerAccepted
 } from './utils/storage';
 import { getTranslation } from './utils/translations';
+
+// Lazy load components for code splitting
+const AssetForm = React.lazy(() => import('./components/AssetForm').then(m => ({ default: m.AssetForm })));
+const PortfolioChart = React.lazy(() => import('./components/PortfolioChart').then(m => ({ default: m.PortfolioChart })));
+const StrategyCard = React.lazy(() => import('./components/StrategyCard').then(m => ({ default: m.StrategyCard })));
+const AllocationEditor = React.lazy(() => import('./components/AllocationEditor').then(m => ({ default: m.AllocationEditor })));
+const StrategyComparison = React.lazy(() => import('./components/StrategyComparison').then(m => ({ default: m.StrategyComparison })));
+const ChatGPTIntegration = React.lazy(() => import('./components/ChatGPTIntegration').then(m => ({ default: m.ChatGPTIntegration })));
+const ProjectionChart = React.lazy(() => import('./components/ProjectionChart').then(m => ({ default: m.ProjectionChart })));
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>(loadLanguage());
@@ -240,7 +242,8 @@ export const App: React.FC = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        {activeTab === 'portfolio' && (
+        <React.Suspense fallback={<div className="flex items-center justify-center py-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div></div>}>
+          {activeTab === 'portfolio' && (
           <div className="space-y-8">
             {/* Asset Form */}
             <AssetForm 
@@ -382,9 +385,9 @@ export const App: React.FC = () => {
               </div>
             )}
           </div>
-        )}
+          )}
 
-        {activeTab === 'strategies' && (
+          {activeTab === 'strategies' && (
           <div className="space-y-8">
             {/* Allocation Editor */}
             {editingStrategy && (
@@ -503,9 +506,9 @@ export const App: React.FC = () => {
               </div>
             )}
           </div>
-        )}
+          )}
 
-        {activeTab === 'ai' && (
+          {activeTab === 'ai' && (
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('aiAssistantTitle')}</h2>
@@ -518,7 +521,8 @@ export const App: React.FC = () => {
               onStrategyGenerated={handleStrategyGenerated}
             />
           </div>
-        )}
+          )}
+        </React.Suspense>
       </main>
     </div>
   );
