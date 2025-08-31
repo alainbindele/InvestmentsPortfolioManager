@@ -1475,6 +1475,238 @@ export const translations: Translations = {
     fr: 'Horizon Temporel',
     de: 'Zeithorizont',
     zh: '时间范围'
+  },
+  rendimento: {
+    it: 'Rendimento',
+    en: 'Return',
+    es: 'Rendimiento',
+    fr: 'Rendement',
+    de: 'Rendite',
+    zh: '收益率'
+  },
+  sharpeRatio: {
+    it: 'Sharpe Ratio',
+    en: 'Sharpe Ratio',
+    es: 'Ratio Sharpe',
+    fr: 'Ratio de Sharpe',
+    de: 'Sharpe-Verhältnis',
+    zh: '夏普比率'
+  },
+  rischio: {
+    it: 'Rischio',
+    en: 'Risk',
+    es: 'Riesgo',
+    fr: 'Risque',
+    de: 'Risiko',
+    zh: '风险'
+  },
+  volatilita: {
+    it: 'Volatilità',
+    en: 'Volatility',
+    es: 'Volatilidad',
+    fr: 'Volatilité',
+    de: 'Volatilität',
+    zh: '波动性'
+  },
+  anno: {
+    it: 'Anno',
+    en: 'Year',
+    es: 'Año',
+    fr: 'Année',
+    de: 'Jahr',
+    zh: '年'
+  },
+  mese: {
+    it: 'Mese',
+    en: 'Month',
+    es: 'Mes',
+    fr: 'Mois',
+    de: 'Monat',
+    zh: '月'
+  },
+  trimestre: {
+    it: 'trimestre',
+    en: 'quarter',
+    es: 'trimestre',
+    fr: 'trimestre',
+    de: 'Quartal',
+    zh: '季度'
+  },
+  semestre: {
+    it: 'semestre',
+    en: 'semester',
+    es: 'semestre',
+    fr: 'semestre',
+    de: 'Semester',
+    zh: '半年'
+  },
+  anno_singular: {
+    it: 'anno',
+    en: 'year',
+    es: 'año',
+    fr: 'année',
+    de: 'Jahr',
+    zh: '年'
+  },
+  durata: {
+    it: 'Durata:',
+    en: 'Duration:',
+    es: 'Duración:',
+    fr: 'Durée:',
+    de: 'Dauer:',
+    zh: '持续时间:'
+  },
+  anni: {
+    it: 'anni',
+    en: 'years',
+    es: 'años',
+    fr: 'années',
+    de: 'Jahre',
+    zh: '年'
+  },
+  investimentoTotale: {
+    it: 'Investimento totale:',
+    en: 'Total investment:',
+    es: 'Inversión total:',
+    fr: 'Investissement total:',
+    de: 'Gesamtinvestition:',
+    zh: '总投资:'
+  },
+  selezionato: {
+    it: 'Selezionato',
+    en: 'Selected',
+    es: 'Seleccionado',
+    fr: 'Sélectionné',
+    de: 'Ausgewählt',
+    zh: '已选择'
+  },
+  simulazionePer: {
+    it: 'Simulazione per:',
+    en: 'Simulation for:',
+    es: 'Simulación para:',
+    fr: 'Simulation pour:',
+    de: 'Simulation für:',
+    zh: '模拟：'
+  },
+  investito: {
+    it: 'Investito:',
+    en: 'Invested:',
+    es: 'Invertido:',
+    fr: 'Investi:',
+    de: 'Investiert:',
+    zh: '已投资:'
+  },
+  valorePortfolio: {
+    it: 'Valore Portfolio:',
+    en: 'Portfolio Value:',
+    es: 'Valor del Portafolio:',
+    fr: 'Valeur du Portefeuille:',
+    de: 'Portfolio-Wert:',
+    zh: '投资组合价值:'
+  },
+  guadagno: {
+    it: 'Guadagno:',
+    en: 'Gain:',
+    es: 'Ganancia:',
+    fr: 'Gain:',
+    de: 'Gewinn:',
+    zh: '收益:'
+  },
+  compila: {
+    it: 'Compila tutti i campi obbligatori',
+    en: 'Fill in all required fields',
+    es: 'Completa todos los campos obligatorios',
+    fr: 'Remplissez tous les champs obligatoires',
+    de: 'Füllen Sie alle Pflichtfelder aus',
+    zh: '填写所有必填字段'
+  },
+  annulla: {
+    it: 'Annulla',
+    en: 'Cancel',
+    es: 'Cancelar',
+    fr: 'Annuler',
+    de: 'Abbrechen',
+    zh: '取消'
+  },
+  creaPac: {
+    it: 'Crea PAC',
+    en: 'Create PAC',
+    es: 'Crear PAC',
+    fr: 'Créer PAC',
+    de: 'PAC erstellen',
+    zh: '创建PAC'
+  },
+  allocazioneEqua: {
+    it: 'default: allocazione equa',
+    en: 'default: equal allocation',
+    es: 'predeterminado: asignación equitativa',
+    fr: 'par défaut: allocation égale',
+    de: 'Standard: gleichmäßige Allokation',
+    zh: '默认：平均分配'
+  },
+  opzionale: {
+    it: 'Opzionale',
+    en: 'Optional',
+    es: 'Opcional',
+    fr: 'Optionnel',
+    de: 'Optional',
+    zh: '可选'
+  },
+  rendimentoAtteso: {
+    it: 'Rendimento Atteso (% annuo)',
+    en: 'Expected Return (% annual)',
+    es: 'Rendimiento Esperado (% anual)',
+    fr: 'Rendement Attendu (% annuel)',
+    de: 'Erwartete Rendite (% jährlich)',
+    zh: '预期收益率（年化%）'
+  },
+  allocazionePerfetta: {
+    it: 'Allocazione perfettamente bilanciata al 100%',
+    en: 'Allocation perfectly balanced at 100%',
+    es: 'Asignación perfectamente equilibrada al 100%',
+    fr: 'Allocation parfaitement équilibrée à 100%',
+    de: 'Allokation perfekt ausgewogen bei 100%',
+    zh: '配置完美平衡在100%'
+  },
+  mancano: {
+    it: 'Mancano',
+    en: 'Missing',
+    es: 'Faltan',
+    fr: 'Manquent',
+    de: 'Fehlen',
+    zh: '缺少'
+  },
+  daDistribuire: {
+    it: 'da distribuire',
+    en: 'to distribute',
+    es: 'por distribuir',
+    fr: 'à distribuer',
+    de: 'zu verteilen',
+    zh: '待分配'
+  },
+  azzera: {
+    it: 'Azzera',
+    en: 'Reset',
+    es: 'Restablecer',
+    fr: 'Remettre à zéro',
+    de: 'Zurücksetzen',
+    zh: '重置'
+  },
+  usaRimanente: {
+    it: 'Usa il rimanente',
+    en: 'Use remaining',
+    es: 'Usar restante',
+    fr: 'Utiliser le restant',
+    de: 'Verbleibendes verwenden',
+    zh: '使用剩余'
+  },
+  max: {
+    it: 'Max',
+    en: 'Max',
+    es: 'Máx',
+    fr: 'Max',
+    de: 'Max',
+    zh: '最大'
   }
 };
 

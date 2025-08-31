@@ -117,7 +117,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900 mb-2">Anno {label}</p>
+          <p className="font-medium text-gray-900 mb-2">{t('anno')} {label}</p>
           {payload.map((entry: any, index: number) => {
             const strategyIndex = parseInt(entry.dataKey.split('_')[1]);
             const projectionStrategy = allProjections[strategyIndex]?.strategy;

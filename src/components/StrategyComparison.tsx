@@ -54,10 +54,10 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
           <p className="font-medium text-gray-900 mb-2">{data.fullName}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.dataKey === 'rendimento' && `Rendimento: ${formatPercentage(entry.value)}`}
-              {entry.dataKey === 'rischio' && `Rischio: ${entry.value.toFixed(1)}/5`}
-              {entry.dataKey === 'sharpe' && `Sharpe: ${entry.value.toFixed(2)}`}
-              {entry.dataKey === 'volatilita' && `Volatilità: ${formatPercentage(entry.value)}`}
+              {entry.dataKey === 'rendimento' && `${t('rendimento')}: ${formatPercentage(entry.value)}`}
+              {entry.dataKey === 'rischio' && `${t('rischio')}: ${entry.value.toFixed(1)}/5`}
+              {entry.dataKey === 'sharpe' && `${t('sharpeRatio')}: ${entry.value.toFixed(2)}`}
+              {entry.dataKey === 'volatilita' && `${t('volatilita')}: ${formatPercentage(entry.value)}`}
             </p>
           ))}
         </div>
@@ -147,7 +147,7 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
               <Bar 
                 dataKey="sharpe" 
                 fill="#3b82f6" 
-               name={`${t('sharpe')} Ratio`}
+               name={`${t('sharpeRatio')}`}
                 radius={[2, 2, 0, 0]}
               />
             </BarChart>

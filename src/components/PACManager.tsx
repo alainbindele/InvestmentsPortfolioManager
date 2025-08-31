@@ -96,13 +96,13 @@ export const PACManager: React.FC<PACManagerProps> = ({
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium text-gray-900 mb-2">Mese {label}</p>
           <p className="text-sm text-gray-600">
-            Investito: {formatCurrency(data.totalInvested)}
+            {t('investito')} {formatCurrency(data.totalInvested)}
           </p>
           <p className="text-sm text-success-600">
-            Valore Portfolio: {formatCurrency(data.portfolioValue)}
+            {t('valorePortfolio')} {formatCurrency(data.portfolioValue)}
           </p>
           <p className="text-sm text-primary-600">
-            Guadagno: {formatCurrency(data.totalGain)} ({data.gainPercentage.toFixed(1)}%)
+            {t('guadagno')} {formatCurrency(data.totalGain)} ({data.gainPercentage.toFixed(1)}%)
           </p>
         </div>
       );
@@ -289,7 +289,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
                   <div className="flex items-center gap-2">
                     {selectedPAC === pac.id && (
                       <div className="px-2 py-1 bg-primary-600 text-white rounded-full text-xs">
-                        Selezionato
+                        {t('selezionato')}
                       </div>
                     )}
                     <button
@@ -306,17 +306,17 @@ export const PACManager: React.FC<PACManagerProps> = ({
                 
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Durata:</span>
-                    <span className="font-semibold">{pac.duration} anni</span>
+                    <span className="text-gray-600">{t('durata')}</span>
+                    <span className="font-semibold">{pac.duration} {t('anni')}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Rendimento:</span>
+                    <span className="text-gray-600">{t('rendimento')}:</span>
                     <span className="font-semibold text-success-600">
                       {formatPercentage(pac.expectedReturn)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Investimento totale:</span>
+                    <span className="text-gray-600">{t('investimentoTotale')}</span>
                     <span className="font-semibold text-primary-600">
                       {formatCurrency(pac.monthlyAmount * 12 * pac.duration)}
                     </span>
@@ -348,7 +348,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
             <div>
               <h3 className="text-lg font-semibold text-gray-900">{t('pacProjection')}</h3>
               <p className="text-sm text-gray-600">
-                Simulazione per: {selectedPACData.name}
+                {t('simulazionePer')} {selectedPACData.name}
               </p>
             </div>
           </div>
