@@ -449,7 +449,7 @@ export const App: React.FC = () => {
                 </h3>
                 <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-sm text-blue-800">
-                    💡 <strong>{t('suggestion')}</strong> {t('suggestionMessage')}
+                    💡 <strong>{t('suggestionPrefix')}</strong> {t('clickAiStrategiesMessage')}
                   </p>
                 </div>
                 <div className="space-y-6">
@@ -505,7 +505,7 @@ export const App: React.FC = () => {
                   </div>
                   <p className="text-gray-600">
                     {selectedStrategies.size === 0 
-                      ? t('selectStrategiesForComparison')
+                      ? t('selectOneOrMoreStrategies')
                       : `${t('comparisonBetween')} ${selectedStrategies.size} ${selectedStrategies.size > 1 ? t('selectedStrategiesPlural') : t('selectedStrategySingular')}`
                     }
                   </p>
@@ -528,9 +528,9 @@ export const App: React.FC = () => {
                     <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                       <Target className="w-8 h-8 text-gray-400" />
                     </div>
-                    <h4 className="text-lg font-medium text-gray-900 mb-2">Nessuna strategia selezionata</h4>
+                    <h4 className="text-lg font-medium text-gray-900 mb-2">{t('noStrategySelected')}</h4>
                     <p className="text-gray-600 mb-4">
-                      {t('clickToSelectStrategies')}
+                      {t('clickStrategiesAbove')}
                     </p>
                   </div>
                 )}
