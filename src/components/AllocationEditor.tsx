@@ -50,49 +50,38 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
     const oldValue = allocations[assetId] || 0;
     const difference = newValue - oldValue;
     
-    if (difference > 0) {
-      // Increasing this asset - decrease others proportionally to maintain 100%
+    const currentTotal = Object.values(allocations).reduce((sum, val) => sum + val, 0);
+    const newTotal = currentTotal - oldValue + newValue;
+    
+    if (newTotal <= 100) {
+      // If new total is 100% or less, just update this asset (don't touch others)
+      setAllocations({ ...allocations, [assetId]: Math.max(0, newValue) });
+    } else {
+      // If new total would exceed 100%, we need to decrease others proportionally
+      const excess = newTotal - 100;
       const otherAssets = assets.filter(a => a.id !== assetId);
       const otherTotal = otherAssets.reduce((sum, asset) => sum + (allocations[asset.id] || 0), 0);
       
-      if (otherTotal > 0 && difference <= otherTotal) {
+      if (otherTotal >= excess) {
         const newAllocations = { ...allocations };
-        newAllocations[assetId] = Math.min(100, newValue); // Cap at 100%
+        newAllocations[assetId] = newValue;
         
-        // Distribute the decrease proportionally among other assets
+        // Distribute the excess decrease proportionally among other assets
         otherAssets.forEach(asset => {
           const currentAllocation = allocations[asset.id] || 0;
-          const proportion = currentAllocation / otherTotal;
-          const decrease = difference * proportion;
-          newAllocations[asset.id] = Math.max(0, currentAllocation - decrease);
+          if (otherTotal > 0) {
+            const proportion = currentAllocation / otherTotal;
+            const decrease = excess * proportion;
+            newAllocations[asset.id] = Math.max(0, currentAllocation - decrease);
+          }
         });
         
         setAllocations(newAllocations);
-      } else if (otherTotal === 0) {
-        // If other assets have 0 allocation, just set this one (capped at 100%)
-        setAllocations({ ...allocations, [assetId]: Math.min(100, newValue) });
       } else {
-        // If trying to increase beyond what others can provide, set to maximum possible
-        const maxPossible = oldValue + otherTotal;
-        const finalValue = Math.min(newValue, maxPossible);
-        
-        const newAllocations = { ...allocations };
-        newAllocations[assetId] = finalValue;
-        
-        const actualDifference = finalValue - oldValue;
-        otherAssets.forEach(asset => {
-          const currentAllocation = allocations[asset.id] || 0;
-          const proportion = currentAllocation / otherTotal;
-          const decrease = actualDifference * proportion;
-          newAllocations[asset.id] = Math.max(0, currentAllocation - decrease);
-        });
-        
-        setAllocations(newAllocations);
+        // If others can't provide enough, set this asset to maximum possible
+        const maxPossible = 100 - (otherTotal - (allocations[assetId] || 0));
+        setAllocations({ ...allocations, [assetId]: Math.max(0, maxPossible) });
       }
-    } else {
-      // Decreasing this asset - just update it (others stay the same)
-      // This allows manual redistribution to reach 100% again
-      setAllocations({ ...allocations, [assetId]: Math.max(0, newValue) });
     }
   };
 
