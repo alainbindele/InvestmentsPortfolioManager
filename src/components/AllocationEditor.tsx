@@ -300,8 +300,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
         </div>
         
         <ProjectionChart
-          currentStrategy={tempStrategy}
-          selectedStrategy={null}
+          strategies={[tempStrategy]}
           assets={assets}
           currency={currency}
           language={language}
