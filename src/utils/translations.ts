@@ -1707,6 +1707,46 @@ export const translations: Translations = {
     fr: 'Max',
     de: 'Max',
     zh: '最大'
+  },
+  deleteStrategy: {
+    it: 'Elimina Strategia',
+    en: 'Delete Strategy',
+    es: 'Eliminar Estrategia',
+    fr: 'Supprimer la Stratégie',
+    de: 'Strategie löschen',
+    zh: '删除策略'
+  },
+  editStrategy: {
+    it: 'Modifica Strategia',
+    en: 'Edit Strategy',
+    es: 'Editar Estrategia',
+    fr: 'Modifier la Stratégie',
+    de: 'Strategie bearbeiten',
+    zh: '编辑策略'
+  },
+  confirmDeleteStrategy: {
+    it: 'Conferma Eliminazione',
+    en: 'Confirm Deletion',
+    es: 'Confirmar Eliminación',
+    fr: 'Confirmer la Suppression',
+    de: 'Löschung bestätigen',
+    zh: '确认删除'
+  },
+  deleteStrategyWarning: {
+    it: 'Sei sicuro di voler eliminare questa strategia?',
+    en: 'Are you sure you want to delete this strategy?',
+    es: '¿Estás seguro de que quieres eliminar esta estrategia?',
+    fr: 'Êtes-vous sûr de vouloir supprimer cette stratégie?',
+    de: 'Sind Sie sicher, dass Sie diese Strategie löschen möchten?',
+    zh: '您确定要删除此策略吗？'
+  },
+  strategyDeleted: {
+    it: 'Strategia eliminata',
+    en: 'Strategy deleted',
+    es: 'Estrategia eliminada',
+    fr: 'Stratégie supprimée',
+    de: 'Strategie gelöscht',
+    zh: '策略已删除'
   }
 };
 

@@ -5,7 +5,7 @@ import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
-import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check, Pencil, X } from 'lucide-react';
+import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check, Pencil, X, Trash2, AlertTriangle } from 'lucide-react';
 
 interface StrategyCardProps {
   strategy: Strategy;
@@ -15,6 +15,7 @@ interface StrategyCardProps {
   onSelect: () => void;
   onCloneAndEdit?: () => void;
   onUpdateName?: (strategyId: string, newName: string) => void;
+  onDelete?: (strategyId: string) => void;
   language: Language;
   showSelectionCheckbox?: boolean;
 }
@@ -27,12 +28,14 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   onSelect,
   onCloneAndEdit,
   onUpdateName,
+  onDelete,
   language,
   showSelectionCheckbox = false
 }) => {
   const t = (key: string) => getTranslation(language, key);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(strategy.name);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
@@ -73,19 +76,61 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
     setIsEditingName(false);
   };
 
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(strategy.id);
+      setShowDeleteConfirm(false);
+    }
+  };
   return (
-    <div
-      onClick={strategy.isAIGenerated ? onSelect : undefined}
-      className={`card transition-all duration-200 ${
-        showSelectionCheckbox || strategy.isAIGenerated ? 'cursor-pointer hover:shadow-lg' : ''
-      } ${
-        isSelected
-          ? 'ring-2 ring-primary-500 bg-primary-50 border-primary-200'
-          : isCurrentStrategy
-          ? 'bg-gray-50 border-gray-300'
-          : 'hover:shadow-md'
-      }`}
-    >
+    <div className="relative">
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="absolute inset-0 bg-white bg-opacity-95 rounded-xl flex items-center justify-center z-10 border-2 border-red-200">
+          <div className="text-center p-4">
+            <div className="flex justify-center mb-3">
+              <div className="p-2 bg-red-100 rounded-full">
+                <AlertTriangle className="w-6 h-6 text-red-600" />
+              </div>
+            </div>
+            <h4 className="font-semibold text-gray-900 mb-2">{t('confirmDeleteStrategy')}</h4>
+            <p className="text-sm text-gray-600 mb-4">{t('deleteStrategyWarning')}</p>
+            <div className="flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowDeleteConfirm(false);
+                }}
+                className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors"
+              >
+                {t('cancel')}
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete();
+                }}
+                className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors"
+              >
+                {t('delete')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div
+        onClick={strategy.isAIGenerated ? onSelect : undefined}
+        className={`card transition-all duration-200 ${
+          showSelectionCheckbox || strategy.isAIGenerated ? 'cursor-pointer hover:shadow-lg' : ''
+        } ${
+          isSelected
+            ? 'ring-2 ring-primary-500 bg-primary-50 border-primary-200'
+            : isCurrentStrategy
+            ? 'bg-gray-50 border-gray-300'
+            : 'hover:shadow-md'
+        }`}
+      >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           {showSelectionCheckbox && (
@@ -116,16 +161,30 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                 <>
                   <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
                   {onUpdateName && !isCurrentStrategy && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleNameEdit();
-                      }}
-                      className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
-                      title={t('editName')}
-                    >
-                      <Pencil className="w-3 h-3" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNameEdit();
+                        }}
+                        className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                        title={t('editName')}
+                      >
+                        <Pencil className="w-3 h-3" />
+                      </button>
+                      {onDelete && strategy.isAIGenerated && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowDeleteConfirm(true);
+                          }}
+                          className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                          title={t('deleteStrategy')}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
                   )}
                 </>
               ) : (
@@ -292,6 +351,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           </button>
         </div>
       )}
+    </div>
     </div>
   );
 };

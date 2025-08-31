@@ -144,6 +144,15 @@ export const App: React.FC = () => {
     ));
   };
 
+  const handleDeleteStrategy = (strategyId: string) => {
+    setAiStrategies(prev => prev.filter(strategy => strategy.id !== strategyId));
+    // Remove from selected strategies if it was selected
+    setSelectedStrategies(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(strategyId);
+      return newSet;
+    });
+  };
   const handleDisclaimerAccept = () => {
     saveDisclaimerAccepted();
     setShowDisclaimer(false);
@@ -463,6 +472,7 @@ export const App: React.FC = () => {
                         onSelect={() => handleToggleStrategy(strategy.id)}
                         onCloneAndEdit={() => handleCloneAndEdit(strategy)}
                         onUpdateName={handleUpdateStrategyName}
+                        onDelete={handleDeleteStrategy}
                         language={language}
                         showSelectionCheckbox={true}
                       />
