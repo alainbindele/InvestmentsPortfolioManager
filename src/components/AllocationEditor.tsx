@@ -51,13 +51,13 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
     const difference = newValue - oldValue;
     
     if (difference > 0) {
-      // Increasing this asset - decrease others proportionally
+      // Increasing this asset - decrease others proportionally to maintain 100%
       const otherAssets = assets.filter(a => a.id !== assetId);
       const otherTotal = otherAssets.reduce((sum, asset) => sum + (allocations[asset.id] || 0), 0);
       
-      if (otherTotal > 0) {
+      if (otherTotal > 0 && difference <= otherTotal) {
         const newAllocations = { ...allocations };
-        newAllocations[assetId] = newValue;
+        newAllocations[assetId] = Math.min(100, newValue); // Cap at 100%
         
         // Distribute the decrease proportionally among other assets
         otherAssets.forEach(asset => {
@@ -68,13 +68,31 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
         });
         
         setAllocations(newAllocations);
+      } else if (otherTotal === 0) {
+        // If other assets have 0 allocation, just set this one (capped at 100%)
+        setAllocations({ ...allocations, [assetId]: Math.min(100, newValue) });
       } else {
-        // If other assets have 0 allocation, just set this one
-        setAllocations({ ...allocations, [assetId]: newValue });
+        // If trying to increase beyond what others can provide, set to maximum possible
+        const maxPossible = oldValue + otherTotal;
+        const finalValue = Math.min(newValue, maxPossible);
+        
+        const newAllocations = { ...allocations };
+        newAllocations[assetId] = finalValue;
+        
+        const actualDifference = finalValue - oldValue;
+        otherAssets.forEach(asset => {
+          const currentAllocation = allocations[asset.id] || 0;
+          const proportion = currentAllocation / otherTotal;
+          const decrease = actualDifference * proportion;
+          newAllocations[asset.id] = Math.max(0, currentAllocation - decrease);
+        });
+        
+        setAllocations(newAllocations);
       }
     } else {
       // Decreasing this asset - just update it (others stay the same)
-      setAllocations({ ...allocations, [assetId]: newValue });
+      // This allows manual redistribution to reach 100% again
+      setAllocations({ ...allocations, [assetId]: Math.max(0, newValue) });
     }
   };
 
@@ -221,6 +239,30 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                   <span className="text-sm text-gray-600 ml-2">
                     = {formatCurrency(monetaryValue, currency)}
                   </span>
+                  {/* Quick allocation buttons */}
+                  <div className="flex gap-1 ml-2">
+                    <button
+                      type="button"
+                      onClick={() => handleAllocationChange(asset.id, 0)}
+                      className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs transition-colors"
+                      title="Azzera"
+                    >
+                      0%
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const remaining = 100 - Object.entries(allocations)
+                          .filter(([id]) => id !== asset.id)
+                          .reduce((sum, [, val]) => sum + val, 0);
+                        handleAllocationChange(asset.id, Math.max(0, remaining));
+                      }}
+                      className="px-2 py-1 bg-primary-100 hover:bg-primary-200 text-primary-600 rounded text-xs transition-colors"
+                      title="Usa il rimanente"
+                    >
+                      Max
+                    </button>
+                  </div>
                 </div>
               </div>
             );
@@ -247,8 +289,13 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
             <p className="text-sm text-error-600 mt-1">
               {totalAllocation > 100 
                 ? t('allocationTooHigh') 
-                : t('allocationTooLow')
+                : `${t('allocationTooLow')} Mancano ${(100 - totalAllocation).toFixed(1)}% da distribuire.`
               }
+            </p>
+          )}
+          {isValid && (
+            <p className="text-sm text-success-600 mt-1">
+              ✓ Allocazione perfettamente bilanciata al 100%
             </p>
           )}
         </div>
