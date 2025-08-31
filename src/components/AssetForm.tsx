@@ -53,7 +53,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
     e.preventDefault();
     
     if (!formData.name || !formData.currentValue || !formData.expectedReturn) {
-      alert(t('fillRequiredFields'));
+      alert(t('fillAllRequiredFields'));
       return;
     }
 

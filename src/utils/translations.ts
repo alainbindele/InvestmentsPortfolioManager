@@ -1190,6 +1190,14 @@ export const translations: Translations = {
     de: 'Füllen Sie alle Pflichtfelder aus',
     zh: '填写所有必填字段'
   },
+  noAssetsToAnalyze: {
+    it: 'Nessun asset da analizzare',
+    en: 'No assets to analyze',
+    es: 'No hay activos para analizar',
+    fr: 'Aucun actif à analyser',
+    de: 'Keine Assets zu analysieren',
+    zh: '没有资产可分析'
+  },
 
   // Disclaimer
   disclaimerTitle: {
@@ -1323,6 +1331,150 @@ export const translations: Translations = {
     fr: 'stratégies',
     de: 'Strategien',
     zh: '个策略'
+  },
+  
+  // ProjectionChart hardcoded texts
+  growthProjectionComparison: {
+    it: 'Confronto delle proiezioni di crescita tra diverse strategie',
+    en: 'Comparison of growth projections between different strategies',
+    es: 'Comparación de proyecciones de crecimiento entre diferentes estrategias',
+    fr: 'Comparaison des projections de croissance entre différentes stratégies',
+    de: 'Vergleich der Wachstumsprognosen zwischen verschiedenen Strategien',
+    zh: '不同策略间增长预测的比较'
+  },
+  singleAssetProjection: {
+    it: 'Proiezione di crescita per:',
+    en: 'Growth projection for:',
+    es: 'Proyección de crecimiento para:',
+    fr: 'Projection de croissance pour:',
+    de: 'Wachstumsprognose für:',
+    zh: '增长预测：'
+  },
+  
+  // AllocationEditor hardcoded texts
+  modifiedStrategyPrefix: {
+    it: 'Strategia modificata basata su:',
+    en: 'Modified strategy based on:',
+    es: 'Estrategia modificada basada en:',
+    fr: 'Stratégie modifiée basée sur:',
+    de: 'Geänderte Strategie basierend auf:',
+    zh: '基于以下策略的修改：'
+  },
+  
+  // ChatGPTIntegration hardcoded texts
+  fillAllRequiredFields: {
+    it: 'Compila tutti i campi obbligatori',
+    en: 'Fill in all required fields',
+    es: 'Completa todos los campos obligatorios',
+    fr: 'Remplissez tous les champs obligatoires',
+    de: 'Füllen Sie alle Pflichtfelder aus',
+    zh: '填写所有必填字段'
+  },
+  
+  // PACManager hardcoded texts
+  createPac: {
+    it: 'Crea PAC',
+    en: 'Create PAC',
+    es: 'Crear PAC',
+    fr: 'Créer PAC',
+    de: 'PAC erstellen',
+    zh: '创建PAC'
+  },
+  pacName: {
+    it: 'Nome PAC',
+    en: 'PAC Name',
+    es: 'Nombre PAC',
+    fr: 'Nom PAC',
+    de: 'PAC-Name',
+    zh: 'PAC名称'
+  },
+  monthlyAmount: {
+    it: 'Importo Mensile',
+    en: 'Monthly Amount',
+    es: 'Cantidad Mensual',
+    fr: 'Montant Mensuel',
+    de: 'Monatlicher Betrag',
+    zh: '月度金额'
+  },
+  frequency: {
+    it: 'Frequenza',
+    en: 'Frequency',
+    es: 'Frecuencia',
+    fr: 'Fréquence',
+    de: 'Häufigkeit',
+    zh: '频率'
+  },
+  duration: {
+    it: 'Durata (anni)',
+    en: 'Duration (years)',
+    es: 'Duración (años)',
+    fr: 'Durée (années)',
+    de: 'Dauer (Jahre)',
+    zh: '持续时间（年）'
+  },
+  pacAllocation: {
+    it: 'Allocazione PAC',
+    en: 'PAC Allocation',
+    es: 'Asignación PAC',
+    fr: 'Allocation PAC',
+    de: 'PAC-Allokation',
+    zh: 'PAC配置'
+  },
+  activePacs: {
+    it: 'PAC Attivi',
+    en: 'Active PACs',
+    es: 'PACs Activos',
+    fr: 'PACs Actifs',
+    de: 'Aktive PACs',
+    zh: '活跃PAC'
+  },
+  noPacsMessage: {
+    it: 'Crea il tuo primo piano di accumulo per iniziare a investire regolarmente',
+    en: 'Create your first accumulation plan to start investing regularly',
+    es: 'Crea tu primer plan de acumulación para empezar a invertir regularmente',
+    fr: 'Créez votre premier plan d\'accumulation pour commencer à investir régulièrement',
+    de: 'Erstellen Sie Ihren ersten Sparplan, um regelmäßig zu investieren',
+    zh: '创建您的第一个积累计划以开始定期投资'
+  },
+  pacProjection: {
+    it: 'Proiezione PAC',
+    en: 'PAC Projection',
+    es: 'Proyección PAC',
+    fr: 'Projection PAC',
+    de: 'PAC-Projektion',
+    zh: 'PAC预测'
+  },
+  totalInvested: {
+    it: 'Totale Investito',
+    en: 'Total Invested',
+    es: 'Total Invertido',
+    fr: 'Total Investi',
+    de: 'Gesamt Investiert',
+    zh: '总投资'
+  },
+  portfolioValue: {
+    it: 'Valore Portfolio',
+    en: 'Portfolio Value',
+    es: 'Valor del Portafolio',
+    fr: 'Valeur du Portefeuille',
+    de: 'Portfolio-Wert',
+    zh: '投资组合价值'
+  },
+  totalGain: {
+    it: 'Guadagno Totale',
+    en: 'Total Gain',
+    es: 'Ganancia Total',
+    fr: 'Gain Total',
+    de: 'Gesamtgewinn',
+    zh: '总收益'
+  },
+  compoundEffect: {
+    it: 'Effetto Compound',
+    en: 'Compound Effect',
+    es: 'Efecto Compuesto',
+    fr: 'Effet de Composition',
+    de: 'Zinseszinseffekt',
+    zh: '复利效应'
   }
 };
 

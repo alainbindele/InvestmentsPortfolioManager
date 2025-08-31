@@ -172,8 +172,8 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           <h3 className="text-lg font-semibold text-gray-900">{t('portfolioProjection')}</h3>
           <p className="text-sm text-gray-600">
             {selectedAsset === 'portfolio' ? 
-              'Confronto delle proiezioni di crescita tra diverse strategie' : 
-              `Proiezione di crescita per: ${selectedAssetData?.name}`
+              t('growthProjectionComparison') : 
+              `${t('singleAssetProjection')} ${selectedAssetData?.name}`
             }
           </p>
         </div>

@@ -30,7 +30,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   const handleAnalyzePortfolio = async () => {
     if (assets.length === 0) {
-      alert(t('noAssetsMessage'));
+      alert(t('noAssetsToAnalyze'));
       return;
     }
 
@@ -62,7 +62,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   const handleGenerateStrategy = async () => {
     if (assets.length === 0) {
-      alert(t('noAssetsMessage'));
+      alert(t('noAssetsToAnalyze'));
       return;
     }
 

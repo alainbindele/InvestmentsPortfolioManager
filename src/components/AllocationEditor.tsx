@@ -91,7 +91,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       ...strategy,
       id: `edited-${strategy.id}-${Date.now()}`,
       name: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategy') : `${strategy.name} (${t('modified')})`,
-      description: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategyDescription') : `${t('modifiedStrategyBasedOn')}: ${strategy.name}`,
+      description: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategyDescription') : `${t('modifiedStrategyPrefix')} ${strategy.name}`,
       targetAllocations: { ...allocations },
       createdAt: new Date(),
       isAIGenerated: false
