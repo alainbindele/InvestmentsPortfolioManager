@@ -172,7 +172,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                         >
                           <Pencil className="w-3 h-3" />
                         </button>
-                        {onDelete && strategy.isAIGenerated && (
+                        {onDelete && !isCurrentStrategy && (
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
