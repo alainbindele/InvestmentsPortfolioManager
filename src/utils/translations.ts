@@ -1273,7 +1273,6 @@ export const translations: Translations = {
     fr: 'équilibreur de portefeuille, investissements, IA, rééquilibrage, DCA, moyenne des coûts, ETF, actions, obligations, diversification, analyse de portefeuille',
     de: 'Portfolio-Balancer, Investitionen, KI, Neugewichtung, Cost-Average, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse',
     zh: '投资组合平衡器, 投资, AI, 再平衡, 定投, 成本平均, ETF, 股票, 债券, 多样化, 投资组合分析'
-  }
   },
   
   // Additional translations for missing texts
@@ -1316,6 +1315,8 @@ export const translations: Translations = {
     fr: 'stratégies',
     de: 'Strategien',
     zh: '个策略'
+  }
+};
 };
 
 export const getTranslation = (language: Language, key: string): string => {
