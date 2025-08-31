@@ -1,6 +1,6 @@
 import { Language } from '../types/language';
 import { Asset, Strategy } from '../types/portfolio';
-import { getTranslation } from '../translations';
+import { getTranslation } from './translations';
 
 export interface SEOData {
   title: string;
