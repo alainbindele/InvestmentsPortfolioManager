@@ -69,6 +69,18 @@ export class ChatGPTService {
     const t = (key: string) => getTranslation(language as any, key);
     const metrics = calculatePortfolioMetrics(assets);
     
+    // Language mapping for AI prompts
+    const languageNames = {
+      'it': 'italiano',
+      'en': 'inglese',
+      'es': 'spagnolo', 
+      'fr': 'francese',
+      'de': 'tedesco',
+      'zh': 'cinese semplificato'
+    };
+    
+    const selectedLanguageName = languageNames[language as keyof typeof languageNames] || 'italiano';
+    
     const portfolioData = {
       assets: assets.map(asset => ({
         name: asset.name,
@@ -87,7 +99,8 @@ export class ChatGPTService {
     const messages = [
       {
         role: 'system',
-        content: `Sei un esperto consulente finanziario specializzato nell'analisi di portafogli di investimento. 
+        content: `Sei un esperto consulente finanziario specializzato nell'analisi di portafogli di investimento.
+        IMPORTANTE: Rispondi SEMPRE in ${selectedLanguageName}. Tutte le raccomandazioni e insights devono essere scritti in ${selectedLanguageName}.
         Analizza il portafoglio fornito e restituisci SOLO un JSON valido con questa struttura esatta:
         {
           "currentMetrics": {
@@ -112,8 +125,11 @@ export class ChatGPTService {
           ]
         }
         
-        IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
-        Fornisci raccomandazioni specifiche, pratiche e actionable. Gli insights di mercato devono essere attuali e basati su tendenze reali del 2025.`
+        CRITICO: 
+        1. Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo
+        2. TUTTE le stringhe nel JSON devono essere in ${selectedLanguageName}
+        3. Fornisci raccomandazioni specifiche, pratiche e actionable in ${selectedLanguageName}
+        4. Gli insights di mercato devono essere attuali e basati su tendenze reali del 2025, scritti in ${selectedLanguageName}`
       },
       {
         role: 'user',
@@ -182,6 +198,18 @@ export class ChatGPTService {
     language: string = 'it'
   ): Promise<Strategy> {
     const t = (key: string) => getTranslation(language as any, key);
+    
+    // Language mapping for AI prompts
+    const languageNames = {
+      'it': 'italiano',
+      'en': 'inglese', 
+      'es': 'spagnolo',
+      'fr': 'francese',
+      'de': 'tedesco',
+      'zh': 'cinese semplificato'
+    };
+    
+    const selectedLanguageName = languageNames[language as keyof typeof languageNames] || 'italiano';
     const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
     
     const portfolioData = {
@@ -208,6 +236,7 @@ export class ChatGPTService {
       {
         role: 'system',
         content: `Sei un esperto consulente finanziario specializzato nella creazione di strategie di investimento ottimali.
+        IMPORTANTE: Rispondi SEMPRE in ${selectedLanguageName}. Tutti i testi nel JSON devono essere scritti in ${selectedLanguageName}.
         Crea una strategia di investimento personalizzata e restituisci SOLO un JSON valido con questa struttura esatta:
         {
           "name": "Nome della strategia",
@@ -229,8 +258,10 @@ export class ChatGPTService {
         }
         
         Le percentuali in targetAllocations devono sommare a 100. Usa gli ID degli asset forniti.
-        IMPORTANTE: Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo.
-        Basa le tue raccomandazioni su principi di Modern Portfolio Theory e diversificazione ottimale.`
+        CRITICO:
+        1. Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo
+        2. TUTTI i testi nel JSON (name, description, reasoning) devono essere in ${selectedLanguageName}
+        3. Basa le tue raccomandazioni su principi di Modern Portfolio Theory e diversificazione ottimale`
       },
       {
         role: 'user',
@@ -419,6 +450,18 @@ export class ChatGPTService {
   async getMarketResearch(assetType: string, language: string = 'it'): Promise<string> {
     const t = (key: string) => getTranslation(language as any, key);
     
+    // Language mapping for AI prompts
+    const languageNames = {
+      'it': 'italiano',
+      'en': 'inglese',
+      'es': 'spagnolo', 
+      'fr': 'francese',
+      'de': 'tedesco',
+      'zh': 'cinese semplificato'
+    };
+    
+    const selectedLanguageName = languageNames[language as keyof typeof languageNames] || 'italiano';
+    
     if (!this.apiKey) {
       return `${t('ricercaMercatoNonDisponibile')} ${assetType}. ${t('configuraApiKey')}`;
     }
@@ -427,18 +470,20 @@ export class ChatGPTService {
       {
         role: 'system',
         content: `Sei un analista finanziario esperto. Fornisci una ricerca di mercato concisa e attuale per la categoria di asset richiesta.
+        IMPORTANTE: Rispondi SEMPRE in ${selectedLanguageName}. Tutti i testi nel JSON devono essere scritti in ${selectedLanguageName}.
         Restituisci SOLO un JSON con questa struttura:
         {
-          "research": "Analisi di mercato dettagliata e attuale (max 300 caratteri)",
+          "research": "Analisi di mercato dettagliata e attuale in ${selectedLanguageName} (max 300 caratteri)",
           "outlook": "positive|neutral|negative",
-          "keyFactors": ["fattore1", "fattore2", "fattore3"]
+          "keyFactors": ["fattore1 in ${selectedLanguageName}", "fattore2 in ${selectedLanguageName}", "fattore3 in ${selectedLanguageName}"]
         }`
       },
       {
         role: 'user',
         content: `Fornisci una ricerca di mercato aggiornata per: ${assetType}
         
-        Include tendenze attuali, outlook e fattori chiave da considerare per il 2025.`
+        Include tendenze attuali, outlook e fattori chiave da considerare per il 2025.
+        IMPORTANTE: Scrivi tutto in ${selectedLanguageName}.`
       }
     ];
 
