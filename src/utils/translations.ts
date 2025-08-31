@@ -362,14 +362,6 @@ export const translations: Translations = {
     de: 'Aktuelle Strategie',
     zh: '当前策略'
   },
-  currentStrategyDescription: {
-    it: 'La tua allocazione attuale del portafoglio',
-    en: 'Your current portfolio allocation',
-    es: 'Tu asignación actual del portafolio',
-    fr: 'Votre allocation actuelle du portefeuille',
-    de: 'Ihre aktuelle Portfolio-Allokation',
-    zh: '您当前的投资组合配置'
-  },
   aiGeneratedStrategies: {
     it: 'Strategie AI Generate',
     en: 'AI Generated Strategies',
