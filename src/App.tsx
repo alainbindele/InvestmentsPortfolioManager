@@ -101,7 +101,7 @@ export const App: React.FC = () => {
     setEditingAsset(null);
   };
 
-  const handleCancelStrategyEdit = () => {
+  const handleCancelAssetEdit = () => {
     setEditingAsset(null);
   };
 
@@ -131,7 +131,7 @@ export const App: React.FC = () => {
     setEditingStrategy(null);
   };
 
-  const handleCancelStrategyEdit = () => {
+  const handleCancelAllocationEdit = () => {
     setEditingStrategy(null);
   };
 
@@ -246,7 +246,7 @@ export const App: React.FC = () => {
             <AssetForm 
               onAddAsset={handleAddAsset} 
               onUpdateAsset={handleUpdateAsset}
-              onCancelEdit={handleCancelEdit}
+              onCancelEdit={handleCancelAssetEdit}
               editingAsset={editingAsset}
               language={language} 
             />
@@ -262,7 +262,6 @@ export const App: React.FC = () => {
                         <div className="flex items-center gap-3">
                           <div 
                             className="w-4 h-4 rounded-full" 
-                            currency={currency}
                             style={{ backgroundColor: ASSET_COLORS[asset.type] }}
                           />
                           <div>
@@ -390,14 +389,14 @@ export const App: React.FC = () => {
           <div className="space-y-8">
             {/* Allocation Editor */}
             {editingStrategy && (
-              <div className="border-2 border-primary-200 rounded-xl p-6 bg-primary-50">
+              <div className="border-2 border-primary-200 rounded-xl p-6 bg-primary-50 allocation-editor">
                 <AllocationEditor
                   strategy={editingStrategy}
                   assets={assets}
                   currency={currency}
                   language={language}
                   onSaveAllocation={handleSaveAllocation}
-                  onCancel={handleCancelStrategyEdit}
+                  onCancel={handleCancelAllocationEdit}
                 />
               </div>
             )}
@@ -408,24 +407,26 @@ export const App: React.FC = () => {
             </div>
 
             {/* Current Strategy */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentStrategy')}</h3>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-                <StrategyCard
-                  strategy={currentStrategy}
-                  assets={assets}
-                  currency={currency}
-                  isSelected={false}
-                  onSelect={() => {}}
-                  onCloneAndEdit={() => handleCloneAndEdit(currentStrategy)}
-                  language={language}
-                />
-                <div className="card">
-                  <h4 className="font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h4>
-                  <PortfolioChart assets={assets} language={language} />
+            {assets.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentStrategy')}</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                  <StrategyCard
+                    strategy={currentStrategy}
+                    assets={assets}
+                    currency={currency}
+                    isSelected={false}
+                    onSelect={() => {}}
+                    onCloneAndEdit={() => handleCloneAndEdit(currentStrategy)}
+                    language={language}
+                  />
+                  <div className="card">
+                    <h4 className="font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h4>
+                    <PortfolioChart assets={assets} language={language} currency={currency} />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* AI Generated Strategies */}
             {aiStrategies.length > 0 && (
@@ -488,6 +489,23 @@ export const App: React.FC = () => {
 
                   <StrategyComparison strategies={strategiesForComparison} language={language} />
                 </div>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {assets.length === 0 && (
+              <div className="text-center py-12">
+                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <Target className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noAssetsMessage')}</h3>
+                <p className="text-gray-600 mb-4">Aggiungi alcuni asset al tuo portfolio per iniziare a confrontare le strategie</p>
+                <button
+                  onClick={() => setActiveTab('portfolio')}
+                  className="btn-primary"
+                >
+                  {t('addAsset')}
+                </button>
               </div>
             )}
           </div>
