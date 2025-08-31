@@ -53,7 +53,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           className="fixed mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg animate-slide-up" 
           style={{ 
             zIndex: 99999,
-            top: '60px',
+            top: '120px',
             right: '16px'
           }}
         >

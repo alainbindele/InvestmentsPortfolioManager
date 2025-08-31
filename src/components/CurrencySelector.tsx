@@ -74,7 +74,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
           className="fixed w-72 sm:w-80 bg-white border border-gray-200 rounded-lg shadow-lg animate-slide-up max-h-96 overflow-hidden" 
           style={{ 
             zIndex: 99999,
-            top: '60px',
+             top: '120px',
             right: '16px'
           }}
         >
