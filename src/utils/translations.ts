@@ -1,1484 +1,1238 @@
-export interface Translation {
-  // Navigation
-  portfolio: string;
-  strategies: string;
-  analysis: string;
-  settings: string;
+export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'zh';
 
-  // Portfolio
-  totalValue: string;
-  expectedReturn: string;
-  riskScore: string;
-  diversification: string;
-  addAsset: string;
-  assetName: string;
-  assetType: string;
-  editAsset: string;
-  updateAsset: string;
-  fillRequiredFields: string;
-  currentValue: string;
-  expectedReturnLabel: string;
-  riskLevel: string;
-  save: string;
-  cancel: string;
-  edit: string;
-  delete: string;
-  
-  // Asset Types
-  stocks: string;
-  bonds: string;
-  etf: string;
-  crypto: string;
-  real_estate: string;
-  cash: string;
-  commodities: string;
-  
-  // Risk Levels
-  low: string;
-  medium: string;
-  high: string;
-  very_low: string;
-  very_high: string;
-  
-  // Strategies
-  generateStrategy: string;
-  strategyName: string;
-  description: string;
-  targetAllocation: string;
-  riskProfile: string;
-  conservative: string;
-  balanced: string;
-  aggressive: string;
-  
-  // Analysis
-  recommendations: string;
-  marketInsights: string;
-  analyzePortfolio: string;
-  
-  // PAC
-  isPAC: string;
-  pacAmount: string;
-  pacFrequency: string;
-  monthly: string;
-  quarterly: string;
-  biannual: string;
-  annual: string;
-  pacActive: string;
-  
-  // Common
-  loading: string;
-  error: string;
-  success: string;
-  confirm: string;
-  close: string;
-  
-  // App specific
-  appTitle: string;
-  appSubtitle: string;
-  
-  // Disclaimer
-  disclaimerTitle: string;
-  disclaimerSubtitle: string;
-  disclaimerAcceptance: string;
-  continue: string;
-  
-  portfolioMetrics: string;
-  currentAllocation: string;
-  addAssetButton: string;
-  assetCurrentValue: string;
-  noAssetsMessage: string;
-  investmentStrategies: string;
-  strategiesDescription: string;
-  currentStrategy: string;
-  aiGeneratedStrategies: string;
-  selectedStrategies: string;
-  compareStrategies: string;
-  portfolioProjection: string;
-  comparisonMetrics: string;
-  detailedComparison: string;
-  strategy: string;
-  return: string;
-  risk: string;
-  sharpe: string;
-  volatility: string;
-  maxDrawdown: string;
-  selectedStrategy: string;
-  aiAssistantTitle: string;
-  aiDescription: string;
-  analyzing: string;
-  aiRecommendations: string;
-  marketInsights: string;
-  generatingStrategy: string;
-  riskProfile: string;
-  investmentGoals: string;
-  longTermGrowth: string;
-  passiveIncome: string;
-  capitalPreservation: string;
-  diversificationGoal: string;
-  inflationProtection: string;
-  lowRisk: string;
-  mediumRisk: string;
-  highRisk: string;
-  bestReturn: string;
-  lowestRisk: string;
-  bestSharpe: string;
-  years: string;
-  currentValue: string;
-  other: string;
-  
-  // Allocation Editor
-  cloneAndEdit: string;
-  editAllocation: string;
-  adjustAllocations: string;
-  totalAllocation: string;
-  allocationTooHigh: string;
-  allocationTooLow: string;
-  saveAllocation: string;
-  liveProjection: string;
-  
-  // Reset functionality
-  reset: string;
-  resetData: string;
-  confirmReset: string;
-  resetWarning: string;
-  dataToDelete: string;
-  assets: string;
-  aiStrategies: string;
-  languageAndCurrency: string;
-  resetConfirm: string;
-  portfolioAssets: string;
-  editName: string;
+interface Translations {
+  [key: string]: {
+    [lang in Language]: string;
+  };
 }
 
-export const translations: Record<string, Translation> = {
-  en: {
-    // Navigation
-    portfolio: "Portfolio",
-    strategies: "Strategies",
-    analysis: "Analysis",
-    settings: "Settings",
-
-    // Portfolio
-    totalValue: "Total Value",
-    expectedReturn: "Expected Return",
-    riskScore: "Risk Score",
-    diversification: "Diversification",
-    addAsset: "Add Asset",
-    assetName: "Asset Name",
-    assetType: "Asset Type",
-    editAsset: "Edit Asset",
-    updateAsset: "Update Asset",
-    fillRequiredFields: "Fill all required fields",
-    currentValue: "Current Value",
-    expectedReturnLabel: "Expected Return (%)",
-    riskLevel: "Risk Level",
-    save: "Save",
-    cancel: "Cancel",
-    edit: "Edit",
-    delete: "Delete",
-    
-    // Asset Types
-    stocks: "Stocks",
-    bonds: "Bonds",
-    etf: "ETF",
-    crypto: "Cryptocurrency",
-    real_estate: "Real Estate",
-    cash: "Cash",
-    commodities: "Commodities",
-    
-    // Risk Levels
-    low: "Low",
-    medium: "Medium",
-    high: "High",
-    very_low: "Very Low",
-    very_high: "Very High",
-    
-    // Strategies
-    generateStrategy: "Generate Strategy",
-    strategyName: "Strategy Name",
-    description: "Description",
-    targetAllocation: "Target Allocation",
-    riskProfile: "Risk Profile",
-    conservative: "Conservative",
-    balanced: "Balanced",
-    aggressive: "Aggressive",
-    
-    // Analysis
-    recommendations: "Recommendations",
-    marketInsights: "Market Insights",
-    analyzePortfolio: "Analyze Portfolio",
-    
-    // PAC
-    isPAC: "PAC Investment",
-    pacAmount: "PAC Amount",
-    pacFrequency: "PAC Frequency",
-    monthly: "Monthly",
-    quarterly: "Quarterly",
-    biannual: "Biannual",
-    annual: "Annual",
-    pacActive: "PAC Active",
-    
-    // Common
-    loading: "Loading...",
-    error: "Error",
-    success: "Success",
-    confirm: "Confirm",
-    close: "Close",
-    
-    // App specific
-    appTitle: "Portfolio Balancer",
-    appSubtitle: "Optimize your investments with AI",
-    
-    // Disclaimer
-    disclaimerTitle: "Important Disclaimer",
-    disclaimerSubtitle: "Please read carefully before proceeding",
-    disclaimerAcceptance: "I have read and accept the Disclaimer",
-    continue: "Continue",
-    
-    portfolioMetrics: "Portfolio Metrics",
-    currentAllocation: "Current Allocation",
-    portfolioGrowthProjection: "Portfolio Growth Projection",
-    portfolioGrowthDescription: "Projected growth of your portfolio over time based on current assets",
-    addAssetButton: "Add Asset",
-    assetCurrentValue: "Current Value",
-    noAssetsMessage: "No assets in portfolio",
-    investmentStrategies: "Investment Strategies",
-    strategiesDescription: "Compare and analyze different investment strategies",
-    currentStrategy: "Current Strategy",
-    aiGeneratedStrategies: "AI Generated Strategies",
-    selectedStrategies: "Selected Strategies",
-    compareStrategies: "Compare Strategies",
-    portfolioProjection: "Portfolio Projection",
-    comparisonMetrics: "Comparison Metrics",
-    detailedComparison: "Detailed Comparison",
-    strategy: "Strategy",
-    return: "Return",
-    risk: "Risk",
-    sharpe: "Sharpe",
-    volatility: "Volatility",
-    maxDrawdown: "Max Drawdown",
-    selectedStrategy: "Selected",
-    selectedForComparison: "Selected for comparison",
-    aiAssistantTitle: "AI Assistant",
-    aiDescription: "Get personalized portfolio analysis and strategy recommendations",
-    analyzing: "Analyzing...",
-    aiRecommendations: "AI Recommendations",
-    generatingStrategy: "Generating...",
-    investmentGoals: "Investment Goals",
-    longTermGrowth: "Long-term Growth",
-    passiveIncome: "Passive Income",
-    capitalPreservation: "Capital Preservation",
-    diversificationGoal: "Diversification",
-    inflationProtection: "Inflation Protection",
-    lowRisk: "Low Risk",
-    mediumRisk: "Medium Risk",
-    highRisk: "High Risk",
-    bestReturn: "Best Return",
-    lowestRisk: "Lowest Risk",
-    bestSharpe: "Best Sharpe",
-    years: "years",
-    pacDescription: "Enable this option if you are investing with recurring payments",
-    apiStatus: "OpenAI API Status",
-    connected: "Connected",
-    notTested: "Not Tested",
-    apiKeyConfigured: "API Key configured",
-    apiKeyNotConfigured: "API Key not configured - using fallback",
-    apiError: "API Error",
-    fallbackMessage: "The application will continue to work with fallback analysis.",
-    aiPortfolioAnalysis: "AI Portfolio Analysis",
-    aiStrategyGeneration: "AI Strategy Generation",
-    aiActive: "AI Active",
-    conservativeDesc: "Low risk, stable returns",
-    balancedDesc: "Balanced risk and growth",
-    aggressiveDesc: "High risk, maximum returns",
-    generateRealAiStrategy: "Generate Real AI Strategy",
-    note: "Note",
-    aiConfigNote: "To use real AI, configure your OpenAI API key in the .env file",
-    fallbackStrategyNote: "Without API key, fallback strategies based on predefined rules will be generated.",
-    
-    // Asset projection
-    selectAssetToAnalyze: "Select Asset to Analyze",
-    entirePortfolio: "Entire Portfolio",
-    assetDetails: "Asset Details",
-    other: "Other",
-    
-    // Allocation Editor
-    cloneAndEdit: "Clone & Edit",
-    editAllocation: "Edit Allocation",
-    adjustAllocations: "Adjust Allocations",
-    allocationTarget: "Target Allocation:",
-    totalAllocation: "Total Allocation",
-    allocationTooHigh: "Total allocation exceeds 100%. Reduce some allocations.",
-    allocationTooLow: "Total allocation is less than 100%. Increase allocations to reach 100%.",
-    saveAllocation: "Save Allocation",
-    liveProjection: "Live Projection Preview",
-    // Portfolio details
-    totalPortfolio: "Total Portfolio:",
-    
-    
-    // Reset functionality
-    reset: "Reset",
-    resetData: "Reset all data",
-    confirmReset: "Confirm Reset",
-    resetWarning: "This action will permanently delete all your data",
-    dataToDelete: "Data to be deleted",
-    assets: "assets",
-    aiStrategies: "AI strategies",
-    languageAndCurrency: "Language and Currency",
-    resetConfirm: "Delete All",
-    portfolioAssets: "Portfolio Assets",
-    editName: "Edit Name",
-    
-    // SEO and additional translations
-    seoDescription: "Advanced portfolio optimization and rebalancing tool powered by artificial intelligence. AI analysis, personalized strategies, dollar-cost averaging (DCA) plans, and growth projections.",
-    seoKeywords: "portfolio balancer, investments, AI, rebalancing, DCA, dollar cost averaging, ETF, stocks, bonds, diversification, portfolio analysis",
-    home: "Home",
-    aiAssistant: "AI Assistant",
-    
-    // Additional missing translations
-    selectStrategiesForComparison: "Select strategies for comparison",
-    noStrategiesSelected: "No strategies selected for comparison"
+export const translations: Translations = {
+  // App Title and Navigation
+  appTitle: {
+    it: 'Portfolio Balancer',
+    en: 'Portfolio Balancer',
+    es: 'Portfolio Balancer',
+    fr: 'Portfolio Balancer',
+    de: 'Portfolio Balancer',
+    zh: '投资组合平衡器'
   },
-  
-  it: {
-    // Navigation
-    portfolio: "Portafoglio",
-    strategies: "Strategie",
-    analysis: "Analisi",
-    settings: "Impostazioni",
-
-    // Portfolio
-    totalValue: "Valore Totale",
-    expectedReturn: "Rendimento Atteso",
-    riskScore: "Punteggio Rischio",
-    diversification: "Diversificazione",
-    addAsset: "Aggiungi Asset",
-    assetName: "Nome Asset",
-    assetType: "Tipo Asset",
-    editAsset: "Modifica Asset",
-    updateAsset: "Aggiorna Asset",
-    fillRequiredFields: "Compila tutti i campi obbligatori",
-    currentValue: "Valore Attuale",
-    expectedReturnLabel: "Rendimento Atteso (%)",
-    riskLevel: "Livello Rischio",
-    save: "Salva",
-    cancel: "Annulla",
-    edit: "Modifica",
-    delete: "Elimina",
-    
-    // Asset Types
-    stocks: "Azioni",
-    bonds: "Obbligazioni",
-    etf: "ETF",
-    crypto: "Criptovalute",
-    real_estate: "Immobiliare",
-    cash: "Liquidità",
-    commodities: "Materie Prime",
-    
-    // Risk Levels
-    low: "Basso",
-    medium: "Medio",
-    high: "Alto",
-    very_low: "Molto Basso",
-    very_high: "Molto Alto",
-    
-    // Strategies
-    generateStrategy: "Genera Strategia",
-    strategyName: "Nome Strategia",
-    description: "Descrizione",
-    targetAllocation: "Allocazione Target",
-    riskProfile: "Profilo Rischio",
-    conservative: "Conservativo",
-    balanced: "Bilanciato",
-    aggressive: "Aggressivo",
-    
-    // Analysis
-    recommendations: "Raccomandazioni",
-    marketInsights: "Insights di Mercato",
-    analyzePortfolio: "Analizza Portafoglio",
-    
-    // PAC
-    isPAC: "Investimento PAC",
-    pacAmount: "Importo PAC",
-    pacFrequency: "Frequenza PAC",
-    monthly: "Mensile",
-    quarterly: "Trimestrale",
-    biannual: "Semestrale",
-    annual: "Annuale",
-    pacActive: "PAC Attivo",
-    
-    // Common
-    loading: "Caricamento...",
-    error: "Errore",
-    success: "Successo",
-    confirm: "Conferma",
-    close: "Chiudi",
-    
-    // App specific
-    appTitle: "Portfolio Balancer",
-    appSubtitle: "Ottimizza i tuoi investimenti con l'AI",
-    
-    // Disclaimer
-    disclaimerTitle: "Disclaimer Importante",
-    disclaimerSubtitle: "Leggi attentamente prima di procedere",
-    disclaimerAcceptance: "Ho letto e accetto il Disclaimer",
-    continue: "Continua",
-    
-    portfolioMetrics: "Metriche Portfolio",
-    currentAllocation: "Allocazione Attuale",
-    portfolioGrowthProjection: "Proiezione Crescita Portfolio",
-    portfolioGrowthDescription: "Crescita prevista del tuo portafoglio nel tempo basata sugli asset attuali",
-    addAssetButton: "Aggiungi Asset",
-    assetCurrentValue: "Valore Attuale",
-    noAssetsMessage: "Nessun asset nel portfolio",
-    investmentStrategies: "Strategie di Investimento",
-    strategiesDescription: "Confronta e analizza diverse strategie di investimento",
-    currentStrategy: "Strategia Attuale",
-    aiGeneratedStrategies: "Strategie AI Generate",
-    selectedStrategies: "Strategie Selezionate",
-    compareStrategies: "Confronta Strategie",
-    portfolioProjection: "Proiezione Portfolio",
-    comparisonMetrics: "Metriche di Confronto",
-    detailedComparison: "Confronto Dettagliato",
-    strategy: "Strategia",
-    return: "Rendimento",
-    risk: "Rischio",
-    sharpe: "Sharpe",
-    volatility: "Volatilità",
-    maxDrawdown: "Max Drawdown",
-    selectedStrategy: "Selezionata",
-    selectedForComparison: "Selezionata per confronto",
-    aiAssistantTitle: "Assistente AI",
-    aiDescription: "Ottieni analisi personalizzate del portfolio e raccomandazioni strategiche",
-    analyzing: "Analizzando...",
-    aiRecommendations: "Raccomandazioni AI",
-    generatingStrategy: "Generando...",
-    investmentGoals: "Obiettivi di Investimento",
-    longTermGrowth: "Crescita a Lungo Termine",
-    passiveIncome: "Reddito Passivo",
-    capitalPreservation: "Preservazione del Capitale",
-    diversificationGoal: "Diversificazione",
-    inflationProtection: "Protezione dall'Inflazione",
-    lowRisk: "Basso Rischio",
-    mediumRisk: "Medio Rischio",
-    highRisk: "Alto Rischio",
-    bestReturn: "Miglior Rendimento",
-    lowestRisk: "Minor Rischio",
-    bestSharpe: "Miglior Sharpe",
-    years: "anni",
-    pacDescription: "Attiva questa opzione se stai investendo con versamenti ricorrenti",
-    apiStatus: "Stato API OpenAI",
-    connected: "Connessa",
-    notTested: "Non testata",
-    apiKeyConfigured: "API Key configurata",
-    apiKeyNotConfigured: "API Key non configurata - usando fallback",
-    apiError: "Errore API",
-    fallbackMessage: "L'applicazione continuerà a funzionare con analisi di fallback.",
-    aiPortfolioAnalysis: "Analisi Portafoglio AI",
-    aiStrategyGeneration: "Generazione Strategia AI",
-    aiActive: "AI Attiva",
-    conservativeDesc: "Basso rischio, rendimenti stabili",
-    balancedDesc: "Rischio e crescita bilanciati",
-    aggressiveDesc: "Alto rischio, rendimenti massimi",
-    generateRealAiStrategy: "Genera Strategia AI Reale",
-    note: "Nota",
-    aiConfigNote: "Per utilizzare l'AI reale, configura la tua API key OpenAI nel file .env",
-    fallbackStrategyNote: "Senza API key, verranno generate strategie di fallback basate su regole predefinite.",
-    
-    // Asset projection
-    selectAssetToAnalyze: "Seleziona Asset da Analizzare",
-    entirePortfolio: "Intero Portfolio",
-    assetDetails: "Dettagli Asset",
-    other: "Altro",
-    
-    // Allocation Editor
-    cloneAndEdit: "Clona e Modifica",
-    editAllocation: "Modifica Allocazione",
-    adjustAllocations: "Regola Allocazioni",
-    allocationTarget: "Allocazione Target:",
-    totalAllocation: "Allocazione Totale",
-    allocationTooHigh: "L'allocazione totale supera il 100%. Riduci alcune allocazioni.",
-    allocationTooLow: "L'allocazione totale è inferiore al 100%. Aumenta le allocazioni per raggiungere il 100%.",
-    saveAllocation: "Salva Allocazione",
-    liveProjection: "Anteprima Proiezione Live",
-    // Portfolio details
-    totalPortfolio: "Totale Portfolio:",
-    
-    
-    // Reset functionality
-    reset: "Ripristina",
-    resetData: "Ripristina tutti i dati",
-    confirmReset: "Conferma Ripristino",
-    resetWarning: "Questa azione eliminerà permanentemente tutti i tuoi dati",
-    dataToDelete: "Dati da eliminare",
-    assets: "asset",
-    aiStrategies: "strategie IA",
-    languageAndCurrency: "Lingua e Valuta",
-    resetConfirm: "Elimina Tutto",
-    portfolioAssets: "Asset del Portfolio",
-    editName: "Modifica Nome",
-    
-    // SEO and additional translations
-    seoDescription: "Strumento avanzato per l'ottimizzazione e il ribilanciamento di portafogli di investimento, potenziato dall'intelligenza artificiale. Analisi AI, strategie personalizzate, piani di accumulo (PAC) e proiezioni di crescita.",
-    seoKeywords: "portfolio balancer, investimenti, AI, ribilanciamento, PAC, piano accumulo capitale, ETF, azioni, obbligazioni, diversificazione, analisi portafoglio",
-    home: "Home",
-    aiAssistant: "Assistente AI",
-    
-    // Additional missing translations
-    selectStrategiesForComparison: "Seleziona strategie per il confronto",
-    noStrategiesSelected: "Nessuna strategia selezionata per il confronto"
+  appSubtitle: {
+    it: 'Ottimizza i tuoi investimenti con l\'AI',
+    en: 'Optimize your investments with AI',
+    es: 'Optimiza tus inversiones con IA',
+    fr: 'Optimisez vos investissements avec l\'IA',
+    de: 'Optimieren Sie Ihre Investitionen mit KI',
+    zh: '用AI优化您的投资'
   },
-  
-  es: {
-    // Navigation
-    portfolio: "Cartera",
-    strategies: "Estrategias",
-    analysis: "Análisis",
-    settings: "Configuración",
-
-    // Portfolio
-    totalValue: "Valor Total",
-    expectedReturn: "Rendimiento Esperado",
-    riskScore: "Puntuación de Riesgo",
-    diversification: "Diversificación",
-    addAsset: "Agregar Activo",
-    assetName: "Nombre del Activo",
-    assetType: "Tipo de Activo",
-    editAsset: "Editar Activo",
-    updateAsset: "Actualizar Activo",
-    fillRequiredFields: "Completa todos los campos obligatorios",
-    currentValue: "Valor Actual",
-    expectedReturnLabel: "Rendimiento Esperado (%)",
-    riskLevel: "Nivel de Riesgo",
-    save: "Guardar",
-    cancel: "Cancelar",
-    edit: "Editar",
-    delete: "Eliminar",
-    
-    // Asset Types
-    stocks: "Acciones",
-    bonds: "Bonos",
-    etf: "ETF",
-    crypto: "Criptomonedas",
-    real_estate: "Bienes Raíces",
-    cash: "Efectivo",
-    commodities: "Materias Primas",
-    
-    // Risk Levels
-    low: "Bajo",
-    medium: "Medio",
-    high: "Alto",
-    very_low: "Muy Bajo",
-    very_high: "Muy Alto",
-    
-    // Strategies
-    generateStrategy: "Generar Estrategia",
-    strategyName: "Nombre de Estrategia",
-    description: "Descripción",
-    targetAllocation: "Asignación Objetivo",
-    riskProfile: "Perfil de Riesgo",
-    conservative: "Conservador",
-    balanced: "Equilibrado",
-    aggressive: "Agresivo",
-    
-    // Analysis
-    recommendations: "Recomendaciones",
-    marketInsights: "Perspectivas del Mercado",
-    analyzePortfolio: "Analizar Cartera",
-    
-    // PAC
-    isPAC: "Inversión PAC",
-    pacAmount: "Cantidad PAC",
-    pacFrequency: "Frecuencia PAC",
-    monthly: "Mensual",
-    quarterly: "Trimestral",
-    biannual: "Semestral",
-    annual: "Anual",
-    pacActive: "PAC Activo",
-    
-    // Common
-    loading: "Cargando...",
-    error: "Error",
-    success: "Éxito",
-    confirm: "Confirmar",
-    close: "Cerrar",
-    
-    // App specific
-    appTitle: "Portfolio Balancer",
-    appSubtitle: "Optimiza tus inversiones con IA",
-    
-    // Disclaimer
-    disclaimerTitle: "Descargo de Responsabilidad Importante",
-    disclaimerSubtitle: "Por favor lee cuidadosamente antes de continuar",
-    disclaimerAcceptance: "He leído y acepto el Descargo de Responsabilidad",
-    continue: "Continuar",
-    
-    portfolioMetrics: "Métricas del Portfolio",
-    currentAllocation: "Asignación Actual",
-    portfolioGrowthProjection: "Proyección de Crecimiento del Portfolio",
-    portfolioGrowthDescription: "Crecimiento proyectado de tu portfolio a lo largo del tiempo basado en los activos actuales",
-    addAssetButton: "Agregar Activo",
-    assetCurrentValue: "Valor Actual",
-    noAssetsMessage: "No hay activos en el portfolio",
-    investmentStrategies: "Estrategias de Inversión",
-    strategiesDescription: "Compara y analiza diferentes estrategias de inversión",
-    currentStrategy: "Estrategia Actual",
-    aiGeneratedStrategies: "Estrategias Generadas por IA",
-    selectedStrategies: "Estrategias Seleccionadas",
-    compareStrategies: "Comparar Estrategias",
-    portfolioProjection: "Proyección del Portfolio",
-    comparisonMetrics: "Métricas de Comparación",
-    detailedComparison: "Comparación Detallada",
-    strategy: "Estrategia",
-    return: "Rendimiento",
-    risk: "Riesgo",
-    sharpe: "Sharpe",
-    volatility: "Volatilidad",
-    maxDrawdown: "Máxima Pérdida",
-    selectedStrategy: "Seleccionada",
-    selectedForComparison: "Seleccionada para comparación",
-    aiAssistantTitle: "Asistente IA",
-    aiDescription: "Obtén análisis personalizados del portfolio y recomendaciones estratégicas",
-    analyzing: "Analizando...",
-    aiRecommendations: "Recomendaciones IA",
-    generatingStrategy: "Generando...",
-    investmentGoals: "Objetivos de Inversión",
-    longTermGrowth: "Crecimiento a Largo Plazo",
-    passiveIncome: "Ingresos Pasivos",
-    capitalPreservation: "Preservación del Capital",
-    diversificationGoal: "Diversificación",
-    inflationProtection: "Protección contra Inflación",
-    lowRisk: "Bajo Riesgo",
-    mediumRisk: "Riesgo Medio",
-    highRisk: "Alto Riesgo",
-    bestReturn: "Mejor Rendimiento",
-    lowestRisk: "Menor Riesgo",
-    bestSharpe: "Mejor Sharpe",
-    years: "años",
-    pacDescription: "Habilita esta opción si estás invirtiendo con pagos recurrentes",
-    apiStatus: "Estado API OpenAI",
-    connected: "Conectada",
-    notTested: "No probada",
-    apiKeyConfigured: "API Key configurada",
-    apiKeyNotConfigured: "API Key no configurada - usando respaldo",
-    apiError: "Error de API",
-    fallbackMessage: "La aplicación continuará funcionando con análisis de respaldo.",
-    aiPortfolioAnalysis: "Análisis de Portfolio IA",
-    aiStrategyGeneration: "Generación de Estrategia IA",
-    aiActive: "IA Activa",
-    conservativeDesc: "Bajo riesgo, rendimientos estables",
-    balancedDesc: "Riesgo y crecimiento equilibrados",
-    aggressiveDesc: "Alto riesgo, rendimientos máximos",
-    generateRealAiStrategy: "Generar Estrategia IA Real",
-    note: "Nota",
-    aiConfigNote: "Para usar IA real, configura tu API key de OpenAI en el archivo .env",
-    fallbackStrategyNote: "Sin API key, se generarán estrategias de respaldo basadas en reglas predefinidas.",
-    
-    // Asset projection
-    selectAssetToAnalyze: "Seleccionar Activo para Analizar",
-    entirePortfolio: "Portfolio Completo",
-    assetDetails: "Detalles del Activo",
-    other: "Otro",
-    
-    // Allocation Editor
-    cloneAndEdit: "Clonar y Editar",
-    editAllocation: "Editar Asignación",
-    adjustAllocations: "Ajustar Asignaciones",
-    allocationTarget: "Asignación Objetivo:",
-    totalAllocation: "Asignación Total",
-    allocationTooHigh: "La asignación total supera el 100%. Reduce algunas asignaciones.",
-    allocationTooLow: "La asignación total es menor al 100%. Aumenta las asignaciones para llegar al 100%.",
-    saveAllocation: "Guardar Asignación",
-    liveProjection: "Vista Previa de Proyección en Vivo",
-    // Portfolio details
-    totalPortfolio: "Portfolio Total:",
-    
-    
-    // Reset functionality
-    reset: "Restablecer",
-    resetData: "Restablecer todos los datos",
-    confirmReset: "Confirmar Restablecimiento",
-    resetWarning: "Esta acción eliminará permanentemente todos tus datos",
-    dataToDelete: "Datos a eliminar",
-    assets: "activos",
-    aiStrategies: "estrategias IA",
-    languageAndCurrency: "Idioma y Moneda",
-    resetConfirm: "Eliminar Todo",
-    portfolioAssets: "Activos del Portfolio",
-    editName: "Editar Nombre",
-    
-    // SEO and additional translations
-    seoDescription: "Herramienta avanzada de optimización y rebalanceo de carteras impulsada por inteligencia artificial. Análisis de IA, estrategias personalizadas, planes de promedio de costo en dólares (DCA) y proyecciones de crecimiento.",
-    seoKeywords: "balanceador de cartera, inversiones, IA, rebalanceo, DCA, promedio de costo en dólares, ETF, acciones, bonos, diversificación, análisis de cartera",
-    home: "Inicio",
-    aiAssistant: "Asistente IA",
-    
-    // Additional missing translations
-    selectStrategiesForComparison: "Selecciona estrategias para comparación",
-    noStrategiesSelected: "No hay estrategias seleccionadas para comparación"
+  portfolio: {
+    it: 'Portfolio',
+    en: 'Portfolio',
+    es: 'Portafolio',
+    fr: 'Portefeuille',
+    de: 'Portfolio',
+    zh: '投资组合'
   },
-  
-  fr: {
-    // Navigation
-    portfolio: "Portefeuille",
-    strategies: "Stratégies",
-    analysis: "Analyse",
-    settings: "Paramètres",
-
-    // Portfolio
-    totalValue: "Valeur Totale",
-    expectedReturn: "Rendement Attendu",
-    riskScore: "Score de Risque",
-    diversification: "Diversification",
-    addAsset: "Ajouter un Actif",
-    assetName: "Nom de l'Actif",
-    assetType: "Type d'Actif",
-    editAsset: "Modifier l'Actif",
-    updateAsset: "Mettre à jour l'Actif",
-    fillRequiredFields: "Remplir tous les champs obligatoires",
-    currentValue: "Valeur Actuelle",
-    expectedReturnLabel: "Rendement Attendu (%)",
-    riskLevel: "Niveau de Risque",
-    save: "Sauvegarder",
-    cancel: "Annuler",
-    edit: "Modifier",
-    delete: "Supprimer",
-    
-    // Asset Types
-    stocks: "Actions",
-    bonds: "Obligations",
-    etf: "ETF",
-    crypto: "Cryptomonnaies",
-    real_estate: "Immobilier",
-    cash: "Liquidités",
-    commodities: "Matières Premières",
-    
-    // Risk Levels
-    low: "Faible",
-    medium: "Moyen",
-    high: "Élevé",
-    very_low: "Très Faible",
-    very_high: "Très Élevé",
-    
-    // Strategies
-    generateStrategy: "Générer une Stratégie",
-    strategyName: "Nom de la Stratégie",
-    description: "Description",
-    targetAllocation: "Allocation Cible",
-    riskProfile: "Profil de Risque",
-    conservative: "Conservateur",
-    balanced: "Équilibré",
-    aggressive: "Agressif",
-    
-    // Analysis
-    recommendations: "Recommandations",
-    marketInsights: "Perspectives du Marché",
-    analyzePortfolio: "Analyser le Portefeuille",
-    
-    // PAC
-    isPAC: "Investissement PAC",
-    pacAmount: "Montant PAC",
-    pacFrequency: "Fréquence PAC",
-    monthly: "Mensuel",
-    quarterly: "Trimestriel",
-    biannual: "Semestriel",
-    annual: "Annuel",
-    pacActive: "PAC Actif",
-    
-    // Common
-    loading: "Chargement...",
-    error: "Erreur",
-    success: "Succès",
-    confirm: "Confirmer",
-    close: "Fermer",
-    
-    // App specific
-    appTitle: "Portfolio Balancer",
-    appSubtitle: "Optimisez vos investissements avec l'IA",
-    
-    // Disclaimer
-    disclaimerTitle: "Avertissement Important",
-    disclaimerSubtitle: "Veuillez lire attentivement avant de continuer",
-    disclaimerAcceptance: "J'ai lu et j'accepte l'Avertissement",
-    continue: "Continuer",
-    
-    portfolioMetrics: "Métriques du Portfolio",
-    currentAllocation: "Allocation Actuelle",
-    portfolioGrowthProjection: "Projection de Croissance du Portfolio",
-    portfolioGrowthDescription: "Croissance projetée de votre portefeuille dans le temps basée sur les actifs actuels",
-    addAssetButton: "Ajouter un Actif",
-    assetCurrentValue: "Valeur Actuelle",
-    noAssetsMessage: "Aucun actif dans le portfolio",
-    investmentStrategies: "Stratégies d'Investissement",
-    strategiesDescription: "Comparez et analysez différentes stratégies d'investissement",
-    currentStrategy: "Stratégie Actuelle",
-    aiGeneratedStrategies: "Stratégies Générées par IA",
-    selectedStrategies: "Stratégies Sélectionnées",
-    compareStrategies: "Comparer les Stratégies",
-    portfolioProjection: "Projection du Portfolio",
-    comparisonMetrics: "Métriques de Comparaison",
-    detailedComparison: "Comparaison Détaillée",
-    strategy: "Stratégie",
-    return: "Rendement",
-    risk: "Risque",
-    sharpe: "Sharpe",
-    volatility: "Volatilité",
-    maxDrawdown: "Perte Maximale",
-    selectedStrategy: "Sélectionnée",
-    selectedForComparison: "Sélectionnée pour comparaison",
-    aiAssistantTitle: "Assistant IA",
-    aiDescription: "Obtenez des analyses personnalisées du portfolio et des recommandations stratégiques",
-    analyzing: "Analyse en cours...",
-    aiRecommendations: "Recommandations IA",
-    generatingStrategy: "Génération...",
-    investmentGoals: "Objectifs d'Investissement",
-    longTermGrowth: "Croissance à Long Terme",
-    passiveIncome: "Revenus Passifs",
-    capitalPreservation: "Préservation du Capital",
-    diversificationGoal: "Diversification",
-    inflationProtection: "Protection contre l'Inflation",
-    lowRisk: "Faible Risque",
-    mediumRisk: "Risque Moyen",
-    highRisk: "Risque Élevé",
-    bestReturn: "Meilleur Rendement",
-    lowestRisk: "Risque le Plus Faible",
-    bestSharpe: "Meilleur Sharpe",
-    years: "années",
-    pacDescription: "Activez cette option si vous investissez avec des paiements récurrents",
-    apiStatus: "Statut API OpenAI",
-    connected: "Connectée",
-    notTested: "Non testée",
-    apiKeyConfigured: "Clé API configurée",
-    apiKeyNotConfigured: "Clé API non configurée - utilisation de secours",
-    apiError: "Erreur API",
-    fallbackMessage: "L'application continuera à fonctionner avec une analyse de secours.",
-    aiPortfolioAnalysis: "Analyse de Portfolio IA",
-    aiStrategyGeneration: "Génération de Stratégie IA",
-    aiActive: "IA Active",
-    conservativeDesc: "Faible risque, rendements stables",
-    balancedDesc: "Risque et croissance équilibrés",
-    aggressiveDesc: "Risque élevé, rendements maximums",
-    generateRealAiStrategy: "Générer une Stratégie IA Réelle",
-    note: "Note",
-    aiConfigNote: "Pour utiliser l'IA réelle, configurez votre clé API OpenAI dans le fichier .env",
-    fallbackStrategyNote: "Sans clé API, des stratégies de secours basées sur des règles prédéfinies seront générées.",
-    
-    // Asset projection
-    selectAssetToAnalyze: "Sélectionner l'Actif à Analyser",
-    entirePortfolio: "Portfolio Entier",
-    assetDetails: "Détails de l'Actif",
-    other: "Autre",
-    
-    // Allocation Editor
-    cloneAndEdit: "Cloner et Modifier",
-    editAllocation: "Modifier l'Allocation",
-    adjustAllocations: "Ajuster les Allocations",
-    allocationTarget: "Allocation Cible:",
-    totalAllocation: "Allocation Totale",
-    allocationTooHigh: "L'allocation totale dépasse 100%. Réduisez certaines allocations.",
-    allocationTooLow: "L'allocation totale est inférieure à 100%. Augmentez les allocations pour atteindre 100%.",
-    saveAllocation: "Sauvegarder l'Allocation",
-    liveProjection: "Aperçu de Projection en Direct",
-    // Portfolio details
-    totalPortfolio: "Portfolio Total:",
-    
-    
-    // Reset functionality
-    reset: "Réinitialiser",
-    resetData: "Réinitialiser toutes les données",
-    confirmReset: "Confirmer la Réinitialisation",
-    resetWarning: "Cette action supprimera définitivement toutes vos données",
-    dataToDelete: "Données à supprimer",
-    assets: "actifs",
-    aiStrategies: "stratégies IA",
-    languageAndCurrency: "Langue et Devise",
-    resetConfirm: "Tout Supprimer",
-    portfolioAssets: "Actifs du Portfolio",
-    editName: "Modifier le Nom",
-    
-    // SEO and additional translations
-    seoDescription: "Outil avancé d'optimisation et de rééquilibrage de portefeuille alimenté par l'intelligence artificielle. Analyse IA, stratégies personnalisées, plans d'investissement programmé (DCA) et projections de croissance.",
-    seoKeywords: "équilibreur de portefeuille, investissements, IA, rééquilibrage, DCA, moyenne d'achat, ETF, actions, obligations, diversification, analyse de portefeuille",
-    home: "Accueil",
-    aiAssistant: "Assistant IA",
-    
-    // Additional missing translations
-    selectStrategiesForComparison: "Sélectionnez des stratégies pour la comparaison",
-    noStrategiesSelected: "Aucune stratégie sélectionnée pour la comparaison"
+  strategies: {
+    it: 'Strategie',
+    en: 'Strategies',
+    es: 'Estrategias',
+    fr: 'Stratégies',
+    de: 'Strategien',
+    zh: '投资策略'
   },
-  
-  de: {
-    // Navigation
-    portfolio: "Portfolio",
-    strategies: "Strategien",
-    analysis: "Analyse",
-    settings: "Einstellungen",
-
-    // Portfolio
-    totalValue: "Gesamtwert",
-    expectedReturn: "Erwartete Rendite",
-    riskScore: "Risiko-Score",
-    diversification: "Diversifikation",
-    addAsset: "Asset hinzufügen",
-    assetName: "Asset-Name",
-    assetType: "Asset-Typ",
-    editAsset: "Asset bearbeiten",
-    updateAsset: "Asset aktualisieren",
-    fillRequiredFields: "Alle Pflichtfelder ausfüllen",
-    currentValue: "Aktueller Wert",
-    expectedReturnLabel: "Erwartete Rendite (%)",
-    riskLevel: "Risikolevel",
-    save: "Speichern",
-    cancel: "Abbrechen",
-    edit: "Bearbeiten",
-    delete: "Löschen",
-    
-    // Asset Types
-    stocks: "Aktien",
-    bonds: "Anleihen",
-    etf: "ETF",
-    crypto: "Kryptowährungen",
-    real_estate: "Immobilien",
-    cash: "Bargeld",
-    commodities: "Rohstoffe",
-    
-    // Risk Levels
-    low: "Niedrig",
-    medium: "Mittel",
-    high: "Hoch",
-    very_low: "Sehr Niedrig",
-    very_high: "Sehr Hoch",
-    
-    // Strategies
-    generateStrategy: "Strategie generieren",
-    strategyName: "Strategiename",
-    description: "Beschreibung",
-    targetAllocation: "Zielallokation",
-    riskProfile: "Risikoprofil",
-    conservative: "Konservativ",
-    balanced: "Ausgewogen",
-    aggressive: "Aggressiv",
-    
-    // Analysis
-    recommendations: "Empfehlungen",
-    marketInsights: "Markteinblicke",
-    analyzePortfolio: "Portfolio analysieren",
-    
-    // PAC
-    isPAC: "PAC-Investition",
-    pacAmount: "PAC-Betrag",
-    pacFrequency: "PAC-Häufigkeit",
-    monthly: "Monatlich",
-    quarterly: "Vierteljährlich",
-    biannual: "Halbjährlich",
-    annual: "Jährlich",
-    pacActive: "PAC Aktiv",
-    
-    // Common
-    loading: "Laden...",
-    error: "Fehler",
-    success: "Erfolg",
-    confirm: "Bestätigen",
-    close: "Schließen",
-    
-    // App specific
-    appTitle: "Portfolio Balancer",
-    appSubtitle: "Optimieren Sie Ihre Investitionen mit KI",
-    
-    // Disclaimer
-    disclaimerTitle: "Wichtiger Haftungsausschluss",
-    disclaimerSubtitle: "Bitte lesen Sie sorgfältig, bevor Sie fortfahren",
-    disclaimerAcceptance: "Ich habe den Haftungsausschluss gelesen und akzeptiert",
-    continue: "Fortfahren",
-    
-    portfolioMetrics: "Portfolio-Metriken",
-    currentAllocation: "Aktuelle Allokation",
-    portfolioGrowthProjection: "Portfolio-Wachstumsprojektion",
-    portfolioGrowthDescription: "Projiziertes Wachstum Ihres Portfolios über die Zeit basierend auf aktuellen Assets",
-    addAssetButton: "Asset hinzufügen",
-    assetCurrentValue: "Aktueller Wert",
-    noAssetsMessage: "Keine Assets im Portfolio",
-    investmentStrategies: "Investmentstrategien",
-    aiGeneratedStrategies: "KI-generierte Strategien",
-    selectedStrategies: "Ausgewählte Strategien",
-    compareStrategies: "Strategien vergleichen",
-    portfolioProjection: "Portfolio-Projektion",
-    comparisonMetrics: "Vergleichsmetriken",
-    detailedComparison: "Detaillierter Vergleich",
-    strategy: "Strategie",
-    return: "Rendite",
-    risk: "Risiko",
-    sharpe: "Sharpe",
-    volatility: "Volatilität",
-    maxDrawdown: "Max. Verlust",
-    selectedStrategy: "Ausgewählt",
-    selectedForComparison: "Für Vergleich ausgewählt",
-    aiAssistantTitle: "KI-Assistent",
-    aiDescription: "Erhalten Sie personalisierte Portfolio-Analysen und strategische Empfehlungen",
-    analyzing: "Analysiere...",
-    aiRecommendations: "KI-Empfehlungen",
-    generatingStrategy: "Generiere...",
-    investmentGoals: "Investitionsziele",
-    longTermGrowth: "Langfristiges Wachstum",
-    passiveIncome: "Passive Einkommen",
-    capitalPreservation: "Kapitalerhaltung",
-    diversificationGoal: "Diversifikation",
-    inflationProtection: "Inflationsschutz",
-    lowRisk: "Niedriges Risiko",
-    mediumRisk: "Mittleres Risiko",
-    highRisk: "Hohes Risiko",
-    bestReturn: "Beste Rendite",
-    lowestRisk: "Niedrigstes Risiko",
-    bestSharpe: "Bester Sharpe",
-    years: "Jahre",
-    pacDescription: "Aktivieren Sie diese Option, wenn Sie mit wiederkehrenden Zahlungen investieren",
-    apiStatus: "OpenAI API Status",
-    connected: "Verbunden",
-    notTested: "Nicht getestet",
-    apiKeyConfigured: "API-Schlüssel konfiguriert",
-    apiKeyNotConfigured: "API-Schlüssel nicht konfiguriert - Fallback verwenden",
-    apiError: "API-Fehler",
-    fallbackMessage: "Die Anwendung wird mit Fallback-Analyse weiterarbeiten.",
-    aiPortfolioAnalysis: "KI-Portfolio-Analyse",
-    aiStrategyGeneration: "KI-Strategiegenerierung",
-    aiActive: "KI Aktiv",
-    conservativeDesc: "Niedriges Risiko, stabile Renditen",
-    balancedDesc: "Ausgewogenes Risiko und Wachstum",
-    aggressiveDesc: "Hohes Risiko, maximale Renditen",
-    generateRealAiStrategy: "Echte KI-Strategie generieren",
-    note: "Hinweis",
-    aiConfigNote: "Um echte KI zu verwenden, konfigurieren Sie Ihren OpenAI API-Schlüssel in der .env-Datei",
-    fallbackStrategyNote: "Ohne API-Schlüssel werden Fallback-Strategien basierend auf vordefinierten Regeln generiert.",
-    
-    // Asset projection
-    selectAssetToAnalyze: "Asset zur Analyse auswählen",
-    entirePortfolio: "Gesamtes Portfolio",
-    assetDetails: "Asset-Details",
-    other: "Andere",
-    
-    // Allocation Editor
-    cloneAndEdit: "Klonen und Bearbeiten",
-    editAllocation: "Allocation Bearbeiten",
-    adjustAllocations: "Allocationen Anpassen",
-    totalAllocation: "Gesamte Allocation",
-    allocationTooHigh: "Die Gesamtallocation übersteigt 100%. Reduzieren Sie einige Allocationen.",
-    allocationTooLow: "Die Gesamtallocation ist weniger als 100%. Erhöhen Sie die Allocationen auf 100%.",
-    saveAllocation: "Allocation Speichern",
-    liveProjection: "Live-Projektionsvorschau",
-    
-    // Reset functionality
-    reset: "Zurücksetzen",
-    resetData: "Alle Daten zurücksetzen",
-    confirmReset: "Zurücksetzen Bestätigen",
-    resetWarning: "Diese Aktion wird alle Ihre Daten dauerhaft löschen",
-    dataToDelete: "Zu löschende Daten",
-    assets: "Assets",
-    aiStrategies: "KI-Strategien",
-    languageAndCurrency: "Sprache und Währung",
-    resetConfirm: "Alles Löschen",
-    portfolioAssets: "Portfolio-Assets",
-    editName: "Name Bearbeiten",
-    
-    // SEO and additional translations
-    seoDescription: "Fortschrittliches Portfolio-Optimierungs- und Rebalancing-Tool, angetrieben von künstlicher Intelligenz. KI-Analyse, personalisierte Strategien, Cost-Average-Pläne (DCA) und Wachstumsprognosen.",
-    seoKeywords: "Portfolio-Balancer, Investitionen, KI, Rebalancing, DCA, Cost-Average, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse",
-    home: "Startseite",
-    aiAssistant: "KI-Assistent",
-    
-    // Additional missing translations
-    selectStrategiesForComparison: "Strategien für Vergleich auswählen",
-    noStrategiesSelected: "Keine Strategien für Vergleich ausgewählt"
+  aiAssistant: {
+    it: 'AI Assistant',
+    en: 'AI Assistant',
+    es: 'Asistente IA',
+    fr: 'Assistant IA',
+    de: 'KI-Assistent',
+    zh: 'AI助手'
   },
-  
-  pt: {
-    // Navigation
-    portfolio: "Portfólio",
-    strategies: "Estratégias",
-    analysis: "Análise",
-    settings: "Configurações",
-
-    // Portfolio
-    totalValue: "Valor Total",
-    expectedReturn: "Retorno Esperado",
-    riskScore: "Pontuação de Risco",
-    diversification: "Diversificação",
-    addAsset: "Adicionar Ativo",
-    assetName: "Nome do Ativo",
-    assetType: "Tipo de Ativo",
-    editAsset: "Editar Ativo",
-    updateAsset: "Atualizar Ativo",
-    fillRequiredFields: "Preencher todos os campos obrigatórios",
-    currentValue: "Valor Atual",
-    expectedReturnLabel: "Retorno Esperado (%)",
-    riskLevel: "Nível de Risco",
-    save: "Salvar",
-    cancel: "Cancelar",
-    edit: "Editar",
-    delete: "Excluir",
-    
-    // Asset Types
-    stocks: "Ações",
-    bonds: "Títulos",
-    etf: "ETF",
-    crypto: "Criptomoedas",
-    real_estate: "Imóveis",
-    cash: "Dinheiro",
-    commodities: "Commodities",
-    
-    // Risk Levels
-    low: "Baixo",
-    medium: "Médio",
-    high: "Alto",
-    very_low: "Muito Baixo",
-    very_high: "Muito Alto",
-    
-    // Strategies
-    generateStrategy: "Gerar Estratégia",
-    strategyName: "Nome da Estratégia",
-    description: "Descrição",
-    targetAllocation: "Alocação Alvo",
-    riskProfile: "Perfil de Risco",
-    conservative: "Conservador",
-    balanced: "Equilibrado",
-    aggressive: "Agressivo",
-    
-    // Analysis
-    recommendations: "Recomendações",
-    marketInsights: "Insights de Mercado",
-    analyzePortfolio: "Analisar Portfólio",
-    
-    // PAC
-    isPAC: "Investimento PAC",
-    pacAmount: "Valor PAC",
-    pacFrequency: "Frequência PAC",
-    monthly: "Mensal",
-    quarterly: "Trimestral",
-    biannual: "Semestral",
-    annual: "Anual",
-    pacActive: "PAC Ativo",
-    
-    // Common
-    loading: "Carregando...",
-    error: "Erro",
-    success: "Sucesso",
-    confirm: "Confirmar",
-    close: "Fechar",
-    
-    // App specific
-    appTitle: "Portfolio Balancer",
-    appSubtitle: "Otimize seus investimentos com IA",
-    
-    // Disclaimer
-    disclaimerTitle: "Descargo de Responsabilidade Importante",
-    disclaimerSubtitle: "Por favor leia cuidadosamente antes de continuar",
-    disclaimerAcceptance: "Eu li e aceito o Descargo de Responsabilidade",
-    continue: "Continuar",
-    
-    portfolioMetrics: "Métricas do Portfolio",
-    currentAllocation: "Alocação Atual",
-    portfolioGrowthProjection: "Projeção de Crescimento do Portfolio",
-    portfolioGrowthDescription: "Crescimento projetado do seu portfólio ao longo do tempo baseado nos ativos atuais",
-    addAssetButton: "Adicionar Ativo",
-    assetCurrentValue: "Valor Atual",
-    noAssetsMessage: "Nenhum ativo no portfolio",
-    investmentStrategies: "Estratégias de Investimento",
-    strategiesDescription: "Compare e analise diferentes estratégias de investimento",
-    currentStrategy: "Estratégia Atual",
-    aiGeneratedStrategies: "Estratégias Geradas por IA",
-    selectedStrategies: "Estratégias Selecionadas",
-    compareStrategies: "Comparar Estratégias",
-    portfolioProjection: "Projeção do Portfolio",
-    comparisonMetrics: "Métricas de Comparação",
-    detailedComparison: "Comparação Detalhada",
-    strategy: "Estratégia",
-    return: "Retorno",
-    risk: "Risco",
-    sharpe: "Sharpe",
-    volatility: "Volatilidade",
-    maxDrawdown: "Perda Máxima",
-    selectedStrategy: "Selecionada",
-    aiAssistantTitle: "Assistente IA",
-    aiDescription: "Obtenha análises personalizadas do portfolio e recomendações estratégicas",
-    analyzing: "Analisando...",
-    aiRecommendations: "Recomendações IA",
-    generatingStrategy: "Gerando...",
-    investmentGoals: "Objetivos de Investimento",
-    longTermGrowth: "Crescimento a Longo Prazo",
-    passiveIncome: "Renda Passiva",
-    capitalPreservation: "Preservação do Capital",
-    diversificationGoal: "Diversificação",
-    inflationProtection: "Proteção contra Inflação",
-    lowRisk: "Baixo Risco",
-    mediumRisk: "Risco Médio",
-    highRisk: "Alto Risco",
-    bestReturn: "Melhor Retorno",
-    lowestRisk: "Menor Risco",
-    bestSharpe: "Melhor Sharpe",
-    years: "anos",
-    pacDescription: "Ative esta opção se você está investindo com pagamentos recorrentes",
-    apiStatus: "Status da API OpenAI",
-    connected: "Conectada",
-    notTested: "Não testada",
-    apiKeyConfigured: "Chave API configurada",
-    apiKeyNotConfigured: "Chave API não configurada - usando fallback",
-    apiError: "Erro da API",
-    fallbackMessage: "A aplicação continuará funcionando com análise de fallback.",
-    aiPortfolioAnalysis: "Análise de Portfolio IA",
-    aiStrategyGeneration: "Geração de Estratégia IA",
-    aiActive: "IA Ativa",
-    conservativeDesc: "Baixo risco, retornos estáveis",
-    balancedDesc: "Risco e crescimento equilibrados",
-    aggressiveDesc: "Alto risco, retornos máximos",
-    generateRealAiStrategy: "Gerar Estratégia IA Real",
-    note: "Nota",
-    aiConfigNote: "Para usar IA real, configure sua chave API OpenAI no arquivo .env",
-    fallbackStrategyNote: "Sem chave API, estratégias de fallback baseadas em regras predefinidas serão geradas.",
-    
-    // Asset projection
-    selectAssetToAnalyze: "Selecionar Ativo para Analisar",
-    entirePortfolio: "Portfolio Completo",
-    assetDetails: "Detalhes do Ativo",
-    other: "Outro",
-    
-    // Allocation Editor
-    cloneAndEdit: "Clonar e Editar",
-    editAllocation: "Editar Alocação",
-    adjustAllocations: "Ajustar Alocações",
-    totalAllocation: "Alocação Total",
-    allocationTooHigh: "A alocação total supera 100%. Reduza algumas alocações.",
-    allocationTooLow: "A alocação total é menor que 100%. Aumente as alocações para chegar a 100%.",
-    saveAllocation: "Salvar Alocação",
-    liveProjection: "Visualização de Projeção ao Vivo",
-    
-    // Reset functionality
-    reset: "Redefinir",
-    resetData: "Redefinir todos os dados",
-    confirmReset: "Confirmar Redefinição",
-    resetWarning: "Esta ação excluirá permanentemente todos os seus dados",
-    dataToDelete: "Dados a serem excluídos",
-    assets: "ativos",
-    aiStrategies: "estratégias IA",
-    languageAndCurrency: "Idioma e Moeda",
-    resetConfirm: "Excluir Tudo",
-    portfolioAssets: "Ativos do Portfolio",
-    editName: "Editar Nome",
-    
-    // SEO and additional translations
-    seoDescription: "Ferramenta avançada de otimização e rebalanceamento de portfólio alimentada por inteligência artificial. Análise de IA, estratégias personalizadas, planos de média de custo em dólar (DCA) e projeções de crescimento.",
-    seoKeywords: "balanceador de portfólio, investimentos, IA, rebalanceamento, DCA, média de custo em dólar, ETF, ações, títulos, diversificação, análise de portfólio",
-    home: "Início",
-    aiAssistant: "Assistente IA",
-    
-    // Additional missing translations for Portuguese
-    selectStrategiesForComparison: "Selecione estratégias para comparação",
-    noStrategiesSelected: "Nenhuma estratégia selecionada para comparação"
+  home: {
+    it: 'Home',
+    en: 'Home',
+    es: 'Inicio',
+    fr: 'Accueil',
+    de: 'Startseite',
+    zh: '首页'
   },
-  
-  zh: {
-    // Navigation
-    portfolio: "投资组合",
-    strategies: "策略",
-    analysis: "分析",
-    settings: "设置",
 
-    // Portfolio
-    totalValue: "总价值",
-    expectedReturn: "预期收益",
-    riskScore: "风险评分",
-    diversification: "多样化",
-    addAsset: "添加资产",
-    assetName: "资产名称",
-    assetType: "资产类型",
-    editAsset: "编辑资产",
-    updateAsset: "更新资产",
-    fillRequiredFields: "填写所有必填字段",
-    currentValue: "当前价值",
-    expectedReturnLabel: "预期收益 (%)",
-    riskLevel: "风险等级",
-    save: "保存",
-    cancel: "取消",
-    edit: "编辑",
-    delete: "删除",
-    
-    // Asset Types
-    stocks: "股票",
-    bonds: "债券",
-    etf: "ETF",
-    crypto: "加密货币",
-    real_estate: "房地产",
-    cash: "现金",
-    commodities: "大宗商品",
-    
-    // Risk Levels
-    low: "低",
-    medium: "中",
-    high: "高",
-    very_low: "很低",
-    very_high: "很高",
-    
-    // Strategies
-    generateStrategy: "生成策略",
-    strategyName: "策略名称",
-    description: "描述",
-    targetAllocation: "目标配置",
-    riskProfile: "风险档案",
-    conservative: "保守",
-    balanced: "平衡",
-    aggressive: "激进",
-    
-    // Analysis
-    recommendations: "建议",
-    marketInsights: "市场洞察",
-    analyzePortfolio: "分析投资组合",
-    
-    // PAC
-    isPAC: "PAC投资",
-    pacAmount: "PAC金额",
-    pacFrequency: "PAC频率",
-    monthly: "每月",
-    quarterly: "每季度",
-    biannual: "每半年",
-    annual: "每年",
-    pacActive: "PAC活跃",
-    
-    // Common
-    loading: "加载中...",
-    error: "错误",
-    success: "成功",
-    confirm: "确认",
-    close: "关闭",
-    
-    // App specific
-    appTitle: "投资组合平衡器",
-    appSubtitle: "用AI优化您的投资",
-    
-    // Disclaimer
-    disclaimerTitle: "重要免责声明",
-    disclaimerSubtitle: "请在继续之前仔细阅读",
-    disclaimerAcceptance: "我已阅读并接受免责声明",
-    continue: "继续",
-    
-    portfolioMetrics: "投资组合指标",
-    currentAllocation: "当前配置",
-    portfolioGrowthProjection: "投资组合增长预测",
-    portfolioGrowthDescription: "基于当前资产的投资组合随时间增长预测",
-    addAssetButton: "添加资产",
-    assetCurrentValue: "当前价值",
-    noAssetsMessage: "投资组合中没有资产",
-    investmentStrategies: "投资策略",
-    aiGeneratedStrategies: "AI生成的策略",
-    selectedStrategies: "选定的策略",
-    compareStrategies: "比较策略",
-    portfolioProjection: "投资组合预测",
-    comparisonMetrics: "比较指标",
-    detailedComparison: "详细比较",
-    strategy: "策略",
-    return: "收益",
-    risk: "风险",
-    sharpe: "夏普",
-    volatility: "波动性",
-    maxDrawdown: "最大回撤",
-    selectedStrategy: "已选择",
-    selectedForComparison: "已选择用于比较",
-    aiAssistantTitle: "AI助手",
-    aiDescription: "获得个性化的投资组合分析和策略建议",
-    analyzing: "分析中...",
-    aiRecommendations: "AI建议",
-    generatingStrategy: "生成中...",
-    investmentGoals: "投资目标",
-    longTermGrowth: "长期增长",
-    passiveIncome: "被动收入",
-    capitalPreservation: "资本保值",
-    diversificationGoal: "多样化",
-    inflationProtection: "通胀保护",
-    lowRisk: "低风险",
-    mediumRisk: "中等风险",
-    highRisk: "高风险",
-    bestReturn: "最佳收益",
-    lowestRisk: "最低风险",
-    bestSharpe: "最佳夏普",
-    years: "年",
-    pacDescription: "如果您正在进行定期投资，请启用此选项",
-    apiStatus: "OpenAI API状态",
-    connected: "已连接",
-    notTested: "未测试",
-    apiKeyConfigured: "API密钥已配置",
-    apiKeyNotConfigured: "API密钥未配置 - 使用备用方案",
-    apiError: "API错误",
-    fallbackMessage: "应用程序将继续使用备用分析。",
-    aiPortfolioAnalysis: "AI投资组合分析",
-    aiStrategyGeneration: "AI策略生成",
-    aiActive: "AI活跃",
-    conservativeDesc: "低风险，稳定收益",
-    balancedDesc: "平衡风险和增长",
-    aggressiveDesc: "高风险，最大收益",
-    generateRealAiStrategy: "生成真实AI策略",
-    note: "注意",
-    aiConfigNote: "要使用真实AI，请在.env文件中配置您的OpenAI API密钥",
-    fallbackStrategyNote: "没有API密钥，将生成基于预定义规则的备用策略。",
-    
-    // Asset projection
-    selectAssetToAnalyze: "选择要分析的资产",
-    entirePortfolio: "整个投资组合",
-    assetDetails: "资产详情",
-    other: "其他",
-    
-    // Allocation Editor
-    cloneAndEdit: "克隆和编辑",
-    editAllocation: "编辑配置",
-    adjustAllocations: "调整配置",
-    totalAllocation: "总配置",
-    allocationTooHigh: "总配置超过100%。请减少一些配置。",
-    allocationTooLow: "总配置少于100%。请增加配置以达到100%。",
-    saveAllocation: "保存配置",
-    liveProjection: "实时投影预览",
-    
-    // Reset functionality
-    reset: "重置",
-    resetData: "重置所有数据",
-    confirmReset: "确认重置",
-    resetWarning: "此操作将永久删除您的所有数据",
-    dataToDelete: "要删除的数据",
-    assets: "资产",
-    aiStrategies: "AI策略",
-    languageAndCurrency: "语言和货币",
-    resetConfirm: "删除全部",
-    // Empty states
-    noStrategiesAvailable: "没有可用的策略",
-    addAssetsToCompareStrategies: "向您的投资组合添加一些资产以开始比较策略",
-    
-    portfolioAssets: "投资组合资产",
-    editName: "编辑名称",
-    
-    // SEO and additional translations
-    seoDescription: "先进的投资组合优化和再平衡工具，由人工智能驱动。AI分析、个性化策略、定期投资计划(PAC)和增长预测。",
-    seoKeywords: "投资组合平衡器, 投资, AI, 再平衡, PAC, 定期投资计划, ETF, 股票, 债券, 多样化, 投资组合分析",
-    home: "首页",
-    aiAssistant: "AI助手",
-    
-    // Additional missing translations
-    selectStrategiesForComparison: "选择策略进行比较",
-    noStrategiesSelected: "未选择策略进行比较"
+  // Asset Management
+  addAsset: {
+    it: 'Aggiungi Asset',
+    en: 'Add Asset',
+    es: 'Agregar Activo',
+    fr: 'Ajouter un Actif',
+    de: 'Asset hinzufügen',
+    zh: '添加资产'
+  },
+  editAsset: {
+    it: 'Modifica Asset',
+    en: 'Edit Asset',
+    es: 'Editar Activo',
+    fr: 'Modifier l\'Actif',
+    de: 'Asset bearbeiten',
+    zh: '编辑资产'
+  },
+  updateAsset: {
+    it: 'Aggiorna Asset',
+    en: 'Update Asset',
+    es: 'Actualizar Activo',
+    fr: 'Mettre à jour l\'Actif',
+    de: 'Asset aktualisieren',
+    zh: '更新资产'
+  },
+  addAssetButton: {
+    it: 'Aggiungi',
+    en: 'Add',
+    es: 'Agregar',
+    fr: 'Ajouter',
+    de: 'Hinzufügen',
+    zh: '添加'
+  },
+  assetName: {
+    it: 'Nome Asset',
+    en: 'Asset Name',
+    es: 'Nombre del Activo',
+    fr: 'Nom de l\'Actif',
+    de: 'Asset-Name',
+    zh: '资产名称'
+  },
+  assetType: {
+    it: 'Tipo Asset',
+    en: 'Asset Type',
+    es: 'Tipo de Activo',
+    fr: 'Type d\'Actif',
+    de: 'Asset-Typ',
+    zh: '资产类型'
+  },
+  assetCurrentValue: {
+    it: 'Valore Attuale (€)',
+    en: 'Current Value (€)',
+    es: 'Valor Actual (€)',
+    fr: 'Valeur Actuelle (€)',
+    de: 'Aktueller Wert (€)',
+    zh: '当前价值 (€)'
+  },
+  currentValue: {
+    it: 'Valore Attuale',
+    en: 'Current Value',
+    es: 'Valor Actual',
+    fr: 'Valeur Actuelle',
+    de: 'Aktueller Wert',
+    zh: '当前价值'
+  },
+  expectedReturnLabel: {
+    it: 'Rendimento Atteso (% annuo)',
+    en: 'Expected Return (% annual)',
+    es: 'Rendimiento Esperado (% anual)',
+    fr: 'Rendement Attendu (% annuel)',
+    de: 'Erwartete Rendite (% jährlich)',
+    zh: '预期收益率（年化%）'
+  },
+  expectedReturn: {
+    it: 'Rendimento Atteso',
+    en: 'Expected Return',
+    es: 'Rendimiento Esperado',
+    fr: 'Rendement Attendu',
+    de: 'Erwartete Rendite',
+    zh: '预期收益'
+  },
+  riskLevel: {
+    it: 'Livello di Rischio',
+    en: 'Risk Level',
+    es: 'Nivel de Riesgo',
+    fr: 'Niveau de Risque',
+    de: 'Risikolevel',
+    zh: '风险等级'
+  },
+  risk: {
+    it: 'Rischio',
+    en: 'Risk',
+    es: 'Riesgo',
+    fr: 'Risque',
+    de: 'Risiko',
+    zh: '风险'
+  },
+  riskScore: {
+    it: 'Punteggio Rischio',
+    en: 'Risk Score',
+    es: 'Puntuación de Riesgo',
+    fr: 'Score de Risque',
+    de: 'Risiko-Score',
+    zh: '风险评分'
+  },
+
+  // Asset Types
+  stocks: {
+    it: 'Azioni',
+    en: 'Stocks',
+    es: 'Acciones',
+    fr: 'Actions',
+    de: 'Aktien',
+    zh: '股票'
+  },
+  bonds: {
+    it: 'Obbligazioni',
+    en: 'Bonds',
+    es: 'Bonos',
+    fr: 'Obligations',
+    de: 'Anleihen',
+    zh: '债券'
+  },
+  etf: {
+    it: 'ETF',
+    en: 'ETF',
+    es: 'ETF',
+    fr: 'ETF',
+    de: 'ETF',
+    zh: 'ETF'
+  },
+  crypto: {
+    it: 'Criptovalute',
+    en: 'Cryptocurrency',
+    es: 'Criptomonedas',
+    fr: 'Cryptomonnaies',
+    de: 'Kryptowährungen',
+    zh: '加密货币'
+  },
+  real_estate: {
+    it: 'Immobiliare',
+    en: 'Real Estate',
+    es: 'Bienes Raíces',
+    fr: 'Immobilier',
+    de: 'Immobilien',
+    zh: '房地产'
+  },
+  cash: {
+    it: 'Liquidità',
+    en: 'Cash',
+    es: 'Efectivo',
+    fr: 'Liquidités',
+    de: 'Bargeld',
+    zh: '现金'
+  },
+  commodities: {
+    it: 'Materie Prime',
+    en: 'Commodities',
+    es: 'Materias Primas',
+    fr: 'Matières Premières',
+    de: 'Rohstoffe',
+    zh: '大宗商品'
+  },
+  other: {
+    it: 'Altro',
+    en: 'Other',
+    es: 'Otro',
+    fr: 'Autre',
+    de: 'Andere',
+    zh: '其他'
+  },
+
+  // Risk Levels
+  very_low: {
+    it: 'Molto Basso',
+    en: 'Very Low',
+    es: 'Muy Bajo',
+    fr: 'Très Bas',
+    de: 'Sehr Niedrig',
+    zh: '极低'
+  },
+  low: {
+    it: 'Basso',
+    en: 'Low',
+    es: 'Bajo',
+    fr: 'Bas',
+    de: 'Niedrig',
+    zh: '低'
+  },
+  medium: {
+    it: 'Medio',
+    en: 'Medium',
+    es: 'Medio',
+    fr: 'Moyen',
+    de: 'Mittel',
+    zh: '中等'
+  },
+  high: {
+    it: 'Alto',
+    en: 'High',
+    es: 'Alto',
+    fr: 'Élevé',
+    de: 'Hoch',
+    zh: '高'
+  },
+  very_high: {
+    it: 'Molto Alto',
+    en: 'Very High',
+    es: 'Muy Alto',
+    fr: 'Très Élevé',
+    de: 'Sehr Hoch',
+    zh: '极高'
+  },
+
+  // Portfolio Metrics
+  totalValue: {
+    it: 'Valore Totale',
+    en: 'Total Value',
+    es: 'Valor Total',
+    fr: 'Valeur Totale',
+    de: 'Gesamtwert',
+    zh: '总价值'
+  },
+  portfolioMetrics: {
+    it: 'Metriche Portfolio',
+    en: 'Portfolio Metrics',
+    es: 'Métricas del Portafolio',
+    fr: 'Métriques du Portefeuille',
+    de: 'Portfolio-Kennzahlen',
+    zh: '投资组合指标'
+  },
+  diversification: {
+    it: 'Diversificazione',
+    en: 'Diversification',
+    es: 'Diversificación',
+    fr: 'Diversification',
+    de: 'Diversifikation',
+    zh: '多样化'
+  },
+  portfolioAssets: {
+    it: 'Asset del Portfolio',
+    en: 'Portfolio Assets',
+    es: 'Activos del Portafolio',
+    fr: 'Actifs du Portefeuille',
+    de: 'Portfolio-Assets',
+    zh: '投资组合资产'
+  },
+  currentAllocation: {
+    it: 'Allocazione Attuale',
+    en: 'Current Allocation',
+    es: 'Asignación Actual',
+    fr: 'Allocation Actuelle',
+    de: 'Aktuelle Allokation',
+    zh: '当前配置'
+  },
+  targetAllocation: {
+    it: 'Allocazione Target',
+    en: 'Target Allocation',
+    es: 'Asignación Objetivo',
+    fr: 'Allocation Cible',
+    de: 'Ziel-Allokation',
+    zh: '目标配置'
+  },
+  allocationTarget: {
+    it: 'Allocazione Target:',
+    en: 'Target Allocation:',
+    es: 'Asignación Objetivo:',
+    fr: 'Allocation Cible:',
+    de: 'Ziel-Allokation:',
+    zh: '目标配置:'
+  },
+  totalPortfolio: {
+    it: 'Totale Portfolio:',
+    en: 'Total Portfolio:',
+    es: 'Portafolio Total:',
+    fr: 'Portefeuille Total:',
+    de: 'Gesamt-Portfolio:',
+    zh: '投资组合总计:'
+  },
+
+  // Strategy Management
+  investmentStrategies: {
+    it: 'Strategie di Investimento',
+    en: 'Investment Strategies',
+    es: 'Estrategias de Inversión',
+    fr: 'Stratégies d\'Investissement',
+    de: 'Anlagestrategien',
+    zh: '投资策略'
+  },
+  strategiesDescription: {
+    it: 'Confronta e analizza diverse strategie di investimento',
+    en: 'Compare and analyze different investment strategies',
+    es: 'Compara y analiza diferentes estrategias de inversión',
+    fr: 'Comparez et analysez différentes stratégies d\'investissement',
+    de: 'Vergleichen und analysieren Sie verschiedene Anlagestrategien',
+    zh: '比较和分析不同的投资策略'
+  },
+  currentStrategy: {
+    it: 'Strategia Attuale',
+    en: 'Current Strategy',
+    es: 'Estrategia Actual',
+    fr: 'Stratégie Actuelle',
+    de: 'Aktuelle Strategie',
+    zh: '当前策略'
+  },
+  aiGeneratedStrategies: {
+    it: 'Strategie AI Generate',
+    en: 'AI Generated Strategies',
+    es: 'Estrategias Generadas por IA',
+    fr: 'Stratégies Générées par IA',
+    de: 'KI-generierte Strategien',
+    zh: 'AI生成的策略'
+  },
+  compareStrategies: {
+    it: 'Confronta Strategie',
+    en: 'Compare Strategies',
+    es: 'Comparar Estrategias',
+    fr: 'Comparer les Stratégies',
+    de: 'Strategien vergleichen',
+    zh: '比较策略'
+  },
+  strategyComparison: {
+    it: 'Confronto Strategie',
+    en: 'Strategy Comparison',
+    es: 'Comparación de Estrategias',
+    fr: 'Comparaison des Stratégies',
+    de: 'Strategienvergleich',
+    zh: '策略比较'
+  },
+  selectedStrategies: {
+    it: 'Strategie Selezionate',
+    en: 'Selected Strategies',
+    es: 'Estrategias Seleccionadas',
+    fr: 'Stratégies Sélectionnées',
+    de: 'Ausgewählte Strategien',
+    zh: '已选择的策略'
+  },
+  selectedStrategy: {
+    it: 'Selezionata',
+    en: 'Selected',
+    es: 'Seleccionada',
+    fr: 'Sélectionnée',
+    de: 'Ausgewählt',
+    zh: '已选择'
+  },
+  selectedForComparison: {
+    it: 'Selezionata per Confronto',
+    en: 'Selected for Comparison',
+    es: 'Seleccionada para Comparación',
+    fr: 'Sélectionnée pour Comparaison',
+    de: 'Für Vergleich ausgewählt',
+    zh: '已选择用于比较'
+  },
+  selectStrategiesForComparison: {
+    it: 'Seleziona una o più strategie AI per confrontarle con la tua strategia attuale',
+    en: 'Select one or more AI strategies to compare with your current strategy',
+    es: 'Selecciona una o más estrategias de IA para compararlas con tu estrategia actual',
+    fr: 'Sélectionnez une ou plusieurs stratégies IA pour les comparer avec votre stratégie actuelle',
+    de: 'Wählen Sie eine oder mehrere KI-Strategien aus, um sie mit Ihrer aktuellen Strategie zu vergleichen',
+    zh: '选择一个或多个AI策略与您当前的策略进行比较'
+  },
+  noStrategiesSelected: {
+    it: 'Nessuna strategia selezionata',
+    en: 'No strategies selected',
+    es: 'No hay estrategias seleccionadas',
+    fr: 'Aucune stratégie sélectionnée',
+    de: 'Keine Strategien ausgewählt',
+    zh: '未选择策略'
+  },
+  clickToSelectStrategies: {
+    it: 'Clicca sulle strategie AI sopra per selezionarle e vedere il confronto con la tua strategia attuale',
+    en: 'Click on the AI strategies above to select them and see the comparison with your current strategy',
+    es: 'Haz clic en las estrategias de IA de arriba para seleccionarlas y ver la comparación con tu estrategia actual',
+    fr: 'Cliquez sur les stratégies IA ci-dessus pour les sélectionner et voir la comparaison avec votre stratégie actuelle',
+    de: 'Klicken Sie auf die KI-Strategien oben, um sie auszuwählen und den Vergleich mit Ihrer aktuellen Strategie zu sehen',
+    zh: '点击上面的AI策略来选择它们，并查看与您当前策略的比较'
+  },
+  suggestion: {
+    it: 'Suggerimento:',
+    en: 'Suggestion:',
+    es: 'Sugerencia:',
+    fr: 'Suggestion:',
+    de: 'Vorschlag:',
+    zh: '建议:'
+  },
+  suggestionMessage: {
+    it: 'Clicca sulle strategie AI per selezionarle e confrontarle con la tua strategia attuale',
+    en: 'Click on AI strategies to select them and compare with your current strategy',
+    es: 'Haz clic en las estrategias de IA para seleccionarlas y compararlas con tu estrategia actual',
+    fr: 'Cliquez sur les stratégies IA pour les sélectionner et les comparer avec votre stratégie actuelle',
+    de: 'Klicken Sie auf KI-Strategien, um sie auszuwählen und mit Ihrer aktuellen Strategie zu vergleichen',
+    zh: '点击AI策略来选择它们并与您当前的策略进行比较'
+  },
+
+  // Strategy Metrics
+  volatility: {
+    it: 'Volatilità',
+    en: 'Volatility',
+    es: 'Volatilidad',
+    fr: 'Volatilité',
+    de: 'Volatilität',
+    zh: '波动性'
+  },
+  sharpe: {
+    it: 'Sharpe',
+    en: 'Sharpe',
+    es: 'Sharpe',
+    fr: 'Sharpe',
+    de: 'Sharpe',
+    zh: '夏普比率'
+  },
+  return: {
+    it: 'Rendimento',
+    en: 'Return',
+    es: 'Rendimiento',
+    fr: 'Rendement',
+    de: 'Rendite',
+    zh: '收益率'
+  },
+  maxDrawdown: {
+    it: 'Max Drawdown',
+    en: 'Max Drawdown',
+    es: 'Máxima Caída',
+    fr: 'Drawdown Max',
+    de: 'Max. Drawdown',
+    zh: '最大回撤'
+  },
+  bestReturn: {
+    it: 'Miglior Rendimento',
+    en: 'Best Return',
+    es: 'Mejor Rendimiento',
+    fr: 'Meilleur Rendement',
+    de: 'Beste Rendite',
+    zh: '最佳收益'
+  },
+  lowestRisk: {
+    it: 'Rischio Più Basso',
+    en: 'Lowest Risk',
+    es: 'Menor Riesgo',
+    fr: 'Risque le Plus Bas',
+    de: 'Niedrigstes Risiko',
+    zh: '最低风险'
+  },
+  bestSharpe: {
+    it: 'Miglior Sharpe',
+    en: 'Best Sharpe',
+    es: 'Mejor Sharpe',
+    fr: 'Meilleur Sharpe',
+    de: 'Beste Sharpe',
+    zh: '最佳夏普比率'
+  },
+  comparisonMetrics: {
+    it: 'Metriche di Confronto',
+    en: 'Comparison Metrics',
+    es: 'Métricas de Comparación',
+    fr: 'Métriques de Comparaison',
+    de: 'Vergleichsmetriken',
+    zh: '比较指标'
+  },
+  detailedComparison: {
+    it: 'Confronto Dettagliato',
+    en: 'Detailed Comparison',
+    es: 'Comparación Detallada',
+    fr: 'Comparaison Détaillée',
+    de: 'Detaillierter Vergleich',
+    zh: '详细比较'
+  },
+  strategy: {
+    it: 'Strategia',
+    en: 'Strategy',
+    es: 'Estrategia',
+    fr: 'Stratégie',
+    de: 'Strategie',
+    zh: '策略'
+  },
+
+  // Projection and Charts
+  portfolioProjection: {
+    it: 'Proiezione Portfolio',
+    en: 'Portfolio Projection',
+    es: 'Proyección del Portafolio',
+    fr: 'Projection du Portefeuille',
+    de: 'Portfolio-Projektion',
+    zh: '投资组合预测'
+  },
+  portfolioGrowthProjection: {
+    it: 'Proiezione di Crescita Portfolio',
+    en: 'Portfolio Growth Projection',
+    es: 'Proyección de Crecimiento del Portafolio',
+    fr: 'Projection de Croissance du Portefeuille',
+    de: 'Portfolio-Wachstumsprognose',
+    zh: '投资组合增长预测'
+  },
+  portfolioGrowthDescription: {
+    it: 'Proiezione di crescita basata sui rendimenti attesi degli asset',
+    en: 'Growth projection based on expected asset returns',
+    es: 'Proyección de crecimiento basada en los rendimientos esperados de los activos',
+    fr: 'Projection de croissance basée sur les rendements attendus des actifs',
+    de: 'Wachstumsprognose basierend auf erwarteten Asset-Renditen',
+    zh: '基于资产预期收益的增长预测'
+  },
+  selectAssetToAnalyze: {
+    it: 'Seleziona Asset da Analizzare',
+    en: 'Select Asset to Analyze',
+    es: 'Seleccionar Activo a Analizar',
+    fr: 'Sélectionner l\'Actif à Analyser',
+    de: 'Asset zur Analyse auswählen',
+    zh: '选择要分析的资产'
+  },
+  entirePortfolio: {
+    it: 'Intero Portfolio',
+    en: 'Entire Portfolio',
+    es: 'Portafolio Completo',
+    fr: 'Portefeuille Entier',
+    de: 'Gesamtes Portfolio',
+    zh: '整个投资组合'
+  },
+  years: {
+    it: 'anni',
+    en: 'years',
+    es: 'años',
+    fr: 'années',
+    de: 'Jahre',
+    zh: '年'
+  },
+  assetDetails: {
+    it: 'Dettagli Asset',
+    en: 'Asset Details',
+    es: 'Detalles del Activo',
+    fr: 'Détails de l\'Actif',
+    de: 'Asset-Details',
+    zh: '资产详情'
+  },
+
+  // AI Assistant
+  aiAssistantTitle: {
+    it: 'Assistente AI',
+    en: 'AI Assistant',
+    es: 'Asistente IA',
+    fr: 'Assistant IA',
+    de: 'KI-Assistent',
+    zh: 'AI助手'
+  },
+  aiDescription: {
+    it: 'Ottieni analisi personalizzate del portafoglio e suggerimenti strategici',
+    en: 'Get personalized portfolio analysis and strategic recommendations',
+    es: 'Obtén análisis personalizados de portafolio y recomendaciones estratégicas',
+    fr: 'Obtenez des analyses de portefeuille personnalisées et des recommandations stratégiques',
+    de: 'Erhalten Sie personalisierte Portfolio-Analysen und strategische Empfehlungen',
+    zh: '获得个性化的投资组合分析和策略建议'
+  },
+  aiPortfolioAnalysis: {
+    it: 'Analisi Portfolio AI',
+    en: 'AI Portfolio Analysis',
+    es: 'Análisis de Portafolio IA',
+    fr: 'Analyse de Portefeuille IA',
+    de: 'KI-Portfolio-Analyse',
+    zh: 'AI投资组合分析'
+  },
+  aiStrategyGeneration: {
+    it: 'Generazione Strategia AI',
+    en: 'AI Strategy Generation',
+    es: 'Generación de Estrategia IA',
+    fr: 'Génération de Stratégie IA',
+    de: 'KI-Strategiegenerierung',
+    zh: 'AI策略生成'
+  },
+  analyzePortfolio: {
+    it: 'Analizza Portfolio',
+    en: 'Analyze Portfolio',
+    es: 'Analizar Portafolio',
+    fr: 'Analyser le Portefeuille',
+    de: 'Portfolio analysieren',
+    zh: '分析投资组合'
+  },
+  analyzing: {
+    it: 'Analizzando...',
+    en: 'Analyzing...',
+    es: 'Analizando...',
+    fr: 'Analyse en cours...',
+    de: 'Analysiere...',
+    zh: '分析中...'
+  },
+  generateStrategy: {
+    it: 'Genera Strategia',
+    en: 'Generate Strategy',
+    es: 'Generar Estrategia',
+    fr: 'Générer une Stratégie',
+    de: 'Strategie generieren',
+    zh: '生成策略'
+  },
+  generatingStrategy: {
+    it: 'Generando Strategia...',
+    en: 'Generating Strategy...',
+    es: 'Generando Estrategia...',
+    fr: 'Génération de Stratégie...',
+    de: 'Strategie wird generiert...',
+    zh: '生成策略中...'
+  },
+  generateRealAiStrategy: {
+    it: 'Genera Strategia AI Reale',
+    en: 'Generate Real AI Strategy',
+    es: 'Generar Estrategia IA Real',
+    fr: 'Générer une Vraie Stratégie IA',
+    de: 'Echte KI-Strategie generieren',
+    zh: '生成真实AI策略'
+  },
+  aiRecommendations: {
+    it: 'Raccomandazioni AI',
+    en: 'AI Recommendations',
+    es: 'Recomendaciones IA',
+    fr: 'Recommandations IA',
+    de: 'KI-Empfehlungen',
+    zh: 'AI建议'
+  },
+  marketInsights: {
+    it: 'Insights di Mercato',
+    en: 'Market Insights',
+    es: 'Perspectivas del Mercado',
+    fr: 'Aperçus du Marché',
+    de: 'Markteinblicke',
+    zh: '市场洞察'
+  },
+  apiStatus: {
+    it: 'Stato API',
+    en: 'API Status',
+    es: 'Estado de la API',
+    fr: 'Statut de l\'API',
+    de: 'API-Status',
+    zh: 'API状态'
+  },
+  connected: {
+    it: 'Connesso',
+    en: 'Connected',
+    es: 'Conectado',
+    fr: 'Connecté',
+    de: 'Verbunden',
+    zh: '已连接'
+  },
+  error: {
+    it: 'Errore',
+    en: 'Error',
+    es: 'Error',
+    fr: 'Erreur',
+    de: 'Fehler',
+    zh: '错误'
+  },
+  notTested: {
+    it: 'Non Testato',
+    en: 'Not Tested',
+    es: 'No Probado',
+    fr: 'Non Testé',
+    de: 'Nicht getestet',
+    zh: '未测试'
+  },
+  apiKeyConfigured: {
+    it: 'API Key Configurata',
+    en: 'API Key Configured',
+    es: 'Clave API Configurada',
+    fr: 'Clé API Configurée',
+    de: 'API-Schlüssel konfiguriert',
+    zh: 'API密钥已配置'
+  },
+  apiKeyNotConfigured: {
+    it: 'API Key Non Configurata',
+    en: 'API Key Not Configured',
+    es: 'Clave API No Configurada',
+    fr: 'Clé API Non Configurée',
+    de: 'API-Schlüssel nicht konfiguriert',
+    zh: 'API密钥未配置'
+  },
+  apiError: {
+    it: 'Errore API',
+    en: 'API Error',
+    es: 'Error de API',
+    fr: 'Erreur API',
+    de: 'API-Fehler',
+    zh: 'API错误'
+  },
+  fallbackMessage: {
+    it: 'Utilizzando strategia di fallback',
+    en: 'Using fallback strategy',
+    es: 'Usando estrategia de respaldo',
+    fr: 'Utilisation de la stratégie de secours',
+    de: 'Fallback-Strategie wird verwendet',
+    zh: '使用备用策略'
+  },
+  aiActive: {
+    it: 'AI Attiva',
+    en: 'AI Active',
+    es: 'IA Activa',
+    fr: 'IA Active',
+    de: 'KI Aktiv',
+    zh: 'AI激活'
+  },
+  note: {
+    it: 'Nota',
+    en: 'Note',
+    es: 'Nota',
+    fr: 'Note',
+    de: 'Hinweis',
+    zh: '注意'
+  },
+  aiConfigNote: {
+    it: 'Configura l\'API key OpenAI per analisi AI complete',
+    en: 'Configure OpenAI API key for complete AI analysis',
+    es: 'Configura la clave API de OpenAI para análisis completos de IA',
+    fr: 'Configurez la clé API OpenAI pour une analyse IA complète',
+    de: 'Konfigurieren Sie den OpenAI API-Schlüssel für vollständige KI-Analysen',
+    zh: '配置OpenAI API密钥以进行完整的AI分析'
+  },
+  fallbackStrategyNote: {
+    it: 'Verranno generate strategie di fallback senza AI',
+    en: 'Fallback strategies will be generated without AI',
+    es: 'Se generarán estrategias de respaldo sin IA',
+    fr: 'Des stratégies de secours seront générées sans IA',
+    de: 'Fallback-Strategien werden ohne KI generiert',
+    zh: '将生成无AI的备用策略'
+  },
+
+  // Risk Profiles
+  riskProfile: {
+    it: 'Profilo di Rischio',
+    en: 'Risk Profile',
+    es: 'Perfil de Riesgo',
+    fr: 'Profil de Risque',
+    de: 'Risikoprofil',
+    zh: '风险偏好'
+  },
+  conservative: {
+    it: 'Conservativo',
+    en: 'Conservative',
+    es: 'Conservador',
+    fr: 'Conservateur',
+    de: 'Konservativ',
+    zh: '保守型'
+  },
+  balanced: {
+    it: 'Bilanciato',
+    en: 'Balanced',
+    es: 'Equilibrado',
+    fr: 'Équilibré',
+    de: 'Ausgewogen',
+    zh: '平衡型'
+  },
+  aggressive: {
+    it: 'Aggressivo',
+    en: 'Aggressive',
+    es: 'Agresivo',
+    fr: 'Agressif',
+    de: 'Aggressiv',
+    zh: '激进型'
+  },
+  conservativeDesc: {
+    it: 'Basso rischio',
+    en: 'Low risk',
+    es: 'Bajo riesgo',
+    fr: 'Faible risque',
+    de: 'Geringes Risiko',
+    zh: '低风险'
+  },
+  balancedDesc: {
+    it: 'Rischio medio',
+    en: 'Medium risk',
+    es: 'Riesgo medio',
+    fr: 'Risque moyen',
+    de: 'Mittleres Risiko',
+    zh: '中等风险'
+  },
+  aggressiveDesc: {
+    it: 'Alto rischio',
+    en: 'High risk',
+    es: 'Alto riesgo',
+    fr: 'Risque élevé',
+    de: 'Hohes Risiko',
+    zh: '高风险'
+  },
+
+  // Investment Goals
+  investmentGoals: {
+    it: 'Obiettivi di Investimento',
+    en: 'Investment Goals',
+    es: 'Objetivos de Inversión',
+    fr: 'Objectifs d\'Investissement',
+    de: 'Anlageziele',
+    zh: '投资目标'
+  },
+  longTermGrowth: {
+    it: 'Crescita a Lungo Termine',
+    en: 'Long-term Growth',
+    es: 'Crecimiento a Largo Plazo',
+    fr: 'Croissance à Long Terme',
+    de: 'Langfristiges Wachstum',
+    zh: '长期增长'
+  },
+  passiveIncome: {
+    it: 'Reddito Passivo',
+    en: 'Passive Income',
+    es: 'Ingresos Pasivos',
+    fr: 'Revenus Passifs',
+    de: 'Passives Einkommen',
+    zh: '被动收入'
+  },
+  capitalPreservation: {
+    it: 'Preservazione del Capitale',
+    en: 'Capital Preservation',
+    es: 'Preservación del Capital',
+    fr: 'Préservation du Capital',
+    de: 'Kapitalerhaltung',
+    zh: '资本保值'
+  },
+  diversificationGoal: {
+    it: 'Diversificazione',
+    en: 'Diversification',
+    es: 'Diversificación',
+    fr: 'Diversification',
+    de: 'Diversifikation',
+    zh: '多样化'
+  },
+  inflationProtection: {
+    it: 'Protezione dall\'Inflazione',
+    en: 'Inflation Protection',
+    es: 'Protección contra la Inflación',
+    fr: 'Protection contre l\'Inflation',
+    de: 'Inflationsschutz',
+    zh: '通胀保护'
+  },
+
+  // PAC (Dollar Cost Averaging)
+  isPAC: {
+    it: 'Piano di Accumulo (PAC)',
+    en: 'Dollar Cost Averaging (DCA)',
+    es: 'Plan de Acumulación (PAC)',
+    fr: 'Plan d\'Épargne Programmée',
+    de: 'Sparplan (Cost-Average-Effekt)',
+    zh: '定投计划 (PAC)'
+  },
+  pacDescription: {
+    it: 'Investi un importo fisso a intervalli regolari',
+    en: 'Invest a fixed amount at regular intervals',
+    es: 'Invierte una cantidad fija a intervalos regulares',
+    fr: 'Investissez un montant fixe à intervalles réguliers',
+    de: 'Investieren Sie regelmäßig einen festen Betrag',
+    zh: '定期投资固定金额'
+  },
+  pacAmount: {
+    it: 'Importo PAC',
+    en: 'PAC Amount',
+    es: 'Cantidad PAC',
+    fr: 'Montant PAC',
+    de: 'PAC-Betrag',
+    zh: 'PAC金额'
+  },
+  pacFrequency: {
+    it: 'Frequenza PAC',
+    en: 'PAC Frequency',
+    es: 'Frecuencia PAC',
+    fr: 'Fréquence PAC',
+    de: 'PAC-Häufigkeit',
+    zh: 'PAC频率'
+  },
+  pacActive: {
+    it: 'PAC Attivo',
+    en: 'PAC Active',
+    es: 'PAC Activo',
+    fr: 'PAC Actif',
+    de: 'PAC Aktiv',
+    zh: 'PAC激活'
+  },
+  monthly: {
+    it: 'Mensile',
+    en: 'Monthly',
+    es: 'Mensual',
+    fr: 'Mensuel',
+    de: 'Monatlich',
+    zh: '月度'
+  },
+  quarterly: {
+    it: 'Trimestrale',
+    en: 'Quarterly',
+    es: 'Trimestral',
+    fr: 'Trimestriel',
+    de: 'Vierteljährlich',
+    zh: '季度'
+  },
+  biannual: {
+    it: 'Semestrale',
+    en: 'Biannual',
+    es: 'Semestral',
+    fr: 'Semestriel',
+    de: 'Halbjährlich',
+    zh: '半年度'
+  },
+  annual: {
+    it: 'Annuale',
+    en: 'Annual',
+    es: 'Anual',
+    fr: 'Annuel',
+    de: 'Jährlich',
+    zh: '年度'
+  },
+
+  // Allocation Editor
+  editAllocation: {
+    it: 'Modifica Allocazione',
+    en: 'Edit Allocation',
+    es: 'Editar Asignación',
+    fr: 'Modifier l\'Allocation',
+    de: 'Allokation bearbeiten',
+    zh: '编辑配置'
+  },
+  adjustAllocations: {
+    it: 'Regola Allocazioni',
+    en: 'Adjust Allocations',
+    es: 'Ajustar Asignaciones',
+    fr: 'Ajuster les Allocations',
+    de: 'Allokationen anpassen',
+    zh: '调整配置'
+  },
+  totalAllocation: {
+    it: 'Allocazione Totale',
+    en: 'Total Allocation',
+    es: 'Asignación Total',
+    fr: 'Allocation Totale',
+    de: 'Gesamtallokation',
+    zh: '总配置'
+  },
+  allocationTooHigh: {
+    it: 'L\'allocazione supera il 100%. Riduci alcune percentuali.',
+    en: 'Allocation exceeds 100%. Please reduce some percentages.',
+    es: 'La asignación supera el 100%. Reduce algunos porcentajes.',
+    fr: 'L\'allocation dépasse 100%. Veuillez réduire certains pourcentages.',
+    de: 'Die Allokation übersteigt 100%. Bitte reduzieren Sie einige Prozentsätze.',
+    zh: '配置超过100%。请减少一些百分比。'
+  },
+  allocationTooLow: {
+    it: 'L\'allocazione è inferiore al 100%.',
+    en: 'Allocation is below 100%.',
+    es: 'La asignación está por debajo del 100%.',
+    fr: 'L\'allocation est inférieure à 100%.',
+    de: 'Die Allokation liegt unter 100%.',
+    zh: '配置低于100%。'
+  },
+  saveAllocation: {
+    it: 'Salva Allocazione',
+    en: 'Save Allocation',
+    es: 'Guardar Asignación',
+    fr: 'Sauvegarder l\'Allocation',
+    de: 'Allokation speichern',
+    zh: '保存配置'
+  },
+  liveProjection: {
+    it: 'Proiezione in Tempo Reale',
+    en: 'Live Projection',
+    es: 'Proyección en Tiempo Real',
+    fr: 'Projection en Temps Réel',
+    de: 'Live-Projektion',
+    zh: '实时预测'
+  },
+  cloneAndEdit: {
+    it: '克隆和编辑',
+    en: 'Clone & Edit',
+    es: 'Clonar y Editar',
+    fr: 'Cloner et Modifier',
+    de: 'Klonen & Bearbeiten',
+    zh: '克隆和编辑'
+  },
+
+  // Common Actions
+  save: {
+    it: 'Salva',
+    en: 'Save',
+    es: 'Guardar',
+    fr: 'Sauvegarder',
+    de: 'Speichern',
+    zh: '保存'
+  },
+  cancel: {
+    it: 'Annulla',
+    en: 'Cancel',
+    es: 'Cancelar',
+    fr: 'Annuler',
+    de: 'Abbrechen',
+    zh: '取消'
+  },
+  edit: {
+    it: 'Modifica',
+    en: 'Edit',
+    es: 'Editar',
+    fr: 'Modifier',
+    de: 'Bearbeiten',
+    zh: '编辑'
+  },
+  delete: {
+    it: 'Elimina',
+    en: 'Delete',
+    es: 'Eliminar',
+    fr: 'Supprimer',
+    de: 'Löschen',
+    zh: '删除'
+  },
+  editName: {
+    it: 'Modifica Nome',
+    en: 'Edit Name',
+    es: 'Editar Nombre',
+    fr: 'Modifier le Nom',
+    de: 'Name bearbeiten',
+    zh: '编辑名称'
+  },
+  continue: {
+    it: 'Continua',
+    en: 'Continue',
+    es: 'Continuar',
+    fr: 'Continuer',
+    de: 'Fortfahren',
+    zh: '继续'
+  },
+
+  // Reset and Data Management
+  reset: {
+    it: 'Reset',
+    en: 'Reset',
+    es: 'Restablecer',
+    fr: 'Réinitialiser',
+    de: 'Zurücksetzen',
+    zh: '重置'
+  },
+  resetData: {
+    it: 'Resetta Dati',
+    en: 'Reset Data',
+    es: 'Restablecer Datos',
+    fr: 'Réinitialiser les Données',
+    de: 'Daten zurücksetzen',
+    zh: '重置数据'
+  },
+  confirmReset: {
+    it: 'Conferma Reset',
+    en: 'Confirm Reset',
+    es: 'Confirmar Restablecimiento',
+    fr: 'Confirmer la Réinitialisation',
+    de: 'Reset bestätigen',
+    zh: '确认重置'
+  },
+  resetWarning: {
+    it: 'Questa azione eliminerà tutti i dati',
+    en: 'This action will delete all data',
+    es: 'Esta acción eliminará todos los datos',
+    fr: 'Cette action supprimera toutes les données',
+    de: 'Diese Aktion löscht alle Daten',
+    zh: '此操作将删除所有数据'
+  },
+  dataToDelete: {
+    it: 'Dati da eliminare',
+    en: 'Data to delete',
+    es: 'Datos a eliminar',
+    fr: 'Données à supprimer',
+    de: 'Zu löschende Daten',
+    zh: '要删除的数据'
+  },
+  assets: {
+    it: 'asset',
+    en: 'assets',
+    es: 'activos',
+    fr: 'actifs',
+    de: 'Assets',
+    zh: '资产'
+  },
+  aiStrategies: {
+    it: 'strategie AI',
+    en: 'AI strategies',
+    es: 'estrategias IA',
+    fr: 'stratégies IA',
+    de: 'KI-Strategien',
+    zh: 'AI策略'
+  },
+  languageAndCurrency: {
+    it: 'Lingua e valuta',
+    en: 'Language and currency',
+    es: 'Idioma y moneda',
+    fr: 'Langue et devise',
+    de: 'Sprache und Währung',
+    zh: '语言和货币'
+  },
+  resetConfirm: {
+    it: 'Conferma',
+    en: 'Confirm',
+    es: 'Confirmar',
+    fr: 'Confirmer',
+    de: 'Bestätigen',
+    zh: '确认'
+  },
+
+  // Empty States and Messages
+  noAssetsMessage: {
+    it: 'Nessun asset nel portfolio',
+    en: 'No assets in portfolio',
+    es: 'No hay activos en el portafolio',
+    fr: 'Aucun actif dans le portefeuille',
+    de: 'Keine Assets im Portfolio',
+    zh: '投资组合中没有资产'
+  },
+  noStrategiesAvailable: {
+    it: 'Nessuna strategia disponibile',
+    en: 'No strategies available',
+    es: 'No hay estrategias disponibles',
+    fr: 'Aucune stratégie disponible',
+    de: 'Keine Strategien verfügbar',
+    zh: '没有可用的策略'
+  },
+  addAssetsToCompareStrategies: {
+    it: 'Aggiungi asset al tuo portfolio per confrontare le strategie',
+    en: 'Add assets to your portfolio to compare strategies',
+    es: 'Agrega activos a tu portafolio para comparar estrategias',
+    fr: 'Ajoutez des actifs à votre portefeuille pour comparer les stratégies',
+    de: 'Fügen Sie Assets zu Ihrem Portfolio hinzu, um Strategien zu vergleichen',
+    zh: '向您的投资组合添加资产以比较策略'
+  },
+  fillRequiredFields: {
+    it: 'Compila tutti i campi obbligatori',
+    en: 'Fill in all required fields',
+    es: 'Completa todos los campos obligatorios',
+    fr: 'Remplissez tous les champs obligatoires',
+    de: 'Füllen Sie alle Pflichtfelder aus',
+    zh: '填写所有必填字段'
+  },
+
+  // Disclaimer
+  disclaimerTitle: {
+    it: 'Avviso Importante',
+    en: 'Important Notice',
+    es: 'Aviso Importante',
+    fr: 'Avis Important',
+    de: 'Wichtiger Hinweis',
+    zh: '重要提示'
+  },
+  disclaimerSubtitle: {
+    it: 'Leggi attentamente prima di procedere',
+    en: 'Please read carefully before proceeding',
+    es: 'Lee cuidadosamente antes de continuar',
+    fr: 'Veuillez lire attentivement avant de continuer',
+    de: 'Bitte lesen Sie sorgfältig, bevor Sie fortfahren',
+    zh: '请在继续之前仔细阅读'
+  },
+  disclaimerAcceptance: {
+    it: 'Ho letto e compreso l\'avviso e accetto di procedere sotto la mia responsabilità',
+    en: 'I have read and understood the notice and agree to proceed at my own responsibility',
+    es: 'He leído y entendido el aviso y acepto proceder bajo mi propia responsabilidad',
+    fr: 'J\'ai lu et compris l\'avis et j\'accepte de procéder sous ma propre responsabilité',
+    de: 'Ich habe den Hinweis gelesen und verstanden und stimme zu, auf eigene Verantwortung fortzufahren',
+    zh: '我已阅读并理解此通知，同意自行承担责任继续'
+  },
+
+  // SEO
+  seoDescription: {
+    it: 'Strumento avanzato per l\'ottimizzazione e il ribilanciamento di portafogli di investimento. Analisi AI, strategie personalizzate, piani di accumulo (PAC) e proiezioni di crescita.',
+    en: 'Advanced tool for investment portfolio optimization and rebalancing. AI analysis, personalized strategies, dollar-cost averaging (DCA) plans and growth projections.',
+    es: 'Herramienta avanzada para la optimización y rebalanceo de carteras de inversión. Análisis de IA, estrategias personalizadas, planes de acumulación (PAC) y proyecciones de crecimiento.',
+    fr: 'Outil avancé pour l\'optimisation et le rééquilibrage de portefeuilles d\'investissement. Analyse IA, stratégies personnalisées, plans d\'épargne programmée et projections de croissance.',
+    de: 'Fortschrittliches Tool für die Optimierung und Neugewichtung von Anlageportfolios. KI-Analyse, personalisierte Strategien, Sparpläne und Wachstumsprognosen.',
+    zh: '先进的投资组合优化和再平衡工具。AI分析、个性化策略、定投计划(PAC)和增长预测。'
+  },
+  seoKeywords: {
+    it: 'portfolio balancer, investimenti, AI, ribilanciamento, PAC, piano accumulo capitale, ETF, azioni, obbligazioni, diversificazione, analisi portafoglio',
+    en: 'portfolio balancer, investments, AI, rebalancing, DCA, dollar cost averaging, ETF, stocks, bonds, diversification, portfolio analysis',
+    es: 'balanceador de cartera, inversiones, IA, rebalanceo, PAC, promedio de costo, ETF, acciones, bonos, diversificación, análisis de cartera',
+    fr: 'équilibreur de portefeuille, investissements, IA, rééquilibrage, DCA, moyenne des coûts, ETF, actions, obligations, diversification, analyse de portefeuille',
+    de: 'Portfolio-Balancer, Investitionen, KI, Neugewichtung, Cost-Average, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse',
+    zh: '投资组合平衡器, 投资, AI, 再平衡, 定投, 成本平均, ETF, 股票, 债券, 多样化, 投资组合分析'
   }
 };
 
-export const SUPPORTED_LANGUAGES = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'it', name: 'Italiano', flag: '🇮🇹' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' }
-];
-
-export function getTranslation(language: string, key: string): string {
-  const translation = translations[language];
+export const getTranslation = (language: Language, key: string): string => {
+  const translation = translations[key];
   if (!translation) {
-    // Fallback to English if language not found
-    const fallback = translations['en'];
-    return fallback?.[key as keyof Translation] || key;
+    console.warn(`Translation missing for key: ${key}`);
+    return key;
   }
-  
-  const value = translation[key as keyof Translation];
-  return typeof value === 'string' ? value : key;
-}
+  return translation[language] || translation['it'] || key;
+};
