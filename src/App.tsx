@@ -3,7 +3,6 @@ import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit } from 'luci
 import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
 import { Currency } from './types/currency';
-import { AssetForm } from './components/AssetForm';
 import { LanguageSelector } from './components/LanguageSelector';
 import { CurrencySelector } from './components/CurrencySelector';
 import { ResetButton } from './components/ResetButton';
