@@ -449,7 +449,7 @@ export const App: React.FC = () => {
                 </h3>
                 <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-sm text-blue-800">
-                    💡 <strong>Suggerimento:</strong> Clicca sulle strategie AI per selezionarle e confrontarle con la tua strategia attuale
+                    💡 <strong>{t('suggestion')}</strong> {t('suggestionMessage')}
                   </p>
                 </div>
                 <div className="space-y-6">
@@ -499,14 +499,14 @@ export const App: React.FC = () => {
                         onClick={() => setSelectedStrategies(new Set())}
                         className="text-sm text-gray-500 hover:text-gray-700 underline"
                       >
-                        Deseleziona tutto
+                        {t('deselectAll')}
                       </button>
                     )}
                   </div>
                   <p className="text-gray-600">
                     {selectedStrategies.size === 0 
-                      ? "Seleziona una o più strategie AI per confrontarle con la tua strategia attuale"
-                      : `Confronto tra la tua strategia attuale e ${selectedStrategies.size} strategia${selectedStrategies.size > 1 ? 'e' : ''} selezionata${selectedStrategies.size > 1 ? 'e' : ''}`
+                      ? t('selectStrategiesForComparison')
+                      : `${t('comparisonBetween')} ${selectedStrategies.size} ${selectedStrategies.size > 1 ? t('selectedStrategiesPlural') : t('selectedStrategySingular')}`
                     }
                   </p>
                 </div>
@@ -530,7 +530,7 @@ export const App: React.FC = () => {
                     </div>
                     <h4 className="text-lg font-medium text-gray-900 mb-2">Nessuna strategia selezionata</h4>
                     <p className="text-gray-600 mb-4">
-                      Clicca sulle strategie AI sopra per selezionarle e vedere il confronto con la tua strategia attuale
+                      {t('clickToSelectStrategies')}
                     </p>
                   </div>
                 )}

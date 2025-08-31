@@ -1226,6 +1226,48 @@ export const translations: Translations = {
     de: 'Portfolio-Balancer, Investitionen, KI, Neugewichtung, Cost-Average, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse',
     zh: '投资组合平衡器, 投资, AI, 再平衡, 定投, 成本平均, ETF, 股票, 债券, 多样化, 投资组合分析'
   }
+  },
+  
+  // Additional translations for missing texts
+  comparisonBetween: {
+    it: 'Confronto tra la tua strategia attuale e',
+    en: 'Comparison between your current strategy and',
+    es: 'Comparación entre tu estrategia actual y',
+    fr: 'Comparaison entre votre stratégie actuelle et',
+    de: 'Vergleich zwischen Ihrer aktuellen Strategie und',
+    zh: '您当前策略与以下策略的比较'
+  },
+  selectedStrategySingular: {
+    it: 'strategia selezionata',
+    en: 'selected strategy',
+    es: 'estrategia seleccionada',
+    fr: 'stratégie sélectionnée',
+    de: 'ausgewählte Strategie',
+    zh: '个已选择的策略'
+  },
+  selectedStrategiesPlural: {
+    it: 'strategie selezionate',
+    en: 'selected strategies',
+    es: 'estrategias seleccionadas',
+    fr: 'stratégies sélectionnées',
+    de: 'ausgewählte Strategien',
+    zh: '个已选择的策略'
+  },
+  deselectAll: {
+    it: 'Deseleziona tutto',
+    en: 'Deselect all',
+    es: 'Deseleccionar todo',
+    fr: 'Tout désélectionner',
+    de: 'Alle abwählen',
+    zh: '取消全选'
+  },
+  strategiesCount: {
+    it: 'strategie',
+    en: 'strategies',
+    es: 'estrategias',
+    fr: 'stratégies',
+    de: 'Strategien',
+    zh: '个策略'
 };
 
 export const getTranslation = (language: Language, key: string): string => {
