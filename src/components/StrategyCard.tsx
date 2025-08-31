@@ -197,7 +197,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       {isSelected && !showSelectionCheckbox && (
         <div className="mt-4 pt-3 border-t border-primary-200">
           <p className="text-xs text-primary-600 text-center font-medium">
-            ✓ Strategia selezionata per il confronto
+            ✓ {t('selectedForComparison')}
           </p>
         </div>
       )}

@@ -439,6 +439,11 @@ export const App: React.FC = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   {t('aiGeneratedStrategies')} ({aiStrategies.length})
                 </h3>
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    💡 <strong>Suggerimento:</strong> Clicca sulle strategie AI per selezionarle e confrontarle con la tua strategia attuale
+                  </p>
+                </div>
                 <div className="space-y-6">
                   {aiStrategies.map((strategy) => (
                     <div key={strategy.id} className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -450,6 +455,7 @@ export const App: React.FC = () => {
                         onSelect={() => handleToggleStrategy(strategy.id)}
                         onCloneAndEdit={() => handleCloneAndEdit(strategy)}
                         language={language}
+                        showSelectionCheckbox={true}
                       />
                       <div className="card">
                         <h4 className="font-semibold text-gray-900 mb-4">{t('targetAllocation')}</h4>
@@ -467,28 +473,58 @@ export const App: React.FC = () => {
             )}
 
             {/* Strategy Comparison */}
-            {strategiesForComparison.length > 1 && (
+            {aiStrategies.length > 0 && (
               <div className="border-t border-gray-200 pt-8">
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {t('compareStrategies')} ({strategiesForComparison.length})
-                  </h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {t('compareStrategies')} 
+                      {strategiesForComparison.length > 1 && (
+                        <span className="ml-2 px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                          {strategiesForComparison.length} strategie
+                        </span>
+                      )}
+                    </h3>
+                    {selectedStrategies.size > 0 && (
+                      <button
+                        onClick={() => setSelectedStrategies(new Set())}
+                        className="text-sm text-gray-500 hover:text-gray-700 underline"
+                      >
+                        Deseleziona tutto
+                      </button>
+                    )}
+                  </div>
                   <p className="text-gray-600">
-                    {t('strategiesDescription')}
+                    {selectedStrategies.size === 0 
+                      ? "Seleziona una o più strategie AI per confrontarle con la tua strategia attuale"
+                      : `Confronto tra la tua strategia attuale e ${selectedStrategies.size} strategia${selectedStrategies.size > 1 ? 'e' : ''} selezionata${selectedStrategies.size > 1 ? 'e' : ''}`
+                    }
                   </p>
                 </div>
 
-                <div className="space-y-8">
-                  <ProjectionChart
-                    strategies={strategiesForComparison}
-                    assets={assets}
-                    currency={currency}
-                    language={language}
-                    showAssetSelection={true}
-                  />
+                {strategiesForComparison.length > 1 ? (
+                  <div className="space-y-8">
+                    <ProjectionChart
+                      strategies={strategiesForComparison}
+                      assets={assets}
+                      currency={currency}
+                      language={language}
+                      showAssetSelection={true}
+                    />
 
-                  <StrategyComparison strategies={strategiesForComparison} language={language} />
-                </div>
+                    <StrategyComparison strategies={strategiesForComparison} language={language} />
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                      <Target className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h4 className="text-lg font-medium text-gray-900 mb-2">Nessuna strategia selezionata</h4>
+                    <p className="text-gray-600 mb-4">
+                      Clicca sulle strategie AI sopra per selezionarle e vedere il confronto con la tua strategia attuale
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
