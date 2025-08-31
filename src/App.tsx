@@ -14,6 +14,7 @@ import { LanguageSelector } from './components/LanguageSelector';
 import { CurrencySelector } from './components/CurrencySelector';
 import { ResetButton } from './components/ResetButton';
 import { SEOHead } from './components/SEOHead';
+import { DisclaimerModal } from './components/DisclaimerModal';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage, generateCurrentStrategy } from './utils/calculations';
 import { 
   saveAssets, 
@@ -25,7 +26,9 @@ import {
   saveCurrency, 
   loadCurrency, 
   saveActiveTab, 
-  loadActiveTab 
+  loadActiveTab,
+  saveDisclaimerAccepted,
+  loadDisclaimerAccepted
 } from './utils/storage';
 import { getTranslation } from './utils/translations';
 
@@ -37,6 +40,7 @@ export const App: React.FC = () => {
   const [aiStrategies, setAiStrategies] = useState<Strategy[]>(loadAIStrategies());
   const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'ai'>(loadActiveTab() as any);
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
+  const [showDisclaimer, setShowDisclaimer] = useState(!loadDisclaimerAccepted());
 
   const t = (key: string) => getTranslation(language, key);
 
@@ -116,6 +120,16 @@ export const App: React.FC = () => {
     setActiveTab('strategies');
   };
 
+  const handleDisclaimerAccept = () => {
+    saveDisclaimerAccepted();
+    setShowDisclaimer(false);
+  };
+
+  const handleDisclaimerDecline = () => {
+    // Redirect to a safe page or show alternative content
+    window.location.href = 'https://www.google.com';
+  };
+
   const metrics = calculatePortfolioMetrics(assets);
   const currentStrategy = generateCurrentStrategy(assets);
   const selectedStrategyList = aiStrategies.filter(s => selectedStrategies.has(s.id));
@@ -129,6 +143,14 @@ export const App: React.FC = () => {
         assets={assets}
         strategies={aiStrategies}
         activeTab={activeTab}
+      />
+      
+      {/* Disclaimer Modal */}
+      <DisclaimerModal
+        language={language}
+        isOpen={showDisclaimer}
+        onAccept={handleDisclaimerAccept}
+        onDecline={handleDisclaimerDecline}
       />
       
       {/* Header */}

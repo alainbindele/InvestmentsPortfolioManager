@@ -75,6 +75,13 @@ export interface Translation {
   // App specific
   appTitle: string;
   appSubtitle: string;
+  
+  // Disclaimer
+  disclaimerTitle: string;
+  disclaimerSubtitle: string;
+  disclaimerAcceptance: string;
+  continue: string;
+  
   portfolioMetrics: string;
   currentAllocation: string;
   addAssetButton: string;
@@ -198,6 +205,13 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "Portfolio Balancer",
     appSubtitle: "Optimize your investments with AI",
+    
+    // Disclaimer
+    disclaimerTitle: "Important Disclaimer",
+    disclaimerSubtitle: "Please read carefully before proceeding",
+    disclaimerAcceptance: "I have read and accept the Disclaimer",
+    continue: "Continue",
+    
     portfolioMetrics: "Portfolio Metrics",
     currentAllocation: "Current Allocation",
     portfolioGrowthProjection: "Portfolio Growth Projection",
@@ -342,6 +356,13 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "Portfolio Balancer",
     appSubtitle: "Ottimizza i tuoi investimenti con l'AI",
+    
+    // Disclaimer
+    disclaimerTitle: "Disclaimer Importante",
+    disclaimerSubtitle: "Leggi attentamente prima di procedere",
+    disclaimerAcceptance: "Ho letto e accetto il Disclaimer",
+    continue: "Continua",
+    
     portfolioMetrics: "Metriche Portfolio",
     currentAllocation: "Allocazione Attuale",
     portfolioGrowthProjection: "Proiezione Crescita Portfolio",
@@ -486,6 +507,13 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "Portfolio Balancer",
     appSubtitle: "Optimiza tus inversiones con IA",
+    
+    // Disclaimer
+    disclaimerTitle: "Descargo de Responsabilidad Importante",
+    disclaimerSubtitle: "Por favor lee cuidadosamente antes de continuar",
+    disclaimerAcceptance: "He leído y acepto el Descargo de Responsabilidad",
+    continue: "Continuar",
+    
     portfolioMetrics: "Métricas del Portfolio",
     currentAllocation: "Asignación Actual",
     portfolioGrowthProjection: "Proyección de Crecimiento del Portfolio",
@@ -630,6 +658,13 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "Portfolio Balancer",
     appSubtitle: "Optimisez vos investissements avec l'IA",
+    
+    // Disclaimer
+    disclaimerTitle: "Avertissement Important",
+    disclaimerSubtitle: "Veuillez lire attentivement avant de continuer",
+    disclaimerAcceptance: "J'ai lu et j'accepte l'Avertissement",
+    continue: "Continuer",
+    
     portfolioMetrics: "Métriques du Portfolio",
     currentAllocation: "Allocation Actuelle",
     portfolioGrowthProjection: "Projection de Croissance du Portfolio",
@@ -774,6 +809,13 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "Portfolio Balancer",
     appSubtitle: "Optimieren Sie Ihre Investitionen mit KI",
+    
+    // Disclaimer
+    disclaimerTitle: "Wichtiger Haftungsausschluss",
+    disclaimerSubtitle: "Bitte lesen Sie sorgfältig, bevor Sie fortfahren",
+    disclaimerAcceptance: "Ich habe den Haftungsausschluss gelesen und akzeptiert",
+    continue: "Fortfahren",
+    
     portfolioMetrics: "Portfolio-Metriken",
     currentAllocation: "Aktuelle Allokation",
     portfolioGrowthProjection: "Portfolio-Wachstumsprojektion",
@@ -1068,6 +1110,13 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "投资组合平衡器",
     appSubtitle: "用AI优化您的投资",
+    
+    // Disclaimer
+    disclaimerTitle: "重要免责声明",
+    disclaimerSubtitle: "请在继续之前仔细阅读",
+    disclaimerAcceptance: "我已阅读并接受免责声明",
+    continue: "继续",
+    
     portfolioMetrics: "投资组合指标",
     currentAllocation: "当前配置",
     portfolioGrowthProjection: "投资组合增长预测",

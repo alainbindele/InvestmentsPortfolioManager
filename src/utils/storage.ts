@@ -7,7 +7,8 @@ const STORAGE_KEYS = {
   AI_STRATEGIES: 'portfolio_balancer_ai_strategies',
   LANGUAGE: 'portfolio_balancer_language',
   CURRENCY: 'portfolio_balancer_currency',
-  ACTIVE_TAB: 'portfolio_balancer_active_tab'
+  ACTIVE_TAB: 'portfolio_balancer_active_tab',
+  DISCLAIMER_ACCEPTED: 'portfolio_balancer_disclaimer_accepted'
 };
 
 // Cookie utilities
@@ -136,6 +137,24 @@ export const loadActiveTab = (): string => {
     console.error('Error loading active tab from cookies:', error);
   }
   return 'portfolio'; // Default tab
+};
+
+export const saveDisclaimerAccepted = () => {
+  try {
+    setCookie(STORAGE_KEYS.DISCLAIMER_ACCEPTED, 'true', 365); // Store for 1 year
+  } catch (error) {
+    console.error('Error saving disclaimer acceptance to cookies:', error);
+  }
+};
+
+export const loadDisclaimerAccepted = (): boolean => {
+  try {
+    const saved = getCookie(STORAGE_KEYS.DISCLAIMER_ACCEPTED);
+    return saved === 'true';
+  } catch (error) {
+    console.error('Error loading disclaimer acceptance from cookies:', error);
+  }
+  return false;
 };
 
 export const clearAllData = () => {
