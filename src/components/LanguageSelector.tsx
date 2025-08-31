@@ -49,7 +49,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-slide-up">
+        <div className="absolute top-full right-0 mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[9999] animate-slide-up">
           <div className="py-2">
             {LANGUAGES.map((language) => (
               <button

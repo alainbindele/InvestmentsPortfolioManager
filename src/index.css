@@ -87,6 +87,11 @@
 
 /* Mobile specific improvements */
 @media (max-width: 640px) {
+  /* Ensure dropdowns appear above all content */
+  .absolute {
+    z-index: 9999 !important;
+  }
+  
   .recharts-wrapper {
     font-size: 12px;
   }
