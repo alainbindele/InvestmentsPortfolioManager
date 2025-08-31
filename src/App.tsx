@@ -101,7 +101,7 @@ export const App: React.FC = () => {
     setEditingAsset(null);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelStrategyEdit = () => {
     setEditingAsset(null);
   };
 
@@ -131,7 +131,7 @@ export const App: React.FC = () => {
     setEditingStrategy(null);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelStrategyEdit = () => {
     setEditingStrategy(null);
   };
 
@@ -397,7 +397,7 @@ export const App: React.FC = () => {
                   currency={currency}
                   language={language}
                   onSaveAllocation={handleSaveAllocation}
-                  onCancel={handleCancelEdit}
+                  onCancel={handleCancelStrategyEdit}
                 />
               </div>
             )}
