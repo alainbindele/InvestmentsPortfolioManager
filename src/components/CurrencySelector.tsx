@@ -70,7 +70,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-72 sm:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-[9999] animate-slide-up max-h-96 overflow-hidden">
+        <div className="fixed top-full right-0 mt-2 w-72 sm:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-[99999] animate-slide-up max-h-96 overflow-hidden" style={{ zIndex: 99999 }}>
           {/* Search and Filter Header */}
           <div className="p-3 sm:p-4 border-b border-gray-200">
             <div className="relative mb-3">

@@ -87,9 +87,15 @@
 
 /* Mobile specific improvements */
 @media (max-width: 640px) {
-  /* Ensure dropdowns appear above all content */
-  .absolute {
-    z-index: 9999 !important;
+  /* Force maximum z-index for all dropdowns on mobile */
+  .fixed, .absolute {
+    z-index: 99999 !important;
+  }
+  
+  /* Ensure dropdowns use fixed positioning on mobile */
+  [class*="absolute"][class*="top-full"] {
+    position: fixed !important;
+    z-index: 99999 !important;
   }
   
   .recharts-wrapper {
