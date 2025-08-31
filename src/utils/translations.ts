@@ -1455,6 +1455,10 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "AI策略",
     languageAndCurrency: "语言和货币",
     resetConfirm: "删除全部",
+    // Empty states
+    noStrategiesAvailable: "没有可用的策略",
+    addAssetsToCompareStrategies: "向您的投资组合添加一些资产以开始比较策略",
+    
     portfolioAssets: "投资组合资产",
     editName: "编辑名称",
     

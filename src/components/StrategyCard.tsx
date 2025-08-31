@@ -220,7 +220,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       {/* Asset Allocations */}
       {Object.keys(strategy.targetAllocations).length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm font-medium text-gray-700">Allocazione Target:</p>
+          <p className="text-sm font-medium text-gray-700">{t('allocationTarget')}</p>
           <div className="space-y-1">
             {Object.entries(strategy.targetAllocations).map(([assetId, allocation]) => {
               const asset = assets.find(a => a.id === assetId);
@@ -252,7 +252,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           {/* Portfolio Total */}
           <div className="pt-2 mt-2 border-t border-gray-200">
             <div className="flex items-center justify-between text-sm">
-              <span className="font-medium text-gray-700">Totale Portfolio:</span>
+              <span className="font-medium text-gray-700">{t('totalPortfolio')}</span>
               <span className="font-bold text-gray-900">
                 {formatCurrency(totalValue, currency)}
               </span>
