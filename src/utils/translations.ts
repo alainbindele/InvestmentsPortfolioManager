@@ -1308,7 +1308,6 @@ export const translations: Record<string, Translation> = {
     maxDrawdown: "最大回撤",
     selectedStrategy: "已选择",
     selectedForComparison: "已选择用于比较",
-    selectedForComparison: "已选择用于比较",
     aiAssistantTitle: "AI助手",
     aiDescription: "获得个性化的投资组合分析和策略建议",
     analyzing: "分析中...",
