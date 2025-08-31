@@ -218,7 +218,7 @@ export const PACManager: React.FC<PACManagerProps> = ({
             {assets.length > 0 && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">
-                  {t('pacAllocation')} (Opzionale - default: allocazione equa)
+                  {t('pacAllocation')} ({t('opzionale')} - {t('allocazioneEqua')})
                 </label>
                 <div className="space-y-2">
                   {assets.map((asset) => (
