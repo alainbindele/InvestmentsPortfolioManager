@@ -3,6 +3,7 @@ export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'zh';
 interface Translations {
   [key: string]: {
     [lang in Language]: string;
+  };
 }
 
 export const translations: Translations = {
@@ -361,6 +362,14 @@ export const translations: Translations = {
     de: 'Aktuelle Strategie',
     zh: '当前策略'
   },
+  currentStrategyDescription: {
+    it: 'La tua allocazione attuale del portafoglio',
+    en: 'Your current portfolio allocation',
+    es: 'Tu asignación actual del portafolio',
+    fr: 'Votre allocation actuelle du portefeuille',
+    de: 'Ihre aktuelle Portfolio-Allokation',
+    zh: '您当前的投资组合配置'
+  },
   aiGeneratedStrategies: {
     it: 'Strategie AI Generate',
     en: 'AI Generated Strategies',
@@ -409,7 +418,23 @@ export const translations: Translations = {
     de: 'Für Vergleich ausgewählt',
     zh: '已选择用于比较'
   },
-  selectStrategiesForComparison: {
+  suggestionPrefix: {
+    it: 'Suggerimento:',
+    en: 'Suggestion:',
+    es: 'Sugerencia:',
+    fr: 'Suggestion:',
+    de: 'Vorschlag:',
+    zh: '建议：'
+  },
+  clickAiStrategiesMessage: {
+    it: 'Clicca sulle strategie AI per selezionarle e confrontarle con la tua strategia attuale',
+    en: 'Click on AI strategies to select them and compare with your current strategy',
+    es: 'Haz clic en las estrategias de IA para seleccionarlas y compararlas con tu estrategia actual',
+    fr: 'Cliquez sur les stratégies IA pour les sélectionner et les comparer avec votre stratégie actuelle',
+    de: 'Klicken Sie auf KI-Strategien, um sie auszuwählen und mit Ihrer aktuellen Strategie zu vergleichen',
+    zh: '点击AI策略来选择它们并与您当前的策略进行比较'
+  },
+  selectOneOrMoreStrategies: {
     it: 'Seleziona una o più strategie AI per confrontarle con la tua strategia attuale',
     en: 'Select one or more AI strategies to compare with your current strategy',
     es: 'Selecciona una o más estrategias de IA para compararlas con tu estrategia actual',
@@ -417,37 +442,21 @@ export const translations: Translations = {
     de: 'Wählen Sie eine oder mehrere KI-Strategien aus, um sie mit Ihrer aktuellen Strategie zu vergleichen',
     zh: '选择一个或多个AI策略与您当前的策略进行比较'
   },
-  noStrategiesSelected: {
+  noStrategySelected: {
     it: 'Nessuna strategia selezionata',
-    en: 'No strategies selected',
-    es: 'No hay estrategias seleccionadas',
+    en: 'No strategy selected',
+    es: 'Ninguna estrategia seleccionada',
     fr: 'Aucune stratégie sélectionnée',
-    de: 'Keine Strategien ausgewählt',
+    de: 'Keine Strategie ausgewählt',
     zh: '未选择策略'
   },
-  clickToSelectStrategies: {
+  clickStrategiesAbove: {
     it: 'Clicca sulle strategie AI sopra per selezionarle e vedere il confronto con la tua strategia attuale',
     en: 'Click on the AI strategies above to select them and see the comparison with your current strategy',
     es: 'Haz clic en las estrategias de IA de arriba para seleccionarlas y ver la comparación con tu estrategia actual',
     fr: 'Cliquez sur les stratégies IA ci-dessus pour les sélectionner et voir la comparaison avec votre stratégie actuelle',
     de: 'Klicken Sie auf die KI-Strategien oben, um sie auszuwählen und den Vergleich mit Ihrer aktuellen Strategie zu sehen',
     zh: '点击上面的AI策略来选择它们，并查看与您当前策略的比较'
-  },
-  suggestion: {
-    it: 'Suggerimento:',
-    en: 'Suggestion:',
-    es: 'Sugerencia:',
-    fr: 'Suggestion:',
-    de: 'Vorschlag:',
-    zh: '建议:'
-  },
-  suggestionMessage: {
-    it: 'Clicca sulle strategie AI per selezionarle e confrontarle con la tua strategia attuale',
-    en: 'Click on AI strategies to select them and compare with your current strategy',
-    es: 'Haz clic en las estrategias de IA para seleccionarlas y compararlas con tu estrategia actual',
-    fr: 'Cliquez sur les stratégies IA pour les sélectionner et les comparer avec votre stratégie actuelle',
-    de: 'Klicken Sie auf KI-Strategien, um sie auszuwählen und mit Ihrer aktuellen Strategie zu vergleichen',
-    zh: '点击AI策略来选择它们并与您当前的策略进行比较'
   },
 
   // Strategy Metrics
@@ -1016,60 +1025,12 @@ export const translations: Translations = {
     zh: '实时预测'
   },
   cloneAndEdit: {
-    it: '克隆和编辑',
+    it: 'Clona e Modifica',
     en: 'Clone & Edit',
     es: 'Clonar y Editar',
     fr: 'Cloner et Modifier',
     de: 'Klonen & Bearbeiten',
     zh: '克隆和编辑'
-  },
-  currentStrategyDescription: {
-    it: 'La tua allocazione attuale del portafoglio',
-    en: 'Your current portfolio allocation',
-    es: 'Tu asignación actual del portafolio',
-    fr: 'Votre allocation actuelle du portefeuille',
-    de: 'Ihre aktuelle Portfolio-Allokation',
-    zh: '您当前的投资组合配置'
-  },
-  suggestionPrefix: {
-    it: 'Suggerimento:',
-    en: 'Suggestion:',
-    es: 'Sugerencia:',
-    fr: 'Suggestion:',
-    de: 'Vorschlag:',
-    zh: '建议：'
-  },
-  clickAiStrategiesMessage: {
-    it: 'Clicca sulle strategie AI per selezionarle e confrontarle con la tua strategia attuale',
-    en: 'Click on AI strategies to select them and compare with your current strategy',
-    es: 'Haz clic en las estrategias de IA para seleccionarlas y compararlas con tu estrategia actual',
-    fr: 'Cliquez sur les stratégies IA pour les sélectionner et les comparer avec votre stratégie actuelle',
-    de: 'Klicken Sie auf KI-Strategien, um sie auszuwählen und mit Ihrer aktuellen Strategie zu vergleichen',
-    zh: '点击AI策略来选择它们并与您当前的策略进行比较'
-  },
-  selectOneOrMoreStrategies: {
-    it: 'Seleziona una o più strategie AI per confrontarle con la tua strategia attuale',
-    en: 'Select one or more AI strategies to compare with your current strategy',
-    es: 'Selecciona una o más estrategias de IA para compararlas con tu estrategia actual',
-    fr: 'Sélectionnez une ou plusieurs stratégies IA pour les comparer avec votre stratégie actuelle',
-    de: 'Wählen Sie eine oder mehrere KI-Strategien aus, um sie mit Ihrer aktuellen Strategie zu vergleichen',
-    zh: '选择一个或多个AI策略与您当前的策略进行比较'
-  },
-  noStrategySelected: {
-    it: 'Nessuna strategia selezionata',
-    en: 'No strategy selected',
-    es: 'Ninguna estrategia seleccionada',
-    fr: 'Aucune stratégie sélectionnée',
-    de: 'Keine Strategie ausgewählt',
-    zh: '未选择策略'
-  },
-  clickStrategiesAbove: {
-    it: 'Clicca sulle strategie AI sopra per selezionarle e vedere il confronto con la tua strategia attuale',
-    en: 'Click on the AI strategies above to select them and see the comparison with your current strategy',
-    es: 'Haz clic en las estrategias de IA de arriba para seleccionarlas y ver la comparación con tu estrategia actual',
-    fr: 'Cliquez sur les stratégies IA ci-dessus pour les sélectionner et voir la comparaison avec votre stratégie actuelle',
-    de: 'Klicken Sie auf die KI-Strategien oben, um sie auszuwählen und den Vergleich mit Ihrer aktuellen Strategie zu sehen',
-    zh: '点击上面的AI策略来选择它们，并查看与您当前策略的比较'
   },
 
   // Common Actions
@@ -1273,7 +1234,7 @@ export const translations: Translations = {
     de: 'Portfolio-Balancer, Investitionen, KI, Neugewichtung, Cost-Average, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse',
     zh: '投资组合平衡器, 投资, AI, 再平衡, 定投, 成本平均, ETF, 股票, 债券, 多样化, 投资组合分析'
   },
-  
+
   // Additional translations for missing texts
   comparisonBetween: {
     it: 'Confronto tra la tua strategia attuale e',
@@ -1315,7 +1276,6 @@ export const translations: Translations = {
     de: 'Strategien',
     zh: '个策略'
   }
-};
 };
 
 export const getTranslation = (language: Language, key: string): string => {
