@@ -374,8 +374,7 @@ export const App: React.FC = () => {
                   </div>
                 </div>
                 <ProjectionChart
-                  currentStrategy={currentStrategy}
-                  selectedStrategy={null}
+                  strategies={[currentStrategy]}
                   assets={assets}
                   currency={currency}
                   language={language}
