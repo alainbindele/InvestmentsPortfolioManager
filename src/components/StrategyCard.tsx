@@ -4,7 +4,7 @@ import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
-import { Target, TrendingUp, Shield, Zap, Bot } from 'lucide-react';
+import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit } from 'lucide-react';
 
 interface StrategyCardProps {
   strategy: Strategy;
@@ -12,6 +12,7 @@ interface StrategyCardProps {
   currency: Currency;
   isSelected: boolean;
   onSelect: () => void;
+  onCloneAndEdit?: () => void;
   language: Language;
 }
 
@@ -21,6 +22,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   currency,
   isSelected,
   onSelect,
+  onCloneAndEdit,
   language
 }) => {
   const t = (key: string) => getTranslation(language, key);
@@ -184,6 +186,22 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
           <p className="text-xs text-primary-600 text-center font-medium">
             ✓ Strategia selezionata per il confronto
           </p>
+        </div>
+      )}
+
+      {/* Clone & Edit Button */}
+      {Object.keys(strategy.targetAllocations).length > 0 && onCloneAndEdit && (
+        <div className="mt-4 pt-3 border-t border-gray-200">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onCloneAndEdit();
+            }}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm font-medium"
+          >
+            <Copy className="w-4 h-4" />
+            {t('cloneAndEdit')}
+          </button>
         </div>
       )}
     </div>

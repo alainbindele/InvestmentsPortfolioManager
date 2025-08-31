@@ -6,6 +6,7 @@ import { Currency } from './types/currency';
 import { AssetForm } from './components/AssetForm';
 import { PortfolioChart } from './components/PortfolioChart';
 import { StrategyCard } from './components/StrategyCard';
+import { AllocationEditor } from './components/AllocationEditor';
 import { StrategyComparison } from './components/StrategyComparison';
 import { MultiStrategyProjectionChart } from './components/MultiStrategyProjectionChart';
 import { ChatGPTIntegration } from './components/ChatGPTIntegration';
@@ -40,6 +41,7 @@ export const App: React.FC = () => {
   const [aiStrategies, setAiStrategies] = useState<Strategy[]>(loadAIStrategies());
   const [activeTab, setActiveTab] = useState<'portfolio' | 'strategies' | 'ai'>(loadActiveTab() as any);
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
+  const [editingStrategy, setEditingStrategy] = useState<Strategy | null>(null);
   const [showDisclaimer, setShowDisclaimer] = useState(!loadDisclaimerAccepted());
 
   const t = (key: string) => getTranslation(language, key);
@@ -118,6 +120,19 @@ export const App: React.FC = () => {
   const handleStrategyGenerated = (strategy: Strategy) => {
     setAiStrategies(prev => [...prev, strategy]);
     setActiveTab('strategies');
+  };
+
+  const handleCloneAndEdit = (strategy: Strategy) => {
+    setEditingStrategy(strategy);
+  };
+
+  const handleSaveAllocation = (newStrategy: Strategy) => {
+    setAiStrategies(prev => [...prev, newStrategy]);
+    setEditingStrategy(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingStrategy(null);
   };
 
   const handleDisclaimerAccept = () => {
@@ -373,6 +388,20 @@ export const App: React.FC = () => {
 
         {activeTab === 'strategies' && (
           <div className="space-y-8">
+            {/* Allocation Editor */}
+            {editingStrategy && (
+              <div className="border-2 border-primary-200 rounded-xl p-6 bg-primary-50">
+                <AllocationEditor
+                  strategy={editingStrategy}
+                  assets={assets}
+                  currency={currency}
+                  language={language}
+                  onSaveAllocation={handleSaveAllocation}
+                  onCancel={handleCancelEdit}
+                />
+              </div>
+            )}
+
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('investmentStrategies')}</h2>
               <p className="text-gray-600">{t('strategiesDescription')}</p>
@@ -388,6 +417,7 @@ export const App: React.FC = () => {
                   currency={currency}
                   isSelected={false}
                   onSelect={() => {}}
+                  onCloneAndEdit={() => handleCloneAndEdit(currentStrategy)}
                   language={language}
                 />
                 <div className="card">
@@ -412,6 +442,7 @@ export const App: React.FC = () => {
                         currency={currency}
                         isSelected={selectedStrategies.has(strategy.id)}
                         onSelect={() => handleToggleStrategy(strategy.id)}
+                        onCloneAndEdit={() => handleCloneAndEdit(strategy)}
                         language={language}
                       />
                       <div className="card">

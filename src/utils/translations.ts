@@ -125,6 +125,16 @@ export interface Translation {
   years: string;
   currentValue: string;
   other: string;
+  
+  // Allocation Editor
+  cloneAndEdit: string;
+  editAllocation: string;
+  adjustAllocations: string;
+  totalAllocation: string;
+  allocationTooHigh: string;
+  allocationTooLow: string;
+  saveAllocation: string;
+  liveProjection: string;
 }
 
 export const translations: Record<string, Translation> = {
@@ -276,7 +286,17 @@ export const translations: Record<string, Translation> = {
     selectAssetToAnalyze: "Select Asset to Analyze",
     entirePortfolio: "Entire Portfolio",
     assetDetails: "Asset Details",
-    other: "Other"
+    other: "Other",
+    
+    // Allocation Editor
+    cloneAndEdit: "Clone & Edit",
+    editAllocation: "Edit Allocation",
+    adjustAllocations: "Adjust Allocations",
+    totalAllocation: "Total Allocation",
+    allocationTooHigh: "Total allocation exceeds 100%. Reduce some allocations.",
+    allocationTooLow: "Total allocation is less than 100%. Increase allocations to reach 100%.",
+    saveAllocation: "Save Allocation",
+    liveProjection: "Live Projection Preview"
   },
   
   it: {
@@ -427,7 +447,17 @@ export const translations: Record<string, Translation> = {
     selectAssetToAnalyze: "Seleziona Asset da Analizzare",
     entirePortfolio: "Intero Portfolio",
     assetDetails: "Dettagli Asset",
-    other: "Altro"
+    other: "Altro",
+    
+    // Allocation Editor
+    cloneAndEdit: "Clona e Modifica",
+    editAllocation: "Modifica Allocazione",
+    adjustAllocations: "Regola Allocazioni",
+    totalAllocation: "Allocazione Totale",
+    allocationTooHigh: "L'allocazione totale supera il 100%. Riduci alcune allocazioni.",
+    allocationTooLow: "L'allocazione totale è inferiore al 100%. Aumenta le allocazioni per raggiungere il 100%.",
+    saveAllocation: "Salva Allocazione",
+    liveProjection: "Anteprima Proiezione Live"
   },
   
   es: {
@@ -578,7 +608,17 @@ export const translations: Record<string, Translation> = {
     selectAssetToAnalyze: "Seleccionar Activo para Analizar",
     entirePortfolio: "Portfolio Completo",
     assetDetails: "Detalles del Activo",
-    other: "Otro"
+    other: "Otro",
+    
+    // Allocation Editor
+    cloneAndEdit: "Clonar y Editar",
+    editAllocation: "Editar Asignación",
+    adjustAllocations: "Ajustar Asignaciones",
+    totalAllocation: "Asignación Total",
+    allocationTooHigh: "La asignación total supera el 100%. Reduce algunas asignaciones.",
+    allocationTooLow: "La asignación total es menor al 100%. Aumenta las asignaciones para llegar al 100%.",
+    saveAllocation: "Guardar Asignación",
+    liveProjection: "Vista Previa de Proyección en Vivo"
   },
   
   fr: {
@@ -729,7 +769,17 @@ export const translations: Record<string, Translation> = {
     selectAssetToAnalyze: "Sélectionner l'Actif à Analyser",
     entirePortfolio: "Portfolio Entier",
     assetDetails: "Détails de l'Actif",
-    other: "Autre"
+    other: "Autre",
+    
+    // Allocation Editor
+    cloneAndEdit: "Cloner et Modifier",
+    editAllocation: "Modifier l'Allocation",
+    adjustAllocations: "Ajuster les Allocations",
+    totalAllocation: "Allocation Totale",
+    allocationTooHigh: "L'allocation totale dépasse 100%. Réduisez certaines allocations.",
+    allocationTooLow: "L'allocation totale est inférieure à 100%. Augmentez les allocations pour atteindre 100%.",
+    saveAllocation: "Sauvegarder l'Allocation",
+    liveProjection: "Aperçu de Projection en Direct"
   },
   
   de: {
@@ -880,7 +930,17 @@ export const translations: Record<string, Translation> = {
     selectAssetToAnalyze: "Asset zur Analyse auswählen",
     entirePortfolio: "Gesamtes Portfolio",
     assetDetails: "Asset-Details",
-    other: "Andere"
+    other: "Andere",
+    
+    // Allocation Editor
+    cloneAndEdit: "Klonen und Bearbeiten",
+    editAllocation: "Allocation Bearbeiten",
+    adjustAllocations: "Allocationen Anpassen",
+    totalAllocation: "Gesamte Allocation",
+    allocationTooHigh: "Die Gesamtallocation übersteigt 100%. Reduzieren Sie einige Allocationen.",
+    allocationTooLow: "Die Gesamtallocation ist weniger als 100%. Erhöhen Sie die Allocationen auf 100%.",
+    saveAllocation: "Allocation Speichern",
+    liveProjection: "Live-Projektionsvorschau"
   },
   
   pt: {
@@ -1193,7 +1253,17 @@ export const translations: Record<string, Translation> = {
     selectAssetToAnalyze: "选择要分析的资产",
     entirePortfolio: "整个投资组合",
     assetDetails: "资产详情",
-    other: "其他"
+    other: "其他",
+    
+    // Allocation Editor
+    cloneAndEdit: "克隆和编辑",
+    editAllocation: "编辑配置",
+    adjustAllocations: "调整配置",
+    totalAllocation: "总配置",
+    allocationTooHigh: "总配置超过100%。请减少一些配置。",
+    allocationTooLow: "总配置少于100%。请增加配置以达到100%。",
+    saveAllocation: "保存配置",
+    liveProjection: "实时投影预览"
   }
 };
 
