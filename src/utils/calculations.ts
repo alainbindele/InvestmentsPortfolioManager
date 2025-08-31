@@ -1,6 +1,6 @@
 import { Asset, Strategy, PortfolioMetrics } from '../types/portfolio';
 import { Currency, getCurrencyByCode } from '../types/currency';
-import { getTranslation } from './translations';
+import { getTranslation, Language } from './translations';
 
 // Risk level mappings
 const RISK_MULTIPLIERS: { [key: string]: number } = {
@@ -76,7 +76,7 @@ export const calculatePortfolioMetrics = (assets: Asset[]): PortfolioMetrics => 
   };
 };
 
-export const generateCurrentStrategy = (assets: Asset[]): Strategy => {
+export const generateCurrentStrategy = (assets: Asset[], language: Language = 'it'): Strategy => {
   const metrics = calculatePortfolioMetrics(assets);
   const totalValue = metrics.totalValue;
   
@@ -99,8 +99,8 @@ export const generateCurrentStrategy = (assets: Asset[]): Strategy => {
 
   return {
     id: 'current-strategy',
-    name: getTranslation('it', 'currentStrategy'),
-    description: getTranslation('it', 'currentStrategyDescription'),
+    name: getTranslation(language, 'currentStrategyName'),
+    description: getTranslation(language, 'currentStrategyDescription'),
     targetAllocations,
     expectedReturn: metrics.expectedReturn,
     riskScore: metrics.riskScore,

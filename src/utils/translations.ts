@@ -1268,6 +1268,54 @@ export const translations: Translations = {
     de: 'Alle abwählen',
     zh: '取消全选'
   },
+  currentStrategyName: {
+    it: 'Strategia Attuale',
+    en: 'Current Strategy',
+    es: 'Estrategia Actual',
+    fr: 'Stratégie Actuelle',
+    de: 'Aktuelle Strategie',
+    zh: '当前策略'
+  },
+  currentStrategyDescription: {
+    it: 'La tua allocazione attuale del portafoglio',
+    en: 'Your current portfolio allocation',
+    es: 'Tu asignación actual del portafolio',
+    fr: 'Votre allocation actuelle du portefeuille',
+    de: 'Ihre aktuelle Portfolio-Allokation',
+    zh: '您当前的投资组合配置'
+  },
+  modifiedStrategy: {
+    it: 'Strategia Attuale (Modificata)',
+    en: 'Current Strategy (Modified)',
+    es: 'Estrategia Actual (Modificada)',
+    fr: 'Stratégie Actuelle (Modifiée)',
+    de: 'Aktuelle Strategie (Geändert)',
+    zh: '当前策略（已修改）'
+  },
+  modifiedStrategyDescription: {
+    it: 'Strategia modificata basata su: Strategia Attuale',
+    en: 'Modified strategy based on: Current Strategy',
+    es: 'Estrategia modificada basada en: Estrategia Actual',
+    fr: 'Stratégie modifiée basée sur: Stratégie Actuelle',
+    de: 'Geänderte Strategie basierend auf: Aktuelle Strategie',
+    zh: '基于当前策略的修改策略'
+  },
+  modified: {
+    it: 'Modificata',
+    en: 'Modified',
+    es: 'Modificada',
+    fr: 'Modifiée',
+    de: 'Geändert',
+    zh: '已修改'
+  },
+  modifiedStrategyBasedOn: {
+    it: 'Strategia modificata basata su',
+    en: 'Modified strategy based on',
+    es: 'Estrategia modificada basada en',
+    fr: 'Stratégie modifiée basée sur',
+    de: 'Geänderte Strategie basierend auf',
+    zh: '基于以下策略的修改'
+  },
   strategiesCount: {
     it: 'strategie',
     en: 'strategies',

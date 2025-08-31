@@ -155,7 +155,7 @@ export const App: React.FC = () => {
   };
 
   const metrics = calculatePortfolioMetrics(assets);
-  const currentStrategy = generateCurrentStrategy(assets);
+  const currentStrategy = generateCurrentStrategy(assets, language);
   const selectedStrategyList = aiStrategies.filter(s => selectedStrategies.has(s.id));
   const strategiesForComparison = selectedStrategyList.length > 0 ? [currentStrategy, ...selectedStrategyList] : [];
 

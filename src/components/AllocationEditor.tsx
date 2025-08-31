@@ -5,7 +5,6 @@ import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatCurrency, formatPercentage, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
-import { ProjectionChart } from './ProjectionChart';
 
 interface AllocationEditorProps {
   strategy: Strategy;
@@ -91,8 +90,8 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
     const newStrategy: Strategy = {
       ...strategy,
       id: `edited-${strategy.id}-${Date.now()}`,
-      name: `${strategy.name} (Modificata)`,
-      description: `Strategia modificata basata su: ${strategy.name}`,
+      name: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategy') : `${strategy.name} (${t('modified')})`,
+      description: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategyDescription') : `${t('modifiedStrategyBasedOn')}: ${strategy.name}`,
       targetAllocations: { ...allocations },
       createdAt: new Date(),
       isAIGenerated: false
