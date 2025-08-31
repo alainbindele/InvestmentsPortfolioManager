@@ -1,5 +1,6 @@
 import { Asset, Strategy, PortfolioAnalysis, MarketInsight } from '../types/portfolio';
 import { calculatePortfolioMetrics } from '../utils/calculations';
+import { getTranslation } from '../utils/translations';
 
 export class ChatGPTService {
   private apiKey: string | null = null;
@@ -57,14 +58,15 @@ export class ChatGPTService {
       }
       
       // Se non trova JSON, restituisce un oggetto di fallback
-      throw new Error('Nessun JSON trovato nella risposta');
+      throw new Error(getTranslation('it', 'nessunJsonTrovato'));
     } catch (error) {
       console.warn('Parsing manuale fallito:', error);
       return null;
     }
   }
 
-  async analyzePortfolio(assets: Asset[]): Promise<PortfolioAnalysis> {
+  async analyzePortfolio(assets: Asset[], language: string = 'it'): Promise<PortfolioAnalysis> {
+    const t = (key: string) => getTranslation(language as any, key);
     const metrics = calculatePortfolioMetrics(assets);
     
     const portfolioData = {
@@ -138,8 +140,8 @@ export class ChatGPTService {
         return {
           currentMetrics: aiResponse.currentMetrics || metrics,
           recommendations: aiResponse.recommendations || [
-            "Analisi AI completata con successo",
-            "Raccomandazioni personalizzate generate dall'AI"
+            t('analisiAiCompletata'),
+            t('raccomandazioniPersonalizzate')
           ],
           marketInsights: aiResponse.marketInsights || [],
           suggestedActions: []
@@ -155,15 +157,15 @@ export class ChatGPTService {
       return {
         currentMetrics: metrics,
         recommendations: [
-          "⚠️ Analisi AI non disponibile - verifica la configurazione API",
-          "Il portafoglio mostra una diversificazione discreta tra asset class",
-          "Considera di rivedere l'allocazione in base ai tuoi obiettivi di rischio",
-          "Monitora regolarmente le performance e riequilibra se necessario"
+          t('analisiAiNonDisponibile'),
+          t('diversificazioneDiscreta'),
+          t('consideraRivedere'),
+          t('monitoraRegolarmente')
         ],
         marketInsights: [
           {
-            asset: "Analisi di Mercato",
-            insight: "Analisi AI temporaneamente non disponibile. Configura l'API key OpenAI per ottenere insights di mercato in tempo reale.",
+            asset: t('analisiMercato'),
+            insight: t('analisiAiTemporaneamente'),
             confidence: 0.5,
             timeframe: "N/A"
           }
@@ -176,8 +178,10 @@ export class ChatGPTService {
   async generateStrategy(
     assets: Asset[], 
     riskProfile: 'conservative' | 'balanced' | 'aggressive',
-    goals: string[]
+    goals: string[],
+    language: string = 'it'
   ): Promise<Strategy> {
+    const t = (key: string) => getTranslation(language as any, key);
     const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
     
     const portfolioData = {
@@ -260,8 +264,8 @@ export class ChatGPTService {
 
       const strategy: Strategy = {
         id: `ai-${riskProfile}-${Date.now()}`,
-        name: aiResponse.name || `Strategia AI ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)}`,
-        description: aiResponse.description || `Strategia ottimizzata dall'AI per profilo ${riskProfile}`,
+        name: aiResponse.name || `${t('strategy')} AI ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)}`,
+        description: aiResponse.description || `${t('strategy')} ${t('optimizedByAi')} ${t(riskProfile)}`,
         targetAllocations: normalizedAllocations,
         expectedReturn: Number(aiResponse.expectedReturn) || this.getDefaultReturn(riskProfile),
         riskScore: Number(aiResponse.riskScore) || this.getDefaultRisk(riskProfile),
@@ -277,7 +281,7 @@ export class ChatGPTService {
       console.error('Errore nella generazione strategia AI:', error);
       
       // Fallback con strategia mock migliorata
-      return this.generateFallbackStrategy(assets, riskProfile);
+      return this.generateFallbackStrategy(assets, riskProfile, language);
     }
   }
 
@@ -323,7 +327,9 @@ export class ChatGPTService {
     }
   }
 
-  private generateFallbackStrategy(assets: Asset[], riskProfile: string): Strategy {
+  private generateFallbackStrategy(assets: Asset[], riskProfile: string, language: string = 'it'): Strategy {
+    const t = (key: string) => getTranslation(language as any, key);
+    
     let targetAllocations: { [assetId: string]: number } = {};
     
     // Strategia di fallback basata sul profilo di rischio
@@ -397,8 +403,8 @@ export class ChatGPTService {
 
     return {
       id: `fallback-${riskProfile}-${Date.now()}`,
-      name: `⚠️ Strategia ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)} (Fallback)`,
-      description: `Strategia di fallback - configura l'API OpenAI per strategie AI personalizzate`,
+      name: `⚠️ ${t('strategy')} ${t(riskProfile)} (Fallback)`,
+      description: t('strategiaFallback'),
       targetAllocations,
       expectedReturn: this.getDefaultReturn(riskProfile),
       riskScore: this.getDefaultRisk(riskProfile),
@@ -410,9 +416,11 @@ export class ChatGPTService {
     };
   }
 
-  async getMarketResearch(assetType: string): Promise<string> {
+  async getMarketResearch(assetType: string, language: string = 'it'): Promise<string> {
+    const t = (key: string) => getTranslation(language as any, key);
+    
     if (!this.apiKey) {
-      return `Ricerca di mercato non disponibile per ${assetType}. Configura l'API key OpenAI per insights in tempo reale.`;
+      return `${t('ricercaMercatoNonDisponibile')} ${assetType}. ${t('configuraApiKey')}`;
     }
 
     const messages = [
@@ -430,16 +438,16 @@ export class ChatGPTService {
         role: 'user',
         content: `Fornisci una ricerca di mercato aggiornata per: ${assetType}
         
-        Include tendenze attuali, outlook e fattori chiave da considerare per il 2024.`
+        Include tendenze attuali, outlook e fattori chiave da considerare per il 2025.`
       }
     ];
 
     try {
       const aiResponse = await this.makeOpenAIRequest(messages);
-      return aiResponse.research || `Analisi di mercato per ${assetType} temporaneamente non disponibile.`;
+      return aiResponse.research || `${t('analisiMercatoTemporaneamente')} ${assetType}.`;
     } catch (error) {
       console.error('Errore nella ricerca di mercato:', error);
-      return `Errore nel recupero della ricerca di mercato per ${assetType}. Verifica la configurazione API.`;
+      return `${t('erroreRecupero')} ${assetType}. ${t('verificaConfigurazioneApi')}`;
     }
   }
 }

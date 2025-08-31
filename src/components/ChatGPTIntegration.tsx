@@ -41,7 +41,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
-      const portfolioAnalysis = await chatGPTService.analyzePortfolio(assets);
+      const portfolioAnalysis = await chatGPTService.analyzePortfolio(assets, language);
       setAnalysis(portfolioAnalysis);
       setApiStatus('working');
     } catch (error) {
@@ -50,7 +50,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       setErrorMessage(error instanceof Error ? error.message : 'Errore sconosciuto');
       // Mostra comunque l'analisi di fallback
       try {
-        const portfolioAnalysis = await chatGPTService.analyzePortfolio(assets);
+        const portfolioAnalysis = await chatGPTService.analyzePortfolio(assets, language);
         setAnalysis(portfolioAnalysis);
       } catch (fallbackError) {
         console.error('Errore anche nel fallback:', fallbackError);
@@ -73,7 +73,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
-      const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals);
+      const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals, language);
       onStrategyGenerated(strategy);
       setApiStatus('working');
     } catch (error) {
@@ -82,7 +82,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       setErrorMessage(error instanceof Error ? error.message : 'Errore sconosciuto');
       // Genera comunque una strategia di fallback
       try {
-        const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals);
+        const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals, language);
         onStrategyGenerated(strategy);
       } catch (fallbackError) {
         console.error('Errore anche nel fallback:', fallbackError);

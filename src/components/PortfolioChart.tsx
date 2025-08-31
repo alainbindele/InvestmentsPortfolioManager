@@ -53,11 +53,11 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium text-gray-900">{data.name}</p>
           <p className="text-sm text-gray-600">
-            {targetAllocations ? 'Target: ' : 'Attuale: '}{data.value.toFixed(1)}%
+            {targetAllocations ? `${t('target')}: ` : `${t('current')}: `}{data.value.toFixed(1)}%
           </p>
           {!targetAllocations && (
             <p className="text-sm text-gray-600">
-              Valore: {formatCurrency(data.actualValue, currency)}
+              {t('value')}: {formatCurrency(data.actualValue, currency)}
             </p>
           )}
         </div>
