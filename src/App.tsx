@@ -136,6 +136,14 @@ export const App: React.FC = () => {
     setEditingStrategy(null);
   };
 
+  const handleUpdateStrategyName = (strategyId: string, newName: string) => {
+    setAiStrategies(prev => prev.map(strategy => 
+      strategy.id === strategyId 
+        ? { ...strategy, name: newName }
+        : strategy
+    ));
+  };
+
   const handleDisclaimerAccept = () => {
     saveDisclaimerAccepted();
     setShowDisclaimer(false);
@@ -454,6 +462,7 @@ export const App: React.FC = () => {
                         isSelected={selectedStrategies.has(strategy.id)}
                         onSelect={() => handleToggleStrategy(strategy.id)}
                         onCloneAndEdit={() => handleCloneAndEdit(strategy)}
+                        onUpdateName={handleUpdateStrategyName}
                         language={language}
                         showSelectionCheckbox={true}
                       />

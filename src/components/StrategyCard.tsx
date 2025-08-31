@@ -1,10 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { Strategy, Asset } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
-import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check } from 'lucide-react';
+import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check, Pencil, X } from 'lucide-react';
 
 interface StrategyCardProps {
   strategy: Strategy;
@@ -13,6 +14,7 @@ interface StrategyCardProps {
   isSelected: boolean;
   onSelect: () => void;
   onCloneAndEdit?: () => void;
+  onUpdateName?: (strategyId: string, newName: string) => void;
   language: Language;
   showSelectionCheckbox?: boolean;
 }
@@ -24,10 +26,13 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   isSelected,
   onSelect,
   onCloneAndEdit,
+  onUpdateName,
   language,
   showSelectionCheckbox = false
 }) => {
   const t = (key: string) => getTranslation(language, key);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState(strategy.name);
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
@@ -50,6 +55,23 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   const colorClass = getStrategyColor();
 
   const isCurrentStrategy = strategy.id === 'current-strategy';
+
+  const handleNameEdit = () => {
+    setIsEditingName(true);
+    setEditedName(strategy.name);
+  };
+
+  const handleNameSave = () => {
+    if (editedName.trim() && editedName !== strategy.name && onUpdateName) {
+      onUpdateName(strategy.id, editedName.trim());
+    }
+    setIsEditingName(false);
+  };
+
+  const handleNameCancel = () => {
+    setEditedName(strategy.name);
+    setIsEditingName(false);
+  };
 
   return (
     <div
@@ -89,7 +111,60 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
             }`} />
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
+            <div className="flex items-center gap-2">
+              {!isEditingName ? (
+                <>
+                  <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
+                  {onUpdateName && !isCurrentStrategy && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNameEdit();
+                      }}
+                      className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                      title={t('editName')}
+                    >
+                      <Pencil className="w-3 h-3" />
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="flex items-center gap-2 flex-1">
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleNameSave();
+                      if (e.key === 'Escape') handleNameCancel();
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNameSave();
+                    }}
+                    className="p-1 text-green-600 hover:text-green-700 transition-colors"
+                    title={t('save')}
+                  >
+                    <Check className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNameCancel();
+                    }}
+                    className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                    title={t('cancel')}
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+            </div>
             <p className="text-sm text-gray-600">{strategy.description}</p>
           </div>
         </div>

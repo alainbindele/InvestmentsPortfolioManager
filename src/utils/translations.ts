@@ -147,6 +147,7 @@ export interface Translation {
   languageAndCurrency: string;
   resetConfirm: string;
   portfolioAssets: string;
+  editName: string;
 }
 
 export const translations: Record<string, Translation> = {
@@ -321,7 +322,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "AI strategies",
     languageAndCurrency: "Language and Currency",
     resetConfirm: "Delete All",
-    portfolioAssets: "Portfolio Assets"
+    portfolioAssets: "Portfolio Assets",
+    editName: "Edit Name"
   },
   
   it: {
@@ -495,7 +497,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "strategie IA",
     languageAndCurrency: "Lingua e Valuta",
     resetConfirm: "Elimina Tutto",
-    portfolioAssets: "Asset del Portfolio"
+    portfolioAssets: "Asset del Portfolio",
+    editName: "Modifica Nome"
   },
   
   es: {
@@ -669,7 +672,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "estrategias IA",
     languageAndCurrency: "Idioma y Moneda",
     resetConfirm: "Eliminar Todo",
-    portfolioAssets: "Activos del Portfolio"
+    portfolioAssets: "Activos del Portfolio",
+    editName: "Editar Nombre"
   },
   
   fr: {
@@ -843,7 +847,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "stratégies IA",
     languageAndCurrency: "Langue et Devise",
     resetConfirm: "Tout Supprimer",
-    portfolioAssets: "Actifs du Portfolio"
+    portfolioAssets: "Actifs du Portfolio",
+    editName: "Modifier le Nom"
   },
   
   de: {
@@ -1017,7 +1022,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "KI-Strategien",
     languageAndCurrency: "Sprache und Währung",
     resetConfirm: "Alles Löschen",
-    portfolioAssets: "Portfolio-Assets"
+    portfolioAssets: "Portfolio-Assets",
+    editName: "Name Bearbeiten"
   },
   
   pt: {
@@ -1190,7 +1196,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "estratégias IA",
     languageAndCurrency: "Idioma e Moeda",
     resetConfirm: "Excluir Tudo",
-    portfolioAssets: "Ativos do Portfolio"
+    portfolioAssets: "Ativos do Portfolio",
+    editName: "Editar Nome"
   },
   
   zh: {
@@ -1365,7 +1372,8 @@ export const translations: Record<string, Translation> = {
     aiStrategies: "AI策略",
     languageAndCurrency: "语言和货币",
     resetConfirm: "删除全部",
-    portfolioAssets: "投资组合资产"
+    portfolioAssets: "投资组合资产",
+    editName: "编辑名称"
   }
 };
 
