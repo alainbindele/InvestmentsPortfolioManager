@@ -172,6 +172,17 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* Force maximum z-index for all modal and dropdown elements */
+.z-\[99999\] {
+  z-index: 99999 !important;
+}
+
+/* Ensure proper stacking context */
+.relative {
+  isolation: isolate;
+}
+
 /* Custom range slider styles */
 input[type="range"] {
   -webkit-appearance: none;
