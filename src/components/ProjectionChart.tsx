@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Strategy, Asset, ASSET_COLORS } from '../types/portfolio';
+import { Strategy, Asset, ASSET_COLORS, ASSET_TYPE_LABELS } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatCurrency, projectPortfolioGrowth } from '../utils/calculations';
@@ -8,19 +8,19 @@ import { getTranslation } from '../utils/translations';
 import { TrendingUp, ChevronDown } from 'lucide-react';
 
 interface ProjectionChartProps {
-  currentStrategy: Strategy;
-  selectedStrategy: Strategy | null;
+  strategies: Strategy[];
   assets: Asset[];
   currency: Currency;
   language: Language;
+  showAssetSelection?: boolean;
 }
 
 export const ProjectionChart: React.FC<ProjectionChartProps> = ({
-  currentStrategy,
-  selectedStrategy,
+  strategies,
   assets,
   currency,
-  language
+  language,
+  showAssetSelection = true
 }) => {
   const t = (key: string) => getTranslation(language, key);
   const [timeHorizon, setTimeHorizon] = useState(20);
@@ -64,82 +64,103 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     return projections;
   };
 
-  // Generate projection data based on selection
-  let currentProjection: Array<{ year: number; value: number }> = [];
-  let selectedProjection: Array<{ year: number; value: number }> | null = null;
-  
-  if (selectedAsset === 'portfolio') {
-    // Portfolio projection
-    currentProjection = projectPortfolioGrowth(
-      totalValue,
-      currentStrategy.expectedReturn,
-      timeHorizon,
-      assets
-    );
-    
-    selectedProjection = selectedStrategy ? projectPortfolioGrowth(
-      totalValue,
-      selectedStrategy.expectedReturn,
-      timeHorizon,
-      assets
-    ) : null;
-  } else {
-    // Single asset projection
-    const asset = assets.find(a => a.id === selectedAsset);
-    if (asset) {
-      currentProjection = projectAssetGrowth(
-        asset.currentValue,
-        asset.expectedReturn,
-        timeHorizon,
-        asset
-      );
+  // Generate projection data for all strategies
+  const allProjections = strategies.map((strategy, index) => {
+    if (selectedAsset === 'portfolio') {
+      return {
+        strategy,
+        data: projectPortfolioGrowth(
+          totalValue,
+          strategy.expectedReturn,
+          timeHorizon,
+          assets
+        ),
+        color: index === 0 ? '#6b7280' : `hsl(${(index - 1) * 60}, 70%, 50%)`
+      };
+    } else {
+      // Single asset projection
+      const asset = assets.find(a => a.id === selectedAsset);
+      if (asset) {
+        return {
+          strategy,
+          data: projectAssetGrowth(
+            asset.currentValue,
+            asset.expectedReturn,
+            timeHorizon,
+            asset
+          ),
+          color: ASSET_COLORS[asset.type] || '#6b7280'
+        };
+      }
+      return null;
     }
-    selectedProjection = null; // No strategy comparison for single assets
-  }
+  }).filter(Boolean) as Array<{ strategy: Strategy; data: Array<{ year: number; value: number }>; color: string }>;
   
   // Combine data for chart
-  const chartData = currentProjection.map((current, index) => {
-    const data: any = {
-      year: current.year,
-      current: current.value,
-      currentLabel: currentStrategy.name
+  const chartData = allProjections[0]?.data.map((_, yearIndex) => {
+    const yearData: any = {
+      year: yearIndex
     };
     
-    if (selectedProjection && selectedProjection[index]) {
-      data.selected = selectedProjection[index].value;
-      data.selectedLabel = selectedStrategy!.name;
-    }
+    allProjections.forEach((projection, strategyIndex) => {
+      const key = `strategy_${strategyIndex}`;
+      yearData[key] = projection.data[yearIndex]?.value || 0;
+      yearData[`${key}_name`] = projection.strategy.name;
+      yearData[`${key}_color`] = projection.color;
+    });
     
-    return data;
+    return yearData;
   });
   
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-      const selectedAssetData = assets.find(a => a.id === selectedAsset);
       return (
         <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-medium text-gray-900 mb-2">Anno {label}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.dataKey === 'current' ? 
-                (selectedAsset === 'portfolio' ? currentStrategy.name : selectedAssetData?.name) : 
-                selectedStrategy?.name
-              }: {formatCurrency(entry.value, currency)}
-            </p>
-          ))}
+          {payload.map((entry: any, index: number) => {
+            const strategyIndex = parseInt(entry.dataKey.split('_')[1]);
+            const projectionStrategy = allProjections[strategyIndex]?.strategy;
+            return (
+              <p key={index} className="text-sm" style={{ color: entry.color }}>
+                {projectionStrategy?.name}: {formatCurrency(entry.value, currency)}
+              </p>
+            );
+          })}
         </div>
       );
     }
     return null;
   };
 
-  const finalCurrentValue = currentProjection[currentProjection.length - 1]?.value || 0;
-  const finalSelectedValue = selectedProjection ? selectedProjection[selectedProjection.length - 1]?.value || 0 : 0;
-  const difference = finalSelectedValue - finalCurrentValue;
-  const differencePercentage = finalCurrentValue > 0 ? (difference / finalCurrentValue) * 100 : 0;
-  
+  const CustomLegend = ({ payload }: any) => {
+    return (
+      <div className="flex flex-wrap justify-center gap-4 mt-4">
+        {allProjections.map((projection, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div 
+              className="w-3 h-3 rounded-full" 
+              style={{ backgroundColor: projection.color }}
+            />
+            <span className="text-sm text-gray-600">
+              {projection.strategy.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  if (strategies.length === 0) {
+    return (
+      <div className="text-center py-8 text-gray-500">
+        <p>Nessuna strategia disponibile per il confronto</p>
+      </div>
+    );
+  }
+
   const selectedAssetData = assets.find(a => a.id === selectedAsset);
   const initialValue = selectedAsset === 'portfolio' ? totalValue : selectedAssetData?.currentValue || 0;
+
   return (
     <div className="card">
       <div className="flex items-center gap-3 mb-6">
@@ -150,7 +171,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           <h3 className="text-lg font-semibold text-gray-900">{t('portfolioProjection')}</h3>
           <p className="text-sm text-gray-600">
             {selectedAsset === 'portfolio' ? 
-              t('portfolioGrowthDescription') : 
+              'Confronto delle proiezioni di crescita tra diverse strategie' : 
               `Proiezione di crescita per: ${selectedAssetData?.name}`
             }
           </p>
@@ -158,26 +179,29 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       </div>
 
       {/* Asset Selector */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          {t('selectAssetToAnalyze')}
-        </label>
-        <div className="relative">
-          <select
-            value={selectedAsset}
-            onChange={(e) => setSelectedAsset(e.target.value)}
-            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none cursor-pointer"
-          >
-            <option value="portfolio">{t('entirePortfolio')}</option>
-            {assets.map((asset) => (
-              <option key={asset.id} value={asset.id}>
-                {asset.name} ({t(asset.type)}) - {formatCurrency(asset.currentValue, currency)}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+      {showAssetSelection && (
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {t('selectAssetToAnalyze')}
+          </label>
+          <div className="relative">
+            <select
+              value={selectedAsset}
+              onChange={(e) => setSelectedAsset(e.target.value)}
+              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none cursor-pointer"
+            >
+              <option value="portfolio">{t('entirePortfolio')}</option>
+              {assets.map((asset) => (
+                <option key={asset.id} value={asset.id}>
+                  {asset.name} ({t(asset.type)}) - {formatCurrency(asset.currentValue, currency)}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          </div>
         </div>
-      </div>
+      )}
+
       {/* Time Horizon Slider */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
@@ -185,25 +209,25 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             Orizzonte Temporale: {timeHorizon} {t('years')}
           </label>
           <div className="text-xs text-gray-500">
-            1 - 100 anni
+            1 - 50 anni
           </div>
         </div>
         <div className="relative">
           <input
             type="range"
             min="1"
-            max="100"
+            max="50"
             value={timeHorizon}
             onChange={(e) => setTimeHorizon(parseInt(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
             style={{
-              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(timeHorizon - 1) / 99 * 100}%, #e5e7eb ${(timeHorizon - 1) / 99 * 100}%, #e5e7eb 100%)`
+              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(timeHorizon - 1) / 49 * 100}%, #e5e7eb ${(timeHorizon - 1) / 49 * 100}%, #e5e7eb 100%)`
             }}
           />
           <div className="flex justify-between text-xs text-gray-500 mt-1">
             <span>1</span>
+            <span>25</span>
             <span>50</span>
-            <span>100</span>
           </div>
         </div>
       </div>
@@ -224,65 +248,53 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
               tickFormatter={(value) => formatCurrency(value, currency)}
             />
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend content={<CustomLegend />} />
             
-            <Line
-              type="monotone"
-              dataKey="current"
-              stroke={selectedAsset === 'portfolio' ? "#6b7280" : (ASSET_COLORS[selectedAssetData?.type || 'other'] || '#6b7280')}
-              strokeWidth={2}
-              strokeDasharray={selectedAsset === 'portfolio' ? "5 5" : "0"}
-              dot={false}
-              name={selectedAsset === 'portfolio' ? currentStrategy.name : selectedAssetData?.name}
-            />
-            
-            {selectedStrategy && selectedAsset === 'portfolio' && (
+            {allProjections.map((projection, index) => (
               <Line
+                key={index}
                 type="monotone"
-                dataKey="selected"
-                stroke="#3b82f6"
-                strokeWidth={3}
+                dataKey={`strategy_${index}`}
+                stroke={projection.color}
+                strokeWidth={index === 0 ? 2 : 3}
+                strokeDasharray={index === 0 ? "5 5" : "0"}
                 dot={false}
-                name={selectedStrategy.name}
+                name={projection.strategy.name}
               />
-            )}
+            ))}
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="metric-card">
-          <p className="text-sm text-gray-600">{t('currentValue')}</p>
-          <p className="text-lg font-bold text-gray-900">
-            {formatCurrency(initialValue, currency)}
-          </p>
-        </div>
-        
-        <div className="metric-card">
-          <p className="text-sm text-gray-600">
-            {selectedAsset === 'portfolio' ? currentStrategy.name : selectedAssetData?.name}
-          </p>
-          <p className="text-lg font-bold" style={{ 
-            color: selectedAsset === 'portfolio' ? '#6b7280' : (ASSET_COLORS[selectedAssetData?.type || 'other'] || '#6b7280')
-          }}>
-            {formatCurrency(finalCurrentValue, currency)}
-          </p>
-        </div>
-        
-        {selectedStrategy && selectedAsset === 'portfolio' && (
-          <div className="metric-card">
-            <p className="text-sm text-gray-600">{selectedStrategy.name}</p>
-            <p className="text-lg font-bold text-primary-600">
-              {formatCurrency(finalSelectedValue, currency)}
-            </p>
-            {difference !== 0 && (
-              <p className={`text-sm font-medium ${difference > 0 ? 'text-success-600' : 'text-error-600'}`}>
-                {difference > 0 ? '+' : ''}{formatCurrency(difference, currency)} ({differencePercentage > 0 ? '+' : ''}{differencePercentage.toFixed(1)}%)
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {allProjections.map((projection, index) => {
+          const finalValue = projection.data[projection.data.length - 1]?.value || 0;
+          const totalGrowth = finalValue - initialValue;
+          const growthPercentage = initialValue > 0 ? (totalGrowth / initialValue) * 100 : 0;
+          
+          return (
+            <div key={index} className="metric-card">
+              <div className="flex items-center gap-2 mb-2">
+                <div 
+                  className="w-3 h-3 rounded-full" 
+                  style={{ backgroundColor: projection.color }}
+                />
+                <p className="text-sm text-gray-600 font-medium">
+                  {projection.strategy.name}
+                </p>
+              </div>
+              <p className="text-lg font-bold text-gray-900">
+                {formatCurrency(finalValue, currency)}
               </p>
-            )}
-          </div>
-        )}
+              <p className={`text-sm font-medium ${
+                totalGrowth > 0 ? 'text-success-600' : 'text-error-600'
+              }`}>
+                {totalGrowth > 0 ? '+' : ''}{formatCurrency(totalGrowth, currency)} ({growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%)
+              </p>
+            </div>
+          );
+        })}
         
         {selectedAsset !== 'portfolio' && selectedAssetData && (
           <div className="metric-card">

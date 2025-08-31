@@ -474,18 +474,13 @@ export const App: React.FC = () => {
                 </div>
 
                 <div className="space-y-8">
-                  <div className="card">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                      <TrendingUp className="w-5 h-5 inline mr-2" />
-                      {t('portfolioProjection')}
-                    </h4>
-                    <MultiStrategyProjectionChart
-                      strategies={strategiesForComparison}
-                      assets={assets}
-                      currency={currency}
-                      language={language}
-                    />
-                  </div>
+                  <ProjectionChart
+                    strategies={strategiesForComparison}
+                    assets={assets}
+                    currency={currency}
+                    language={language}
+                    showAssetSelection={true}
+                  />
 
                   <StrategyComparison strategies={strategiesForComparison} language={language} />
                 </div>

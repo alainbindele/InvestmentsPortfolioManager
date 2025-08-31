@@ -4,7 +4,7 @@ import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
-import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit } from 'lucide-react';
+import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check } from 'lucide-react';
 
 interface StrategyCardProps {
   strategy: Strategy;
@@ -14,6 +14,7 @@ interface StrategyCardProps {
   onSelect: () => void;
   onCloneAndEdit?: () => void;
   language: Language;
+  showSelectionCheckbox?: boolean;
 }
 
 export const StrategyCard: React.FC<StrategyCardProps> = ({
@@ -23,7 +24,8 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   isSelected,
   onSelect,
   onCloneAndEdit,
-  language
+  language,
+  showSelectionCheckbox = false
 }) => {
   const t = (key: string) => getTranslation(language, key);
   
@@ -53,7 +55,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
     <div
       onClick={strategy.isAIGenerated ? onSelect : undefined}
       className={`card transition-all duration-200 ${
-        strategy.isAIGenerated ? 'cursor-pointer hover:shadow-lg' : ''
+        showSelectionCheckbox || strategy.isAIGenerated ? 'cursor-pointer hover:shadow-lg' : ''
       } ${
         isSelected
           ? 'ring-2 ring-primary-500 bg-primary-50 border-primary-200'
@@ -64,6 +66,17 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
+          {showSelectionCheckbox && (
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={onSelect}
+                onClick={(e) => e.stopPropagation()}
+                className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+              />
+            </div>
+          )}
           <div className={`p-2 rounded-lg ${
             colorClass === 'primary' ? 'bg-primary-100' :
             colorClass === 'success' ? 'bg-success-100' :
@@ -83,7 +96,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
         
         {isSelected && (
           <div className="px-3 py-1 bg-primary-600 text-white rounded-full text-xs font-medium">
-            {t('selectedStrategy')}
+            {showSelectionCheckbox ? t('selectedForComparison') : t('selectedStrategy')}
           </div>
         )}
         
@@ -176,12 +189,12 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       {strategy.isAIGenerated && !isSelected && (
         <div className="mt-4 pt-3 border-t border-gray-200">
           <p className="text-xs text-gray-500 text-center">
-            Clicca per selezionare e vedere il confronto
+            {showSelectionCheckbox ? 'Seleziona per confrontare' : 'Clicca per selezionare e vedere il confronto'}
           </p>
         </div>
       )}
 
-      {isSelected && (
+      {isSelected && !showSelectionCheckbox && (
         <div className="mt-4 pt-3 border-t border-primary-200">
           <p className="text-xs text-primary-600 text-center font-medium">
             ✓ Strategia selezionata per il confronto
