@@ -323,7 +323,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Language and Currency",
     resetConfirm: "Delete All",
     portfolioAssets: "Portfolio Assets",
-    editName: "Edit Name"
+    editName: "Edit Name",
+    
+    // SEO and additional translations
+    seoDescription: "Advanced portfolio optimization and rebalancing tool powered by artificial intelligence. AI analysis, personalized strategies, dollar-cost averaging (DCA) plans, and growth projections.",
+    seoKeywords: "portfolio balancer, investments, AI, rebalancing, DCA, dollar cost averaging, ETF, stocks, bonds, diversification, portfolio analysis",
+    home: "Home",
+    aiAssistant: "AI Assistant",
+    
+    // Additional missing translations
+    selectStrategiesForComparison: "Select strategies for comparison",
+    noStrategiesSelected: "No strategies selected for comparison"
   },
   
   it: {
@@ -498,7 +508,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Lingua e Valuta",
     resetConfirm: "Elimina Tutto",
     portfolioAssets: "Asset del Portfolio",
-    editName: "Modifica Nome"
+    editName: "Modifica Nome",
+    
+    // SEO and additional translations
+    seoDescription: "Strumento avanzato per l'ottimizzazione e il ribilanciamento di portafogli di investimento, potenziato dall'intelligenza artificiale. Analisi AI, strategie personalizzate, piani di accumulo (PAC) e proiezioni di crescita.",
+    seoKeywords: "portfolio balancer, investimenti, AI, ribilanciamento, PAC, piano accumulo capitale, ETF, azioni, obbligazioni, diversificazione, analisi portafoglio",
+    home: "Home",
+    aiAssistant: "Assistente AI",
+    
+    // Additional missing translations
+    selectStrategiesForComparison: "Seleziona strategie per il confronto",
+    noStrategiesSelected: "Nessuna strategia selezionata per il confronto"
   },
   
   es: {
@@ -673,7 +693,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Idioma y Moneda",
     resetConfirm: "Eliminar Todo",
     portfolioAssets: "Activos del Portfolio",
-    editName: "Editar Nombre"
+    editName: "Editar Nombre",
+    
+    // SEO and additional translations
+    seoDescription: "Herramienta avanzada de optimización y rebalanceo de carteras impulsada por inteligencia artificial. Análisis de IA, estrategias personalizadas, planes de promedio de costo en dólares (DCA) y proyecciones de crecimiento.",
+    seoKeywords: "balanceador de cartera, inversiones, IA, rebalanceo, DCA, promedio de costo en dólares, ETF, acciones, bonos, diversificación, análisis de cartera",
+    home: "Inicio",
+    aiAssistant: "Asistente IA",
+    
+    // Additional missing translations
+    selectStrategiesForComparison: "Selecciona estrategias para comparación",
+    noStrategiesSelected: "No hay estrategias seleccionadas para comparación"
   },
   
   fr: {
@@ -848,7 +878,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Langue et Devise",
     resetConfirm: "Tout Supprimer",
     portfolioAssets: "Actifs du Portfolio",
-    editName: "Modifier le Nom"
+    editName: "Modifier le Nom",
+    
+    // SEO and additional translations
+    seoDescription: "Outil avancé d'optimisation et de rééquilibrage de portefeuille alimenté par l'intelligence artificielle. Analyse IA, stratégies personnalisées, plans d'investissement programmé (DCA) et projections de croissance.",
+    seoKeywords: "équilibreur de portefeuille, investissements, IA, rééquilibrage, DCA, moyenne d'achat, ETF, actions, obligations, diversification, analyse de portefeuille",
+    home: "Accueil",
+    aiAssistant: "Assistant IA",
+    
+    // Additional missing translations
+    selectStrategiesForComparison: "Sélectionnez des stratégies pour la comparaison",
+    noStrategiesSelected: "Aucune stratégie sélectionnée pour la comparaison"
   },
   
   de: {
@@ -1023,7 +1063,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Sprache und Währung",
     resetConfirm: "Alles Löschen",
     portfolioAssets: "Portfolio-Assets",
-    editName: "Name Bearbeiten"
+    editName: "Name Bearbeiten",
+    
+    // SEO and additional translations
+    seoDescription: "Fortschrittliches Portfolio-Optimierungs- und Rebalancing-Tool, angetrieben von künstlicher Intelligenz. KI-Analyse, personalisierte Strategien, Cost-Average-Pläne (DCA) und Wachstumsprognosen.",
+    seoKeywords: "Portfolio-Balancer, Investitionen, KI, Rebalancing, DCA, Cost-Average, ETF, Aktien, Anleihen, Diversifikation, Portfolio-Analyse",
+    home: "Startseite",
+    aiAssistant: "KI-Assistent",
+    
+    // Additional missing translations
+    selectStrategiesForComparison: "Strategien für Vergleich auswählen",
+    noStrategiesSelected: "Keine Strategien für Vergleich ausgewählt"
   },
   
   pt: {
@@ -1197,7 +1247,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "Idioma e Moeda",
     resetConfirm: "Excluir Tudo",
     portfolioAssets: "Ativos do Portfolio",
-    editName: "Editar Nome"
+    editName: "Editar Nome",
+    
+    // SEO and additional translations
+    seoDescription: "Ferramenta avançada de otimização e rebalanceamento de portfólio alimentada por inteligência artificial. Análise de IA, estratégias personalizadas, planos de média de custo em dólar (DCA) e projeções de crescimento.",
+    seoKeywords: "balanceador de portfólio, investimentos, IA, rebalanceamento, DCA, média de custo em dólar, ETF, ações, títulos, diversificação, análise de portfólio",
+    home: "Início",
+    aiAssistant: "Assistente IA",
+    
+    // Additional missing translations for Portuguese
+    selectStrategiesForComparison: "Selecione estratégias para comparação",
+    noStrategiesSelected: "Nenhuma estratégia selecionada para comparação"
   },
   
   zh: {
@@ -1372,7 +1432,17 @@ export const translations: Record<string, Translation> = {
     languageAndCurrency: "语言和货币",
     resetConfirm: "删除全部",
     portfolioAssets: "投资组合资产",
-    editName: "编辑名称"
+    editName: "编辑名称",
+    
+    // SEO and additional translations
+    seoDescription: "先进的投资组合优化和再平衡工具，由人工智能驱动。AI分析、个性化策略、定期投资计划(PAC)和增长预测。",
+    seoKeywords: "投资组合平衡器, 投资, AI, 再平衡, PAC, 定期投资计划, ETF, 股票, 债券, 多样化, 投资组合分析",
+    home: "首页",
+    aiAssistant: "AI助手",
+    
+    // Additional missing translations
+    selectStrategiesForComparison: "选择策略进行比较",
+    noStrategiesSelected: "未选择策略进行比较"
   }
 };
 
@@ -1382,7 +1452,7 @@ export const SUPPORTED_LANGUAGES = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
   { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'pt', name: 'Português', flag: '🇵🇹' }
+  { code: 'zh', name: '中文', flag: '🇨🇳' }
 ];
 
 export function getTranslation(language: string, key: string): string {
