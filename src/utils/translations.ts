@@ -135,18 +135,6 @@ export interface Translation {
   allocationTooLow: string;
   saveAllocation: string;
   liveProjection: string;
-  
-  // Reset functionality
-  reset: string;
-  resetData: string;
-  confirmReset: string;
-  resetWarning: string;
-  dataToDelete: string;
-  assets: string;
-  aiStrategies: string;
-  languageAndCurrency: string;
-  resetConfirm: string;
-  portfolioAssets: string;
 }
 
 export const translations: Record<string, Translation> = {
@@ -308,19 +296,7 @@ export const translations: Record<string, Translation> = {
     allocationTooHigh: "Total allocation exceeds 100%. Reduce some allocations.",
     allocationTooLow: "Total allocation is less than 100%. Increase allocations to reach 100%.",
     saveAllocation: "Save Allocation",
-    liveProjection: "Live Projection Preview",
-    
-    // Reset functionality
-    reset: "Reset",
-    resetData: "Reset all data",
-    confirmReset: "Confirm Reset",
-    resetWarning: "This action will permanently delete all your data",
-    dataToDelete: "Data to be deleted",
-    assets: "assets",
-    aiStrategies: "AI strategies",
-    languageAndCurrency: "Language and Currency",
-    resetConfirm: "Delete All",
-    portfolioAssets: "Portfolio Assets"
+    liveProjection: "Live Projection Preview"
   },
   
   it: {
@@ -482,7 +458,7 @@ export const translations: Record<string, Translation> = {
     allocationTooLow: "L'allocazione totale è inferiore al 100%. Aumenta le allocazioni per raggiungere il 100%.",
     saveAllocation: "Salva Allocazione",
     liveProjection: "Anteprima Proiezione Live",
-    
+  
     // Reset functionality
     reset: "Ripristina",
     resetData: "Ripristina tutti i dati",
@@ -655,7 +631,7 @@ export const translations: Record<string, Translation> = {
     allocationTooLow: "La asignación total es menor al 100%. Aumenta las asignaciones para llegar al 100%.",
     saveAllocation: "Guardar Asignación",
     liveProjection: "Vista Previa de Proyección en Vivo",
-    
+  
     // Reset functionality
     reset: "Restablecer",
     resetData: "Restablecer todos los datos",
@@ -828,7 +804,7 @@ export const translations: Record<string, Translation> = {
     allocationTooLow: "L'allocation totale est inférieure à 100%. Augmentez les allocations pour atteindre 100%.",
     saveAllocation: "Sauvegarder l'Allocation",
     liveProjection: "Aperçu de Projection en Direct",
-    
+  
     // Reset functionality
     reset: "Réinitialiser",
     resetData: "Réinitialiser toutes les données",
@@ -1001,7 +977,7 @@ export const translations: Record<string, Translation> = {
     allocationTooLow: "Die Gesamtallocation ist weniger als 100%. Erhöhen Sie die Allocationen auf 100%.",
     saveAllocation: "Allocation Speichern",
     liveProjection: "Live-Projektionsvorschau",
-    
+  
     // Reset functionality
     reset: "Zurücksetzen",
     resetData: "Alle Daten zurücksetzen",
@@ -1092,13 +1068,6 @@ export const translations: Record<string, Translation> = {
     // App specific
     appTitle: "Portfolio Balancer",
     appSubtitle: "Otimize seus investimentos com IA",
-    
-    // Disclaimer
-    disclaimerTitle: "Aviso Importante",
-    disclaimerSubtitle: "Por favor leia cuidadosamente antes de prosseguir",
-    disclaimerAcceptance: "Li e aceito o Aviso",
-    continue: "Continuar",
-    
     portfolioMetrics: "Métricas do Portfolio",
     currentAllocation: "Alocação Atual",
     portfolioGrowthProjection: "Projeção de Crescimento do Portfolio",
@@ -1159,6 +1128,18 @@ export const translations: Record<string, Translation> = {
     aiConfigNote: "Para usar IA real, configure sua chave API OpenAI no arquivo .env",
     fallbackStrategyNote: "Sem chave API, estratégias de fallback baseadas em regras predefinidas serão geradas.",
     
+    // Reset functionality
+    reset: "Redefinir",
+    resetData: "Redefinir todos os dados",
+    confirmReset: "Confirmar Redefinição",
+    resetWarning: "Esta ação excluirá permanentemente todos os seus dados",
+    dataToDelete: "Dados a serem excluídos",
+    assets: "ativos",
+    aiStrategies: "estratégias IA",
+    languageAndCurrency: "Idioma e Moeda",
+    resetConfirm: "Excluir Tudo",
+    portfolioAssets: "Ativos do Portfolio",
+    
     // Asset projection
     selectAssetToAnalyze: "Selecionar Ativo para Analisar",
     entirePortfolio: "Portfolio Completo",
@@ -1175,17 +1156,11 @@ export const translations: Record<string, Translation> = {
     saveAllocation: "Salvar Alocação",
     liveProjection: "Visualização de Projeção ao Vivo",
     
-    // Reset functionality
-    reset: "Redefinir",
-    resetData: "Redefinir todos os dados",
-    confirmReset: "Confirmar Redefinição",
-    resetWarning: "Esta ação excluirá permanentemente todos os seus dados",
-    dataToDelete: "Dados a serem excluídos",
-    assets: "ativos",
-    aiStrategies: "estratégias IA",
-    languageAndCurrency: "Idioma e Moeda",
-    resetConfirm: "Excluir Tudo",
-    portfolioAssets: "Ativos do Portfolio"
+    // Disclaimer
+    disclaimerTitle: "Aviso Importante",
+    disclaimerSubtitle: "Por favor, leia cuidadosamente antes de prosseguir",
+    disclaimerAcceptance: "Eu li e aceito o Aviso",
+    continue: "Continuar"
   },
   
   zh: {
@@ -1333,6 +1308,18 @@ export const translations: Record<string, Translation> = {
     aiConfigNote: "要使用真实AI，请在.env文件中配置您的OpenAI API密钥",
     fallbackStrategyNote: "没有API密钥，将生成基于预定义规则的备用策略。",
     
+    // Reset functionality
+    reset: "重置",
+    resetData: "重置所有数据",
+    confirmReset: "确认重置",
+    resetWarning: "此操作将永久删除您的所有数据",
+    dataToDelete: "要删除的数据",
+    assets: "资产",
+    aiStrategies: "AI策略",
+    languageAndCurrency: "语言和货币",
+    resetConfirm: "删除全部",
+    portfolioAssets: "投资组合资产",
+    
     // Asset projection
     selectAssetToAnalyze: "选择要分析的资产",
     entirePortfolio: "整个投资组合",
@@ -1347,19 +1334,7 @@ export const translations: Record<string, Translation> = {
     allocationTooHigh: "总配置超过100%。请减少一些配置。",
     allocationTooLow: "总配置少于100%。请增加配置以达到100%。",
     saveAllocation: "保存配置",
-    liveProjection: "实时投影预览",
-    
-    // Reset functionality
-    reset: "重置",
-    resetData: "重置所有数据",
-    confirmReset: "确认重置",
-    resetWarning: "此操作将永久删除您的所有数据",
-    dataToDelete: "要删除的数据",
-    assets: "资产",
-    aiStrategies: "AI策略",
-    languageAndCurrency: "语言和货币",
-    resetConfirm: "删除全部",
-    portfolioAssets: "投资组合资产"
+    liveProjection: "实时投影预览"
   }
 };
 
