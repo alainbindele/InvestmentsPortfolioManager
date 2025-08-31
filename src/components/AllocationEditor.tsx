@@ -304,6 +304,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
           assets={assets}
           currency={currency}
           language={language}
+          showAssetSelection={false}
         />
       </div>
 

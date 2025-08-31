@@ -73,7 +73,8 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           totalValue,
           strategy.expectedReturn,
           timeHorizon,
-          assets
+          assets,
+          strategy
         ),
         color: index === 0 ? '#6b7280' : `hsl(${(index - 1) * 60}, 70%, 50%)`
       };
@@ -85,7 +86,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           strategy,
           data: projectAssetGrowth(
             asset.currentValue,
-            asset.expectedReturn,
+            strategy.expectedReturn, // Use strategy's expected return instead of asset's
             timeHorizon,
             asset
           ),

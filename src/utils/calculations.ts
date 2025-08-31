@@ -88,13 +88,13 @@ export const generateCurrentStrategy = (assets: Asset[]): Strategy => {
 
   // Calculate Sharpe ratio (simplified)
   const riskFreeRate = 2; // Assume 2% risk-free rate
-  const sharpeRatio = metrics.riskScore > 0 ? (metrics.expectedReturn - riskFreeRate) / metrics.riskScore : 0;
+  const sharpeRatio = metrics.riskScore > 0 ? (metrics.expectedReturn - riskFreeRate) / (metrics.riskScore * 2) : 0;
 
   // Estimate volatility based on risk score and asset mix
-  const volatility = metrics.riskScore * 3 + Math.random() * 2;
+  const volatility = metrics.riskScore * 2.5 + 5;
 
   // Estimate max drawdown based on risk profile
-  const maxDrawdown = metrics.riskScore * 5 + Math.random() * 5;
+  const maxDrawdown = metrics.riskScore * 4 + 8;
 
   return {
     id: 'current-strategy',
@@ -115,22 +115,33 @@ export const projectPortfolioGrowth = (
   initialValue: number,
   annualReturn: number,
   years: number,
-  assets: Asset[]
+  assets: Asset[],
+  strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
   const projections = [];
   let currentValue = initialValue;
   
-  // Add PAC contributions if any assets have PAC enabled
+  // Calculate PAC contributions based on strategy allocation or current allocation
   const totalPACContribution = assets.reduce((sum, asset) => {
     if (asset.isPAC && asset.pacAmount && asset.pacFrequency) {
-      const monthlyContribution = asset.pacAmount;
       const frequencyMultiplier = asset.pacFrequency === 'monthly' ? 12 :
                                  asset.pacFrequency === 'quarterly' ? 4 :
                                  asset.pacFrequency === 'biannual' ? 2 : 1;
-      return sum + (monthlyContribution * frequencyMultiplier);
+      
+      // If strategy is provided, weight PAC by target allocation
+      let pacWeight = 1;
+      if (strategy && strategy.targetAllocations[asset.id]) {
+        pacWeight = strategy.targetAllocations[asset.id] / 100;
+      }
+      
+      return sum + (asset.pacAmount * frequencyMultiplier * pacWeight);
     }
     return sum;
   }, 0);
+  
+  // Add volatility simulation based on strategy risk
+  const volatilityFactor = strategy ? (strategy.volatility / 100) : 0.1;
+  const riskAdjustment = strategy ? (strategy.riskScore - 2.5) * 0.02 : 0;
 
   for (let year = 0; year <= years; year++) {
     projections.push({
@@ -139,8 +150,12 @@ export const projectPortfolioGrowth = (
     });
     
     if (year < years) {
-      // Apply annual return
-      currentValue *= (1 + annualReturn / 100);
+      // Apply annual return with some volatility simulation
+      const baseReturn = annualReturn / 100;
+      const volatilityAdjustment = (Math.random() - 0.5) * volatilityFactor * 0.5;
+      const actualReturn = baseReturn + volatilityAdjustment + riskAdjustment;
+      
+      currentValue *= (1 + actualReturn);
       
       // Add PAC contributions
       currentValue += totalPACContribution;
