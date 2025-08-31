@@ -1467,6 +1467,14 @@ export const translations: Translations = {
     fr: 'Effet de Composition',
     de: 'Zinseszinseffekt',
     zh: '复利效应'
+  },
+  timeHorizon: {
+    it: 'Orizzonte Temporale',
+    en: 'Time Horizon',
+    es: 'Horizonte Temporal',
+    fr: 'Horizon Temporel',
+    de: 'Zeithorizont',
+    zh: '时间范围'
   }
 };
 

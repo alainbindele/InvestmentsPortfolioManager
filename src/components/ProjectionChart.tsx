@@ -207,7 +207,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <label className="text-sm font-medium text-gray-700">
-            Orizzonte Temporale: {timeHorizon} {t('years')}
+            {t('timeHorizon')}: {timeHorizon} {t('years')}
           </label>
           <div className="text-xs text-gray-500">
             1 - 50 anni

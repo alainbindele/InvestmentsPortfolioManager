@@ -5,6 +5,7 @@ import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatCurrency, formatPercentage, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
+import { ProjectionChart } from './ProjectionChart';
 
 interface AllocationEditorProps {
   strategy: Strategy;
@@ -299,7 +300,10 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
         </div>
         
         <ProjectionChart
-          strategies={[tempStrategy]}
+          strategies={[{
+            ...strategy,
+            targetAllocations: allocations
+          }]}
           assets={assets}
           currency={currency}
           language={language}
