@@ -245,6 +245,8 @@ export const translations: Record<string, Translation> = {
     investmentStrategies: "Investment Strategies",
     strategiesDescription: "Compare and analyze different investment strategies",
     currentStrategy: "Current Strategy",
+    currentAllocation: "Current Allocation",
+    targetAllocation: "Target Allocation",
     aiGeneratedStrategies: "AI Generated Strategies",
     selectedStrategies: "Selected Strategies",
     compareStrategies: "Compare Strategies",
@@ -306,11 +308,15 @@ export const translations: Record<string, Translation> = {
     cloneAndEdit: "Clone & Edit",
     editAllocation: "Edit Allocation",
     adjustAllocations: "Adjust Allocations",
+    allocationTarget: "Target Allocation:",
     totalAllocation: "Total Allocation",
     allocationTooHigh: "Total allocation exceeds 100%. Reduce some allocations.",
     allocationTooLow: "Total allocation is less than 100%. Increase allocations to reach 100%.",
     saveAllocation: "Save Allocation",
     liveProjection: "Live Projection Preview",
+    // Portfolio details
+    totalPortfolio: "Total Portfolio:",
+    
     
     // Reset functionality
     reset: "Reset",
@@ -430,6 +436,8 @@ export const translations: Record<string, Translation> = {
     investmentStrategies: "Strategie di Investimento",
     strategiesDescription: "Confronta e analizza diverse strategie di investimento",
     currentStrategy: "Strategia Attuale",
+    currentAllocation: "Allocazione Attuale",
+    targetAllocation: "Allocazione Target",
     aiGeneratedStrategies: "Strategie AI Generate",
     selectedStrategies: "Strategie Selezionate",
     compareStrategies: "Confronta Strategie",
@@ -491,11 +499,15 @@ export const translations: Record<string, Translation> = {
     cloneAndEdit: "Clona e Modifica",
     editAllocation: "Modifica Allocazione",
     adjustAllocations: "Regola Allocazioni",
+    allocationTarget: "Allocazione Target:",
     totalAllocation: "Allocazione Totale",
     allocationTooHigh: "L'allocazione totale supera il 100%. Riduci alcune allocazioni.",
     allocationTooLow: "L'allocazione totale è inferiore al 100%. Aumenta le allocazioni per raggiungere il 100%.",
     saveAllocation: "Salva Allocazione",
     liveProjection: "Anteprima Proiezione Live",
+    // Portfolio details
+    totalPortfolio: "Totale Portfolio:",
+    
     
     // Reset functionality
     reset: "Ripristina",
@@ -615,6 +627,8 @@ export const translations: Record<string, Translation> = {
     investmentStrategies: "Estrategias de Inversión",
     strategiesDescription: "Compara y analiza diferentes estrategias de inversión",
     currentStrategy: "Estrategia Actual",
+    currentAllocation: "Asignación Actual",
+    targetAllocation: "Asignación Objetivo",
     aiGeneratedStrategies: "Estrategias Generadas por IA",
     selectedStrategies: "Estrategias Seleccionadas",
     compareStrategies: "Comparar Estrategias",
@@ -676,11 +690,15 @@ export const translations: Record<string, Translation> = {
     cloneAndEdit: "Clonar y Editar",
     editAllocation: "Editar Asignación",
     adjustAllocations: "Ajustar Asignaciones",
+    allocationTarget: "Asignación Objetivo:",
     totalAllocation: "Asignación Total",
     allocationTooHigh: "La asignación total supera el 100%. Reduce algunas asignaciones.",
     allocationTooLow: "La asignación total es menor al 100%. Aumenta las asignaciones para llegar al 100%.",
     saveAllocation: "Guardar Asignación",
     liveProjection: "Vista Previa de Proyección en Vivo",
+    // Portfolio details
+    totalPortfolio: "Portfolio Total:",
+    
     
     // Reset functionality
     reset: "Restablecer",
@@ -800,6 +818,8 @@ export const translations: Record<string, Translation> = {
     investmentStrategies: "Stratégies d'Investissement",
     strategiesDescription: "Comparez et analysez différentes stratégies d'investissement",
     currentStrategy: "Stratégie Actuelle",
+    currentAllocation: "Allocation Actuelle",
+    targetAllocation: "Allocation Cible",
     aiGeneratedStrategies: "Stratégies Générées par IA",
     selectedStrategies: "Stratégies Sélectionnées",
     compareStrategies: "Comparer les Stratégies",
@@ -861,11 +881,15 @@ export const translations: Record<string, Translation> = {
     cloneAndEdit: "Cloner et Modifier",
     editAllocation: "Modifier l'Allocation",
     adjustAllocations: "Ajuster les Allocations",
+    allocationTarget: "Allocation Cible:",
     totalAllocation: "Allocation Totale",
     allocationTooHigh: "L'allocation totale dépasse 100%. Réduisez certaines allocations.",
     allocationTooLow: "L'allocation totale est inférieure à 100%. Augmentez les allocations pour atteindre 100%.",
     saveAllocation: "Sauvegarder l'Allocation",
     liveProjection: "Aperçu de Projection en Direct",
+    // Portfolio details
+    totalPortfolio: "Portfolio Total:",
+    
     
     // Reset functionality
     reset: "Réinitialiser",
