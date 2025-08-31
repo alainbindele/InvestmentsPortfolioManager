@@ -172,20 +172,21 @@ export const App: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 min-h-[64px]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between py-3 sm:h-16 min-h-[64px] gap-3 sm:gap-0">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-primary-600 rounded-lg">
                 <BarChart3 className="w-6 h-6 text-white" />
               </div>
               <div className="min-w-0 flex-1">
-                <h1 className="text-xl font-bold text-gray-900">{t('appTitle')}</h1>
-                <p className="text-sm text-gray-600 hidden sm:block">{t('appSubtitle')}</p>
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900">{t('appTitle')}</h1>
+                <p className="text-xs sm:text-sm text-gray-600">{t('appSubtitle')}</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+              {/* Mobile metrics - more compact */}
               {assets.length > 0 && (
-                <div className="hidden lg:flex items-center gap-6 text-sm">
+                <div className="hidden sm:flex lg:flex items-center gap-4 lg:gap-6 text-sm">
                   <div className="text-center">
                     <p className="text-gray-600">{t('totalValue')}</p>
                     <p className="font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
@@ -196,18 +197,21 @@ export const App: React.FC = () => {
                   </div>
                 </div>
               )}
-              {/* Mobile metrics - compact version */}
               {assets.length > 0 && (
-                <div className="flex lg:hidden items-center text-xs">
-                  <div className="text-center">
-                    <p className="text-gray-600 text-xs">{formatCurrency(metrics.totalValue, currency)}</p>
-                    <p className="text-success-600 font-medium">{formatPercentage(metrics.expectedReturn)}</p>
+                <div className="flex sm:hidden items-center text-xs mr-2">
+                  <div className="text-right">
+                    <p className="text-gray-600 text-xs leading-tight">{formatCurrency(metrics.totalValue, currency)}</p>
+                    <p className="text-success-600 font-medium leading-tight">{formatPercentage(metrics.expectedReturn)}</p>
                   </div>
                 </div>
               )}
-              <CurrencySelector currentCurrency={currency} onCurrencyChange={setCurrency} />
-              <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
-              <ResetButton language={language} />
+              
+              {/* Controls - responsive layout */}
+              <div className="flex items-center gap-1 sm:gap-2">
+                <CurrencySelector currentCurrency={currency} onCurrencyChange={setCurrency} />
+                <LanguageSelector currentLanguage={language} onLanguageChange={setLanguage} />
+                <ResetButton language={language} />
+              </div>
             </div>
           </div>
         </div>

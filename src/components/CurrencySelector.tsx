@@ -52,15 +52,15 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm min-w-[100px] sm:min-w-[120px]"
+        className="flex items-center gap-1 px-2 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm min-w-[80px] sm:min-w-[120px]"
       >
         <DollarSign className="w-4 h-4 text-gray-600" />
-        <span className="text-lg">{currentCurrencyData.flag}</span>
+        <span className="text-sm sm:text-lg">{currentCurrencyData.flag}</span>
         <div className="flex flex-col items-start">
           <span className="text-sm font-medium text-gray-700">
             {currentCurrencyData.code}
           </span>
-          <span className="text-xs text-gray-500 hidden md:block">
+          <span className="text-xs text-gray-500 hidden sm:block">
             {currentCurrencyData.symbol}
           </span>
         </div>

@@ -36,11 +36,11 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+        className="flex items-center gap-1 px-2 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm min-w-[70px] sm:min-w-auto"
       >
         <Globe className="w-4 h-4 text-gray-600" />
-        <span className="text-lg">{currentLang.flag}</span>
-        <span className="text-sm font-medium text-gray-700 hidden md:block">
+        <span className="text-sm sm:text-lg">{currentLang.flag}</span>
+        <span className="text-sm font-medium text-gray-700 hidden sm:block">
           {currentLang.name}
         </span>
         <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${

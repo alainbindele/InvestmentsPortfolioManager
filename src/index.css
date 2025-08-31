@@ -113,6 +113,33 @@
   .max-w-7xl {
     max-width: 100%;
   }
+  
+  /* Ensure header elements don't overflow */
+  header {
+    overflow-x: hidden;
+  }
+  
+  /* Compact mobile header */
+  .mobile-header-compact {
+    min-height: auto;
+    padding: 0.75rem 0;
+  }
+}
+
+/* iPhone specific optimizations */
+@media (max-width: 414px) {
+  .card {
+    @apply p-3;
+  }
+  
+  .btn-primary, .btn-secondary {
+    @apply px-2 py-1.5 text-sm;
+  }
+  
+  /* Ensure dropdowns don't go off-screen */
+  .absolute {
+    max-width: calc(100vw - 2rem);
+  }
 }
 
 /* Disclaimer modal styles */

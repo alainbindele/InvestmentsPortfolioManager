@@ -1094,9 +1094,9 @@ export const translations: Record<string, Translation> = {
     appSubtitle: "Otimize seus investimentos com IA",
     
     // Disclaimer
-    disclaimerTitle: "Aviso Importante",
-    disclaimerSubtitle: "Por favor leia cuidadosamente antes de prosseguir",
-    disclaimerAcceptance: "Li e aceito o Aviso",
+    disclaimerTitle: "Descargo de Responsabilidade Importante",
+    disclaimerSubtitle: "Por favor leia cuidadosamente antes de continuar",
+    disclaimerAcceptance: "Eu li e aceito o Descargo de Responsabilidade",
     continue: "Continuar",
     
     portfolioMetrics: "Métricas do Portfolio",
@@ -1170,8 +1170,8 @@ export const translations: Record<string, Translation> = {
     editAllocation: "Editar Alocação",
     adjustAllocations: "Ajustar Alocações",
     totalAllocation: "Alocação Total",
-    allocationTooHigh: "A alocação total excede 100%. Reduza algumas alocações.",
-    allocationTooLow: "A alocação total é menor que 100%. Aumente as alocações para atingir 100%.",
+    allocationTooHigh: "A alocação total supera 100%. Reduza algumas alocações.",
+    allocationTooLow: "A alocação total é menor que 100%. Aumente as alocações para chegar a 100%.",
     saveAllocation: "Salvar Alocação",
     liveProjection: "Visualização de Projeção ao Vivo",
     
