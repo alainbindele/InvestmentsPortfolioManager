@@ -161,16 +161,30 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                   <>
                     <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
                     {onUpdateName && !isCurrentStrategy && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleNameEdit();
-                        }}
-                        className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
-                        title={t('editName')}
-                      >
-                        <Pencil className="w-3 h-3" />
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNameEdit();
+                          }}
+                          className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                          title={t('editName')}
+                        >
+                          <Pencil className="w-3 h-3" />
+                        </button>
+                        {onDelete && strategy.isAIGenerated && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowDeleteConfirm(true);
+                            }}
+                            className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                            title={t('deleteStrategy')}
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
                     )}
                   </>
                 ) : (
