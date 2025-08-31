@@ -315,7 +315,7 @@ export const translations: Record<string, Translation> = {
     resetData: "Reset all data",
     confirmReset: "Confirm Reset",
     resetWarning: "This action will permanently delete all your data",
-    dataToDelete: "Data to delete",
+    dataToDelete: "Data to be deleted",
     assets: "assets",
     aiStrategies: "AI strategies",
     languageAndCurrency: "Language and Currency",
