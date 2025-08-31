@@ -234,7 +234,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                       type="button"
                       onClick={() => handleAllocationChange(asset.id, 0)}
                       className="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded text-xs transition-colors"
-                      title="Azzera"
+                      title={t('azzera')}
                     >
                       0%
                     </button>
@@ -247,9 +247,9 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                         handleAllocationChange(asset.id, Math.max(0, remaining));
                       }}
                       className="px-2 py-1 bg-primary-100 hover:bg-primary-200 text-primary-600 rounded text-xs transition-colors"
-                      title="Usa il rimanente"
+                      title={t('usaRimanente')}
                     >
-                      Max
+                      {t('max')}
                     </button>
                   </div>
                 </div>
