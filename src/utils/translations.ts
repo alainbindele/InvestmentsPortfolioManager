@@ -3,7 +3,6 @@ export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'zh';
 interface Translations {
   [key: string]: {
     [lang in Language]: string;
-  };
 }
 
 export const translations: Translations = {
