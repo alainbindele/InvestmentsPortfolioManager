@@ -1612,14 +1612,6 @@ export const translations: Translations = {
     de: 'Gewinn:',
     zh: '收益:'
   },
-  compila: {
-    it: 'Compila tutti i campi obbligatori',
-    en: 'Fill in all required fields',
-    es: 'Completa todos los campos obligatorios',
-    fr: 'Remplissez tous les champs obligatoires',
-    de: 'Füllen Sie alle Pflichtfelder aus',
-    zh: '填写所有必填字段'
-  },
   annulla: {
     it: 'Annulla',
     en: 'Cancel',
@@ -1776,13 +1768,13 @@ export const translations: Translations = {
   },
   
   // Additional hardcoded strings
-  compila: {
-    it: 'Compila tutti i campi obbligatori',
-    en: 'Fill in all required fields',
-    es: 'Completa todos los campos obligatorios',
-    fr: 'Remplissez tous les champs obligatoires',
-    de: 'Füllen Sie alle Pflichtfelder aus',
-    zh: '填写所有必填字段'
+  analisiAiCompletata: {
+    it: 'Analisi AI completata con successo',
+    en: 'AI analysis completed successfully',
+    es: 'Análisis de IA completado con éxito',
+    fr: 'Analyse IA terminée avec succès',
+    de: 'KI-Analyse erfolgreich abgeschlossen',
+    zh: 'AI分析成功完成'
   },
   nessunJsonTrovato: {
     it: 'Nessun JSON trovato nella risposta',
@@ -1791,14 +1783,6 @@ export const translations: Translations = {
     fr: 'Aucun JSON trouvé dans la réponse',
     de: 'Kein JSON in der Antwort gefunden',
     zh: '响应中未找到JSON'
-  },
-  analisiAiCompletata: {
-    it: 'Analisi AI completata con successo',
-    en: 'AI analysis completed successfully',
-    es: 'Análisis de IA completado con éxito',
-    fr: 'Analyse IA terminée avec succès',
-    de: 'KI-Analyse erfolgreich abgeschlossen',
-    zh: 'AI分析成功完成'
   },
   raccomandazioniPersonalizzate: {
     it: 'Raccomandazioni personalizzate generate dall\'AI',
