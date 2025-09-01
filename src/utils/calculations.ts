@@ -131,6 +131,16 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
+  // Determine if we should use effective rate calculation
+  // Check if any PAC asset uses effective rate
+  const pacAssets = assets.filter(a => a.isPAC);
+  const hasEffectiveRatePAC = pacAssets.some(a => a.rateType === 'effective');
+  
+  // Calculate monthly return based on rate type
+  const monthlyReturn = hasEffectiveRatePAC
+    ? Math.pow(1 + annualReturn / 100, 1/12) - 1  // Effective rate conversion
+    : annualReturn / 100 / 12;  // Nominal rate (simple division)
+    
   // For portfolio projections, always use nominal rate (standard for investment returns)
   const monthlyReturn = annualReturn / 100 / 12;
   const totalMonths = years * 12;

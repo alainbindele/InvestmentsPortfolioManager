@@ -100,6 +100,13 @@ export const App: React.FC = () => {
       asset.id === editingAsset.id ? updatedAsset : asset
     ));
     setEditingAsset(null);
+    
+    // Force re-render of components that depend on PAC calculations
+    // This will trigger useEffect hooks in child components
+    setTimeout(() => {
+      // Trigger a state update to force component re-renders
+      setAssets(current => [...current]);
+    }, 0);
   };
 
   const handleCancelAssetEdit = () => {

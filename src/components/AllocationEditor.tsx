@@ -28,6 +28,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   
   const [allocations, setAllocations] = useState<{ [assetId: string]: number }>({});
   const [isValid, setIsValid] = useState(true);
+  const [projectionKey, setProjectionKey] = useState(0);
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
 
@@ -38,12 +39,14 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       initialAllocations[asset.id] = strategy.targetAllocations[asset.id] || 0;
     });
     setAllocations(initialAllocations);
+    setProjectionKey(prev => prev + 1);
   }, [strategy, assets]);
 
   // Check if total allocation is valid (equals 100%)
   useEffect(() => {
     const total = Object.values(allocations).reduce((sum, val) => sum + val, 0);
     setIsValid(Math.abs(total - 100) < 0.1);
+    setProjectionKey(prev => prev + 1);
   }, [allocations]);
 
   const handleAllocationChange = (assetId: string, newValue: number) => {
@@ -291,7 +294,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       </div>
 
       {/* Live Projection Preview */}
-      <div className="card">
+      <div key={projectionKey} className="card">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-success-100 rounded-lg">
             <TrendingUp className="w-5 h-5 text-success-600" />

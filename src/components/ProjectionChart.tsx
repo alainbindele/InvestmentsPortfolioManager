@@ -25,8 +25,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   const t = (key: string) => getTranslation(language, key);
   const [timeHorizon, setTimeHorizon] = useState(20);
   const [selectedAsset, setSelectedAsset] = useState<string>('portfolio');
+  const [chartKey, setChartKey] = useState(0);
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
+  
+  // Force chart re-render when assets change (especially PAC settings)
+  React.useEffect(() => {
+    setChartKey(prev => prev + 1);
+  }, [assets, strategies]);
   
   // Helper function for single asset projection
   const projectAssetGrowth = (
@@ -234,7 +240,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       </div>
 
       {/* Chart */}
-      <div className="h-80 mb-6">
+      <div key={chartKey} className="h-80 mb-6">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
