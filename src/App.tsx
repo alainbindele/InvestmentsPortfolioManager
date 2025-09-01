@@ -566,6 +566,23 @@ export const App: React.FC = () => {
           </div>
           )}
 
+          {activeTab === 'pac' && (
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('pac')}</h2>
+              <p className="text-gray-600">{t('pacDescription')}</p>
+            </div>
+
+            <PACManager
+              assets={assets}
+              pacPlans={pacPlans}
+              onAddPAC={handleAddPAC}
+              onRemovePAC={handleRemovePAC}
+              language={language}
+            />
+          </div>
+          )}
+
           {activeTab === 'ai' && (
           <div className="space-y-8">
             <div>
