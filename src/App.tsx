@@ -244,7 +244,7 @@ export const App: React.FC = () => {
       {/* Navigation */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-4 sm:space-x-8 overflow-x-auto">
+          <div className="flex space-x-1 sm:space-x-8 overflow-x-auto">
             {[
               { id: 'portfolio', label: t('portfolio'), icon: PieChart },
               { id: 'strategies', label: t('strategies'), icon: Target },
@@ -253,14 +253,14 @@ export const App: React.FC = () => {
               <button
                 key={id}
                 onClick={() => setActiveTab(id as any)}
-                className={`flex items-center gap-2 px-3 py-4 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-4 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap flex-1 sm:flex-none justify-center sm:justify-start ${
                   activeTab === id
                     ? 'border-primary-500 text-primary-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <Icon className="w-4 h-4 flex-shrink-0" />
-                {label}
+                <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="truncate">{label}</span>
               </button>
             ))}
           </div>
