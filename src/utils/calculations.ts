@@ -131,6 +131,11 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
+  console.log('🔍 Calcolo crescita portfolio:');
+  console.log('- Valore iniziale:', initialValue);
+  console.log('- Rendimento annuo:', annualReturn + '%');
+  console.log('- Rendimento mensile:', (annualReturn / 100 / 12 * 100).toFixed(4) + '%');
+  
   const monthlyReturn = annualReturn / 100 / 12; // Convert annual to monthly
   const totalMonths = years * 12;
   let currentValue = initialValue;
@@ -171,12 +176,15 @@ export const calculatePrecisePortfolioGrowth = (
   
   const totalMonthlyPAC = assetPACContributions.reduce((sum, pac) => sum + pac.monthlyAmount, 0);
   
+  console.log('- Contributo PAC mensile totale:', totalMonthlyPAC);
+  
   // Monthly simulation for precise compound interest
   const monthlyValues: number[] = [];
   
   for (let month = 0; month <= totalMonths; month++) {
     if (month > 0) {
       // Apply monthly compound growth
+      const oldValue = currentValue;
       currentValue *= (1 + monthlyReturn);
       
       // Add PAC contributions
@@ -210,6 +218,10 @@ export const calculatePrecisePortfolioGrowth = (
           }
         }
       });
+      
+      if (month <= 12) {
+        console.log(`Mese ${month}: ${oldValue.toFixed(2)} → ${currentValue.toFixed(2)} (crescita: ${((currentValue - oldValue) / oldValue * 100).toFixed(4)}%)`);
+      }
     }
     
     monthlyValues.push(currentValue);
@@ -219,12 +231,16 @@ export const calculatePrecisePortfolioGrowth = (
   const yearlyProjections = [];
   for (let year = 0; year <= years; year++) {
     const monthIndex = year * 12;
+    if (year <= 1) {
+      console.log(`Anno ${year}: ${monthlyValues[monthIndex]?.toFixed(2)} €`);
+    }
     yearlyProjections.push({
       year,
       value: Math.round(monthlyValues[monthIndex] || currentValue)
     });
   }
   
+  console.log('📊 Risultato finale anno 1:', yearlyProjections[1]?.value);
   return yearlyProjections;
 };
 
@@ -233,7 +249,13 @@ export const calculatePACProjection = (
   pacPlan: PACPlan,
   assets: Asset[]
 ): PACProjection[] => {
+  console.log('🔍 Calcolo PAC:');
+  console.log('- Piano:', pacPlan.name);
+  console.log('- Importo mensile:', pacPlan.monthlyAmount);
+  console.log('- Rendimento annuo:', pacPlan.expectedReturn + '%');
+  
   const monthlyReturn = pacPlan.expectedReturn / 100 / 12;
+  console.log('- Rendimento mensile:', (monthlyReturn * 100).toFixed(4) + '%');
   const totalMonths = pacPlan.duration * 12;
   
   let portfolioValue = 0;
@@ -266,6 +288,10 @@ export const calculatePACProjection = (
       if (monthlyContribution > 0) {
         portfolioValue += monthlyContribution;
         totalInvested += monthlyContribution;
+        
+        if (month <= 12) {
+          console.log(`PAC Mese ${month}: +${monthlyContribution}€, Totale: ${portfolioValue.toFixed(2)}€, Investito: ${totalInvested}€`);
+        }
       }
     }
     
