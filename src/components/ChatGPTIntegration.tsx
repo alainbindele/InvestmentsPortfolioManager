@@ -110,41 +110,6 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* API Status Indicator */}
-      <div className="card">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              {apiStatus === 'working' && <CheckCircle className="w-5 h-5 text-success-600" />}
-              {apiStatus === 'error' && <XCircle className="w-5 h-5 text-error-600" />}
-              {apiStatus === 'unknown' && <AlertCircle className="w-5 h-5 text-gray-400" />}
-              <span className="font-medium text-gray-900">
-                {t('apiStatus')}: {
-                  apiStatus === 'working' ? t('connected') :
-                  apiStatus === 'error' ? t('error') : t('notTested')
-                }
-              </span>
-            </div>
-          </div>
-          <div className="text-sm text-gray-600">
-            {import.meta.env.VITE_OPENAI_API_KEY ? 
-              t('apiKeyConfigured') : 
-              t('apiKeyNotConfigured')
-            }
-          </div>
-        </div>
-        {errorMessage && (
-          <div className="mt-3 p-3 bg-error-50 border border-error-200 rounded-lg">
-            <p className="text-sm text-error-700">
-              <strong>{t('apiError')}:</strong> {errorMessage}
-            </p>
-            <p className="text-xs text-error-600 mt-1">
-              {t('fallbackMessage')}
-            </p>
-          </div>
-        )}
-      </div>
-
       {/* Portfolio Analysis */}
       <div className="card">
         <div className="flex items-center gap-3 mb-4">
