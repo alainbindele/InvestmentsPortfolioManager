@@ -161,7 +161,11 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
           {t('detailedComparison')}
         </h3>
         
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <div className="sm:hidden text-xs text-gray-500 p-2 bg-gray-50 border-b border-gray-200 flex items-center gap-1">
+            <span>👈</span>
+            <span>{t('swipeToSeeMore') || 'Scorri per vedere tutti i dati'}</span>
+          </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200">
@@ -178,7 +182,7 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
                 <tr key={strategy.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-900">{strategy.name}</span>
+                      <span className="font-medium text-gray-900 whitespace-nowrap">{strategy.name}</span>
                       {strategy.isAIGenerated && (
                         <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">
                           AI
@@ -186,10 +190,10 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
                       )}
                     </div>
                   </td>
-                  <td className="text-right py-3 px-4 font-semibold text-success-600">
+                  <td className="text-right py-3 px-4 font-semibold text-success-600 whitespace-nowrap">
                     {formatPercentage(strategy.expectedReturn)}
                   </td>
-                  <td className="text-right py-3 px-4">
+                  <td className="text-right py-3 px-4 whitespace-nowrap">
                     <span className={`font-semibold ${
                       strategy.riskScore < 2 ? 'text-success-600' : 
                       strategy.riskScore < 2.5 ? 'text-warning-600' : 'text-error-600'
@@ -197,13 +201,13 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
                       {strategy.riskScore.toFixed(1)}/5
                     </span>
                   </td>
-                  <td className="text-right py-3 px-4 font-semibold text-primary-600">
+                  <td className="text-right py-3 px-4 font-semibold text-primary-600 whitespace-nowrap">
                     {strategy.sharpeRatio.toFixed(2)}
                   </td>
-                  <td className="text-right py-3 px-4 font-semibold text-warning-600">
+                  <td className="text-right py-3 px-4 font-semibold text-warning-600 whitespace-nowrap">
                     {formatPercentage(strategy.volatility)}
                   </td>
-                  <td className="text-right py-3 px-4 font-semibold text-error-600">
+                  <td className="text-right py-3 px-4 font-semibold text-error-600 whitespace-nowrap">
                     -{formatPercentage(strategy.maxDrawdown)}
                   </td>
                 </tr>
