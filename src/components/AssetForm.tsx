@@ -29,6 +29,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
     type: asset?.type || 'stocks' as AssetType,
     currentValue: asset?.currentValue?.toString() || '',
     expectedReturn: asset?.expectedReturn?.toString() || '',
+    rateType: asset?.rateType || 'effective' as 'nominal' | 'effective',
     riskLevel: asset?.riskLevel || 'medium' as RiskLevel,
     isPAC: asset?.isPAC || false,
     pacAmount: asset?.pacAmount?.toString() || '',
@@ -62,6 +63,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       type: formData.type,
       currentValue: parseFloat(formData.currentValue),
       expectedReturn: parseFloat(formData.expectedReturn),
+      rateType: formData.rateType,
       riskLevel: formData.riskLevel,
       isPAC: formData.isPAC,
       pacAmount: formData.isPAC ? parseFloat(formData.pacAmount) : undefined,
@@ -164,8 +166,52 @@ export const AssetForm: React.FC<AssetFormProps> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            {t('expectedReturnLabel')} *
+            <div className="flex items-center gap-2">
+              {t('expectedReturnLabel')} *
+              <div className="relative group">
+                <div className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold cursor-help">
+                  i
+                </div>
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-gray-900 text-white text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+                  <div className="space-y-2">
+                    <p><strong>{t('nominalRate')}:</strong> {t('nominalRateDescription')}</p>
+                    <p><strong>{t('effectiveRate')}:</strong> {t('effectiveRateDescription')}</p>
+                    <p className="text-yellow-300"><strong>{t('example')}:</strong> {t('rateExample')}</p>
+                  </div>
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                </div>
+              </div>
+            </div>
           </label>
+          
+          {/* Rate Type Selection */}
+          <div className="mb-3">
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name={`rateType-${editingAsset?.id || 'new'}`}
+                  value="effective"
+                  checked={formData.rateType === 'effective'}
+                  onChange={(e) => setFormData({ ...formData, rateType: 'effective' })}
+                  className="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500"
+                />
+                <span className="text-sm text-gray-700">{t('effectiveRate')}</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name={`rateType-${editingAsset?.id || 'new'}`}
+                  value="nominal"
+                  checked={formData.rateType === 'nominal'}
+                  onChange={(e) => setFormData({ ...formData, rateType: 'nominal' })}
+                  className="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500"
+                />
+                <span className="text-sm text-gray-700">{t('nominalRate')}</span>
+              </label>
+            </div>
+          </div>
+          
           <input
             type="number"
             value={formData.expectedReturn}

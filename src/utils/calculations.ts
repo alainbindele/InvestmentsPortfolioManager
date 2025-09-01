@@ -131,7 +131,22 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  const monthlyReturn = annualReturn / 100 / 12; // Convert to monthly rate
+  // Calculate effective monthly rate based on whether the annual rate is nominal or effective
+  // For portfolio projections, we use the weighted average rate type
+  const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
+  const weightedEffectiveRate = assets.reduce((sum, asset) => {
+    const weight = asset.currentValue / totalValue;
+    const assetAnnualRate = annualReturn; // Use the strategy's return rate
+    
+    // Convert to effective monthly rate
+    const effectiveMonthlyRate = asset.rateType === 'nominal' 
+      ? assetAnnualRate / 100 / 12  // Nominal: simply divide by 12
+      : Math.pow(1 + assetAnnualRate / 100, 1/12) - 1; // Effective: compound formula
+    
+    return sum + (effectiveMonthlyRate * weight);
+  }, 0);
+  
+  const monthlyReturn = totalValue > 0 ? weightedEffectiveRate : annualReturn / 100 / 12;
   const totalMonths = years * 12;
   
   // Calculate total monthly PAC contributions
