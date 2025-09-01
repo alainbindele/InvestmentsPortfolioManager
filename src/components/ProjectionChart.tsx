@@ -37,12 +37,30 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   // Helper function for single asset projection
   const projectAssetGrowth = (
     initialValue: number,
-    annualReturn: number,
+    asset: Asset,
     years: number,
-    asset: Asset
+    strategyReturn?: number
   ): Array<{ year: number; value: number }> => {
     const projections = [];
     let currentValue = initialValue;
+    
+    // Use asset's expected return or strategy return
+    const annualReturn = strategyReturn || asset.expectedReturn;
+    
+    // Calculate monthly return based on asset's rate type (for PAC assets)
+    let monthlyReturn: number;
+    if (asset.isPAC && asset.rateType) {
+      if (asset.rateType === 'effective') {
+        // Effective rate: (1 + r)^(1/12) - 1
+        monthlyReturn = Math.pow(1 + annualReturn / 100, 1/12) - 1;
+      } else {
+        // Nominal rate: r / 12
+        monthlyReturn = annualReturn / 100 / 12;
+      }
+    } else {
+      // Non-PAC assets: always use nominal rate
+      monthlyReturn = annualReturn / 100 / 12;
+    }
     
     // Add PAC contributions if enabled
     const pacContribution = asset.isPAC && asset.pacAmount ? 
@@ -52,18 +70,27 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
         asset.pacFrequency === 'biannual' ? 2 : 1
       ) : 0;
 
-    for (let year = 0; year <= years; year++) {
-      projections.push({
-        year,
-        value: Math.round(currentValue)
-      });
+    // Calculate month by month for precision
+    const totalMonths = years * 12;
+    const monthlyPacContribution = pacContribution / 12;
+    
+    for (let month = 0; month <= totalMonths; month++) {
+      // Add yearly projections
+      if (month % 12 === 0) {
+        projections.push({
+          year: month / 12,
+          value: Math.round(currentValue)
+        });
+      }
       
-      if (year < years) {
-        // Apply annual return
-        currentValue *= (1 + annualReturn / 100);
+      if (month < totalMonths) {
+        // Apply monthly compound growth
+        currentValue *= (1 + monthlyReturn);
         
-        // Add PAC contributions
-        currentValue += pacContribution;
+        // Add monthly PAC contributions
+        if (asset.isPAC) {
+          currentValue += monthlyPacContribution;
+        }
       }
     }
     
@@ -90,12 +117,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       if (asset) {
         return {
           strategy,
-          data: projectAssetGrowth(
-            asset.currentValue,
-            strategy.expectedReturn, // Use strategy's expected return instead of asset's
-            timeHorizon,
-            asset
-          ),
+          data: projectAssetGrowth(asset.currentValue, asset, timeHorizon, strategy.expectedReturn),
           color: ASSET_COLORS[asset.type] || '#6b7280'
         };
       }

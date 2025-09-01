@@ -131,16 +131,11 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // Determine if we should use effective rate calculation
-  // Check if any PAC asset uses effective rate
-  const pacAssets = assets.filter(a => a.isPAC);
-  const hasEffectiveRatePAC = pacAssets.some(a => a.rateType === 'effective');
-  
-  // For portfolio projections, use nominal rate (standard for investment returns)
-  const monthlyReturn = annualReturn / 100 / 12;
+  // For portfolio projections, use nominal rate for the overall portfolio return
+  const portfolioMonthlyReturn = annualReturn / 100 / 12;
   const totalMonths = years * 12;
   
-  // Calculate total monthly PAC contributions with correct rate calculation
+  // Calculate total monthly PAC contributions
   const totalMonthlyPAC = assets.reduce((sum, asset) => {
     if (!asset.isPAC || !asset.pacAmount) return sum;
     
@@ -169,8 +164,8 @@ export const calculatePrecisePortfolioGrowth = (
 
   for (let month = 0; month <= totalMonths; month++) {
     if (month > 0) {
-      // 1. Apply monthly compound growth to existing capital
-      currentValue *= (1 + monthlyReturn);
+      // 1. Apply monthly compound growth to existing capital (using portfolio return)
+      currentValue *= (1 + portfolioMonthlyReturn);
       
       // 2. Add monthly PAC contributions
       currentValue += totalMonthlyPAC;
@@ -201,14 +196,8 @@ export const calculatePACProjection = (
   pacPlan: PACPlan,
   assets: Asset[]
 ): PACProjection[] => {
-  // Calculate monthly return based on rate type
-  // For PAC plans, we need to check if any PAC asset uses effective rate
-  const pacAssets = assets.filter(a => a.isPAC);
-  const useEffectiveRate = pacAssets.some(a => a.rateType === 'effective');
-  
-  const monthlyReturn = useEffectiveRate
-    ? Math.pow(1 + pacPlan.expectedReturn / 100, 1/12) - 1  // Effective rate
-    : pacPlan.expectedReturn / 100 / 12;  // Nominal rate
+  // For PAC plans, always use nominal rate (this is for PAC plan projections, not individual assets)
+  const monthlyReturn = pacPlan.expectedReturn / 100 / 12;
     
   let currentValue = 0;
   let totalInvested = 0;
