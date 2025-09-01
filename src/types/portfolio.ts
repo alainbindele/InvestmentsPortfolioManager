@@ -9,7 +9,7 @@ export interface Asset {
   type: AssetType;
   currentValue: number;
   expectedReturn: number;
-  rateType: 'nominal' | 'effective';
+  rateType?: 'nominal' | 'effective'; // Only used for PAC assets
   riskLevel: RiskLevel;
   isPAC?: boolean;
   pacAmount?: number;

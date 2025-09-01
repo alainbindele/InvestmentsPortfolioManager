@@ -131,25 +131,11 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // Calculate effective monthly rate based on whether the annual rate is nominal or effective
-  // For portfolio projections, we use the weighted average rate type
-  const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
-  const weightedEffectiveRate = assets.reduce((sum, asset) => {
-    const weight = asset.currentValue / totalValue;
-    const assetAnnualRate = annualReturn; // Use the strategy's return rate
-    
-    // Convert to effective monthly rate
-    const effectiveMonthlyRate = asset.rateType === 'nominal' 
-      ? assetAnnualRate / 100 / 12  // Nominal: simply divide by 12
-      : Math.pow(1 + assetAnnualRate / 100, 1/12) - 1; // Effective: compound formula
-    
-    return sum + (effectiveMonthlyRate * weight);
-  }, 0);
-  
-  const monthlyReturn = totalValue > 0 ? weightedEffectiveRate : annualReturn / 100 / 12;
+  // For portfolio projections, always use nominal rate (standard for investment returns)
+  const monthlyReturn = annualReturn / 100 / 12;
   const totalMonths = years * 12;
   
-  // Calculate total monthly PAC contributions
+  // Calculate total monthly PAC contributions with correct rate calculation
   const totalMonthlyPAC = assets.reduce((sum, asset) => {
     if (!asset.isPAC || !asset.pacAmount) return sum;
     
@@ -178,7 +164,7 @@ export const calculatePrecisePortfolioGrowth = (
 
   for (let month = 0; month <= totalMonths; month++) {
     if (month > 0) {
-      // 1. Apply compound growth to existing capital
+      // 1. Apply monthly compound growth to existing capital
       currentValue *= (1 + monthlyReturn);
       
       // 2. Add monthly PAC contributions
@@ -210,7 +196,15 @@ export const calculatePACProjection = (
   pacPlan: PACPlan,
   assets: Asset[]
 ): PACProjection[] => {
-  const monthlyReturn = pacPlan.expectedReturn / 100 / 12;
+  // Calculate monthly return based on rate type
+  // For PAC plans, we need to check if any PAC asset uses effective rate
+  const pacAssets = assets.filter(a => a.isPAC);
+  const useEffectiveRate = pacAssets.some(a => a.rateType === 'effective');
+  
+  const monthlyReturn = useEffectiveRate
+    ? Math.pow(1 + pacPlan.expectedReturn / 100, 1/12) - 1  // Effective rate
+    : pacPlan.expectedReturn / 100 / 12;  // Nominal rate
+    
   let currentValue = 0;
   let totalInvested = 0;
   const projections: PACProjection[] = [];
