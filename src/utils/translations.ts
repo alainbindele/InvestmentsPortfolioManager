@@ -1923,7 +1923,7 @@ export const translations: Translations = {
     zh: 'PAC利率类型'
   },
   nominalRateDescription: {
-    it: 'Tasso "di cartello" che viene diviso per i periodi (es. 7,5% nominale = 0,625% mensile)',
+    it: 'Tasso "di cartello" che si divide per i periodi (7,5% ÷ 12 = 0,625% mensile)',
     en: 'Stated rate that is divided by periods (e.g. 7.5% nominal = 0.625% monthly)',
     es: 'Tasa declarada que se divide por períodos (ej. 7,5% nominal = 0,625% mensual)',
     fr: 'Taux déclaré qui est divisé par périodes (ex. 7,5% nominal = 0,625% mensuel)',
@@ -1931,12 +1931,60 @@ export const translations: Translations = {
     zh: '声明利率除以期间（例如7.5%名义利率 = 每月0.625%）'
   },
   effectiveRateDescription: {
-    it: 'Rendimento reale annuo che include la capitalizzazione (es. 7,5% effettivo = 0,604% mensile)',
+    it: 'Rendimento reale annuo che include la capitalizzazione (7,5% effettivo = 0,604% mensile)',
     en: 'Real annual return that includes compounding (e.g. 7.5% effective = 0.604% monthly)',
     es: 'Rendimiento anual real que incluye capitalización (ej. 7,5% efectivo = 0,604% mensual)',
     fr: 'Rendement annuel réel qui inclut la capitalisation (ex. 7,5% effectif = 0,604% mensuel)',
     de: 'Tatsächliche jährliche Rendite mit Zinseszinseffekt (z.B. 7,5% effektiv = 0,604% monatlich)',
     zh: '包含复利的实际年收益率（例如7.5%有效利率 = 每月0.604%）'
+  },
+  rateTypeHelp: {
+    it: 'Differenza tra Tasso Nominale e Effettivo',
+    en: 'Difference between Nominal and Effective Rate',
+    es: 'Diferencia entre Tasa Nominal y Efectiva',
+    fr: 'Différence entre Taux Nominal et Effectif',
+    de: 'Unterschied zwischen Nominal- und Effektivzins',
+    zh: '名义利率和有效利率的区别'
+  },
+  rateTypeExplanation: {
+    it: 'Il tasso NOMINALE è una convenzione che si divide per i periodi. Il tasso EFFETTIVO è il rendimento reale annuo che include la capitalizzazione degli interessi.',
+    en: 'The NOMINAL rate is a convention that is divided by periods. The EFFECTIVE rate is the real annual return that includes interest compounding.',
+    es: 'La tasa NOMINAL es una convención que se divide por períodos. La tasa EFECTIVA es el rendimiento anual real que incluye la capitalización de intereses.',
+    fr: 'Le taux NOMINAL est une convention qui est divisée par périodes. Le taux EFFECTIF est le rendement annuel réel qui inclut la capitalisation des intérêts.',
+    de: 'Der NOMINALE Zinssatz ist eine Konvention, die durch Perioden geteilt wird. Der EFFEKTIVE Zinssatz ist die tatsächliche jährliche Rendite, die Zinseszinsen einschließt.',
+    zh: '名义利率是按期间划分的惯例。有效利率是包含利息复利的实际年收益率。'
+  },
+  rateExample: {
+    it: '7,5% nominale con capitalizzazione mensile = 7,76% effettivo annuo',
+    en: '7.5% nominal with monthly compounding = 7.76% effective annual',
+    es: '7,5% nominal con capitalización mensual = 7,76% efectivo anual',
+    fr: '7,5% nominal avec capitalisation mensuelle = 7,76% effectif annuel',
+    de: '7,5% nominal mit monatlicher Kapitalisierung = 7,76% effektiv jährlich',
+    zh: '7.5%名义利率月复利 = 7.76%有效年利率'
+  },
+  pacExample: {
+    it: 'Esempio PAC (10.000€ + 500€/mese):',
+    en: 'PAC Example (10,000€ + 500€/month):',
+    es: 'Ejemplo PAC (10.000€ + 500€/mes):',
+    fr: 'Exemple PAC (10 000€ + 500€/mois):',
+    de: 'PAC-Beispiel (10.000€ + 500€/Monat):',
+    zh: 'PAC示例（10,000€ + 500€/月）：'
+  },
+  pacNominalExample: {
+    it: 'Nominale 7,5%: 17.050€ dopo 1 anno',
+    en: 'Nominal 7.5%: 17,050€ after 1 year',
+    es: 'Nominal 7,5%: 17.050€ después de 1 año',
+    fr: 'Nominal 7,5%: 17 050€ après 1 an',
+    de: 'Nominal 7,5%: 17.050€ nach 1 Jahr',
+    zh: '名义利率7.5%：1年后17,050€'
+  },
+  pacEffectiveExample: {
+    it: 'Effettivo 7,5%: 16.987€ dopo 1 anno',
+    en: 'Effective 7.5%: 16,987€ after 1 year',
+    es: 'Efectivo 7,5%: 16.987€ después de 1 año',
+    fr: 'Effectif 7,5%: 16 987€ après 1 an',
+    de: 'Effektiv 7,5%: 16.987€ nach 1 Jahr',
+    zh: '有效利率7.5%：1年后16,987€'
   },
   example: {
     it: 'Esempio',
