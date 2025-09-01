@@ -39,26 +39,26 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     initialValue: number,
     asset: Asset,
     years: number,
-    strategyReturn?: number
+    useAssetOwnRate: boolean = true
   ): Array<{ year: number; value: number }> => {
     const projections = [];
     let currentValue = initialValue;
     
-    // Use asset's expected return or strategy return
-    const annualReturn = strategyReturn || asset.expectedReturn;
+    // Always use asset's own return for single asset projections
+    const annualReturn = asset.expectedReturn;
     
-    // Calculate monthly return based on asset's rate type (for PAC assets)
+    // Calculate monthly return based on asset's rate type
     let monthlyReturn: number;
     if (asset.isPAC && asset.rateType) {
       if (asset.rateType === 'effective') {
         // Effective rate: (1 + r)^(1/12) - 1
         monthlyReturn = Math.pow(1 + annualReturn / 100, 1/12) - 1;
       } else {
-        // Nominal rate: r / 12
+        // Nominal rate: r / 12 (default)
         monthlyReturn = annualReturn / 100 / 12;
       }
     } else {
-      // Non-PAC assets: always use nominal rate
+      // Non-PAC assets or no rate type specified: always use nominal rate
       monthlyReturn = annualReturn / 100 / 12;
     }
     
@@ -117,7 +117,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       if (asset) {
         return {
           strategy,
-          data: projectAssetGrowth(asset.currentValue, asset, timeHorizon, strategy.expectedReturn),
+          data: projectAssetGrowth(asset.currentValue, asset, timeHorizon),
           color: ASSET_COLORS[asset.type] || '#6b7280'
         };
       }

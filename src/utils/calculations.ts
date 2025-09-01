@@ -131,11 +131,34 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // For portfolio projections, use nominal rate for the overall portfolio return
-  const portfolioMonthlyReturn = annualReturn / 100 / 12;
+  // For portfolio projections, calculate weighted monthly return based on individual asset rates
+  const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
+  
+  // Calculate weighted portfolio monthly return
+  let portfolioMonthlyReturn = 0;
+  if (totalValue > 0) {
+    portfolioMonthlyReturn = assets.reduce((weightedReturn, asset) => {
+      const weight = asset.currentValue / totalValue;
+      let assetMonthlyReturn;
+      
+      if (asset.isPAC && asset.rateType === 'effective') {
+        // Effective rate: (1 + r)^(1/12) - 1
+        assetMonthlyReturn = Math.pow(1 + asset.expectedReturn / 100, 1/12) - 1;
+      } else {
+        // Nominal rate: r / 12 (default for non-PAC and nominal PAC)
+        assetMonthlyReturn = asset.expectedReturn / 100 / 12;
+      }
+      
+      return weightedReturn + (assetMonthlyReturn * weight);
+    }, 0);
+  } else {
+    // Fallback to strategy return if no assets
+    portfolioMonthlyReturn = annualReturn / 100 / 12;
+  }
+  
   const totalMonths = years * 12;
   
-  // Calculate total monthly PAC contributions
+  // Calculate total monthly PAC contributions with correct rate calculations
   const totalMonthlyPAC = assets.reduce((sum, asset) => {
     if (!asset.isPAC || !asset.pacAmount) return sum;
     
