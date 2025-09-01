@@ -87,15 +87,26 @@
 
 /* Mobile specific improvements */
 @media (max-width: 640px) {
-  /* Force maximum z-index for all dropdowns on mobile */
-  .fixed, .absolute {
-    z-index: 99999 !important;
+  /* Ensure dropdowns are always on top */
+  .fixed {
+    z-index: 999999 !important;
   }
   
-  /* Ensure dropdowns use fixed positioning on mobile */
-  [class*="absolute"][class*="top-full"] {
-    position: fixed !important;
-    z-index: 99999 !important;
+  /* Override any conflicting z-index */
+  .relative {
+    z-index: auto;
+  }
+  
+  /* Ensure main content doesn't interfere */
+  main {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Header should be below dropdowns */
+  header {
+    position: relative;
+    z-index: 10;
   }
   
   .recharts-wrapper {
@@ -174,13 +185,19 @@
 }
 
 /* Force maximum z-index for all modal and dropdown elements */
-.z-\[99999\] {
-  z-index: 99999 !important;
+.z-\[999999\] {
+  z-index: 999999 !important;
 }
 
-/* Ensure proper stacking context */
-.relative {
-  isolation: isolate;
+/* Dropdown specific z-index overrides */
+[style*="z-index: 999999"] {
+  z-index: 999999 !important;
+}
+
+/* Ensure dropdowns are always visible */
+.fixed[style*="top: 120px"] {
+  z-index: 999999 !important;
+  position: fixed !important;
 }
 
 /* Custom range slider styles */

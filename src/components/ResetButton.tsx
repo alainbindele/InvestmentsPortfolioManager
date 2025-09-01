@@ -34,7 +34,11 @@ export const ResetButton: React.FC<ResetButtonProps> = ({ language }) => {
           <span className="hidden sm:inline">{t('reset')}</span>
         </button>
       ) : (
-        <div className="fixed top-0 right-0 bg-white border border-red-300 rounded-lg shadow-lg p-3 sm:p-4 z-[99999] w-80 max-w-[calc(100vw-2rem)] sm:min-w-80" style={{ zIndex: 99999 }}>
+        <div className="fixed bg-white border border-red-300 rounded-lg shadow-xl p-3 sm:p-4 w-80 max-w-[calc(100vw-2rem)] sm:min-w-80" style={{ 
+            zIndex: 999999,
+            top: '120px',
+            right: '16px'
+          }}>
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-red-100 rounded-full">
               <AlertTriangle className="w-5 h-5 text-red-600" />
