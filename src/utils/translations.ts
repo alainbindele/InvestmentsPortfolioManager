@@ -1914,29 +1914,29 @@ export const translations: Translations = {
     de: 'Effektiver Zinssatz',
     zh: '有效利率'
   },
+  pacRateType: {
+    it: 'Tipo di Tasso per PAC',
+    en: 'Rate Type for PAC',
+    es: 'Tipo de Tasa para PAC',
+    fr: 'Type de Taux pour PAC',
+    de: 'Zinssatztyp für PAC',
+    zh: 'PAC利率类型'
+  },
   nominalRateDescription: {
-    it: 'Tasso "di cartello" che viene diviso per 12 mesi (es. 7,5% nominale = 0,625% al mese)',
-    en: 'Stated rate that is divided by 12 months (e.g. 7.5% nominal = 0.625% per month)',
-    es: 'Tasa declarada que se divide por 12 meses (ej. 7,5% nominal = 0,625% por mes)',
-    fr: 'Taux déclaré qui est divisé par 12 mois (ex. 7,5% nominal = 0,625% par mois)',
-    de: 'Angegebener Zinssatz, der durch 12 Monate geteilt wird (z.B. 7,5% nominal = 0,625% pro Monat)',
-    zh: '声明利率除以12个月（例如7.5%名义利率 = 每月0.625%）'
+    it: 'Tasso "di cartello" che viene diviso per i periodi (es. 7,5% nominale = 0,625% mensile)',
+    en: 'Stated rate that is divided by periods (e.g. 7.5% nominal = 0.625% monthly)',
+    es: 'Tasa declarada que se divide por períodos (ej. 7,5% nominal = 0,625% mensual)',
+    fr: 'Taux déclaré qui est divisé par périodes (ex. 7,5% nominal = 0,625% mensuel)',
+    de: 'Angegebener Zinssatz, der durch Perioden geteilt wird (z.B. 7,5% nominal = 0,625% monatlich)',
+    zh: '声明利率除以期间（例如7.5%名义利率 = 每月0.625%）'
   },
   effectiveRateDescription: {
-    it: 'Rendimento reale annuo che include la capitalizzazione (es. 7,5% effettivo = 0,604% al mese)',
-    en: 'Real annual return that includes compounding (e.g. 7.5% effective = 0.604% per month)',
-    es: 'Rendimiento anual real que incluye capitalización (ej. 7,5% efectivo = 0,604% por mes)',
-    fr: 'Rendement annuel réel qui inclut la capitalisation (ex. 7,5% effectif = 0,604% par mois)',
-    de: 'Tatsächliche jährliche Rendite mit Zinseszinseffekt (z.B. 7,5% effektiv = 0,604% pro Monat)',
+    it: 'Rendimento reale annuo che include la capitalizzazione (es. 7,5% effettivo = 0,604% mensile)',
+    en: 'Real annual return that includes compounding (e.g. 7.5% effective = 0.604% monthly)',
+    es: 'Rendimiento anual real que incluye capitalización (ej. 7,5% efectivo = 0,604% mensual)',
+    fr: 'Rendement annuel réel qui inclut la capitalisation (ex. 7,5% effectif = 0,604% mensuel)',
+    de: 'Tatsächliche jährliche Rendite mit Zinseszinseffekt (z.B. 7,5% effektiv = 0,604% monatlich)',
     zh: '包含复利的实际年收益率（例如7.5%有效利率 = 每月0.604%）'
-  },
-  rateExample: {
-    it: '7,5% nominale mensile = 7,76% effettivo annuo',
-    en: '7.5% nominal monthly = 7.76% effective annual',
-    es: '7,5% nominal mensual = 7,76% efectivo anual',
-    fr: '7,5% nominal mensuel = 7,76% effectif annuel',
-    de: '7,5% nominal monatlich = 7,76% effektiv jährlich',
-    zh: '7.5%名义月利率 = 7.76%有效年利率'
   },
   example: {
     it: 'Esempio',
