@@ -15,6 +15,28 @@ export interface Asset {
   pacFrequency?: 'monthly' | 'quarterly' | 'biannual' | 'annual';
 }
 
+// PAC Types
+export interface PACPlan {
+  id: string;
+  name: string;
+  monthlyAmount: number;
+  frequency: 'monthly' | 'quarterly' | 'biannual' | 'annual';
+  duration: number; // years
+  targetAllocations: { [assetId: string]: number };
+  expectedReturn: number;
+  startDate: Date;
+  isActive: boolean;
+}
+
+export interface PACProjection {
+  month: number;
+  totalInvested: number;
+  portfolioValue: number;
+  totalGain: number;
+  gainPercentage: number;
+  monthlyContribution: number;
+}
+
 // Strategy Types
 export interface Strategy {
   id: string;

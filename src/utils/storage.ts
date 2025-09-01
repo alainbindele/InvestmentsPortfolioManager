@@ -1,10 +1,12 @@
 import { Asset, Strategy } from '../types/portfolio';
+import { Asset, Strategy, PACPlan } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 
 const STORAGE_KEYS = {
   ASSETS: 'portfolio_balancer_assets',
   AI_STRATEGIES: 'portfolio_balancer_ai_strategies',
+  PAC_PLANS: 'portfolio_balancer_pac_plans',
   LANGUAGE: 'portfolio_balancer_language',
   CURRENCY: 'portfolio_balancer_currency',
   ACTIVE_TAB: 'portfolio_balancer_active_tab',
@@ -75,6 +77,31 @@ export const loadAIStrategies = (): Strategy[] => {
     }
   } catch (error) {
     console.error('Error loading AI strategies from cookies:', error);
+  }
+  return [];
+};
+
+export const savePACPlans = (pacPlans: PACPlan[]) => {
+  try {
+    setCookie(STORAGE_KEYS.PAC_PLANS, JSON.stringify(pacPlans));
+  } catch (error) {
+    console.error('Error saving PAC plans to cookies:', error);
+  }
+};
+
+export const loadPACPlans = (): PACPlan[] => {
+  try {
+    const saved = getCookie(STORAGE_KEYS.PAC_PLANS);
+    if (saved) {
+      const plans = JSON.parse(saved);
+      // Convert date strings back to Date objects
+      return plans.map((plan: any) => ({
+        ...plan,
+        startDate: new Date(plan.startDate)
+      }));
+    }
+  } catch (error) {
+    console.error('Error loading PAC plans from cookies:', error);
   }
   return [];
 };
@@ -172,14 +199,16 @@ export const clearAllData = () => {
 export const getStorageInfo = () => {
   const assets = loadAssets();
   const strategies = loadAIStrategies();
+  const pacPlans = loadPACPlans();
   const language = loadLanguage();
   const currency = loadCurrency();
   
   return {
     assetsCount: assets.length,
     strategiesCount: strategies.length,
+    pacPlansCount: pacPlans.length,
     language,
     currency,
-    hasData: assets.length > 0 || strategies.length > 0
+    hasData: assets.length > 0 || strategies.length > 0 || pacPlans.length > 0
   };
 };

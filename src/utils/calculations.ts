@@ -1,4 +1,5 @@
 import { Asset, Strategy, PortfolioMetrics } from '../types/portfolio';
+import { Asset, Strategy, PortfolioMetrics, PACPlan, PACProjection } from '../types/portfolio';
 import { Currency, getCurrencyByCode } from '../types/currency';
 import { getTranslation, Language } from './translations';
 
@@ -119,48 +120,166 @@ export const projectPortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  const projections = [];
+  return calculatePrecisePortfolioGrowth(initialValue, annualReturn, years, assets, strategy);
+};
+
+// New precise calculation with monthly compounding
+export const calculatePrecisePortfolioGrowth = (
+  initialValue: number,
+  annualReturn: number,
+  years: number,
+  assets: Asset[],
+  strategy?: Strategy
+): Array<{ year: number; value: number }> => {
+  const monthlyReturn = annualReturn / 100 / 12; // Convert annual to monthly
+  const totalMonths = years * 12;
   let currentValue = initialValue;
   
-  // Calculate PAC contributions based on strategy allocation or current allocation
-  const totalPACContribution = assets.reduce((sum, asset) => {
-    if (asset.isPAC && asset.pacAmount && asset.pacFrequency) {
-      const frequencyMultiplier = asset.pacFrequency === 'monthly' ? 12 :
-                                 asset.pacFrequency === 'quarterly' ? 4 :
-                                 asset.pacFrequency === 'biannual' ? 2 : 1;
-      
-      // If strategy is provided, weight PAC by target allocation
-      let pacWeight = 1;
-      if (strategy && strategy.targetAllocations[asset.id]) {
-        pacWeight = strategy.targetAllocations[asset.id] / 100;
-      }
-      
-      return sum + (asset.pacAmount * frequencyMultiplier * pacWeight);
+  // Calculate monthly PAC contributions for each asset
+  const assetPACContributions = assets.map(asset => {
+    if (!asset.isPAC || !asset.pacAmount || !asset.pacFrequency) {
+      return { assetId: asset.id, monthlyAmount: 0, frequency: 'monthly' as const };
     }
-    return sum;
-  }, 0);
-  
-  // Add volatility simulation based on strategy risk
-  const volatilityFactor = strategy ? (strategy.volatility / 100) : 0.1;
-  const riskAdjustment = strategy ? (strategy.riskScore - 2.5) * 0.02 : 0;
-
-  for (let year = 0; year <= years; year++) {
-    projections.push({
-      year,
-      value: Math.round(currentValue)
-    });
     
-    if (year < years) {
-      // Apply annual return with some volatility simulation
-      const baseReturn = annualReturn / 100;
-      const volatilityAdjustment = (Math.random() - 0.5) * volatilityFactor * 0.5;
-      const actualReturn = baseReturn + volatilityAdjustment + riskAdjustment;
-      
-      currentValue *= (1 + actualReturn);
+    let monthlyAmount = 0;
+    switch (asset.pacFrequency) {
+      case 'monthly':
+        monthlyAmount = asset.pacAmount;
+        break;
+      case 'quarterly':
+        monthlyAmount = asset.pacAmount / 3;
+        break;
+      case 'biannual':
+        monthlyAmount = asset.pacAmount / 6;
+        break;
+      case 'annual':
+        monthlyAmount = asset.pacAmount / 12;
+        break;
+    }
+    
+    // Apply strategy allocation weight if provided
+    if (strategy && strategy.targetAllocations[asset.id]) {
+      monthlyAmount *= (strategy.targetAllocations[asset.id] / 100);
+    }
+    
+    return {
+      assetId: asset.id,
+      monthlyAmount,
+      frequency: asset.pacFrequency
+    };
+  });
+  
+  const totalMonthlyPAC = assetPACContributions.reduce((sum, pac) => sum + pac.monthlyAmount, 0);
+  
+  // Monthly simulation for precise compound interest
+  const monthlyValues: number[] = [];
+  
+  for (let month = 0; month <= totalMonths; month++) {
+    if (month > 0) {
+      // Apply monthly compound growth
+      currentValue *= (1 + monthlyReturn);
       
       // Add PAC contributions
-      currentValue += totalPACContribution;
+      assetPACContributions.forEach(pac => {
+        if (pac.monthlyAmount > 0) {
+          // Check if this month requires a contribution based on frequency
+          let shouldContribute = false;
+          
+          switch (pac.frequency) {
+            case 'monthly':
+              shouldContribute = true;
+              break;
+            case 'quarterly':
+              shouldContribute = month % 3 === 0;
+              break;
+            case 'biannual':
+              shouldContribute = month % 6 === 0;
+              break;
+            case 'annual':
+              shouldContribute = month % 12 === 0;
+              break;
+          }
+          
+          if (shouldContribute) {
+            // For quarterly/biannual/annual, add the full amount in the contribution month
+            const contributionAmount = pac.frequency === 'monthly' ? pac.monthlyAmount :
+                                     pac.frequency === 'quarterly' ? pac.monthlyAmount * 3 :
+                                     pac.frequency === 'biannual' ? pac.monthlyAmount * 6 :
+                                     pac.monthlyAmount * 12;
+            currentValue += contributionAmount;
+          }
+        }
+      });
     }
+    
+    monthlyValues.push(currentValue);
+  }
+  
+  // Convert monthly values to yearly projections
+  const yearlyProjections = [];
+  for (let year = 0; year <= years; year++) {
+    const monthIndex = year * 12;
+    yearlyProjections.push({
+      year,
+      value: Math.round(monthlyValues[monthIndex] || currentValue)
+    });
+  }
+  
+  return yearlyProjections;
+};
+
+// Calculate detailed PAC projection with monthly breakdown
+export const calculatePACProjection = (
+  pacPlan: PACPlan,
+  assets: Asset[]
+): PACProjection[] => {
+  const monthlyReturn = pacPlan.expectedReturn / 100 / 12;
+  const totalMonths = pacPlan.duration * 12;
+  
+  let portfolioValue = 0;
+  let totalInvested = 0;
+  const projections: PACProjection[] = [];
+  
+  // Calculate monthly contribution amount based on frequency
+  const getMonthlyContribution = (month: number): number => {
+    switch (pacPlan.frequency) {
+      case 'monthly':
+        return pacPlan.monthlyAmount;
+      case 'quarterly':
+        return month % 3 === 1 ? pacPlan.monthlyAmount : 0; // Contribute in months 1, 4, 7, 10
+      case 'biannual':
+        return month % 6 === 1 ? pacPlan.monthlyAmount : 0; // Contribute in months 1, 7
+      case 'annual':
+        return month % 12 === 1 ? pacPlan.monthlyAmount : 0; // Contribute in month 1 of each year
+      default:
+        return 0;
+    }
+  };
+  
+  for (let month = 0; month <= totalMonths; month++) {
+    // Apply monthly compound growth to existing portfolio
+    if (month > 0) {
+      portfolioValue *= (1 + monthlyReturn);
+      
+      // Add monthly contribution if applicable
+      const monthlyContribution = getMonthlyContribution(month);
+      if (monthlyContribution > 0) {
+        portfolioValue += monthlyContribution;
+        totalInvested += monthlyContribution;
+      }
+    }
+    
+    const totalGain = portfolioValue - totalInvested;
+    const gainPercentage = totalInvested > 0 ? (totalGain / totalInvested) * 100 : 0;
+    
+    projections.push({
+      month,
+      totalInvested,
+      portfolioValue: Math.round(portfolioValue),
+      totalGain: Math.round(totalGain),
+      gainPercentage,
+      monthlyContribution: month > 0 ? getMonthlyContribution(month) : 0
+    });
   }
   
   return projections;
