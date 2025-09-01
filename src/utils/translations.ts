@@ -56,6 +56,14 @@ export const translations: Translations = {
     de: 'Startseite',
     zh: '首页'
   },
+  swipeToSeeMore: {
+    it: 'Scorri per vedere tutti i dati',
+    en: 'Swipe to see all data',
+    es: 'Desliza para ver todos los datos',
+    fr: 'Glissez pour voir toutes les données',
+    de: 'Wischen Sie, um alle Daten zu sehen',
+    zh: '滑动查看所有数据'
+  },
 
   // Asset Management
   addAsset: {
