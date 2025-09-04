@@ -236,7 +236,7 @@ export class ChatGPTService {
         type: asset.type,
         currentValue: asset.currentValue,
         expectedReturn: asset.expectedReturn,
-        riskLevel: asset.riskLevel
+        riskLevel: asset.riskLevel,
         isLocked: lockedAssetIds.has(asset.id),
         currentAllocation: totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0
       })),
