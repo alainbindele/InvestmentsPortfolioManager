@@ -130,8 +130,8 @@ export const translations = {
     
     // Cookie Consent
     cookieConsentTitle: 'Utilizzo dei Cookie',
-    cookieConsentMessage: 'Questo sito utilizza cookie tecnici necessari per il funzionamento dell\'applicazione, incluso il salvataggio dei tuoi dati di portfolio.',
-    cookieConsentDetails: 'I cookie sono essenziali per salvare i tuoi asset, strategie e preferenze. Senza di essi l\'app non può funzionare.',
+    cookieConsentMessage: 'Questo sito utilizza cookie tecnici necessari per salvare i tuoi dati di portfolio direttamente sul tuo computer in locale.',
+    cookieConsentDetails: 'I dati (asset, strategie, preferenze) vengono salvati solo sul tuo PC e non vengono mai inviati a server esterni. Senza cookie l\'app non può funzionare.',
     acceptCookies: 'Accetta Cookie',
     decline: 'Rifiuta',
     
@@ -288,8 +288,8 @@ export const translations = {
     
     // Cookie Consent
     cookieConsentTitle: 'Cookie Usage',
-    cookieConsentMessage: 'This site uses technical cookies necessary for the application to function, including saving your portfolio data.',
-    cookieConsentDetails: 'Cookies are essential to save your assets, strategies and preferences. Without them the app cannot work.',
+    cookieConsentMessage: 'This site uses technical cookies necessary to save your portfolio data locally on your computer.',
+    cookieConsentDetails: 'Data (assets, strategies, preferences) is saved only on your PC and never sent to external servers. Without cookies the app cannot work.',
     acceptCookies: 'Accept Cookies',
     decline: 'Decline',
     
@@ -446,8 +446,8 @@ export const translations = {
     
     // Cookie Consent
     cookieConsentTitle: 'Uso de Cookies',
-    cookieConsentMessage: 'Este sitio utiliza cookies técnicas necesarias para el funcionamiento de la aplicación, incluyendo el guardado de tus datos de portafolio.',
-    cookieConsentDetails: 'Las cookies son esenciales para guardar tus activos, estrategias y preferencias. Sin ellas la app no puede funcionar.',
+    cookieConsentMessage: 'Este sitio utiliza cookies técnicas necesarias para guardar tus datos de portafolio localmente en tu computadora.',
+    cookieConsentDetails: 'Los datos (activos, estrategias, preferencias) se guardan solo en tu PC y nunca se envían a servidores externos. Sin cookies la app no puede funcionar.',
     acceptCookies: 'Aceptar Cookies',
     decline: 'Rechazar',
     
@@ -604,8 +604,8 @@ export const translations = {
     
     // Cookie Consent
     cookieConsentTitle: 'Utilisation des Cookies',
-    cookieConsentMessage: 'Ce site utilise des cookies techniques nécessaires au fonctionnement de l\'application, y compris la sauvegarde de vos données de portefeuille.',
-    cookieConsentDetails: 'Les cookies sont essentiels pour sauvegarder vos actifs, stratégies et préférences. Sans eux l\'app ne peut pas fonctionner.',
+    cookieConsentMessage: 'Ce site utilise des cookies techniques nécessaires pour sauvegarder vos données de portefeuille localement sur votre ordinateur.',
+    cookieConsentDetails: 'Les données (actifs, stratégies, préférences) sont sauvegardées uniquement sur votre PC et ne sont jamais envoyées à des serveurs externes. Sans cookies l\'app ne peut pas fonctionner.',
     acceptCookies: 'Accepter les Cookies',
     decline: 'Refuser',
     
@@ -762,8 +762,8 @@ export const translations = {
     
     // Cookie Consent
     cookieConsentTitle: 'Cookie-Nutzung',
-    cookieConsentMessage: 'Diese Seite verwendet technische Cookies, die für das Funktionieren der Anwendung notwendig sind, einschließlich der Speicherung Ihrer Portfolio-Daten.',
-    cookieConsentDetails: 'Cookies sind essentiell, um Ihre Assets, Strategien und Einstellungen zu speichern. Ohne sie kann die App nicht funktionieren.',
+    cookieConsentMessage: 'Diese Seite verwendet technische Cookies, die notwendig sind, um Ihre Portfolio-Daten lokal auf Ihrem Computer zu speichern.',
+    cookieConsentDetails: 'Die Daten (Assets, Strategien, Einstellungen) werden nur auf Ihrem PC gespeichert und niemals an externe Server gesendet. Ohne Cookies kann die App nicht funktionieren.',
     acceptCookies: 'Cookies Akzeptieren',
     decline: 'Ablehnen',
     
@@ -920,8 +920,8 @@ export const translations = {
     
     // Cookie Consent
     cookieConsentTitle: 'Cookie使用',
-    cookieConsentMessage: '本站使用应用程序运行所必需的技术Cookie，包括保存您的投资组合数据。',
-    cookieConsentDetails: 'Cookie对于保存您的资产、策略和偏好设置至关重要。没有它们，应用程序无法工作。',
+    cookieConsentMessage: '本站使用技术Cookie在您的计算机本地保存您的投资组合数据。',
+    cookieConsentDetails: '数据（资产、策略、偏好设置）仅保存在您的PC上，从不发送到外部服务器。没有Cookie，应用程序无法工作。',
     acceptCookies: '接受Cookie',
     decline: '拒绝',
     
