@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit } from 'lucide-react';
+import { PieChart, BarChart3, TrendingUp, Target, Trash2, Bot, Edit, Lock } from 'lucide-react';
 import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
 import { Currency } from './types/currency';
