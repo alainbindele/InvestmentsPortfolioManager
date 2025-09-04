@@ -14,6 +14,7 @@ export interface Asset {
   isPAC?: boolean;
   pacAmount?: number;
   pacFrequency?: 'monthly' | 'quarterly' | 'biannual' | 'annual';
+  isLocked?: boolean; // For AI rebalancing - locked assets won't be modified
 }
 
 // PAC Types

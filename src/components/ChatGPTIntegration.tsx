@@ -66,6 +66,8 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       return;
     }
 
+    // Get locked assets
+    const lockedAssets = assets.filter(asset => asset.isLocked).map(asset => asset.id);
     setIsGeneratingStrategy(true);
     setErrorMessage('');
     try {
@@ -73,7 +75,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       if (apiKey) {
         chatGPTService.setApiKey(apiKey);
       }
-      const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals, language);
+      const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals, language, lockedAssets);
       onStrategyGenerated(strategy);
       setApiStatus('working');
     } catch (error) {
@@ -82,7 +84,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       setErrorMessage(error instanceof Error ? error.message : 'Errore sconosciuto');
       // Genera comunque una strategia di fallback
       try {
-        const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals, language);
+        const strategy = await chatGPTService.generateStrategy(assets, selectedRiskProfile, goals, language, lockedAssets);
         onStrategyGenerated(strategy);
       } catch (fallbackError) {
         console.error('Errore anche nel fallback:', fallbackError);

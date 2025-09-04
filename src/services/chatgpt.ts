@@ -195,7 +195,8 @@ export class ChatGPTService {
     assets: Asset[], 
     riskProfile: 'conservative' | 'balanced' | 'aggressive',
     goals: string[],
-    language: string = 'it'
+    language: string = 'it',
+    lockedAssets?: string[]
   ): Promise<Strategy> {
     const t = (key: string) => getTranslation(language as any, key);
     
@@ -212,6 +213,22 @@ export class ChatGPTService {
     const selectedLanguageName = languageNames[language as keyof typeof languageNames] || 'italiano';
     const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
     
+    // Separate locked and unlocked assets
+    const lockedAssetIds = new Set(lockedAssets || []);
+    const unlockedAssets = assets.filter(asset => !lockedAssetIds.has(asset.id));
+    const lockedAssetsData = assets.filter(asset => lockedAssetIds.has(asset.id));
+    
+    // Calculate current allocations for locked assets
+    const lockedAllocations: { [assetId: string]: number } = {};
+    let lockedTotalPercentage = 0;
+    
+    lockedAssetsData.forEach(asset => {
+      const allocation = totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0;
+      lockedAllocations[asset.id] = allocation;
+      lockedTotalPercentage += allocation;
+    });
+    
+    const availablePercentage = 100 - lockedTotalPercentage;
     const portfolioData = {
       assets: assets.map(asset => ({
         id: asset.id,
@@ -220,10 +237,25 @@ export class ChatGPTService {
         currentValue: asset.currentValue,
         expectedReturn: asset.expectedReturn,
         riskLevel: asset.riskLevel
+        isLocked: lockedAssetIds.has(asset.id),
+        currentAllocation: totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0
       })),
       totalValue,
       riskProfile,
-      goals
+      goals,
+      lockedAssets: lockedAssetsData.map(asset => ({
+        id: asset.id,
+        name: asset.name,
+        currentAllocation: totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0
+      })),
+      unlockedAssets: unlockedAssets.map(asset => ({
+        id: asset.id,
+        name: asset.name,
+        type: asset.type,
+        expectedReturn: asset.expectedReturn,
+        riskLevel: asset.riskLevel
+      })),
+      availablePercentage
     };
 
     const riskProfileDescriptions = {
@@ -232,11 +264,30 @@ export class ChatGPTService {
       aggressive: 'aggressivo - focus su massimizzazione dei rendimenti con tolleranza al rischio'
     };
 
+    const lockingInstructions = lockedAssets && lockedAssets.length > 0 ? `
+    
+    VINCOLI IMPORTANTI:
+    - Gli asset bloccati NON devono essere modificati nelle loro allocazioni
+    - Hai a disposizione solo il ${availablePercentage.toFixed(1)}% del portfolio per ribilanciare gli asset non bloccati
+    - Gli asset bloccati mantengono le loro allocazioni attuali:
+    ${lockedAssetsData.map(asset => `  * ${asset.name}: ${((asset.currentValue / totalValue) * 100).toFixed(1)}%`).join('\n')}
+    
+    - Ottimizza SOLO l'allocazione degli asset non bloccati distribuendo il ${availablePercentage.toFixed(1)}% disponibile
+    ` : '';
     const messages = [
       {
         role: 'system',
         content: `Sei un esperto consulente finanziario specializzato nella creazione di strategie di investimento ottimali.
         IMPORTANTE: Rispondi SEMPRE in ${selectedLanguageName}. Tutti i testi nel JSON devono essere scritti in ${selectedLanguageName}.
+        
+        ${lockedAssets && lockedAssets.length > 0 ? `
+        VINCOLI DI RIBILANCIAMENTO:
+        - Alcuni asset sono BLOCCATI e NON devono essere modificati
+        - Puoi ottimizzare SOLO gli asset non bloccati
+        - Le allocazioni degli asset bloccati devono rimanere ESATTAMENTE come sono attualmente
+        - Distribuisci il rimanente ${availablePercentage.toFixed(1)}% solo tra gli asset non bloccati
+        ` : ''}
+        
         Crea una strategia di investimento personalizzata e restituisci SOLO un JSON valido con questa struttura esatta:
         {
           "name": "Nome della strategia",
@@ -258,6 +309,7 @@ export class ChatGPTService {
         }
         
         Le percentuali in targetAllocations devono sommare a 100. Usa gli ID degli asset forniti.
+        ${lockedAssets && lockedAssets.length > 0 ? 'CRITICO: Mantieni le allocazioni degli asset bloccati ESATTAMENTE come sono e ottimizza solo gli asset non bloccati.' : ''}
         CRITICO:
         1. Rispondi ESCLUSIVAMENTE con il JSON richiesto, senza testo aggiuntivo prima o dopo
         2. TUTTI i testi nel JSON (name, description, reasoning) devono essere in ${selectedLanguageName}
@@ -274,6 +326,8 @@ export class ChatGPTService {
         
         OBIETTIVI: ${goals.join(', ')}
         
+        ${lockingInstructions}
+        
         Crea una strategia che ottimizzi il rapporto rischio-rendimento per questo profilo specifico.`
       }
     ];
@@ -285,6 +339,14 @@ export class ChatGPTService {
         throw new Error('Risposta AI non valida');
       }
       
+      // Se ci sono asset bloccati, assicurati che le loro allocazioni siano preservate
+      if (lockedAssets && lockedAssets.length > 0) {
+        lockedAssetsData.forEach(asset => {
+          const currentAllocation = totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0;
+          aiResponse.targetAllocations[asset.id] = Math.round(currentAllocation);
+        });
+      }
+      
       // Normalizza le allocazioni per assicurarsi che sommino a 100
       const totalAllocation = Object.values(aiResponse.targetAllocations).reduce((sum: number, val: any) => sum + Number(val), 0);
       const normalizedAllocations: { [key: string]: number } = {};
@@ -293,9 +355,12 @@ export class ChatGPTService {
         normalizedAllocations[assetId] = Math.round((Number(allocation) / totalAllocation) * 100);
       });
 
+      const strategyName = lockedAssets && lockedAssets.length > 0 
+        ? `${aiResponse.name || `${t('strategy')} AI ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)}`} (${t('withLockedAssets')})`
+        : aiResponse.name || `${t('strategy')} AI ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)}`;
       const strategy: Strategy = {
         id: `ai-${riskProfile}-${Date.now()}`,
-        name: aiResponse.name || `${t('strategy')} AI ${riskProfile.charAt(0).toUpperCase() + riskProfile.slice(1)}`,
+        name: strategyName,
         description: aiResponse.description || `${t('strategy')} ${t('optimizedByAi')} ${t(riskProfile)}`,
         targetAllocations: normalizedAllocations,
         expectedReturn: Number(aiResponse.expectedReturn) || this.getDefaultReturn(riskProfile),
@@ -312,7 +377,7 @@ export class ChatGPTService {
       console.error('Errore nella generazione strategia AI:', error);
       
       // Fallback con strategia mock migliorata
-      return this.generateFallbackStrategy(assets, riskProfile, language);
+      return this.generateFallbackStrategy(assets, riskProfile, language, lockedAssets);
     }
   }
 
@@ -358,14 +423,30 @@ export class ChatGPTService {
     }
   }
 
-  private generateFallbackStrategy(assets: Asset[], riskProfile: string, language: string = 'it'): Strategy {
+  private generateFallbackStrategy(assets: Asset[], riskProfile: string, language: string = 'it', lockedAssets?: string[]): Strategy {
     const t = (key: string) => getTranslation(language as any, key);
+    const lockedAssetIds = new Set(lockedAssets || []);
+    const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
     
     let targetAllocations: { [assetId: string]: number } = {};
     let strategyExpectedReturn = 0;
     
-    // Strategia di fallback basata sul profilo di rischio
+    // First, preserve locked asset allocations
+    let lockedTotalPercentage = 0;
     assets.forEach(asset => {
+      if (lockedAssetIds.has(asset.id)) {
+        const currentAllocation = totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0;
+        targetAllocations[asset.id] = Math.round(currentAllocation);
+        lockedTotalPercentage += currentAllocation;
+        strategyExpectedReturn += (asset.expectedReturn * currentAllocation / 100);
+      }
+    });
+    
+    const availablePercentage = 100 - lockedTotalPercentage;
+    const unlockedAssets = assets.filter(asset => !lockedAssetIds.has(asset.id));
+    
+    // Strategia di fallback basata sul profilo di rischio
+    unlockedAssets.forEach(asset => {
       let allocation = 0;
       switch (riskProfile) {
         case 'conservative':
@@ -432,24 +513,35 @@ export class ChatGPTService {
       strategyExpectedReturn += (asset.expectedReturn * allocation / 100);
     });
 
-    // Normalizza le allocazioni
-    const totalAllocation = Object.values(targetAllocations).reduce((sum, val) => sum + val, 0);
+    // Normalizza le allocazioni solo per gli asset non bloccati
+    const unlockedTotalAllocation = unlockedAssets.reduce((sum, asset) => sum + (targetAllocations[asset.id] || 0), 0);
     let normalizedReturn = 0;
     
-    Object.keys(targetAllocations).forEach(key => {
-      const normalizedAllocation = Math.round((targetAllocations[key] / totalAllocation) * 100);
-      targetAllocations[key] = normalizedAllocation;
+    // Normalize only unlocked assets to fit available percentage
+    unlockedAssets.forEach(asset => {
+      if (unlockedTotalAllocation > 0) {
+        const proportion = targetAllocations[asset.id] / unlockedTotalAllocation;
+        const normalizedAllocation = Math.round(proportion * availablePercentage);
+        targetAllocations[asset.id] = normalizedAllocation;
+      } else {
+        // Equal distribution if no base allocation
+        targetAllocations[asset.id] = Math.round(availablePercentage / unlockedAssets.length);
+      }
       
       // Recalculate return with normalized allocations
-      const asset = assets.find(a => a.id === key);
-      if (asset) {
-        normalizedReturn += (asset.expectedReturn * normalizedAllocation / 100);
-      }
+      normalizedReturn += (asset.expectedReturn * targetAllocations[asset.id] / 100);
     });
+    
+    // Add locked assets return to total
+    normalizedReturn += lockedTotalPercentage > 0 ? 
+      (strategyExpectedReturn - normalizedReturn) : 0;
 
+    const strategyName = lockedAssets && lockedAssets.length > 0 
+      ? `⚠️ ${t('strategy')} ${t(riskProfile)} (${t('withLockedAssets')} - Fallback)`
+      : `⚠️ ${t('strategy')} ${t(riskProfile)} (Fallback)`;
     return {
       id: `fallback-${riskProfile}-${Date.now()}`,
-      name: `⚠️ ${t('strategy')} ${t(riskProfile)} (Fallback)`,
+      name: strategyName,
       description: t('strategiaFallback'),
       targetAllocations,
       expectedReturn: Math.round(normalizedReturn * 10) / 10, // Use calculated return, rounded to 1 decimal

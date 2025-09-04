@@ -44,6 +44,7 @@ export const App: React.FC = () => {
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
   const [editingStrategy, setEditingStrategy] = useState<Strategy | null>(null);
   const [showDisclaimer, setShowDisclaimer] = useState(!loadDisclaimerAccepted());
+  const [isRebalancing, setIsRebalancing] = useState(false);
 
   const t = (key: string) => getTranslation(language, key);
 
@@ -109,6 +110,58 @@ export const App: React.FC = () => {
     }, 0);
   };
 
+  const handleToggleAssetLock = (assetId: string) => {
+    setAssets(prev => prev.map(asset => 
+      asset.id === assetId 
+        ? { ...asset, isLocked: !asset.isLocked }
+        : asset
+    ));
+    
+    // Force re-render
+    setTimeout(() => {
+      setAssets(current => [...current]);
+    }, 0);
+  };
+
+  const handleRequestAIRebalance = async () => {
+    const lockedAssets = assets.filter(asset => asset.isLocked);
+    const unlockedAssets = assets.filter(asset => !asset.isLocked);
+    
+    if (unlockedAssets.length === 0) {
+      alert(t('noUnlockedAssets'));
+      return;
+    }
+    
+    setIsRebalancing(true);
+    
+    try {
+      // Import ChatGPTService dynamically
+      const { ChatGPTService } = await import('./services/chatgpt');
+      const chatGPTService = new ChatGPTService();
+      
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
+      if (apiKey) {
+        chatGPTService.setApiKey(apiKey);
+      }
+      
+      const lockedAssetIds = lockedAssets.map(asset => asset.id);
+      const strategy = await chatGPTService.generateStrategy(
+        assets, 
+        'balanced', // Default to balanced for rebalancing
+        ['diversificazione', 'ottimizzazione_rischio_rendimento'], 
+        language,
+        lockedAssetIds
+      );
+      
+      handleStrategyGenerated(strategy);
+      setActiveTab('strategies');
+    } catch (error) {
+      console.error('Errore nel ribilanciamento AI:', error);
+      alert(t('rebalanceError'));
+    } finally {
+      setIsRebalancing(false);
+    }
+  };
   const handleCancelAssetEdit = () => {
     setEditingAsset(null);
   };
@@ -296,6 +349,17 @@ export const App: React.FC = () => {
               language={language} 
             />
 
+            {/* Asset Lock Manager */}
+            {assets.length > 0 && (
+              <AssetLockManager
+                assets={assets}
+                onToggleAssetLock={handleToggleAssetLock}
+                onRequestAIRebalance={handleRequestAIRebalance}
+                language={language}
+                currency={currency}
+                isRebalancing={isRebalancing}
+              />
+            )}
             {/* Assets List */}
             {assets.length > 0 && (
               <div>
@@ -310,7 +374,14 @@ export const App: React.FC = () => {
                             style={{ backgroundColor: ASSET_COLORS[asset.type] }}
                           />
                           <div>
-                            <h3 className="font-semibold text-gray-900">{asset.name}</h3>
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-semibold text-gray-900">{asset.name}</h3>
+                              {asset.isLocked && (
+                                <div className="p-1 bg-blue-100 rounded">
+                                  <Lock className="w-3 h-3 text-blue-600" />
+                                </div>
+                              )}
+                            </div>
                             <p className="text-sm text-gray-600 capitalize">{t(asset.type)}</p>
                           </div>
                         </div>
