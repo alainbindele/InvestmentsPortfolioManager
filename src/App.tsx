@@ -33,6 +33,7 @@ const AllocationEditor = React.lazy(() => import('./components/AllocationEditor'
 const StrategyComparison = React.lazy(() => import('./components/StrategyComparison').then(m => ({ default: m.StrategyComparison })));
 const ChatGPTIntegration = React.lazy(() => import('./components/ChatGPTIntegration').then(m => ({ default: m.ChatGPTIntegration })));
 const ProjectionChart = React.lazy(() => import('./components/ProjectionChart').then(m => ({ default: m.ProjectionChart })));
+const AssetLockManager = React.lazy(() => import('./components/AssetLockManager').then(m => ({ default: m.AssetLockManager })));
 
 export const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>(loadLanguage());
