@@ -1213,3 +1213,5 @@ export const translations = {
     // Click messages
     suggestionPrefix: '建议：',
     clickAiStrategiesMessage: '点击下面的AI策略来选择它们并与您当前的策略进行比较。'
+  }
+}
