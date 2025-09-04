@@ -121,8 +121,16 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       // Single asset projection
       const asset = assets.find(a => a.id === selectedAsset);
       if (asset) {
+        // For single asset, create a modified strategy that shows what would happen
+        // if we applied the strategy's logic to just this asset
+        const assetSpecificStrategy = {
+          ...strategy,
+          name: `${strategy.name} - ${asset.name}`,
+          expectedReturn: asset.expectedReturn // Use asset's own return rate
+        };
+        
         return {
-          strategy,
+          strategy: assetSpecificStrategy,
           data: projectAssetGrowth(asset.currentValue, asset, timeHorizon),
           color: ASSET_COLORS[asset.type] || '#6b7280'
         };
@@ -158,9 +166,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             return (
               <p key={index} className="text-sm" style={{ color: entry.color }}>
                 <strong>{projectionStrategy?.name}:</strong> {formatCurrency(entry.value, currency)}
-                {projectionStrategy && (
+                {projectionStrategy && selectedAsset === 'portfolio' && (
                   <span className="ml-2 text-xs text-gray-500">
                     ({formatPercentage(projectionStrategy.expectedReturn)} annuo)
+                  </span>
+                )}
+                {projectionStrategy && selectedAsset !== 'portfolio' && (
+                  <span className="ml-2 text-xs text-gray-500">
+                    ({formatPercentage(projectionStrategy.expectedReturn)} annuo - {selectedAssetData?.name})
                   </span>
                 )}
               </p>
@@ -310,8 +323,10 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {allProjections.map((projection, index) => {
           const finalValue = projection.data[projection.data.length - 1]?.value || 0;
-          const totalGrowth = finalValue - initialValue;
-          const growthPercentage = initialValue > 0 ? (totalGrowth / initialValue) * 100 : 0;
+          // Use correct initial value based on selection
+          const correctInitialValue = selectedAsset === 'portfolio' ? totalValue : selectedAssetData?.currentValue || 0;
+          const totalGrowth = finalValue - correctInitialValue;
+          const growthPercentage = correctInitialValue > 0 ? (totalGrowth / correctInitialValue) * 100 : 0;
           
           return (
             <div key={index} className="metric-card">
@@ -321,7 +336,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
                   style={{ backgroundColor: projection.color }}
                 />
                 <p className="text-sm text-gray-600 font-medium">
-                  {projection.strategy.name}
+                  {selectedAsset === 'portfolio' ? projection.strategy.name : `${projection.strategy.name.split(' - ')[0]} - ${selectedAssetData?.name}`}
                 </p>
               </div>
               <p className="text-lg font-bold text-gray-900">
@@ -332,6 +347,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
               }`}>
                 {totalGrowth > 0 ? '+' : ''}{formatCurrency(totalGrowth, currency)} ({growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%)
               </p>
+              {selectedAsset !== 'portfolio' && selectedAssetData && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Rendimento: {formatPercentage(selectedAssetData.expectedReturn)} annuo
+                </p>
+              )}
             </div>
           );
         })}
