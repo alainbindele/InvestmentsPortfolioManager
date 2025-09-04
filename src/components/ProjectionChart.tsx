@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Strategy, Asset, ASSET_COLORS, ASSET_TYPE_LABELS } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
-import { formatCurrency, projectPortfolioGrowth } from '../utils/calculations';
+import { formatCurrency, formatPercentage, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
 import { TrendingUp, ChevronDown } from 'lucide-react';
 
