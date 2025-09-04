@@ -112,18 +112,6 @@ export const translations = {
     diversificationGoal: 'Diversificazione',
     inflationProtection: 'Protezione dall\'Inflazione',
     
-    // PAC (Piano di Accumulo Capitale)
-    pac: 'Piano di Accumulo (PAC)',
-    pacDescription: 'Crea e gestisci piani di accumulo capitale per investimenti ricorrenti',
-    isPAC: 'Abilita Piano di Accumulo (PAC)',
-    pacAmount: 'Importo PAC',
-    pacFrequency: 'Frequenza PAC',
-    monthly: 'Mensile',
-    quarterly: 'Trimestrale',
-    biannual: 'Semestrale',
-    annual: 'Annuale',
-    pacActive: 'PAC Attivo',
-    
     // Messages
     noAssetsMessage: 'Nessun asset presente. Aggiungi il tuo primo asset per iniziare.',
     noAssetsToAnalyze: 'Aggiungi almeno un asset per analizzare il portfolio',
@@ -274,18 +262,6 @@ export const translations = {
     capitalPreservation: 'Capital Preservation',
     diversificationGoal: 'Diversification',
     inflationProtection: 'Inflation Protection',
-    
-    // PAC (Dollar Cost Averaging)
-    pac: 'Dollar Cost Averaging (DCA)',
-    pacDescription: 'Create and manage dollar cost averaging plans for recurring investments',
-    isPAC: 'Enable Dollar Cost Averaging (DCA)',
-    pacAmount: 'DCA Amount',
-    pacFrequency: 'DCA Frequency',
-    monthly: 'Monthly',
-    quarterly: 'Quarterly',
-    biannual: 'Biannual',
-    annual: 'Annual',
-    pacActive: 'DCA Active',
     
     // Messages
     noAssetsMessage: 'No assets present. Add your first asset to get started.',
@@ -438,18 +414,6 @@ export const translations = {
     diversificationGoal: 'Diversificación',
     inflationProtection: 'Protección contra la Inflación',
     
-    // PAC (Plan de Acumulación)
-    pac: 'Plan de Acumulación (PAC)',
-    pacDescription: 'Crea y gestiona planes de acumulación para inversiones recurrentes',
-    isPAC: 'Habilitar Plan de Acumulación (PAC)',
-    pacAmount: 'Cantidad PAC',
-    pacFrequency: 'Frecuencia PAC',
-    monthly: 'Mensual',
-    quarterly: 'Trimestral',
-    biannual: 'Semestral',
-    annual: 'Anual',
-    pacActive: 'PAC Activo',
-    
     // Messages
     noAssetsMessage: 'No hay activos presentes. Añade tu primer activo para comenzar.',
     noAssetsToAnalyze: 'Añade al menos un activo para analizar el portafolio',
@@ -600,18 +564,6 @@ export const translations = {
     capitalPreservation: 'Préservation du Capital',
     diversificationGoal: 'Diversification',
     inflationProtection: 'Protection contre l\'Inflation',
-    
-    // PAC (Plan d'Accumulation)
-    pac: 'Plan d\'Accumulation (PAC)',
-    pacDescription: 'Créez et gérez des plans d\'accumulation pour des investissements récurrents',
-    isPAC: 'Activer le Plan d\'Accumulation (PAC)',
-    pacAmount: 'Montant PAC',
-    pacFrequency: 'Fréquence PAC',
-    monthly: 'Mensuel',
-    quarterly: 'Trimestriel',
-    biannual: 'Semestriel',
-    annual: 'Annuel',
-    pacActive: 'PAC Actif',
     
     // Messages
     noAssetsMessage: 'Aucun actif présent. Ajoutez votre premier actif pour commencer.',
@@ -764,18 +716,6 @@ export const translations = {
     diversificationGoal: 'Diversifikation',
     inflationProtection: 'Inflationsschutz',
     
-    // PAC (Sparplan)
-    pac: 'Sparplan (PAC)',
-    pacDescription: 'Erstellen und verwalten Sie Sparpläne für wiederkehrende Investitionen',
-    isPAC: 'Sparplan aktivieren (PAC)',
-    pacAmount: 'Sparplan-Betrag',
-    pacFrequency: 'Sparplan-Häufigkeit',
-    monthly: 'Monatlich',
-    quarterly: 'Vierteljährlich',
-    biannual: 'Halbjährlich',
-    annual: 'Jährlich',
-    pacActive: 'Sparplan aktiv',
-    
     // Messages
     noAssetsMessage: 'Keine Assets vorhanden. Fügen Sie Ihr erstes Asset hinzu, um zu beginnen.',
     noAssetsToAnalyze: 'Fügen Sie mindestens ein Asset hinzu, um das Portfolio zu analysieren',
@@ -926,18 +866,6 @@ export const translations = {
     capitalPreservation: '资本保值',
     diversificationGoal: '多样化',
     inflationProtection: '通胀保护',
-    
-    // PAC (定投计划)
-    pac: '定投计划 (PAC)',
-    pacDescription: '创建和管理定期投资的定投计划',
-    isPAC: '启用定投计划 (PAC)',
-    pacAmount: '定投金额',
-    pacFrequency: '定投频率',
-    monthly: '月度',
-    quarterly: '季度',
-    biannual: '半年度',
-    annual: '年度',
-    pacActive: '定投激活',
     
     // Messages
     noAssetsMessage: '没有资产。添加您的第一个资产开始使用。',

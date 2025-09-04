@@ -31,9 +31,6 @@ export const AssetForm: React.FC<AssetFormProps> = ({
     expectedReturn: asset?.expectedReturn?.toString() || '',
     rateType: asset?.rateType || 'effective' as 'nominal' | 'effective',
     riskLevel: asset?.riskLevel || 'medium' as RiskLevel,
-    isPAC: asset?.isPAC || false,
-    pacAmount: asset?.pacAmount?.toString() || '',
-    pacFrequency: asset?.pacFrequency || 'monthly' as 'monthly' | 'quarterly' | 'biannual' | 'annual'
   });
   
   const [formData, setFormData] = useState({
@@ -65,9 +62,6 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       expectedReturn: parseFloat(formData.expectedReturn),
       rateType: formData.rateType,
       riskLevel: formData.riskLevel,
-      isPAC: formData.isPAC,
-      pacAmount: formData.isPAC ? parseFloat(formData.pacAmount) : undefined,
-      pacFrequency: formData.isPAC ? formData.pacFrequency : undefined
     };
 
     if (editingAsset && onUpdateAsset) {
@@ -198,112 +192,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
           </select>
         </div>
 
-        {/* PAC Configuration */}
-        <div className="border-t border-gray-200 pt-4">
-          <div className="flex items-center gap-2 mb-3">
-            <input
-              type="checkbox"
-              id="isPAC"
-              checked={formData.isPAC}
-              onChange={(e) => setFormData({ ...formData, isPAC: e.target.checked })}
-              className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-            />
-            <label htmlFor="isPAC" className="text-sm font-medium text-gray-700">
-              {t('isPAC')}
-            </label>
-          </div>
-          
-          <p className="text-xs text-gray-500 mb-3">
-            {t('pacDescription')}
-          </p>
 
-          {formData.isPAC && (
-            <div className="space-y-3 bg-gray-50 p-3 rounded-lg">
-              {/* Rate Type Selection for PAC */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <div className="flex items-center gap-2">
-                    {t('pacRateType')}
-                    <div className="relative group">
-                      <div className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold cursor-help">
-                        i
-                      </div>
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-gray-900 text-white text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
-                        <div className="space-y-2">
-                          <p><strong>{t('nominalRate')}:</strong> {t('nominalRateDescription')}</p>
-                          <p><strong>{t('effectiveRate')}:</strong> {t('effectiveRateDescription')}</p>
-                          <p className="text-yellow-300"><strong>{t('example')}:</strong> {t('rateExample')}</p>
-                          <div className="mt-2 pt-2 border-t border-gray-600">
-                            <p className="text-green-300"><strong>{t('pacExample')}:</strong></p>
-                            <p>• {t('pacNominalExample')}</p>
-                            <p>• {t('pacEffectiveExample')}</p>
-                          </div>
-                        </div>
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
-                      </div>
-                    </div>
-                  </div>
-                </label>
-                <div className="flex gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name={`rateType-${editingAsset?.id || 'new'}`}
-                      value="nominal"
-                      checked={formData.rateType === 'nominal'}
-                      onChange={(e) => setFormData({ ...formData, rateType: 'nominal' })}
-                      className="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500"
-                    />
-                    <span className="text-sm text-gray-700">{t('nominalRate')}</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name={`rateType-${editingAsset?.id || 'new'}`}
-                      value="effective"
-                      checked={formData.rateType === 'effective'}
-                      onChange={(e) => setFormData({ ...formData, rateType: 'effective' })}
-                      className="w-4 h-4 text-primary-600 border-gray-300 focus:ring-primary-500"
-                    />
-                    <span className="text-sm text-gray-700">{t('effectiveRate')}</span>
-                  </label>
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('pacAmount')} (€) *
-                </label>
-                <input
-                  type="number"
-                  value={formData.pacAmount}
-                  onChange={(e) => setFormData({ ...formData, pacAmount: e.target.value })}
-                  className="input-field"
-                  placeholder="500"
-                  min="0"
-                  step="0.01"
-                  required={formData.isPAC}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('pacFrequency')}
-                </label>
-                <select
-                  value={formData.pacFrequency}
-                  onChange={(e) => setFormData({ ...formData, pacFrequency: e.target.value as any })}
-                  className="select-field"
-                >
-                  <option value="monthly">{t('monthly')}</option>
-                  <option value="quarterly">{t('quarterly')}</option>
-                  <option value="biannual">{t('biannual')}</option>
-                  <option value="annual">{t('annual')}</option>
-                </select>
-              </div>
-            </div>
-          )}
-        </div>
 
         <div className="flex gap-3 pt-4">
           <button

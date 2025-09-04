@@ -45,7 +45,6 @@ export const App: React.FC = () => {
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
   const [editingStrategy, setEditingStrategy] = useState<Strategy | null>(null);
   const [showDisclaimer, setShowDisclaimer] = useState(!loadDisclaimerAccepted());
-  const [isRebalancing, setIsRebalancing] = useState(false);
 
   const t = (key: string) => getTranslation(language, key);
 
@@ -124,45 +123,6 @@ export const App: React.FC = () => {
     }, 0);
   };
 
-  const handleRequestAIRebalance = async () => {
-    const lockedAssets = assets.filter(asset => asset.isLocked);
-    const unlockedAssets = assets.filter(asset => !asset.isLocked);
-    
-    if (unlockedAssets.length === 0) {
-      alert(t('noUnlockedAssets'));
-      return;
-    }
-    
-    setIsRebalancing(true);
-    
-    try {
-      // Import ChatGPTService dynamically
-      const { ChatGPTService } = await import('./services/chatgpt');
-      const chatGPTService = new ChatGPTService();
-      
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY_PFB;
-      if (apiKey) {
-        chatGPTService.setApiKey(apiKey);
-      }
-      
-      const lockedAssetIds = lockedAssets.map(asset => asset.id);
-      const strategy = await chatGPTService.generateStrategy(
-        assets, 
-        'balanced', // Default to balanced for rebalancing
-        ['diversificazione', 'ottimizzazione_rischio_rendimento'], 
-        language,
-        lockedAssetIds
-      );
-      
-      handleStrategyGenerated(strategy);
-      setActiveTab('strategies');
-    } catch (error) {
-      console.error('Errore nel ribilanciamento AI:', error);
-      alert(t('rebalanceError'));
-    } finally {
-      setIsRebalancing(false);
-    }
-  };
   const handleCancelAssetEdit = () => {
     setEditingAsset(null);
   };
@@ -420,21 +380,6 @@ export const App: React.FC = () => {
                             {t(asset.riskLevel)}
                           </span>
                         </div>
-                        {asset.isPAC && (
-                          <div className="pt-2 border-t border-gray-200">
-                            <div className="flex items-center gap-2 mb-1">
-                              <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                              <span className="text-xs font-medium text-primary-700">{t('pacActive')}</span>
-                            </div>
-                            <div className="text-xs text-gray-600">
-                              {formatCurrency(asset.pacAmount || 0, currency)}/{
-                                asset.pacFrequency === 'monthly' ? t('monthly') :
-                                asset.pacFrequency === 'quarterly' ? t('quarterly') :
-                                asset.pacFrequency === 'biannual' ? t('biannual') : t('annual')
-                              }
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   ))}
@@ -476,22 +421,12 @@ export const App: React.FC = () => {
 
             {/* Portfolio Growth Projection */}
             {assets.length > 0 && (
-              <div className="card">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-success-100 rounded-lg">
-                    <TrendingUp className="w-5 h-5 text-success-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{t('portfolioGrowthProjection')}</h3>
-                    <p className="text-sm text-gray-600">
-                      {t('portfolioGrowthDescription')}
-                    </p>
-                  </div>
-                </div>
-                <ProjectionChart
-                  strategies={[currentStrategy]}
-                  assets={assets}
-                  currency={currency}
+              <ProjectionChart
+                strategies={[currentStrategy]}
+                assets={assets}
+                currency={currency}
+                language={language}
+              />
                   language={language}
                 />
               </div>
@@ -519,12 +454,6 @@ export const App: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('investmentStrategies')}</h2>
               <p className="text-gray-600">{t('strategiesDescription')}</p>
             </div>
-
-            {/* Current Strategy */}
-            {assets.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentStrategy')}</h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                   <StrategyCard
                     strategy={currentStrategy}
                     assets={assets}
@@ -659,23 +588,6 @@ export const App: React.FC = () => {
                 </button>
               </div>
             )}
-          </div>
-          )}
-
-          {activeTab === 'pac' && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('pac')}</h2>
-              <p className="text-gray-600">{t('pacDescription')}</p>
-            </div>
-
-            <PACManager
-              assets={assets}
-              pacPlans={pacPlans}
-              onAddPAC={handleAddPAC}
-              onRemovePAC={handleRemovePAC}
-              language={language}
-            />
           </div>
           )}
 

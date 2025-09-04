@@ -11,32 +11,7 @@ export interface Asset {
   expectedReturn: number;
   rateType?: 'nominal' | 'effective'; // Only used for PAC assets
   riskLevel: RiskLevel;
-  isPAC?: boolean;
-  pacAmount?: number;
-  pacFrequency?: 'monthly' | 'quarterly' | 'biannual' | 'annual';
   isLocked?: boolean; // For AI rebalancing - locked assets won't be modified
-}
-
-// PAC Types
-export interface PACPlan {
-  id: string;
-  name: string;
-  monthlyAmount: number;
-  frequency: 'monthly' | 'quarterly' | 'biannual' | 'annual';
-  duration: number; // years
-  targetAllocations: { [assetId: string]: number };
-  expectedReturn: number;
-  startDate: Date;
-  isActive: boolean;
-}
-
-export interface PACProjection {
-  month: number;
-  totalInvested: number;
-  portfolioValue: number;
-  totalGain: number;
-  gainPercentage: number;
-  monthlyContribution: number;
 }
 
 // Strategy Types
