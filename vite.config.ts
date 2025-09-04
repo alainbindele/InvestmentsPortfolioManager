@@ -39,8 +39,7 @@ export default defineConfig({
           'utils': [
             './src/utils/calculations.ts',
             './src/utils/storage.ts',
-            './src/utils/translations.ts',
-            './src/utils/seo.ts'
+            './src/utils/translations.ts'
           ]
         }
       }
