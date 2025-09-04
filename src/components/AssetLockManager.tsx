@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lock, Unlock, Bot, AlertCircle } from 'lucide-react';
+import { Lock, Unlock } from 'lucide-react';
 import { Asset } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
