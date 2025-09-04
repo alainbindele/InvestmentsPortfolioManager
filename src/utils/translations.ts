@@ -982,4 +982,234 @@ export const translations = {
     rebalancing: 'Rééquilibrage en cours...',
     allAssetsLocked: 'Tous les actifs sont verrouillés',
     unlockSomeAssets: 'Déverrouillez au moins un actif pour permettre le rééquilibrage IA',
-    withLockedAssets: 'avec
+    withLockedAssets: 'avec Actifs Verrouillés',
+    noUnlockedAssets: 'Aucun actif disponible pour le rééquilibrage. Déverrouillez au moins un actif.',
+    rebalanceError: 'Erreur lors du rééquilibrage. Veuillez réessayer plus tard.',
+    
+    // Common
+    cancel: 'Annuler',
+    save: 'Sauvegarder',
+    edit: 'Modifier',
+    delete: 'Supprimer',
+    value: 'Valeur',
+    target: 'Cible',
+    current: 'Actuel',
+    continue: 'Continuer',
+    
+    // Strategy Management
+    editName: 'Modifier le Nom',
+    deleteStrategy: 'Supprimer la Stratégie',
+    confirmDeleteStrategy: 'Confirmer la Suppression',
+    deleteStrategyWarning: 'Cette action ne peut pas être annulée.',
+    
+    // Reset
+    reset: 'Réinitialiser',
+    resetData: 'Réinitialiser les Données',
+    confirmReset: 'Confirmer la Réinitialisation',
+    resetWarning: 'Cette action supprimera toutes vos données sauvegardées.',
+    dataToDelete: 'Données à supprimer',
+    assets: 'actifs',
+    aiStrategies: 'stratégies IA',
+    languageAndCurrency: 'Langue et devise',
+    resetConfirm: 'Tout Supprimer',
+    
+    // Disclaimer
+    disclaimerTitle: 'Avis Important',
+    disclaimerSubtitle: 'Avant d\'utiliser Portfolio Balancer',
+    disclaimerAcceptance: 'J\'ai lu et compris l\'avis. J\'accepte d\'utiliser Portfolio Balancer sous ma responsabilité.',
+    
+    // SEO
+    seoDescription: 'Outil avancé pour l\'optimisation et le rééquilibrage de portefeuilles d\'investissement avec intelligence artificielle. Analysez, comparez et optimisez vos investissements.',
+    seoKeywords: 'portfolio balancer, investissements, IA, rééquilibrage, DCA, ETF, actions, obligations, diversification, analyse portefeuille, stratégies investissement',
+    
+    // AI Fallback Messages
+    analisiAiCompletata: 'Analyse IA terminée avec succès',
+    raccomandazioniPersonalizzate: 'Recommandations personnalisées générées par IA',
+    analisiAiNonDisponibile: '⚠️ Analyse IA non disponible - vérifiez la configuration API',
+    diversificazioneDiscreta: 'Le portefeuille montre une diversification décente entre les classes d\'actifs',
+    consideraRivedere: 'Considérez réviser l\'allocation basée sur vos objectifs de risque',
+    monitoraRegolarmente: 'Surveillez les performances régulièrement et rééquilibrez si nécessaire',
+    analisiMercato: 'Analyse de Marché',
+    analisiAiTemporaneamente: 'Analyse IA temporairement indisponible. Configurez la clé API OpenAI pour obtenir des perspectives de marché en temps réel.',
+    strategiaFallback: 'Stratégie de secours - configurez l\'API OpenAI pour des stratégies IA personnalisées',
+    optimizedByAi: 'optimisée par IA pour profil',
+    ricercaMercatoNonDisponibile: 'Recherche de marché non disponible pour',
+    configuraApiKey: 'Configurez la clé API OpenAI pour des perspectives en temps réel.',
+    analisiMercatoTemporaneamente: 'Analyse de marché temporairement indisponible pour',
+    erroreRecupero: 'Erreur lors de la récupération de la recherche de marché pour',
+    verificaConfigurazioneApi: 'Vérifiez la configuration API.',
+    nessunJsonTrovato: 'Aucun JSON trouvé dans la réponse',
+    
+    // Click messages
+    suggestionPrefix: 'Suggestion:',
+    clickAiStrategiesMessage: 'Cliquez sur les stratégies IA ci-dessous pour les sélectionner et les comparer avec votre stratégie actuelle.'
+  },
+  
+  de: {
+    // App
+    appTitle: 'Portfolio Balancer',
+    appSubtitle: 'Optimieren Sie Ihre Investitionen mit KI',
+    
+    // Navigation
+    portfolio: 'Portfolio',
+    strategies: 'Strategien',
+    aiAssistant: 'KI-Assistent',
+    
+    // Portfolio
+    addAsset: 'Asset Hinzufügen',
+    addAssetButton: 'Hinzufügen',
+    updateAsset: 'Asset Aktualisieren',
+    editAsset: 'Asset Bearbeiten',
+    assetName: 'Asset-Name',
+    assetType: 'Asset-Typ',
+    assetCurrentValue: 'Aktueller Wert (€)',
+    expectedReturn: 'Erwartete Rendite (%)',
+    expectedReturnLabel: 'Erwartete Rendite (%)',
+    riskLevel: 'Risikolevel',
+    currentValue: 'Aktueller Wert',
+    risk: 'Risiko',
+    portfolioAssets: 'Portfolio-Assets',
+    portfolioMetrics: 'Portfolio-Metriken',
+    totalValue: 'Gesamtwert',
+    riskScore: 'Risiko-Score',
+    diversification: 'Diversifikation',
+    currentAllocation: 'Aktuelle Allokation',
+    noAssetsMessage: 'Keine Assets im Portfolio',
+    fillAllRequiredFields: 'Alle Pflichtfelder ausfüllen',
+    
+    // Asset Types
+    stocks: 'Aktien',
+    bonds: 'Anleihen',
+    etf: 'ETF',
+    crypto: 'Kryptowährungen',
+    real_estate: 'Immobilien',
+    cash: 'Bargeld',
+    commodities: 'Rohstoffe',
+    other: 'Andere',
+    
+    // Risk Levels
+    very_low: 'Sehr Niedrig',
+    low: 'Niedrig',
+    medium: 'Mittel',
+    high: 'Hoch',
+    very_high: 'Sehr Hoch',
+    
+    // Asset Lock Manager
+    assetLockManager: 'Asset-Sperren-Manager',
+    assetLockDescription: 'Sperren Sie spezifische Assets für selektives KI-Rebalancing',
+    lockedAssets: 'Gesperrte Assets',
+    unlockedAssets: 'Entsperrte Assets',
+    assetLockControls: 'Asset-Sperren-Kontrollen',
+    locked: 'Gesperrt',
+    lockAsset: 'Asset Sperren',
+    unlockAsset: 'Asset Entsperren',
+    aiRebalanceTitle: 'Intelligentes KI-Rebalancing',
+    aiRebalanceDescription: 'Die KI wird nur entsperrte Assets optimieren und gesperrte fest halten. Wird rebalancieren',
+    nonBloccati: 'entsperrt',
+    lockedAssetsNote: 'Assets die fest bleiben werden:',
+    requestAiRebalance: 'KI-Rebalancing Anfordern',
+    rebalancing: 'Rebalancing läuft...',
+    allAssetsLocked: 'Alle Assets sind gesperrt',
+    unlockSomeAssets: 'Entsperren Sie mindestens ein Asset um KI-Rebalancing zu ermöglichen',
+    withLockedAssets: 'mit Gesperrten Assets',
+    noUnlockedAssets: 'Keine Assets für Rebalancing verfügbar. Entsperren Sie mindestens ein Asset.',
+    rebalanceError: 'Fehler beim Rebalancing. Bitte versuchen Sie es später erneut.',
+    
+    // Common
+    cancel: 'Abbrechen',
+    save: 'Speichern',
+    edit: 'Bearbeiten',
+    delete: 'Löschen',
+    value: 'Wert',
+    target: 'Ziel',
+    current: 'Aktuell',
+    continue: 'Weiter',
+    
+    // Click messages
+    suggestionPrefix: 'Vorschlag:',
+    clickAiStrategiesMessage: 'Klicken Sie auf die KI-Strategien unten, um sie auszuwählen und mit Ihrer aktuellen Strategie zu vergleichen.'
+  },
+  
+  zh: {
+    // App
+    appTitle: 'Portfolio Balancer',
+    appSubtitle: '用AI优化您的投资',
+    
+    // Navigation
+    portfolio: '投资组合',
+    strategies: '策略',
+    aiAssistant: 'AI助手',
+    
+    // Portfolio
+    addAsset: '添加资产',
+    addAssetButton: '添加',
+    updateAsset: '更新资产',
+    editAsset: '编辑资产',
+    assetName: '资产名称',
+    assetType: '资产类型',
+    assetCurrentValue: '当前价值 (€)',
+    expectedReturn: '预期收益 (%)',
+    expectedReturnLabel: '预期收益 (%)',
+    riskLevel: '风险等级',
+    currentValue: '当前价值',
+    risk: '风险',
+    portfolioAssets: '投资组合资产',
+    portfolioMetrics: '投资组合指标',
+    totalValue: '总价值',
+    riskScore: '风险评分',
+    diversification: '多样化',
+    currentAllocation: '当前配置',
+    noAssetsMessage: '投资组合中没有资产',
+    fillAllRequiredFields: '填写所有必填字段',
+    
+    // Asset Types
+    stocks: '股票',
+    bonds: '债券',
+    etf: 'ETF',
+    crypto: '加密货币',
+    real_estate: '房地产',
+    cash: '现金',
+    commodities: '大宗商品',
+    other: '其他',
+    
+    // Risk Levels
+    very_low: '很低',
+    low: '低',
+    medium: '中等',
+    high: '高',
+    very_high: '很高',
+    
+    // Asset Lock Manager
+    assetLockManager: '资产锁定管理器',
+    assetLockDescription: '锁定特定资产进行选择性AI重新平衡',
+    lockedAssets: '已锁定资产',
+    unlockedAssets: '未锁定资产',
+    assetLockControls: '资产锁定控制',
+    locked: '已锁定',
+    lockAsset: '锁定资产',
+    unlockAsset: '解锁资产',
+    aiRebalanceTitle: '智能AI重新平衡',
+    aiRebalanceDescription: 'AI将只优化未锁定的资产，保持锁定资产不变。将重新平衡',
+    nonBloccati: '未锁定',
+    lockedAssetsNote: '将保持固定的资产：',
+    requestAiRebalance: '请求AI重新平衡',
+    rebalancing: '重新平衡进行中...',
+    allAssetsLocked: '所有资产都已锁定',
+    unlockSomeAssets: '至少解锁一个资产以允许AI重新平衡',
+    withLockedAssets: '带锁定资产',
+    noUnlockedAssets: '没有可用于重新平衡的资产。至少解锁一个资产。',
+    rebalanceError: '重新平衡时出错。请稍后重试。',
+    
+    // Common
+    cancel: '取消',
+    save: '保存',
+    edit: '编辑',
+    delete: '删除',
+    value: '价值',
+    target: '目标',
+    current: '当前',
+    continue: '继续',
+    
+    // Click messages
+    suggestionPrefix: '建议：',
+    clickAiStrategiesMessage: '点击下面的AI策略来选择它们并与您当前的策略进行比较。'
