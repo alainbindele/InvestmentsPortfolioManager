@@ -125,12 +125,22 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   const handleSave = () => {
     if (!isValid) return;
     
+    // Calculate new expected return based on allocations
+    let newExpectedReturn = 0;
+    Object.entries(allocations).forEach(([assetId, allocation]) => {
+      const asset = assets.find(a => a.id === assetId);
+      if (asset) {
+        newExpectedReturn += (asset.expectedReturn * allocation / 100);
+      }
+    });
+    
     const newStrategy: Strategy = {
       ...strategy,
       id: `edited-${strategy.id}-${Date.now()}`,
       name: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategy') : `${strategy.name} (${t('modified')})`,
       description: strategy.name.includes(t('currentStrategyName')) ? t('modifiedStrategyDescription') : `${t('modifiedStrategyPrefix')} ${strategy.name}`,
       targetAllocations: { ...allocations },
+      expectedReturn: Math.round(newExpectedReturn * 10) / 10, // Update expected return based on new allocations
       createdAt: new Date(),
       isAIGenerated: false
     };

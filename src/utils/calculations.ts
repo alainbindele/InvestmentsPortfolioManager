@@ -103,7 +103,7 @@ export const generateCurrentStrategy = (assets: Asset[], language: Language = 'i
     name: getTranslation(language, 'currentStrategyName'),
     description: getTranslation(language, 'currentStrategyDescription'),
     targetAllocations,
-    expectedReturn: metrics.expectedReturn,
+    expectedReturn: Math.round(metrics.expectedReturn * 10) / 10, // Round to 1 decimal
     riskScore: metrics.riskScore,
     sharpeRatio,
     maxDrawdown,
@@ -120,7 +120,96 @@ export const projectPortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
+  // Use strategy-specific calculation if strategy is provided
+  if (strategy && strategy.targetAllocations && Object.keys(strategy.targetAllocations).length > 0) {
+    return calculateStrategySpecificGrowth(initialValue, strategy, assets, years);
+  }
   return calculatePrecisePortfolioGrowth(initialValue, annualReturn, years, assets, strategy);
+};
+
+// New function for strategy-specific growth calculations
+export const calculateStrategySpecificGrowth = (
+  initialValue: number,
+  strategy: Strategy,
+  assets: Asset[],
+  years: number
+): Array<{ year: number; value: number }> => {
+  // Calculate weighted returns based on strategy allocations and asset-specific returns
+  let strategyWeightedReturn = 0;
+  let totalStrategyAllocation = 0;
+  
+  // Calculate the weighted return for this specific strategy
+  Object.entries(strategy.targetAllocations).forEach(([assetId, allocation]) => {
+    const asset = assets.find(a => a.id === assetId);
+    if (asset && allocation > 0) {
+      const weight = allocation / 100;
+      strategyWeightedReturn += asset.expectedReturn * weight;
+      totalStrategyAllocation += allocation;
+    }
+  });
+  
+  // Normalize if allocations don't sum to 100%
+  if (totalStrategyAllocation > 0 && totalStrategyAllocation !== 100) {
+    strategyWeightedReturn = (strategyWeightedReturn / totalStrategyAllocation) * 100;
+  }
+  
+  // Use strategy's expected return if no valid allocations found
+  const finalReturn = strategyWeightedReturn > 0 ? strategyWeightedReturn : strategy.expectedReturn;
+  
+  // Calculate monthly return for this strategy
+  const monthlyReturn = finalReturn / 100 / 12;
+  
+  // Calculate total monthly PAC contributions based on strategy allocations
+  let totalMonthlyPAC = 0;
+  Object.entries(strategy.targetAllocations).forEach(([assetId, allocation]) => {
+    const asset = assets.find(a => a.id === assetId);
+    if (asset && asset.isPAC && asset.pacAmount && allocation > 0) {
+      const weight = allocation / 100;
+      let assetMonthlyContribution = 0;
+      
+      switch (asset.pacFrequency) {
+        case 'monthly':
+          assetMonthlyContribution = asset.pacAmount;
+          break;
+        case 'quarterly':
+          assetMonthlyContribution = asset.pacAmount / 3;
+          break;
+        case 'biannual':
+          assetMonthlyContribution = asset.pacAmount / 6;
+          break;
+        case 'annual':
+          assetMonthlyContribution = asset.pacAmount / 12;
+          break;
+      }
+      
+      totalMonthlyPAC += assetMonthlyContribution * weight;
+    }
+  });
+  
+  const totalMonths = years * 12;
+  let currentValue = initialValue;
+  const yearlyProjections = [];
+  
+  // Calculate month by month
+  for (let month = 0; month <= totalMonths; month++) {
+    // Add yearly projections
+    if (month % 12 === 0) {
+      yearlyProjections.push({
+        year: month / 12,
+        value: Math.round(currentValue)
+      });
+    }
+    
+    if (month < totalMonths) {
+      // Apply monthly compound growth using strategy-specific return
+      currentValue *= (1 + monthlyReturn);
+      
+      // Add monthly PAC contributions weighted by strategy allocation
+      currentValue += totalMonthlyPAC;
+    }
+  }
+  
+  return yearlyProjections;
 };
 
 // New precise calculation with monthly compounding
@@ -131,7 +220,7 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // For portfolio projections, calculate weighted monthly return based on individual asset rates
+  // For current portfolio projections, use actual asset allocations and returns
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
   // Calculate weighted portfolio monthly return

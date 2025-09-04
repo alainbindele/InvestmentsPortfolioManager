@@ -32,7 +32,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   // Force chart re-render when assets change (especially PAC settings)
   React.useEffect(() => {
     setChartKey(prev => prev + 1);
-  }, [assets, strategies]);
+  }, [assets, strategies, timeHorizon, selectedAsset]);
   
   // Helper function for single asset projection
   const projectAssetGrowth = (
@@ -100,16 +100,22 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   // Generate projection data for all strategies
   const allProjections = strategies.map((strategy, index) => {
     if (selectedAsset === 'portfolio') {
+      // Use strategy-specific calculation that considers target allocations
       return {
         strategy,
         data: projectPortfolioGrowth(
           totalValue,
-          strategy.expectedReturn,
+          strategy.expectedReturn, // This will be recalculated based on allocations
           timeHorizon,
           assets,
           strategy
         ),
-        color: index === 0 ? '#6b7280' : `hsl(${(index - 1) * 60}, 70%, 50%)`
+        color: index === 0 ? '#6b7280' : 
+               index === 1 ? '#10b981' : 
+               index === 2 ? '#3b82f6' : 
+               index === 3 ? '#f59e0b' : 
+               index === 4 ? '#ef4444' : 
+               `hsl(${(index - 1) * 60 + 30}, 70%, 50%)`
       };
     } else {
       // Single asset projection
@@ -126,7 +132,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   }).filter(Boolean) as Array<{ strategy: Strategy; data: Array<{ year: number; value: number }>; color: string }>;
   
   // Combine data for chart
-  const chartData = allProjections[0]?.data.map((_, yearIndex) => {
+  const chartData = allProjections.length > 0 ? allProjections[0].data.map((_, yearIndex) => {
     const yearData: any = {
       year: yearIndex
     };
@@ -139,7 +145,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
     });
     
     return yearData;
-  });
+  }) : [];
   
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -151,7 +157,12 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             const projectionStrategy = allProjections[strategyIndex]?.strategy;
             return (
               <p key={index} className="text-sm" style={{ color: entry.color }}>
-                {projectionStrategy?.name}: {formatCurrency(entry.value, currency)}
+                <strong>{projectionStrategy?.name}:</strong> {formatCurrency(entry.value, currency)}
+                {projectionStrategy && (
+                  <span className="ml-2 text-xs text-gray-500">
+                    ({formatPercentage(projectionStrategy.expectedReturn)} annuo)
+                  </span>
+                )}
               </p>
             );
           })}

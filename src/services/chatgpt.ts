@@ -362,25 +362,27 @@ export class ChatGPTService {
     const t = (key: string) => getTranslation(language as any, key);
     
     let targetAllocations: { [assetId: string]: number } = {};
+    let strategyExpectedReturn = 0;
     
     // Strategia di fallback basata sul profilo di rischio
     assets.forEach(asset => {
+      let allocation = 0;
       switch (riskProfile) {
         case 'conservative':
           switch (asset.type) {
             case 'bonds':
             case 'cash':
-              targetAllocations[asset.id] = 35;
+              allocation = 35;
               break;
             case 'etf':
             case 'stocks':
-              targetAllocations[asset.id] = 25;
+              allocation = 25;
               break;
             case 'real_estate':
-              targetAllocations[asset.id] = 20;
+              allocation = 20;
               break;
             default:
-              targetAllocations[asset.id] = 5;
+              allocation = 5;
           }
           break;
           
@@ -388,19 +390,19 @@ export class ChatGPTService {
           switch (asset.type) {
             case 'etf':
             case 'stocks':
-              targetAllocations[asset.id] = 40;
+              allocation = 40;
               break;
             case 'bonds':
-              targetAllocations[asset.id] = 25;
+              allocation = 25;
               break;
             case 'real_estate':
-              targetAllocations[asset.id] = 20;
+              allocation = 20;
               break;
             case 'cash':
-              targetAllocations[asset.id] = 10;
+              allocation = 10;
               break;
             default:
-              targetAllocations[asset.id] = 5;
+              allocation = 5;
           }
           break;
           
@@ -408,28 +410,41 @@ export class ChatGPTService {
           switch (asset.type) {
             case 'etf':
             case 'stocks':
-              targetAllocations[asset.id] = 55;
+              allocation = 55;
               break;
             case 'crypto':
-              targetAllocations[asset.id] = 15;
+              allocation = 15;
               break;
             case 'real_estate':
-              targetAllocations[asset.id] = 15;
+              allocation = 15;
               break;
             case 'bonds':
-              targetAllocations[asset.id] = 10;
+              allocation = 10;
               break;
             default:
-              targetAllocations[asset.id] = 5;
+              allocation = 5;
           }
           break;
       }
+      
+      targetAllocations[asset.id] = allocation;
+      // Calculate weighted return for this strategy
+      strategyExpectedReturn += (asset.expectedReturn * allocation / 100);
     });
 
     // Normalizza le allocazioni
     const totalAllocation = Object.values(targetAllocations).reduce((sum, val) => sum + val, 0);
+    let normalizedReturn = 0;
+    
     Object.keys(targetAllocations).forEach(key => {
-      targetAllocations[key] = Math.round((targetAllocations[key] / totalAllocation) * 100);
+      const normalizedAllocation = Math.round((targetAllocations[key] / totalAllocation) * 100);
+      targetAllocations[key] = normalizedAllocation;
+      
+      // Recalculate return with normalized allocations
+      const asset = assets.find(a => a.id === key);
+      if (asset) {
+        normalizedReturn += (asset.expectedReturn * normalizedAllocation / 100);
+      }
     });
 
     return {
@@ -437,7 +452,7 @@ export class ChatGPTService {
       name: `⚠️ ${t('strategy')} ${t(riskProfile)} (Fallback)`,
       description: t('strategiaFallback'),
       targetAllocations,
-      expectedReturn: this.getDefaultReturn(riskProfile),
+      expectedReturn: Math.round(normalizedReturn * 10) / 10, // Use calculated return, rounded to 1 decimal
       riskScore: this.getDefaultRisk(riskProfile),
       sharpeRatio: this.calculateDefaultSharpe(riskProfile),
       maxDrawdown: this.getDefaultDrawdown(riskProfile),
