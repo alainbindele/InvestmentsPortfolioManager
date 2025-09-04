@@ -1,6 +1,6 @@
 import { Language } from '../types/language';
 
-export const translations = {
+export function getTranslation(language: Language, key: string): string {
   it: {
     // App
     appTitle: 'Portfolio Balancer',
