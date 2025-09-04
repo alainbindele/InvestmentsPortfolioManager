@@ -216,6 +216,25 @@
   }
 }
 
+/* Cookie consent animations */
+.cookie-consent-enter {
+  transform: translateY(100%);
+}
+
+.cookie-consent-enter-active {
+  transform: translateY(0);
+  transition: transform 300ms ease-in-out;
+}
+
+.cookie-consent-exit {
+  transform: translateY(0);
+}
+
+.cookie-consent-exit-active {
+  transform: translateY(100%);
+  transition: transform 300ms ease-in-out;
+}
+
 /* Force maximum z-index for all modal and dropdown elements */
 .z-\[999999\] {
   z-index: 999999 !important;

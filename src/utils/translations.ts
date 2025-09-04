@@ -128,6 +128,13 @@ export const translations = {
     reset: 'Reset',
     resetData: 'Resetta Dati',
     
+    // Cookie Consent
+    cookieConsentTitle: 'Utilizzo dei Cookie',
+    cookieConsentMessage: 'Questo sito utilizza cookie tecnici necessari per il funzionamento dell\'applicazione, incluso il salvataggio dei tuoi dati di portfolio.',
+    cookieConsentDetails: 'I cookie sono essenziali per salvare i tuoi asset, strategie e preferenze. Senza di essi l\'app non può funzionare.',
+    acceptCookies: 'Accetta Cookie',
+    decline: 'Rifiuta',
+    
     // Asset Lock Manager
     assetLockManager: 'Gestione Blocco Asset',
     assetLockDescription: 'Blocca gli asset che non vuoi modificare durante il ribilanciamento AI',
@@ -278,6 +285,13 @@ export const translations = {
     home: 'Home',
     reset: 'Reset',
     resetData: 'Reset Data',
+    
+    // Cookie Consent
+    cookieConsentTitle: 'Cookie Usage',
+    cookieConsentMessage: 'This site uses technical cookies necessary for the application to function, including saving your portfolio data.',
+    cookieConsentDetails: 'Cookies are essential to save your assets, strategies and preferences. Without them the app cannot work.',
+    acceptCookies: 'Accept Cookies',
+    decline: 'Decline',
     
     // Asset Lock Manager
     assetLockManager: 'Asset Lock Manager',
@@ -430,6 +444,13 @@ export const translations = {
     reset: 'Reiniciar',
     resetData: 'Reiniciar Datos',
     
+    // Cookie Consent
+    cookieConsentTitle: 'Uso de Cookies',
+    cookieConsentMessage: 'Este sitio utiliza cookies técnicas necesarias para el funcionamiento de la aplicación, incluyendo el guardado de tus datos de portafolio.',
+    cookieConsentDetails: 'Las cookies son esenciales para guardar tus activos, estrategias y preferencias. Sin ellas la app no puede funcionar.',
+    acceptCookies: 'Aceptar Cookies',
+    decline: 'Rechazar',
+    
     // Asset Lock Manager
     assetLockManager: 'Gestor de Bloqueo de Activos',
     assetLockDescription: 'Bloquea los activos que no quieres modificar durante el rebalanceo IA',
@@ -580,6 +601,13 @@ export const translations = {
     home: 'Accueil',
     reset: 'Réinitialiser',
     resetData: 'Réinitialiser les Données',
+    
+    // Cookie Consent
+    cookieConsentTitle: 'Utilisation des Cookies',
+    cookieConsentMessage: 'Ce site utilise des cookies techniques nécessaires au fonctionnement de l\'application, y compris la sauvegarde de vos données de portefeuille.',
+    cookieConsentDetails: 'Les cookies sont essentiels pour sauvegarder vos actifs, stratégies et préférences. Sans eux l\'app ne peut pas fonctionner.',
+    acceptCookies: 'Accepter les Cookies',
+    decline: 'Refuser',
     
     // Asset Lock Manager
     assetLockManager: 'Gestionnaire de Verrouillage d\'Actifs',
@@ -732,6 +760,13 @@ export const translations = {
     reset: 'Zurücksetzen',
     resetData: 'Daten zurücksetzen',
     
+    // Cookie Consent
+    cookieConsentTitle: 'Cookie-Nutzung',
+    cookieConsentMessage: 'Diese Seite verwendet technische Cookies, die für das Funktionieren der Anwendung notwendig sind, einschließlich der Speicherung Ihrer Portfolio-Daten.',
+    cookieConsentDetails: 'Cookies sind essentiell, um Ihre Assets, Strategien und Einstellungen zu speichern. Ohne sie kann die App nicht funktionieren.',
+    acceptCookies: 'Cookies Akzeptieren',
+    decline: 'Ablehnen',
+    
     // Asset Lock Manager
     assetLockManager: 'Asset-Sperren-Manager',
     assetLockDescription: 'Sperren Sie Assets, die Sie während der KI-Neugewichtung nicht ändern möchten',
@@ -882,6 +917,13 @@ export const translations = {
     home: '首页',
     reset: '重置',
     resetData: '重置数据',
+    
+    // Cookie Consent
+    cookieConsentTitle: 'Cookie使用',
+    cookieConsentMessage: '本站使用应用程序运行所必需的技术Cookie，包括保存您的投资组合数据。',
+    cookieConsentDetails: 'Cookie对于保存您的资产、策略和偏好设置至关重要。没有它们，应用程序无法工作。',
+    acceptCookies: '接受Cookie',
+    decline: '拒绝',
     
     // Asset Lock Manager
     assetLockManager: '资产锁定管理器',

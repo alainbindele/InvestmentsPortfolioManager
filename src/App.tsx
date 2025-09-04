@@ -8,6 +8,7 @@ import { CurrencySelector } from './components/CurrencySelector';
 import { ResetButton } from './components/ResetButton';
 import { SEOHead } from './components/SEOHead';
 import { DisclaimerModal } from './components/DisclaimerModal';
+import { CookieConsent } from './components/CookieConsent';
 import { calculatePortfolioMetrics, formatCurrency, formatPercentage, generateCurrentStrategy } from './utils/calculations';
 import { 
   saveAssets, 
@@ -220,6 +221,9 @@ export const App: React.FC = () => {
         onAccept={handleDisclaimerAccept}
         onDecline={handleDisclaimerDecline}
       />
+      
+      {/* Cookie Consent */}
+      <CookieConsent language={language} />
       
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
