@@ -102,10 +102,8 @@ export const App: React.FC = () => {
     ));
     setEditingAsset(null);
     
-    // Force re-render of components that depend on PAC calculations
-    // This will trigger useEffect hooks in child components
+    // Force re-render of components that depend on calculations
     setTimeout(() => {
-      // Trigger a state update to force component re-renders
       setAssets(current => [...current]);
     }, 0);
   };
@@ -189,6 +187,7 @@ export const App: React.FC = () => {
       setAiStrategies(current => [...current]);
     }, 0);
   };
+
   const handleDisclaimerAccept = () => {
     saveDisclaimerAccepted();
     setShowDisclaimer(false);
@@ -300,307 +299,314 @@ export const App: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <React.Suspense fallback={<div className="flex items-center justify-center py-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div></div>}>
           {activeTab === 'portfolio' && (
-          <div className="space-y-8">
-            {/* Asset Form */}
-            <AssetForm 
-              onAddAsset={handleAddAsset} 
-              onUpdateAsset={handleUpdateAsset}
-              onCancelEdit={handleCancelAssetEdit}
-              editingAsset={editingAsset}
-              language={language} 
-            />
-
-            {/* Asset Lock Manager */}
-            {assets.length > 0 && (
-              <AssetLockManager
-                assets={assets}
-                onToggleAssetLock={handleToggleAssetLock}
-                language={language}
-                currency={currency}
+            <div className="space-y-8">
+              {/* Asset Form */}
+              <AssetForm 
+                onAddAsset={handleAddAsset} 
+                onUpdateAsset={handleUpdateAsset}
+                onCancelEdit={handleCancelAssetEdit}
+                editingAsset={editingAsset}
+                language={language} 
               />
-            )}
-            {/* Assets List */}
-            {assets.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('portfolioAssets')}</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {assets.map((asset) => (
-                    <div key={asset.id} className="card">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div 
-                            className="w-4 h-4 rounded-full" 
-                            style={{ backgroundColor: ASSET_COLORS[asset.type] }}
-                          />
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-semibold text-gray-900">{asset.name}</h3>
-                              {asset.isLocked && (
-                                <div className="p-1 bg-blue-100 rounded">
-                                  <Lock className="w-3 h-3 text-blue-600" />
-                                </div>
-                              )}
+
+              {/* Asset Lock Manager */}
+              {assets.length > 0 && (
+                <AssetLockManager
+                  assets={assets}
+                  onToggleAssetLock={handleToggleAssetLock}
+                  language={language}
+                  currency={currency}
+                />
+              )}
+
+              {/* Assets List */}
+              {assets.length > 0 && (
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('portfolioAssets')}</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {assets.map((asset) => (
+                      <div key={asset.id} className="card">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <div 
+                              className="w-4 h-4 rounded-full" 
+                              style={{ backgroundColor: ASSET_COLORS[asset.type] }}
+                            />
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h3 className="font-semibold text-gray-900">{asset.name}</h3>
+                                {asset.isLocked && (
+                                  <div className="p-1 bg-blue-100 rounded">
+                                    <Lock className="w-3 h-3 text-blue-600" />
+                                  </div>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-600 capitalize">{t(asset.type)}</p>
                             </div>
-                            <p className="text-sm text-gray-600 capitalize">{t(asset.type)}</p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => handleEditAsset(asset)}
+                              className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                              title={t('edit')}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleRemoveAsset(asset.id)}
+                              className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                              title={t('delete')}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => handleEditAsset(asset)}
-                            className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
-                            title={t('edit')}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleRemoveAsset(asset.id)}
-                            className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                            title={t('delete')}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                        
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">{t('currentValue')}:</span>
+                            <span className="font-semibold">{formatCurrency(asset.currentValue, currency)}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">{t('expectedReturn')}:</span>
+                            <span className="font-semibold text-success-600">{formatPercentage(asset.expectedReturn)}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">{t('risk')}:</span>
+                            <span className={`font-semibold capitalize ${
+                              asset.riskLevel === 'very_low' || asset.riskLevel === 'low' ? 'text-success-600' :
+                              asset.riskLevel === 'medium' ? 'text-warning-600' : 'text-error-600'
+                            }`}>
+                              {t(asset.riskLevel)}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">{t('currentValue')}:</span>
-                          <span className="font-semibold">{formatCurrency(asset.currentValue, currency)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">{t('expectedReturn')}:</span>
-                          <span className="font-semibold text-success-600">{formatPercentage(asset.expectedReturn)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">{t('risk')}:</span>
-                          <span className={`font-semibold capitalize ${
-                            asset.riskLevel === 'very_low' || asset.riskLevel === 'low' ? 'text-success-600' :
-                            asset.riskLevel === 'medium' ? 'text-warning-600' : 'text-error-600'
-                          }`}>
-                            {t(asset.riskLevel)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Portfolio Metrics */}
-            {assets.length > 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioMetrics')}</h3>
-                  <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('totalValue')}</p>
-                      <p className="text-lg sm:text-xl font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-                      <p className="text-lg sm:text-xl font-bold text-success-600">{formatPercentage(metrics.expectedReturn)}</p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('riskScore')}</p>
-                      <p className="text-lg sm:text-xl font-bold text-warning-600">{metrics.riskScore.toFixed(1)}/5</p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('diversification')}</p>
-                      <p className="text-lg sm:text-xl font-bold text-primary-600">{metrics.diversificationScore}/100</p>
-                    </div>
+                    ))}
                   </div>
                 </div>
+              )}
 
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h3>
-                  <PortfolioChart assets={assets} language={language} currency={currency} />
-                </div>
-              </div>
-            )}
-
-            {/* Portfolio Growth Projection */}
-            {assets.length > 0 && (
-              <ProjectionChart
-                strategies={[currentStrategy]}
-                assets={assets}
-                currency={currency}
-                language={language}
-              />
-            )}
-          </div>
-          )}
-
-          {activeTab === 'strategies' && (
-          <div className="space-y-8">
-            {/* Allocation Editor */}
-            {editingStrategy && (
-              <div className="border-2 border-primary-200 rounded-xl p-6 bg-primary-50 allocation-editor">
-                <AllocationEditor
-                  strategy={editingStrategy}
-                  assets={assets}
-                  currency={currency}
-                  language={language}
-                  onSaveAllocation={handleSaveAllocation}
-                  onCancel={handleCancelAllocationEdit}
-                />
-              </div>
-            )}
-
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('investmentStrategies')}</h2>
-              <p className="text-gray-600">{t('strategiesDescription')}</p>
-            </div>
-                  <StrategyCard
-                    strategy={currentStrategy}
-                    assets={assets}
-                    currency={currency}
-                    isSelected={false}
-                    onSelect={() => {}}
-                    onCloneAndEdit={() => handleCloneAndEdit(currentStrategy)}
-                    language={language}
-                  />
+              {/* Portfolio Metrics */}
+              {assets.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                   <div className="card">
-                    <h4 className="font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h4>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioMetrics')}</h3>
+                    <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                      <div className="metric-card">
+                        <p className="text-sm text-gray-600">{t('totalValue')}</p>
+                        <p className="text-lg sm:text-xl font-bold text-gray-900">{formatCurrency(metrics.totalValue, currency)}</p>
+                      </div>
+                      <div className="metric-card">
+                        <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
+                        <p className="text-lg sm:text-xl font-bold text-success-600">{formatPercentage(metrics.expectedReturn)}</p>
+                      </div>
+                      <div className="metric-card">
+                        <p className="text-sm text-gray-600">{t('riskScore')}</p>
+                        <p className="text-lg sm:text-xl font-bold text-warning-600">{metrics.riskScore.toFixed(1)}/5</p>
+                      </div>
+                      <div className="metric-card">
+                        <p className="text-sm text-gray-600">{t('diversification')}</p>
+                        <p className="text-lg sm:text-xl font-bold text-primary-600">{metrics.diversificationScore}/100</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h3>
                     <PortfolioChart assets={assets} language={language} currency={currency} />
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* AI Generated Strategies */}
-            {aiStrategies.length > 0 && (
+              {/* Portfolio Growth Projection */}
+              {assets.length > 0 && (
+                <ProjectionChart
+                  strategies={[currentStrategy]}
+                  assets={assets}
+                  currency={currency}
+                  language={language}
+                />
+              )}
+            </div>
+          )}
+
+          {activeTab === 'strategies' && (
+            <div className="space-y-8">
+              {/* Allocation Editor */}
+              {editingStrategy && (
+                <div className="border-2 border-primary-200 rounded-xl p-6 bg-primary-50 allocation-editor">
+                  <AllocationEditor
+                    strategy={editingStrategy}
+                    assets={assets}
+                    currency={currency}
+                    language={language}
+                    onSaveAllocation={handleSaveAllocation}
+                    onCancel={handleCancelAllocationEdit}
+                  />
+                </div>
+              )}
+
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  {t('aiGeneratedStrategies')} ({aiStrategies.length})
-                </h3>
-                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    💡 <strong>{t('suggestionPrefix')}</strong> {t('clickAiStrategiesMessage')}
-                  </p>
-                </div>
-                <div className="space-y-6">
-                  {aiStrategies.map((strategy) => (
-                    <div key={strategy.id} className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-                      <StrategyCard
-                        strategy={strategy}
-                        assets={assets}
-                        currency={currency}
-                        isSelected={selectedStrategies.has(strategy.id)}
-                        onSelect={() => handleToggleStrategy(strategy.id)}
-                        onCloneAndEdit={() => handleCloneAndEdit(strategy)}
-                        onUpdateName={handleUpdateStrategyName}
-                        onDelete={handleDeleteStrategy}
-                        language={language}
-                        showSelectionCheckbox={true}
-                      />
-                      <div className="card">
-                        <h4 className="font-semibold text-gray-900 mb-4">{t('targetAllocation')}</h4>
-                        <PortfolioChart 
-                          assets={assets} 
-                          language={language} 
-                          currency={currency}
-                          targetAllocations={strategy.targetAllocations}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('investmentStrategies')}</h2>
+                <p className="text-gray-600">{t('strategiesDescription')}</p>
               </div>
-            )}
 
-            {/* Strategy Comparison */}
-            {aiStrategies.length > 0 && (
-              <div className="border-t border-gray-200 pt-8">
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {t('compareStrategies')} 
-                      {strategiesForComparison.length > 1 && (
-                        <span className="ml-2 px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
-                          {strategiesForComparison.length} strategie
-                        </span>
-                      )}
-                    </h3>
-                    {selectedStrategies.size > 0 && (
-                      <button
-                        onClick={() => setSelectedStrategies(new Set())}
-                        className="text-sm text-gray-500 hover:text-gray-700 underline"
-                      >
-                        {t('deselectAll')}
-                      </button>
-                    )}
-                  </div>
-                  <p className="text-gray-600">
-                    {selectedStrategies.size === 0 
-                      ? t('selectOneOrMoreStrategies')
-                      : `${t('comparisonBetween')} ${selectedStrategies.size} ${selectedStrategies.size > 1 ? t('selectedStrategiesPlural') : t('selectedStrategySingular')}`
-                    }
-                  </p>
-                </div>
-
-                {strategiesForComparison.length > 1 ? (
-                  <div className="space-y-8">
-                    <ProjectionChart
-                      strategies={strategiesForComparison}
+              {/* Current Strategy */}
+              {assets.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('currentStrategy')}</h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                    <StrategyCard
+                      strategy={currentStrategy}
                       assets={assets}
                       currency={currency}
+                      isSelected={false}
+                      onSelect={() => {}}
+                      onCloneAndEdit={() => handleCloneAndEdit(currentStrategy)}
                       language={language}
-                      showAssetSelection={true}
                     />
-
-                    <StrategyComparison 
-                      key={`comparison-${strategiesForComparison.map(s => s.id).join('-')}-${strategiesForComparison.length}`}
-                      strategies={strategiesForComparison} 
-                      language={language} 
-                    />
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                      <Target className="w-8 h-8 text-gray-400" />
+                    <div className="card">
+                      <h4 className="font-semibold text-gray-900 mb-4">{t('currentAllocation')}</h4>
+                      <PortfolioChart assets={assets} language={language} currency={currency} />
                     </div>
-                    <h4 className="text-lg font-medium text-gray-900 mb-2">{t('noStrategySelected')}</h4>
-                    <p className="text-gray-600 mb-4">
-                      {t('clickStrategiesAbove')}
+                  </div>
+                </div>
+              )}
+
+              {/* AI Generated Strategies */}
+              {aiStrategies.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {t('aiGeneratedStrategies')} ({aiStrategies.length})
+                  </h3>
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-800">
+                      💡 <strong>Suggerimento:</strong> Seleziona una o più strategie AI per confrontarle con il tuo portfolio attuale.
                     </p>
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Empty State */}
-            {assets.length === 0 && (
-              <div className="text-center py-12">
-                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <Target className="w-12 h-12 text-gray-400" />
+                  <div className="space-y-6">
+                    {aiStrategies.map((strategy) => (
+                      <div key={strategy.id} className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                        <StrategyCard
+                          strategy={strategy}
+                          assets={assets}
+                          currency={currency}
+                          isSelected={selectedStrategies.has(strategy.id)}
+                          onSelect={() => handleToggleStrategy(strategy.id)}
+                          onCloneAndEdit={() => handleCloneAndEdit(strategy)}
+                          onUpdateName={handleUpdateStrategyName}
+                          onDelete={handleDeleteStrategy}
+                          language={language}
+                          showSelectionCheckbox={true}
+                        />
+                        <div className="card">
+                          <h4 className="font-semibold text-gray-900 mb-4">{t('targetAllocation')}</h4>
+                          <PortfolioChart 
+                            assets={assets} 
+                            language={language} 
+                            currency={currency}
+                            targetAllocations={strategy.targetAllocations}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noStrategiesAvailable')}</h3>
-                <p className="text-gray-600 mb-4">{t('addAssetsToCompareStrategies')}</p>
-                <button
-                  onClick={() => setActiveTab('portfolio')}
-                  className="btn-primary"
-                >
-                  {t('addAsset')}
-                </button>
-              </div>
-            )}
-          </div>
+              )}
+
+              {/* Strategy Comparison */}
+              {aiStrategies.length > 0 && (
+                <div className="border-t border-gray-200 pt-8">
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-xl font-semibold text-gray-900">
+                        {t('compareStrategies')} 
+                        {strategiesForComparison.length > 1 && (
+                          <span className="ml-2 px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                            {strategiesForComparison.length} strategie
+                          </span>
+                        )}
+                      </h3>
+                      {selectedStrategies.size > 0 && (
+                        <button
+                          onClick={() => setSelectedStrategies(new Set())}
+                          className="text-sm text-gray-500 hover:text-gray-700 underline"
+                        >
+                          Deseleziona tutto
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-gray-600">
+                      {selectedStrategies.size === 0 
+                        ? 'Seleziona una o più strategie AI per confrontarle con il tuo portfolio attuale.'
+                        : `Confronto tra ${selectedStrategies.size} ${selectedStrategies.size > 1 ? 'strategie selezionate' : 'strategia selezionata'} e il portfolio attuale.`
+                      }
+                    </p>
+                  </div>
+
+                  {strategiesForComparison.length > 1 ? (
+                    <div className="space-y-8">
+                      <ProjectionChart
+                        strategies={strategiesForComparison}
+                        assets={assets}
+                        currency={currency}
+                        language={language}
+                        showAssetSelection={true}
+                      />
+
+                      <StrategyComparison 
+                        key={`comparison-${strategiesForComparison.map(s => s.id).join('-')}-${strategiesForComparison.length}`}
+                        strategies={strategiesForComparison} 
+                        language={language} 
+                      />
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <Target className="w-8 h-8 text-gray-400" />
+                      </div>
+                      <h4 className="text-lg font-medium text-gray-900 mb-2">Nessuna strategia selezionata</h4>
+                      <p className="text-gray-600 mb-4">
+                        Seleziona le strategie qui sopra per vedere il confronto dettagliato.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Empty State */}
+              {assets.length === 0 && (
+                <div className="text-center py-12">
+                  <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <Target className="w-12 h-12 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noStrategiesAvailable')}</h3>
+                  <p className="text-gray-600 mb-4">{t('addAssetsToCompareStrategies')}</p>
+                  <button
+                    onClick={() => setActiveTab('portfolio')}
+                    className="btn-primary"
+                  >
+                    {t('addAsset')}
+                  </button>
+                </div>
+              )}
+            </div>
           )}
 
           {activeTab === 'ai' && (
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('aiAssistantTitle')}</h2>
-              <p className="text-gray-600">{t('aiDescription')}</p>
-            </div>
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('aiAssistantTitle')}</h2>
+                <p className="text-gray-600">{t('aiDescription')}</p>
+              </div>
 
-            <ChatGPTIntegration
-              assets={assets}
-              language={language}
-              onStrategyGenerated={handleStrategyGenerated}
-            />
-          </div>
+              <ChatGPTIntegration
+                assets={assets}
+                language={language}
+                onStrategyGenerated={handleStrategyGenerated}
+              />
+            </div>
           )}
         </React.Suspense>
       </main>
