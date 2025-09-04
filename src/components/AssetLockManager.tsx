@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lock, Unlock, AlertCircle } from 'lucide-react';
+import { Lock, Unlock, AlertCircle, Bot } from 'lucide-react';
 import { Asset } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
@@ -9,9 +9,11 @@ import { getTranslation } from '../utils/translations';
 interface AssetLockManagerProps {
   assets: Asset[];
   onToggleAssetLock: (assetId: string) => void;
+  onRequestAIRebalance?: () => void;
   onRequestAIRebalance: () => void;
   language: Language;
   currency: Currency;
+  isRebalancing?: boolean;
   isRebalancing?: boolean;
 }
 
@@ -19,8 +21,10 @@ export const AssetLockManager: React.FC<AssetLockManagerProps> = ({
   assets,
   onToggleAssetLock,
   onRequestAIRebalance,
+  onRequestAIRebalance,
   language,
   currency,
+  isRebalancing = false
   isRebalancing = false
 }) => {
   const t = (key: string) => getTranslation(language, key);
@@ -141,7 +145,8 @@ export const AssetLockManager: React.FC<AssetLockManagerProps> = ({
       </div>
 
       {/* AI Rebalance Button */}
-      <div className="space-y-4">
+      {onRequestAIRebalance && (
+        <div className="space-y-4">
         {unlockedAssets.length > 0 && (
           <div className="bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-lg p-4">
             <div className="flex items-start gap-3">
@@ -207,7 +212,8 @@ export const AssetLockManager: React.FC<AssetLockManagerProps> = ({
             </div>
           </div>
         )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

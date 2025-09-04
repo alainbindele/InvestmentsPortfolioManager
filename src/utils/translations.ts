@@ -156,7 +156,12 @@ export const translations = {
     rebalancing: 'Ribilanciando...',
     allAssetsLocked: 'Tutti gli asset sono bloccati',
     unlockSomeAssets: 'Sblocca almeno un asset per permettere il ribilanciamento AI',
-    withLockedAssets: 'con Asset Bloccati'
+    withLockedAssets: 'con Asset Bloccati',
+    noUnlockedAssets: 'Nessun asset sbloccato disponibile per il ribilanciamento',
+    rebalanceError: 'Errore durante il ribilanciamento. Riprova più tardi.',
+    nonBloccati: 'non bloccati',
+    asset: 'asset',
+    assets: 'asset'
   },
   
   en: {
@@ -314,7 +319,12 @@ export const translations = {
     rebalancing: 'Rebalancing...',
     allAssetsLocked: 'All assets are locked',
     unlockSomeAssets: 'Unlock at least one asset to allow AI rebalancing',
-    withLockedAssets: 'with Locked Assets'
+    withLockedAssets: 'with Locked Assets',
+    noUnlockedAssets: 'No unlocked assets available for rebalancing',
+    rebalanceError: 'Error during rebalancing. Please try again later.',
+    nonBloccati: 'unlocked',
+    asset: 'asset',
+    assets: 'assets'
   },
   
   es: {
@@ -472,7 +482,12 @@ export const translations = {
     rebalancing: 'Rebalanceando...',
     allAssetsLocked: 'Todos los activos están bloqueados',
     unlockSomeAssets: 'Desbloquea al menos un activo para permitir el rebalanceo IA',
-    withLockedAssets: 'con Activos Bloqueados'
+    withLockedAssets: 'con Activos Bloqueados',
+    noUnlockedAssets: 'No hay activos desbloqueados disponibles para rebalanceo',
+    rebalanceError: 'Error durante el rebalanceo. Inténtalo de nuevo más tarde.',
+    nonBloccati: 'desbloqueados',
+    asset: 'activo',
+    assets: 'activos'
   },
   
   fr: {
@@ -630,7 +645,12 @@ export const translations = {
     rebalancing: 'Rééquilibrage...',
     allAssetsLocked: 'Tous les actifs sont verrouillés',
     unlockSomeAssets: 'Déverrouillez au moins un actif pour permettre le rééquilibrage IA',
-    withLockedAssets: 'avec Actifs Verrouillés'
+    withLockedAssets: 'avec Actifs Verrouillés',
+    noUnlockedAssets: 'Aucun actif déverrouillé disponible pour le rééquilibrage',
+    rebalanceError: 'Erreur lors du rééquilibrage. Veuillez réessayer plus tard.',
+    nonBloccati: 'déverrouillés',
+    asset: 'actif',
+    assets: 'actifs'
   },
   
   de: {
@@ -788,7 +808,12 @@ export const translations = {
     rebalancing: 'Neugewichtung...',
     allAssetsLocked: 'Alle Assets sind gesperrt',
     unlockSomeAssets: 'Entsperren Sie mindestens ein Asset, um KI-Neugewichtung zu ermöglichen',
-    withLockedAssets: 'mit Gesperrten Assets'
+    withLockedAssets: 'mit Gesperrten Assets',
+    noUnlockedAssets: 'Keine entsperrten Assets für Neugewichtung verfügbar',
+    rebalanceError: 'Fehler bei der Neugewichtung. Bitte versuchen Sie es später erneut.',
+    nonBloccati: 'entsperrt',
+    asset: 'Asset',
+    assets: 'Assets'
   },
   
   zh: {
@@ -946,7 +971,12 @@ export const translations = {
     rebalancing: '重新平衡中...',
     allAssetsLocked: '所有资产都已锁定',
     unlockSomeAssets: '至少解锁一个资产以允许AI重新平衡',
-    withLockedAssets: '带锁定资产'
+    withLockedAssets: '带锁定资产',
+    noUnlockedAssets: '没有可用于重新平衡的未锁定资产',
+    rebalanceError: '重新平衡时出错。请稍后重试。',
+    nonBloccati: '未锁定',
+    asset: '资产',
+    assets: '资产'
   }
 };
 

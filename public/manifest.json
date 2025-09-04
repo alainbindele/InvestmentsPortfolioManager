@@ -13,7 +13,7 @@
   "categories": ["finance", "productivity", "business"],
   "screenshots": [
     {
-      "src": "/og-image.jpg",
+      "src": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=630&fit=crop&crop=center",
       "sizes": "1200x630",
       "type": "image/jpeg",
       "platform": "wide",
@@ -22,19 +22,19 @@
   ],
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=192&h=192&fit=crop&crop=center",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable any"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=512&h=512&fit=crop&crop=center",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
     },
     {
-      "src": "/apple-touch-icon.png",
+      "src": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=180&h=180&fit=crop&crop=center",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
