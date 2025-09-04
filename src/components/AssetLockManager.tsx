@@ -9,11 +9,9 @@ import { getTranslation } from '../utils/translations';
 interface AssetLockManagerProps {
   assets: Asset[];
   onToggleAssetLock: (assetId: string) => void;
-  onRequestAIRebalance?: () => void;
   onRequestAIRebalance: () => void;
   language: Language;
   currency: Currency;
-  isRebalancing?: boolean;
   isRebalancing?: boolean;
 }
 
@@ -21,10 +19,8 @@ export const AssetLockManager: React.FC<AssetLockManagerProps> = ({
   assets,
   onToggleAssetLock,
   onRequestAIRebalance,
-  onRequestAIRebalance,
   language,
   currency,
-  isRebalancing = false
   isRebalancing = false
 }) => {
   const t = (key: string) => getTranslation(language, key);
