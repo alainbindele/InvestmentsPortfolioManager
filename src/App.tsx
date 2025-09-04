@@ -427,9 +427,6 @@ export const App: React.FC = () => {
                 currency={currency}
                 language={language}
               />
-                  language={language}
-                />
-              </div>
             )}
           </div>
           )}
