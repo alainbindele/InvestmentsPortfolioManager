@@ -121,17 +121,21 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       // Single asset projection
       const asset = assets.find(a => a.id === selectedAsset);
       if (asset) {
-        // For single asset, create a modified strategy that shows what would happen
-        // if we applied the strategy's logic to just this asset
+        // For single asset projection, we need to calculate what would happen
+        // if we applied the strategy's target allocation to this specific asset
+        const targetAllocation = strategy.targetAllocations[asset.id] || 0;
+        const assetValueInStrategy = (targetAllocation / 100) * totalValue;
+        
+        // Use the asset's own return rate, not the strategy's
         const assetSpecificStrategy = {
           ...strategy,
-          name: `${strategy.name} - ${asset.name}`,
-          expectedReturn: asset.expectedReturn // Use asset's own return rate
+          name: `${strategy.name} - ${asset.name} (${targetAllocation.toFixed(1)}%)`,
+          expectedReturn: asset.expectedReturn
         };
         
         return {
           strategy: assetSpecificStrategy,
-          data: projectAssetGrowth(asset.currentValue, asset, timeHorizon),
+          data: projectAssetGrowth(assetValueInStrategy > 0 ? assetValueInStrategy : asset.currentValue, asset, timeHorizon),
           color: ASSET_COLORS[asset.type] || '#6b7280'
         };
       }
@@ -166,14 +170,9 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             return (
               <p key={index} className="text-sm" style={{ color: entry.color }}>
                 <strong>{projectionStrategy?.name}:</strong> {formatCurrency(entry.value, currency)}
-                {projectionStrategy && selectedAsset === 'portfolio' && (
+                {projectionStrategy && (
                   <span className="ml-2 text-xs text-gray-500">
                     ({formatPercentage(projectionStrategy.expectedReturn)} annuo)
-                  </span>
-                )}
-                {projectionStrategy && selectedAsset !== 'portfolio' && (
-                  <span className="ml-2 text-xs text-gray-500">
-                    ({formatPercentage(projectionStrategy.expectedReturn)} annuo - {selectedAssetData?.name})
                   </span>
                 )}
               </p>
@@ -302,8 +301,19 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend content={<CustomLegend />} />
-            
-            {allProjections.map((projection, index) => (
+        // Use correct initial value based on selection and strategy
+        let correctInitialValue: number;
+        if (selectedAsset === 'portfolio') {
+          correctInitialValue = totalValue;
+        } else {
+          // For single asset, use the strategy's target allocation value or current value
+          const targetAllocation = projection.strategy.id !== 'current-strategy' ? 
+            strategies.find(s => s.id === projection.strategy.id.replace(` - ${selectedAssetData?.name} (${strategies.find(s => s.id === projection.strategy.id.split(' - ')[0])?.targetAllocations[selectedAsset] || 0}%)`, ''))?.targetAllocations[selectedAsset] || 0 : 
+            100;
+          correctInitialValue = selectedAsset === 'portfolio' ? totalValue : 
+            (projection.strategy.id === 'current-strategy' ? selectedAssetData?.currentValue || 0 : 
+            (targetAllocation / 100) * totalValue || selectedAssetData?.currentValue || 0);
+        }
               <Line
                 key={index}
                 type="monotone"
@@ -347,18 +357,22 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
               }`}>
                 {totalGrowth > 0 ? '+' : ''}{formatCurrency(totalGrowth, currency)} ({growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%)
               </p>
-              {selectedAsset !== 'portfolio' && selectedAssetData && (
-                <p className="text-xs text-gray-500 mt-1">
-                  Rendimento: {formatPercentage(selectedAssetData.expectedReturn)} annuo
-                </p>
-              )}
+              <p className="text-sm text-gray-700">
+                {t('currentValue')}: <span className="font-semibold">{formatCurrency(selectedAssetData.currentValue, currency)}</span>
+              </p>
             </div>
           );
         })}
         
-        {selectedAsset !== 'portfolio' && selectedAssetData && (
+                {projection.strategy.name}
           <div className="metric-card">
             <p className="text-sm text-gray-600">{t('assetDetails')}</p>
+            <p className="text-xs text-gray-500 mb-1">
+              {selectedAsset === 'portfolio' ? 
+                `Valore iniziale: ${formatCurrency(correctInitialValue, currency)}` :
+                `Valore iniziale: ${formatCurrency(correctInitialValue, currency)} (${selectedAssetData?.name})`
+              }
+            </p>
             <div className="space-y-1">
               <p className="text-sm text-gray-700">
                 {t('expectedReturn')}: <span className="font-semibold text-success-600">{selectedAssetData.expectedReturn}%</span>
@@ -367,11 +381,9 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
                 {t('riskLevel')}: <span className="font-semibold">{t(selectedAssetData.riskLevel)}</span>
               </p>
               {selectedAssetData.isPAC && (
-                <p className="text-sm text-primary-600">
-                  PAC: {formatCurrency(selectedAssetData.pacAmount || 0, currency)}/{t(selectedAssetData.pacFrequency || 'monthly')}
-                </p>
-              )}
-            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Rendimento: {formatPercentage(projection.strategy.expectedReturn)} annuo
+            </p>
           </div>
         )}
       </div>
