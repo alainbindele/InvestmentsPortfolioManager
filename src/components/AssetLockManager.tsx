@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lock, Unlock, AlertCircle, Bot } from 'lucide-react';
+import { Lock, Unlock } from 'lucide-react';
 import { Asset } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
@@ -9,19 +9,15 @@ import { getTranslation } from '../utils/translations';
 interface AssetLockManagerProps {
   assets: Asset[];
   onToggleAssetLock: (assetId: string) => void;
-  onRequestAIRebalance: () => void;
   language: Language;
   currency: Currency;
-  isRebalancing?: boolean;
 }
 
 export const AssetLockManager: React.FC<AssetLockManagerProps> = ({
   assets,
   onToggleAssetLock,
-  onRequestAIRebalance,
   language,
-  currency,
-  isRebalancing = false
+  currency
 }) => {
   const t = (key: string) => getTranslation(language, key);
   
@@ -141,75 +137,6 @@ export const AssetLockManager: React.FC<AssetLockManagerProps> = ({
       </div>
 
       {/* AI Rebalance Button */}
-      {onRequestAIRebalance && (
-        <div className="space-y-4">
-        {unlockedAssets.length > 0 && (
-          <div className="bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <div className="p-2 bg-primary-100 rounded-lg">
-                <Bot className="w-5 h-5 text-primary-600" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-primary-900 mb-2">{t('aiRebalanceTitle')}</h4>
-                <p className="text-sm text-primary-700 mb-4">
-                  {t('aiRebalanceDescription')} {unlockedAssets.length} {unlockedAssets.length === 1 ? t('asset') : t('assets')} {t('nonBloccati')}.
-                </p>
-                
-                {lockedAssets.length > 0 && (
-                  <div className="bg-blue-100 border border-blue-300 rounded-lg p-3 mb-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <AlertCircle className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium text-blue-900">{t('lockedAssetsNote')}</span>
-                    </div>
-                    <ul className="text-xs text-blue-800 space-y-1">
-                      {lockedAssets.map(asset => (
-                        <li key={asset.id}>
-                          • {asset.name}: {formatCurrency(asset.currentValue, currency)} ({((asset.currentValue / totalValue) * 100).toFixed(1)}%)
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                <button
-                  onClick={onRequestAIRebalance}
-                  disabled={isRebalancing || unlockedAssets.length === 0}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-colors ${
-                    isRebalancing || unlockedAssets.length === 0
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : 'bg-primary-600 hover:bg-primary-700 text-white'
-                  }`}
-                >
-                  {isRebalancing ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      {t('rebalancing')}
-                    </>
-                  ) : (
-                    <>
-                      <Bot className="w-4 h-4" />
-                      {t('requestAiRebalance')}
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {unlockedAssets.length === 0 && assets.length > 0 && (
-          <div className="bg-warning-50 border border-warning-200 rounded-lg p-4">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-warning-600" />
-              <div>
-                <p className="font-medium text-warning-900">{t('allAssetsLocked')}</p>
-                <p className="text-sm text-warning-700">{t('unlockSomeAssets')}</p>
-              </div>
-            </div>
-          </div>
-        )}
-        </div>
-      )}
     </div>
   );
 };

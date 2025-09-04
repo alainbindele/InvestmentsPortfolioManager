@@ -355,10 +355,8 @@ export const App: React.FC = () => {
               <AssetLockManager
                 assets={assets}
                 onToggleAssetLock={handleToggleAssetLock}
-                onRequestAIRebalance={handleRequestAIRebalance}
                 language={language}
                 currency={currency}
-                isRebalancing={isRebalancing}
               />
             )}
             {/* Assets List */}
