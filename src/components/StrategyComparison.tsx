@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMemo, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Strategy } from '../types/portfolio';
 import { Language } from '../types/language';
@@ -14,6 +15,25 @@ interface StrategyComparisonProps {
 export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategies, language }) => {
   const t = (key: string) => getTranslation(language, key);
   
+  // Debug logging and force re-calculation when strategies change
+  useEffect(() => {
+    console.log('StrategyComparison: Strategies updated', {
+      count: strategies.length,
+      strategies: strategies.map(s => ({ 
+        id: s.id, 
+        name: s.name, 
+        expectedReturn: s.expectedReturn,
+        riskScore: s.riskScore,
+        sharpeRatio: s.sharpeRatio
+      }))
+    });
+  }, [strategies]);
+  
+  // Force re-calculation when strategies change
+  useEffect(() => {
+    console.log('StrategyComparison: Strategies updated', strategies.map(s => ({ id: s.id, name: s.name })));
+  }, [strategies]);
+  
   if (strategies.length === 0) {
     return (
       <div className="card">
@@ -25,26 +45,49 @@ export const StrategyComparison: React.FC<StrategyComparisonProps> = ({ strategi
     );
   }
 
-  // Prepare data for comparison chart
-  const comparisonData = strategies.map(strategy => ({
-    name: strategy.name.length > 15 ? strategy.name.substring(0, 15) + '...' : strategy.name,
-    fullName: strategy.name,
-    rendimento: strategy.expectedReturn,
-    rischio: strategy.riskScore,
-    sharpe: strategy.sharpeRatio,
-    volatilita: strategy.volatility
-  }));
+  // Memoize calculations to ensure they update when strategies change
+  const comparisonData = useMemo(() => {
+    return strategies.map(strategy => ({
+      name: strategy.name.length > 15 ? strategy.name.substring(0, 15) + '...' : strategy.name,
+      fullName: strategy.name,
+      rendimento: strategy.expectedReturn,
+      rischio: strategy.riskScore,
+      sharpe: strategy.sharpeRatio,
+      volatilita: strategy.volatility
+    }));
+  }, [strategies]);
 
-  // Find best performers
-  const bestReturn = strategies.reduce((best, current) => 
-    current.expectedReturn > best.expectedReturn ? current : best
-  );
-  const bestRisk = strategies.reduce((best, current) => 
-    current.riskScore < best.riskScore ? current : best
-  );
-  const bestSharpe = strategies.reduce((best, current) => 
-    current.sharpeRatio > best.sharpeRatio ? current : best
-  );
+  // Memoize best performers calculation
+  const bestPerformers = useMemo(() => {
+    if (strategies.length === 0) {
+      return { bestReturn: null, bestRisk: null, bestSharpe: null };
+    }
+    
+    const bestReturn = strategies.reduce((best, current) => 
+      current.expectedReturn > best.expectedReturn ? current : best
+    );
+    const bestRisk = strategies.reduce((best, current) => 
+      current.riskScore < best.riskScore ? current : best
+    );
+    const bestSharpe = strategies.reduce((best, current) => 
+      current.sharpeRatio > best.sharpeRatio ? current : best
+    );
+    
+    return { bestReturn, bestRisk, bestSharpe };
+  }, [strategies]);
+
+  const { bestReturn, bestRisk, bestSharpe } = bestPerformers;
+
+  if (!bestReturn || !bestRisk || !bestSharpe) {
+    return (
+      <div className="card">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('strategyComparison')}</h3>
+        <div className="text-center py-8 text-gray-500">
+          <p>{t('noAssetsMessage')}</p>
+        </div>
+      </div>
+    );
+  }
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {

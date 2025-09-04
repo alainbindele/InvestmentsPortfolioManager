@@ -137,6 +137,11 @@ export const App: React.FC = () => {
   const handleSaveAllocation = (newStrategy: Strategy) => {
     setAiStrategies(prev => [...prev, newStrategy]);
     setEditingStrategy(null);
+    
+    // Force re-render of comparison components
+    setTimeout(() => {
+      setAiStrategies(current => [...current]);
+    }, 0);
   };
 
   const handleCancelAllocationEdit = () => {
@@ -149,6 +154,11 @@ export const App: React.FC = () => {
         ? { ...strategy, name: newName }
         : strategy
     ));
+    
+    // Force re-render to update comparison
+    setTimeout(() => {
+      setAiStrategies(current => [...current]);
+    }, 0);
   };
 
   const handleDeleteStrategy = (strategyId: string) => {
@@ -159,6 +169,11 @@ export const App: React.FC = () => {
       newSet.delete(strategyId);
       return newSet;
     });
+    
+    // Force re-render after deletion
+    setTimeout(() => {
+      setAiStrategies(current => [...current]);
+    }, 0);
   };
   const handleDisclaimerAccept = () => {
     saveDisclaimerAccepted();
@@ -538,7 +553,11 @@ export const App: React.FC = () => {
                       showAssetSelection={true}
                     />
 
-                    <StrategyComparison strategies={strategiesForComparison} language={language} />
+                    <StrategyComparison 
+                      key={`comparison-${strategiesForComparison.map(s => s.id).join('-')}-${strategiesForComparison.length}`}
+                      strategies={strategiesForComparison} 
+                      language={language} 
+                    />
                   </div>
                 ) : (
                   <div className="text-center py-8">
