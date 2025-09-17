@@ -49,6 +49,11 @@ export default defineConfig({
     minify: 'esbuild'
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'recharts', 'lucide-react']
+    include: ['react', 'react-dom', 'recharts', 'lucide-react', 'react-is']
+  },
+  resolve: {
+    alias: {
+      'react-is': 'react-is'
+    }
   }
 })
