@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['react-is'],
+      external: [],
       output: {
         manualChunks: {
           // Vendor chunks
@@ -50,7 +50,7 @@ export default defineConfig({
     minify: 'esbuild'
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'recharts', 'lucide-react', 'react-is'],
+    include: ['react', 'react-dom', 'recharts', 'lucide-react'],
     force: true
   },
   resolve: {
