@@ -53,9 +53,6 @@ export default defineConfig({
     force: true
   },
   resolve: {
-    alias: {
-      'react-is': 'react-is'
-    }
   },
   server: {
     fs: {
