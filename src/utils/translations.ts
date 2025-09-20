@@ -47,6 +47,7 @@ export const translations = {
     pacNote: 'Nota PAC',
     pacDescription: 'Il PAC aggiunge automaticamente l\'importo specificato al valore dell\'asset secondo la frequenza scelta, simulando investimenti ricorrenti nel tempo.',
     enablePAC: 'Habilitar PAC',
+    pacFullName: '(Plan de Inversión Periódica)',
     
     // Asset Types
     stocks: 'Azioni',
@@ -216,6 +217,7 @@ export const translations = {
     pacNote: 'PAC Note',
     pacDescription: 'PAC automatically adds the specified amount to the asset value according to the chosen frequency, simulating recurring investments over time.',
     enablePAC: 'Enable PAC',
+    pacFullName: '(Periodic Investment Plan)',
     
     // Asset Types
     stocks: 'Stocks',
@@ -533,6 +535,18 @@ export const translations = {
     riskLevel: 'Niveau de Risque',
     fillAllRequiredFields: 'Remplissez tous les champs obligatoires',
     
+    // PAC (Plan d'Accumulation du Capital)
+    enablePAC: 'Activer PAC',
+    pacAmount: 'Montant PAC',
+    pacFrequency: 'Fréquence PAC',
+    monthly: 'Mensuel',
+    quarterly: 'Trimestriel',
+    yearly: 'Annuel',
+    pacNote: 'Note PAC',
+    pacDescription: 'Le PAC ajoute automatiquement le montant spécifié à la valeur de l\'actif selon la fréquence choisie, simulant des investissements récurrents dans le temps.',
+    enablePAC: 'Activer PAC',
+    pacFullName: '(Plan d\'Accumulation du Capital)',
+    
     // Asset Types
     stocks: 'Actions',
     bonds: 'Obligations',
@@ -848,16 +862,6 @@ export const translations = {
     expectedReturnLabel: '预期收益 (%)',
     riskLevel: '风险等级',
     fillAllRequiredFields: '请填写所有必填字段',
-    
-    // PAC (Periodic Investment Plan)
-    enablePAC: '启用PAC',
-    pacAmount: 'PAC金额',
-    pacFrequency: 'PAC频率',
-    monthly: '月度',
-    quarterly: '季度',
-    yearly: '年度',
-    pacNote: 'PAC说明',
-    pacDescription: 'PAC根据选择的频率自动将指定金额添加到资产价值中，模拟随时间的定期投资。',
     
     // Asset Types
     stocks: '股票',
