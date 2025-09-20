@@ -119,10 +119,15 @@ export const projectPortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // Use strategy-specific calculation if strategy is provided
-  if (strategy && strategy.targetAllocations && Object.keys(strategy.targetAllocations).length > 0) {
-    return calculateStrategySpecificGrowth(initialValue, strategy, assets, years);
-  }
+  console.log('projectPortfolioGrowth called with:', {
+    initialValue,
+    annualReturn,
+    years,
+    hasStrategy: !!strategy,
+    assetsWithPAC: assets.filter(a => a.isPAC).length
+  });
+  
+  // ALWAYS use the precise calculation that handles PAC correctly
   return calculatePrecisePortfolioGrowth(initialValue, annualReturn, years, assets, strategy);
 };
 
@@ -195,22 +200,32 @@ export const calculatePrecisePortfolioGrowth = (
   // Calculate monthly return rate
   const monthlyReturn = annualReturn / 100 / 12;
   
-  // Calculate total monthly PAC contributions
-  const monthlyPAC = assets.reduce((total, asset) => {
-    if (asset.isPAC && asset.pacAmount) {
-      switch (asset.pacFrequency) {
-        case 'monthly':
-          return total + asset.pacAmount;
-        case 'quarterly':
-          return total + (asset.pacAmount / 3);
-        case 'yearly':
-          return total + (asset.pacAmount / 12);
-        default:
-          return total;
-      }
+  // Calculate monthly PAC contributions for each asset
+  const assetPACContributions = assets.map(asset => {
+    if (!asset.isPAC || !asset.pacAmount) return 0;
+    
+    switch (asset.pacFrequency) {
+      case 'monthly':
+        return asset.pacAmount;
+      case 'quarterly':
+        return asset.pacAmount / 3;
+      case 'yearly':
+        return asset.pacAmount / 12;
+      default:
+        return 0;
     }
-    return total;
-  }, 0);
+  });
+  
+  const totalMonthlyPAC = assetPACContributions.reduce((sum, contrib) => sum + contrib, 0);
+  
+  console.log('PAC Debug:', {
+    initialValue,
+    annualReturn,
+    monthlyReturn,
+    totalMonthlyPAC,
+    years,
+    assets: assets.map(a => ({ name: a.name, isPAC: a.isPAC, pacAmount: a.pacAmount }))
+  });
   
   // Add year 0
   projections.push({ year: 0, value: Math.round(currentValue) });
@@ -220,10 +235,12 @@ export const calculatePrecisePortfolioGrowth = (
     // Calculate 12 months for this year
     for (let month = 1; month <= 12; month++) {
       // Add monthly PAC contribution first
-      currentValue += monthlyPAC;
+      currentValue += totalMonthlyPAC;
       // Then apply monthly compound interest
       currentValue *= (1 + monthlyReturn);
     }
+    
+    console.log(`Year ${year}: ${Math.round(currentValue)}€`);
     
     // Store yearly result
     projections.push({ 
@@ -232,6 +249,7 @@ export const calculatePrecisePortfolioGrowth = (
     });
   }
   
+  console.log('Final projections:', projections);
   return projections;
 };
 
