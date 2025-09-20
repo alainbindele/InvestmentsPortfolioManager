@@ -555,17 +555,6 @@ export const translations = {
     riskLevel: 'Niveau de Risque',
     fillAllRequiredFields: 'Remplissez tous les champs obligatoires',
     
-    // PAC (Plan d'Accumulation du Capital)
-    enablePAC: 'Activer PAC',
-    pacFullName: '(Plan d\'Accumulation du Capital)',
-    pacAmount: 'Montant PAC',
-    pacFrequency: 'Fréquence PAC',
-    pacNote: 'Note PAC',
-    pacDescription: 'Le PAC ajoute automatiquement le montant spécifié à la valeur de l\'actif selon la fréquence choisie, simulant des investissements récurrents dans le temps.',
-    monthly: 'Mensuel',
-    quarterly: 'Trimestriel',
-    yearly: 'Annuel',
-    
     // Asset Types
     stocks: 'Actions',
     bonds: 'Obligations',
@@ -723,6 +712,17 @@ export const translations = {
     expectedReturnLabel: 'Erwartete Rendite (%)',
     riskLevel: 'Risikolevel',
     fillAllRequiredFields: 'Füllen Sie alle Pflichtfelder aus',
+    
+    // PAC (Kapitalakkumulationsplan)
+    enablePAC: 'PAC aktivieren',
+    pacFullName: '(Kapitalakkumulationsplan)',
+    pacAmount: 'PAC Betrag',
+    pacFrequency: 'PAC Häufigkeit',
+    pacNote: 'PAC Hinweis',
+    pacDescription: 'PAC fügt automatisch den angegebenen Betrag zum Asset-Wert entsprechend der gewählten Häufigkeit hinzu und simuliert wiederkehrende Investitionen über die Zeit.',
+    monthly: 'Monatlich',
+    quarterly: 'Vierteljährlich',
+    yearly: 'Jährlich',
     
     // Asset Types
     stocks: 'Aktien',
