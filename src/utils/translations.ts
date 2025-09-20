@@ -376,6 +376,17 @@ export const translations = {
     riskLevel: 'Nivel de Riesgo',
     fillAllRequiredFields: 'Completa todos los campos obligatorios',
     
+    // PAC (Piano di Accumulo del Capitale)
+    enablePAC: 'Habilitar PAC',
+    pacAmount: 'Importe PAC',
+    pacFrequency: 'Frecuencia PAC',
+    monthly: 'Mensual',
+    quarterly: 'Trimestral',
+    yearly: 'Anual',
+    pacNote: 'Nota PAC',
+    pacDescription: 'El PAC añade automáticamente el importe especificado al valor del activo según la frecuencia elegida, simulando inversiones recurrentes en el tiempo.',
+    pacFullName: '(Plan de Inversión Periódica)',
+    
     // Asset Types
     stocks: 'Acciones',
     bonds: 'Bonos',
