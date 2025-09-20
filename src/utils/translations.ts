@@ -44,11 +44,6 @@ export const translations = {
     pacFrequency: 'Frequenza PAC',
     pacNote: 'Nota PAC',
     pacDescription: 'Il PAC aggiunge automaticamente l\'importo specificato al valore dell\'asset secondo la frequenza scelta, simulando investimenti ricorrenti nel tempo.',
-    pacAmount: 'Importo PAC',
-    pacFrequency: 'Frequenza PAC',
-    monthly: 'Mensile',
-    quarterly: 'Trimestrale',
-    yearly: 'Annuale',
     
     // Asset Types
     stocks: 'Azioni',
@@ -216,12 +211,6 @@ export const translations = {
     monthly: 'Monthly',
     quarterly: 'Quarterly',
     yearly: 'Yearly',
-    enablePAC: 'Enable PAC',
-    pacFullName: 'Periodic Investment Plan',
-    pacAmount: 'PAC Amount',
-    pacFrequency: 'PAC Frequency',
-    pacNote: 'PAC Note',
-    pacDescription: 'PAC automatically adds the specified amount to the asset value according to the chosen frequency, simulating recurring investments over time.',
     
     // Asset Types
     stocks: 'Stocks',
@@ -383,14 +372,6 @@ export const translations = {
     
     // PAC (Piano di Accumulo del Capitale)
     enablePAC: 'Habilitar PAC',
-    pacFullName: 'Plan de Inversión Periódica',
-    pacFullName: 'Plan d\'Accumulation du Capital',
-    pacFullName: '定期投资计划',
-    pacAmount: 'Importe PAC',
-    pacFrequency: 'Frecuencia PAC',
-    monthly: 'Mensual',
-    quarterly: 'Trimestral',
-    yearly: 'Anual',
     pacFullName: 'Plan de Inversión Periódica',
     pacAmount: 'Importe PAC',
     pacFrequency: 'Frecuencia PAC',
