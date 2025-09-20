@@ -50,11 +50,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
 
       {isOpen && (
         <div 
-          className="fixed mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-xl animate-slide-up" 
+          className="absolute right-0 mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-xl animate-slide-up" 
           style={{ 
-            zIndex: 999999,
-            top: '120px',
-            right: '16px'
+            zIndex: 999999
           }}
         >
           <div className="py-2">
