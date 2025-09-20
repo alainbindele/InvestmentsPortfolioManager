@@ -21,7 +21,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
 }) => {
   const t = (key: string) => getTranslation(language, key);
   
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   
   // Initialize form with editing asset data if provided
   const initializeFormData = (asset?: Asset | null) => ({
