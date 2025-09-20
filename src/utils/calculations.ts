@@ -155,41 +155,11 @@ const calculatePACGrowth = (
   years: number,
   assets: Asset[]
 ): Array<{ year: number; value: number }> => {
-  const projections = [];
-  let currentValue = initialValue;
-  
-  // Monthly return rate
-  const monthlyReturn = annualReturn / 100 / 12;
-  
-  // Calculate total monthly PAC contribution
-  let totalMonthlyPAC = 0;
-  assets.forEach(asset => {
-    if (asset.isPAC && asset.pacAmount) {
-      const frequency = asset.pacFrequency || 'monthly';
-      switch (frequency) {
-        case 'monthly':
-          totalMonthlyPAC += asset.pacAmount;
-          break;
-        case 'quarterly':
-          totalMonthlyPAC += asset.pacAmount / 3;
-          break;
-        case 'yearly':
-          totalMonthlyPAC += asset.pacAmount / 12;
-          break;
-      }
-    }
-  });
-  
-  // Year 0
-  projections.push({ year: 0, value: Math.round(currentValue) });
-  
-  // Calculate month by month, store yearly values
-  for (let year = 1; year <= years; year++) {
     for (let month = 1; month <= 12; month++) {
-      // Add PAC contribution
+      // Add PAC contribution first
       currentValue += totalMonthlyPAC;
-      // Apply monthly compound growth
-      currentValue *= (1 + monthlyReturn);
+      // Then apply monthly compound growth
+      currentValue = currentValue * (1 + monthlyReturn);
     }
     projections.push({ year, value: Math.round(currentValue) });
   }
