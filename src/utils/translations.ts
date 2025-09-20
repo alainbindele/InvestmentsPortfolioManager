@@ -691,16 +691,6 @@ export const translations = {
     riskLevel: 'Risikolevel',
     fillAllRequiredFields: 'Füllen Sie alle Pflichtfelder aus',
     
-    // PAC (Periodic Investment Plan)
-    enablePAC: 'PAC aktivieren',
-    pacAmount: 'PAC-Betrag',
-    pacFrequency: 'PAC-Häufigkeit',
-    monthly: 'Monatlich',
-    quarterly: 'Vierteljährlich',
-    yearly: 'Jährlich',
-    pacNote: 'PAC-Hinweis',
-    pacDescription: 'PAC fügt automatisch den angegebenen Betrag zum Asset-Wert entsprechend der gewählten Häufigkeit hinzu und simuliert wiederkehrende Investitionen über die Zeit.',
-    
     // Asset Types
     stocks: 'Aktien',
     bonds: 'Anleihen',
@@ -858,6 +848,16 @@ export const translations = {
     expectedReturnLabel: '预期收益 (%)',
     riskLevel: '风险等级',
     fillAllRequiredFields: '请填写所有必填字段',
+    
+    // PAC (Periodic Investment Plan)
+    enablePAC: '启用PAC',
+    pacAmount: 'PAC金额',
+    pacFrequency: 'PAC频率',
+    monthly: '月度',
+    quarterly: '季度',
+    yearly: '年度',
+    pacNote: 'PAC说明',
+    pacDescription: 'PAC根据选择的频率自动将指定金额添加到资产价值中，模拟随时间的定期投资。',
     
     // Asset Types
     stocks: '股票',
