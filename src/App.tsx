@@ -371,6 +371,12 @@ export const App: React.FC = () => {
                             <span className="text-gray-600">{t('currentValue')}:</span>
                             <span className="font-semibold">{formatCurrency(asset.currentValue, currency)}</span>
                           </div>
+                          {asset.isPAC && asset.pacAmount && (
+                            <div className="flex justify-between text-sm">
+                              <span className="text-blue-600">PAC {t(asset.pacFrequency || 'monthly')}:</span>
+                              <span className="font-semibold text-blue-600">{formatCurrency(asset.pacAmount, currency)}</span>
+                            </div>
+                          )}
                           <div className="flex justify-between text-sm">
                             <span className="text-gray-600">{t('expectedReturn')}:</span>
                             <span className="font-semibold text-success-600">{formatPercentage(asset.expectedReturn)}</span>

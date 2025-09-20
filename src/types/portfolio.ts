@@ -12,6 +12,9 @@ export interface Asset {
   rateType?: 'nominal' | 'effective'; // Only used for PAC assets
   riskLevel: RiskLevel;
   isLocked?: boolean; // For AI rebalancing - locked assets won't be modified
+  isPAC?: boolean; // Indicates if this is a PAC (recurring investment) asset
+  pacAmount?: number; // Monthly PAC amount
+  pacFrequency?: 'monthly' | 'quarterly' | 'yearly'; // PAC frequency
 }
 
 // Strategy Types

@@ -248,6 +248,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           <label className="text-sm font-medium text-gray-700">
             {t('timeHorizon')}: {timeHorizon} {t('years')}
           </label>
+          {assets.some(asset => asset.isPAC) && (
+            <div className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+              📈 PAC attivo
+            </div>
+          )}
           <div className="text-xs text-gray-500">
             1 - 50 anni
           </div>

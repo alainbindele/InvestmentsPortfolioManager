@@ -36,14 +36,17 @@ export const AssetForm: React.FC<AssetFormProps> = ({
   const [formData, setFormData] = useState({
     ...initializeFormData()
   });
+  const [isPACEnabled, setIsPACEnabled] = useState(false);
 
   // Update form when editingAsset changes
   React.useEffect(() => {
     if (editingAsset) {
       setFormData(initializeFormData(editingAsset));
+      setIsPACEnabled(!!editingAsset.isPAC);
       setIsOpen(true);
     } else {
       setFormData(initializeFormData());
+      setIsPACEnabled(false);
     }
   }, [editingAsset]);
 
@@ -62,6 +65,9 @@ export const AssetForm: React.FC<AssetFormProps> = ({
       expectedReturn: parseFloat(formData.expectedReturn),
       rateType: formData.rateType,
       riskLevel: formData.riskLevel,
+      isPAC: isPACEnabled,
+      pacAmount: isPACEnabled ? parseFloat(formData.pacAmount || '0') : undefined,
+      pacFrequency: isPACEnabled ? (formData.pacFrequency as 'monthly' | 'quarterly' | 'yearly') : undefined,
     };
 
     if (editingAsset && onUpdateAsset) {
@@ -192,6 +198,62 @@ export const AssetForm: React.FC<AssetFormProps> = ({
           </select>
         </div>
 
+        {/* PAC Toggle */}
+        <div className="border-t border-gray-200 pt-4">
+          <div className="flex items-center gap-3 mb-4">
+            <input
+              type="checkbox"
+              id="pac-enabled"
+              checked={isPACEnabled}
+              onChange={(e) => setIsPACEnabled(e.target.checked)}
+              className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+            />
+            <label htmlFor="pac-enabled" className="text-sm font-medium text-gray-700">
+              {t('enablePAC')} (Piano di Accumulo del Capitale)
+            </label>
+          </div>
+          
+          {isPACEnabled && (
+            <div className="space-y-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('pacAmount')} (€) *
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.pacAmount || ''}
+                    onChange={(e) => setFormData({ ...formData, pacAmount: e.target.value })}
+                    className="input-field"
+                    placeholder="500"
+                    min="0"
+                    step="0.01"
+                    required={isPACEnabled}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('pacFrequency')}
+                  </label>
+                  <select
+                    value={formData.pacFrequency || 'monthly'}
+                    onChange={(e) => setFormData({ ...formData, pacFrequency: e.target.value })}
+                    className="select-field"
+                  >
+                    <option value="monthly">{t('monthly')}</option>
+                    <option value="quarterly">{t('quarterly')}</option>
+                    <option value="yearly">{t('yearly')}</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="text-xs text-blue-700 bg-blue-100 p-2 rounded">
+                <p><strong>{t('pacNote')}:</strong> {t('pacDescription')}</p>
+              </div>
+            </div>
+          )}
+        </div>
 
 
         <div className="flex gap-3 pt-4">

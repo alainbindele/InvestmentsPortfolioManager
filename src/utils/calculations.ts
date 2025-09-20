@@ -212,10 +212,29 @@ export const calculatePrecisePortfolioGrowth = (
   let currentValue = initialValue;
   const monthlyValues: number[] = [currentValue];
 
+  // Calculate total PAC contributions per month
+  const totalMonthlyPAC = assets.reduce((total, asset) => {
+    if (asset.isPAC && asset.pacAmount) {
+      switch (asset.pacFrequency) {
+        case 'monthly':
+          return total + asset.pacAmount;
+        case 'quarterly':
+          return total + (asset.pacAmount / 3);
+        case 'yearly':
+          return total + (asset.pacAmount / 12);
+        default:
+          return total;
+      }
+    }
+    return total;
+  }, 0);
   for (let month = 0; month <= totalMonths; month++) {
     if (month > 0) {
       // 1. Apply monthly compound growth to existing capital (using portfolio return)
       currentValue *= (1 + portfolioMonthlyReturn);
+      
+      // 2. Add PAC contributions
+      currentValue += totalMonthlyPAC;
     }
     
     if (month < monthlyValues.length) {
