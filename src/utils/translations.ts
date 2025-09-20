@@ -46,6 +46,7 @@ export const translations = {
     yearly: 'Annuale',
     pacNote: 'Nota PAC',
     pacDescription: 'Il PAC aggiunge automaticamente l\'importo specificato al valore dell\'asset secondo la frequenza scelta, simulando investimenti ricorrenti nel tempo.',
+    enablePAC: 'Habilitar PAC',
     
     // Asset Types
     stocks: 'Azioni',
@@ -214,6 +215,7 @@ export const translations = {
     yearly: 'Yearly',
     pacNote: 'PAC Note',
     pacDescription: 'PAC automatically adds the specified amount to the asset value according to the chosen frequency, simulating recurring investments over time.',
+    enablePAC: 'Enable PAC',
     
     // Asset Types
     stocks: 'Stocks',
