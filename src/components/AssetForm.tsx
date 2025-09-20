@@ -209,7 +209,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
               className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
             <label htmlFor="pac-enabled" className="text-sm font-medium text-gray-700">
-              {t('enablePAC')} ({t('pacFullName')})
+              {t('enablePAC')} {t('pacFullName')}
             </label>
           </div>
           
