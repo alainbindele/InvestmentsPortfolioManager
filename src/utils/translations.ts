@@ -39,6 +39,7 @@ export const translations = {
     
     // PAC (Piano di Accumulo del Capitale)
     enablePAC: 'Abilita PAC',
+    pacFullName: '(Piano di Accumulo del Capitale)',
     pacAmount: 'Importo PAC',
     pacFrequency: 'Frequenza PAC',
     monthly: 'Mensile',
@@ -534,18 +535,6 @@ export const translations = {
     expectedReturnLabel: 'Rendement Attendu (%)',
     riskLevel: 'Niveau de Risque',
     fillAllRequiredFields: 'Remplissez tous les champs obligatoires',
-    
-    // PAC (Plan d'Accumulation du Capital)
-    enablePAC: 'Activer PAC',
-    pacAmount: 'Montant PAC',
-    pacFrequency: 'Fréquence PAC',
-    monthly: 'Mensuel',
-    quarterly: 'Trimestriel',
-    yearly: 'Annuel',
-    pacNote: 'Note PAC',
-    pacDescription: 'Le PAC ajoute automatiquement le montant spécifié à la valeur de l\'actif selon la fréquence choisie, simulant des investissements récurrents dans le temps.',
-    enablePAC: 'Activer PAC',
-    pacFullName: '(Plan d\'Accumulation du Capital)',
     
     // Asset Types
     stocks: 'Actions',
