@@ -1,196 +1,352 @@
-import { Asset, Strategy, PortfolioMetrics } from '../types/portfolio';
-import { Currency, getCurrencyByCode } from '../types/currency';
-import { getTranslation, Language } from './translations';
+export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'zh';
 
-// Risk level mappings
-const RISK_MULTIPLIERS: { [key: string]: number } = {
-  'very_low': 1,
-  'low': 2,
-  'medium': 3,
-  'high': 4,
-  'very_high': 5
-};
-
-// Asset type diversification weights
-const DIVERSIFICATION_WEIGHTS = {
-  stocks: 1,
-  bonds: 1,
-  etf: 0.8,
-  real_estate: 1.2,
-  commodities: 1.1,
-  crypto: 1.3,
-  cash: 0.5,
-  other: 0.9
-};
-
-export const calculatePortfolioMetrics = (assets: Asset[]): PortfolioMetrics => {
-  if (assets.length === 0) {
-    return {
-      totalValue: 0,
-      expectedReturn: 0,
-      riskScore: 0,
-      diversificationScore: 0
-    };
+const TRANSLATIONS = {
+  // Navigation and UI
+  portfolioBalancer: {
+    it: 'Portfolio Balancer',
+    en: 'Portfolio Balancer',
+    es: 'Balanceador de Cartera',
+    fr: 'Équilibreur de Portefeuille',
+    de: 'Portfolio-Balancer',
+    zh: '投资组合平衡器'
+  },
+  addAsset: {
+    it: 'Aggiungi Asset',
+    en: 'Add Asset',
+    es: 'Agregar Activo',
+    fr: 'Ajouter un Actif',
+    de: 'Asset hinzufügen',
+    zh: '添加资产'
+  },
+  editAsset: {
+    it: 'Modifica Asset',
+    en: 'Edit Asset',
+    es: 'Editar Activo',
+    fr: 'Modifier l\'Actif',
+    de: 'Asset bearbeiten',
+    zh: '编辑资产'
+  },
+  
+  // Asset form fields
+  assetName: {
+    it: 'Nome Asset',
+    en: 'Asset Name',
+    es: 'Nombre del Activo',
+    fr: 'Nom de l\'Actif',
+    de: 'Asset-Name',
+    zh: '资产名称'
+  },
+  assetType: {
+    it: 'Tipo Asset',
+    en: 'Asset Type',
+    es: 'Tipo de Activo',
+    fr: 'Type d\'Actif',
+    de: 'Asset-Typ',
+    zh: '资产类型'
+  },
+  currentValue: {
+    it: 'Valore Attuale',
+    en: 'Current Value',
+    es: 'Valor Actual',
+    fr: 'Valeur Actuelle',
+    de: 'Aktueller Wert',
+    zh: '当前价值'
+  },
+  expectedReturn: {
+    it: 'Rendimento Atteso (%)',
+    en: 'Expected Return (%)',
+    es: 'Rendimiento Esperado (%)',
+    fr: 'Rendement Attendu (%)',
+    de: 'Erwartete Rendite (%)',
+    zh: '预期收益率 (%)'
+  },
+  riskLevel: {
+    it: 'Livello di Rischio',
+    en: 'Risk Level',
+    es: 'Nivel de Riesgo',
+    fr: 'Niveau de Risque',
+    de: 'Risikolevel',
+    zh: '风险等级'
+  },
+  
+  // Risk levels
+  very_low: {
+    it: 'Molto Basso',
+    en: 'Very Low',
+    es: 'Muy Bajo',
+    fr: 'Très Bas',
+    de: 'Sehr Niedrig',
+    zh: '极低'
+  },
+  low: {
+    it: 'Basso',
+    en: 'Low',
+    es: 'Bajo',
+    fr: 'Bas',
+    de: 'Niedrig',
+    zh: '低'
+  },
+  medium: {
+    it: 'Medio',
+    en: 'Medium',
+    es: 'Medio',
+    fr: 'Moyen',
+    de: 'Mittel',
+    zh: '中等'
+  },
+  high: {
+    it: 'Alto',
+    en: 'High',
+    es: 'Alto',
+    fr: 'Élevé',
+    de: 'Hoch',
+    zh: '高'
+  },
+  very_high: {
+    it: 'Molto Alto',
+    en: 'Very High',
+    es: 'Muy Alto',
+    fr: 'Très Élevé',
+    de: 'Sehr Hoch',
+    zh: '极高'
+  },
+  
+  // Asset types
+  stocks: {
+    it: 'Azioni',
+    en: 'Stocks',
+    es: 'Acciones',
+    fr: 'Actions',
+    de: 'Aktien',
+    zh: '股票'
+  },
+  bonds: {
+    it: 'Obbligazioni',
+    en: 'Bonds',
+    es: 'Bonos',
+    fr: 'Obligations',
+    de: 'Anleihen',
+    zh: '债券'
+  },
+  etf: {
+    it: 'ETF',
+    en: 'ETF',
+    es: 'ETF',
+    fr: 'ETF',
+    de: 'ETF',
+    zh: 'ETF'
+  },
+  real_estate: {
+    it: 'Immobiliare',
+    en: 'Real Estate',
+    es: 'Bienes Raíces',
+    fr: 'Immobilier',
+    de: 'Immobilien',
+    zh: '房地产'
+  },
+  commodities: {
+    it: 'Materie Prime',
+    en: 'Commodities',
+    es: 'Materias Primas',
+    fr: 'Matières Premières',
+    de: 'Rohstoffe',
+    zh: '大宗商品'
+  },
+  crypto: {
+    it: 'Criptovalute',
+    en: 'Cryptocurrency',
+    es: 'Criptomonedas',
+    fr: 'Cryptomonnaies',
+    de: 'Kryptowährungen',
+    zh: '加密货币'
+  },
+  cash: {
+    it: 'Liquidità',
+    en: 'Cash',
+    es: 'Efectivo',
+    fr: 'Liquidités',
+    de: 'Bargeld',
+    zh: '现金'
+  },
+  other: {
+    it: 'Altro',
+    en: 'Other',
+    es: 'Otro',
+    fr: 'Autre',
+    de: 'Andere',
+    zh: '其他'
+  },
+  
+  // Buttons and actions
+  save: {
+    it: 'Salva',
+    en: 'Save',
+    es: 'Guardar',
+    fr: 'Sauvegarder',
+    de: 'Speichern',
+    zh: '保存'
+  },
+  cancel: {
+    it: 'Annulla',
+    en: 'Cancel',
+    es: 'Cancelar',
+    fr: 'Annuler',
+    de: 'Abbrechen',
+    zh: '取消'
+  },
+  delete: {
+    it: 'Elimina',
+    en: 'Delete',
+    es: 'Eliminar',
+    fr: 'Supprimer',
+    de: 'Löschen',
+    zh: '删除'
+  },
+  edit: {
+    it: 'Modifica',
+    en: 'Edit',
+    es: 'Editar',
+    fr: 'Modifier',
+    de: 'Bearbeiten',
+    zh: '编辑'
+  },
+  
+  // Portfolio metrics
+  totalValue: {
+    it: 'Valore Totale',
+    en: 'Total Value',
+    es: 'Valor Total',
+    fr: 'Valeur Totale',
+    de: 'Gesamtwert',
+    zh: '总价值'
+  },
+  expectedReturnLabel: {
+    it: 'Rendimento Atteso',
+    en: 'Expected Return',
+    es: 'Rendimiento Esperado',
+    fr: 'Rendement Attendu',
+    de: 'Erwartete Rendite',
+    zh: '预期收益'
+  },
+  riskScore: {
+    it: 'Punteggio Rischio',
+    en: 'Risk Score',
+    es: 'Puntuación de Riesgo',
+    fr: 'Score de Risque',
+    de: 'Risiko-Score',
+    zh: '风险评分'
+  },
+  diversificationScore: {
+    it: 'Diversificazione',
+    en: 'Diversification',
+    es: 'Diversificación',
+    fr: 'Diversification',
+    de: 'Diversifikation',
+    zh: '多样化'
+  },
+  
+  // Strategy related
+  currentStrategyName: {
+    it: 'Strategia Attuale',
+    en: 'Current Strategy',
+    es: 'Estrategia Actual',
+    fr: 'Stratégie Actuelle',
+    de: 'Aktuelle Strategie',
+    zh: '当前策略'
+  },
+  currentStrategyDescription: {
+    it: 'La tua allocazione attuale del portfolio',
+    en: 'Your current portfolio allocation',
+    es: 'Tu asignación actual de cartera',
+    fr: 'Votre allocation de portefeuille actuelle',
+    de: 'Ihre aktuelle Portfolio-Allokation',
+    zh: '您当前的投资组合配置'
+  },
+  
+  // Lock/unlock tooltips
+  lockAsset: {
+    it: 'Blocca asset',
+    en: 'Lock asset',
+    es: 'Bloquear activo',
+    fr: 'Verrouiller l\'actif',
+    de: 'Asset sperren',
+    zh: '锁定资产'
+  },
+  unlockAsset: {
+    it: 'Sblocca asset',
+    en: 'Unlock asset',
+    es: 'Desbloquear activo',
+    fr: 'Déverrouiller l\'actif',
+    de: 'Asset entsperren',
+    zh: '解锁资产'
+  },
+  
+  // Table headers
+  name: {
+    it: 'Nome',
+    en: 'Name',
+    es: 'Nombre',
+    fr: 'Nom',
+    de: 'Name',
+    zh: '名称'
+  },
+  type: {
+    it: 'Tipo',
+    en: 'Type',
+    es: 'Tipo',
+    fr: 'Type',
+    de: 'Typ',
+    zh: '类型'
+  },
+  value: {
+    it: 'Valore',
+    en: 'Value',
+    es: 'Valor',
+    fr: 'Valeur',
+    de: 'Wert',
+    zh: '价值'
+  },
+  allocation: {
+    it: 'Allocazione',
+    en: 'Allocation',
+    es: 'Asignación',
+    fr: 'Allocation',
+    de: 'Allokation',
+    zh: '配置'
+  },
+  returnRate: {
+    it: 'Rendimento',
+    en: 'Return',
+    es: 'Rendimiento',
+    fr: 'Rendement',
+    de: 'Rendite',
+    zh: '收益率'
+  },
+  risk: {
+    it: 'Rischio',
+    en: 'Risk',
+    es: 'Riesgo',
+    fr: 'Risque',
+    de: 'Risiko',
+    zh: '风险'
+  },
+  actions: {
+    it: 'Azioni',
+    en: 'Actions',
+    es: 'Acciones',
+    fr: 'Actions',
+    de: 'Aktionen',
+    zh: '操作'
   }
-
-  const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
-  
-  // Weighted average expected return
-  const expectedReturn = assets.reduce((sum, asset) => {
-    const weight = asset.currentValue / totalValue;
-    return sum + (asset.expectedReturn * weight);
-  }, 0);
-
-  // Weighted average risk score
-  const riskScore = assets.reduce((sum, asset) => {
-    const weight = asset.currentValue / totalValue;
-    const riskValue = RISK_MULTIPLIERS[asset.riskLevel];
-    return sum + (riskValue * weight);
-  }, 0);
-
-  // Diversification score based on asset types and allocation
-  const typeAllocations: { [key: string]: number } = {};
-  assets.forEach(asset => {
-    const allocation = asset.currentValue / totalValue;
-    typeAllocations[asset.type] = (typeAllocations[asset.type] || 0) + allocation;
-  });
-
-  // Calculate diversification score (0-100)
-  const numTypes = Object.keys(typeAllocations).length;
-  const maxTypes = Object.keys(DIVERSIFICATION_WEIGHTS).length;
-  
-  // Base score from number of asset types
-  let diversificationScore = (numTypes / maxTypes) * 50;
-  
-  // Bonus for balanced allocation (penalty for concentration)
-  const allocations = Object.values(typeAllocations);
-  const maxAllocation = Math.max(...allocations);
-  const concentrationPenalty = maxAllocation > 0.6 ? (maxAllocation - 0.6) * 50 : 0;
-  diversificationScore = Math.max(0, diversificationScore + 50 - concentrationPenalty);
-
-  return {
-    totalValue,
-    expectedReturn,
-    riskScore,
-    diversificationScore: Math.round(diversificationScore)
-  };
 };
 
-export const generateCurrentStrategy = (assets: Asset[], language: Language = 'it'): Strategy => {
-  const metrics = calculatePortfolioMetrics(assets);
-  const totalValue = metrics.totalValue;
-  
-  // Calculate current allocations
-  const targetAllocations: { [assetId: string]: number } = {};
-  assets.forEach(asset => {
-    const allocation = totalValue > 0 ? (asset.currentValue / totalValue) * 100 : 0;
-    targetAllocations[asset.id] = Math.round(allocation);
-  });
-
-  // Calculate Sharpe ratio (simplified)
-  const riskFreeRate = 2; // Assume 2% risk-free rate
-  const sharpeRatio = metrics.riskScore > 0 ? (metrics.expectedReturn - riskFreeRate) / (metrics.riskScore * 2) : 0;
-
-  // Estimate volatility based on risk score and asset mix
-  const volatility = metrics.riskScore * 2.5 + 5;
-
-  // Estimate max drawdown based on risk profile
-  const maxDrawdown = metrics.riskScore * 4 + 8;
-
-  return {
-    id: 'current-strategy',
-    name: getTranslation(language, 'currentStrategyName'),
-    description: getTranslation(language, 'currentStrategyDescription'),
-    targetAllocations,
-    expectedReturn: Math.round(metrics.expectedReturn * 10) / 10, // Round to 1 decimal
-    riskScore: metrics.riskScore,
-    sharpeRatio,
-    maxDrawdown,
-    volatility,
-    createdAt: new Date(),
-    isAIGenerated: false
-  };
-};
-
-export const projectPortfolioGrowth = (
-  initialValue: number,
-  annualReturn: number,
-  years: number,
-  assets: Asset[],
-  strategy?: Strategy
-): Array<{ year: number; value: number }> => {
-  // Check if any assets have PAC enabled
-  const hasPAC = assets.some(asset => asset.isPAC && asset.pacAmount && asset.pacAmount > 0);
-  
-  if (hasPAC) {
-    return calculatePACGrowth(initialValue, annualReturn, years, assets);
-  } else {
-    return calculateSimpleGrowth(initialValue, annualReturn, years);
+export const getTranslation = (language: Language, key: string): string => {
+  const translation = TRANSLATIONS[key as keyof typeof TRANSLATIONS];
+  if (!translation) {
+    console.warn(`Translation key "${key}" not found`);
+    return key;
   }
+  return translation[language] || translation.en || key;
 };
 
-// Simple compound growth without PAC
-const calculateSimpleGrowth = (
-  initialValue: number,
-  annualReturn: number,
-  years: number
-): Array<{ year: number; value: number }> => {
-  const projections = [];
-  let currentValue = initialValue;
-  
-  for (let year = 0; year <= years; year++) {
-    projections.push({ year, value: Math.round(currentValue) });
-    if (year < years) {
-      currentValue *= (1 + annualReturn / 100);
-    }
-  }
-  
-  return projections;
-};
-
-// PAC calculation with monthly contributions and compounding
-const calculatePACGrowth = (
-  initialValue: number,
-  annualReturn: number,
-  years: number,
-  assets: Asset[]
-): Array<{ year: number; value: number }> => {
-  const formatOptions: Intl.NumberFormatOptions = {
-    style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  };
-  
-  // Special handling for certain currencies
-  if (['JPY', 'KRW', 'VND', 'IDR'].includes(currency)) {
-    // These currencies typically don't use decimal places
-    formatOptions.minimumFractionDigits = 0;
-    formatOptions.maximumFractionDigits = 0;
-  } else if (['BHD', 'KWD', 'OMR'].includes(currency)) {
-    // These currencies use 3 decimal places
-    formatOptions.minimumFractionDigits = 3;
-    formatOptions.maximumFractionDigits = 3;
-  }
-  
-  // Determine locale based on currency
-  let locale = 'en-US';
-  if (currency === 'EUR') locale = 'it-IT';
-  else if (currency === 'GBP') locale = 'en-GB';
-  else if (currency === 'JPY') locale = 'ja-JP';
-  else if (currency === 'CNY') locale = 'zh-CN';
-  else if (currency === 'INR') locale = 'hi-IN';
-  else if (currency === 'BRL') locale = 'pt-BR';
-  else if (currency === 'RUB') locale = 'ru-RU';
-  else if (currency === 'KRW') locale = 'ko-KR';
-  
-  return new Intl.NumberFormat('it-IT', {
-    style: 'currency',
-    currency: currency,
-    ...formatOptions
-  }).format(amount);
-};
-
-export const formatPercentage = (value: number): string => {
-  return `${value.toFixed(1)}%`;
-};
+export { TRANSLATIONS };
