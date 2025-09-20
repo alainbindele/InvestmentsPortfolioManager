@@ -39,7 +39,7 @@ export const translations = {
     
     // PAC (Piano di Accumulo del Capitale)
     enablePAC: 'Abilita PAC',
-    pacFullName: '(Piano di Accumulo del Capitale)',
+    pacFullName: 'Piano di Accumulo del Capitale',
     pacAmount: 'Importo PAC',
     pacFrequency: 'Frequenza PAC',
     monthly: 'Mensile',
@@ -208,6 +208,7 @@ export const translations = {
     
     // PAC (Periodic Investment Plan)
     enablePAC: 'Enable PAC',
+    pacFullName: 'Periodic Investment Plan',
     pacAmount: 'PAC Amount',
     pacFrequency: 'PAC Frequency',
     monthly: 'Monthly',
@@ -378,6 +379,9 @@ export const translations = {
     
     // PAC (Piano di Accumulo del Capitale)
     enablePAC: 'Habilitar PAC',
+    pacFullName: 'Plan de Inversión Periódica',
+    pacFullName: 'Plan d\'Accumulation du Capital',
+    pacFullName: '定期投资计划',
     pacAmount: 'Importe PAC',
     pacFrequency: 'Frecuencia PAC',
     monthly: 'Mensual',
