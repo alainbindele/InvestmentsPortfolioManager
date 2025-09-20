@@ -990,7 +990,18 @@ export const translations = {
     rebalanceError: '重新平衡时出错。请稍后重试。',
     nonBloccati: '未锁定',
     asset: '资产',
-    assets: '资产'
+    assets: '资产',
+    
+    // PAC (定期投资计划)
+    enablePAC: '启用PAC',
+    pacFullName: '定期投资计划',
+    pacAmount: 'PAC金额',
+    pacFrequency: 'PAC频率',
+    monthly: '每月',
+    quarterly: '每季度',
+    yearly: '每年',
+    pacNote: 'PAC备注',
+    pacDescription: 'PAC根据选择的频率自动将指定金额添加到资产价值中，模拟随时间的定期投资。'
   }
 };
 
