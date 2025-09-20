@@ -189,31 +189,14 @@ export const calculatePrecisePortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // For current portfolio projections, use actual asset allocations and returns
-  const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
-  
-  // Calculate weighted portfolio monthly return
-  let portfolioMonthlyReturn = 0;
-  if (totalValue > 0) {
-    portfolioMonthlyReturn = assets.reduce((weightedReturn, asset) => {
-      const weight = asset.currentValue / totalValue;
-      const assetMonthlyReturn = asset.expectedReturn / 100 / 12;
-      
-      return weightedReturn + (assetMonthlyReturn * weight);
-    }, 0);
-  } else {
-    // Fallback to strategy return if no assets
-    portfolioMonthlyReturn = annualReturn / 100 / 12;
-  }
-  
-  const totalMonths = years * 12;
-  
-  // Monthly compound calculation
+  const projections = [];
   let currentValue = initialValue;
-  const yearlyProjections = [];
-
-  // Calculate total PAC contributions per month
-  const totalMonthlyPAC = assets.reduce((total, asset) => {
+  
+  // Calculate monthly return rate
+  const monthlyReturn = annualReturn / 100 / 12;
+  
+  // Calculate total monthly PAC contributions
+  const monthlyPAC = assets.reduce((total, asset) => {
     if (asset.isPAC && asset.pacAmount) {
       switch (asset.pacFrequency) {
         case 'monthly':
@@ -229,33 +212,27 @@ export const calculatePrecisePortfolioGrowth = (
     return total;
   }, 0);
   
-  // Add initial value (year 0)
-  yearlyProjections.push({
-    year: 0,
-    value: Math.round(currentValue)
-  });
+  // Add year 0
+  projections.push({ year: 0, value: Math.round(currentValue) });
   
-  // Calculate month by month for precision
-  for (let year = 0; year <= years; year++) {
-    if (year > 0) {
-      // Calculate 12 months for this year
-      for (let month = 1; month <= 12; month++) {
-        // 1. Add PAC contribution at the beginning of the month
-        currentValue += totalMonthlyPAC;
-        
-        // 2. Apply monthly compound growth to the total (initial + PAC contributions)
-        currentValue *= (1 + portfolioMonthlyReturn);
-      }
-      
-      // Add yearly projection
-      yearlyProjections.push({
-        year,
-        value: Math.round(currentValue)
-      });
+  // Calculate year by year
+  for (let year = 1; year <= years; year++) {
+    // Calculate 12 months for this year
+    for (let month = 1; month <= 12; month++) {
+      // Add monthly PAC contribution first
+      currentValue += monthlyPAC;
+      // Then apply monthly compound interest
+      currentValue *= (1 + monthlyReturn);
     }
+    
+    // Store yearly result
+    projections.push({ 
+      year, 
+      value: Math.round(currentValue) 
+    });
   }
   
-  return yearlyProjections;
+  return projections;
 };
 
 export const formatCurrency = (amount: number, currency: Currency = 'EUR'): string => {
