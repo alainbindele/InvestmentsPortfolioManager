@@ -515,7 +515,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       </span>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium text-gray-900">{allocation}%</div>
+                      <div className="font-medium text-gray-900">{allocation.toFixed(3)}%</div>
                       <div className="text-xs text-gray-500">
                         {new Intl.NumberFormat('it-IT', {
                           style: 'currency',

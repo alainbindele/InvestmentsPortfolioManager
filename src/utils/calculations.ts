@@ -222,5 +222,5 @@ export const formatCurrency = (amount: number, currency: Currency = 'EUR'): stri
 };
 
 export const formatPercentage = (value: number): string => {
-  return `${value.toFixed(1)}%`;
+  return `${value.toFixed(3)}%`;
 };
