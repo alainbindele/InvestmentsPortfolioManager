@@ -180,6 +180,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       setShowDeleteConfirm(false);
     }
   };
+
   return (
     <div className="relative">
       {/* Delete Confirmation Modal */}
@@ -291,81 +292,14 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       type="text"
                       value={editedName}
                       onChange={(e) => setEditedName(e.target.value)}
-              const assetColor = getAssetColor(assetId, asset.type);
                       onClick={(e) => e.stopPropagation()}
                       className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') handleNameSave();
-                    <div className="relative">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowColorPicker(showColorPicker === assetId ? null : assetId);
-                        }}
-                        className="w-2 h-2 rounded-full flex-shrink-0 hover:ring-2 hover:ring-gray-300 transition-all cursor-pointer"
-                        style={{ backgroundColor: assetColor }}
-                        title="Cambia colore"
-                      />
-                      
-                      {/* Color Picker Dropdown */}
-                      {showColorPicker === assetId && (
-                        <div 
-                          ref={colorPickerRef}
-                          className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl p-3 z-50"
-                          style={{ minWidth: '200px' }}
-                        >
-                          <div className="grid grid-cols-6 gap-2 mb-3">
-                            {colorPalette.map((color) => (
-                              <button
-                                key={color}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleColorChange(assetId, color);
-                                  setShowColorPicker(null);
-                                }}
-                                className={`w-6 h-6 rounded-full border-2 hover:scale-110 transition-transform ${
-                                  assetColor === color ? 'border-gray-800' : 'border-gray-300'
-                                }`}
-                                style={{ backgroundColor: color }}
-                                title={color}
-                              />
-                            ))}
-                          </div>
-                          
-                          {/* Custom Color Input */}
-                          <div className="border-t border-gray-200 pt-2">
-                            <label className="block text-xs text-gray-600 mb-1">Colore personalizzato:</label>
-                            <input
-                              type="color"
-                              value={assetColor}
-                              onChange={(e) => {
-                                e.stopPropagation();
-                                handleColorChange(assetId, e.target.value);
-                              }}
-                              className="w-full h-8 border border-gray-300 rounded cursor-pointer"
-                            />
-                          </div>
-                          
-                          {/* Reset Button */}
-                          {customColors[assetId] && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setCustomColors(prev => {
-                                  const newColors = { ...prev };
-                                  delete newColors[assetId];
-                                  return newColors;
-                                });
-                                setShowColorPicker(null);
-                              }}
-                              className="w-full mt-2 px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs hover:bg-gray-200 transition-colors"
-                            >
-                              Ripristina colore originale
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                        if (e.key === 'Escape') handleNameCancel();
+                      }}
+                      autoFocus
+                    />
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -438,10 +372,10 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                     <p><strong>{t('sharpeRatioTitle')}:</strong> {t('sharpeRatioDescription')}</p>
                     <div className="space-y-1">
                       <p><strong>{t('interpretation')}:</strong></p>
-                      <p>• <strong>&gt; 1.0:</strong> {t('sharpeExcellent')}</p>
+                      <p>• <strong>> 1.0:</strong> {t('sharpeExcellent')}</p>
                       <p>• <strong>0.5 - 1.0:</strong> {t('sharpeGood')}</p>
                       <p>• <strong>0 - 0.5:</strong> {t('sharpeAcceptable')}</p>
-                      <p>• <strong>&lt; 0:</strong> {t('sharpePoor')}</p>
+                      <p>• <strong>< 0:</strong> {t('sharpePoor')}</p>
                     </div>
                     <div className="mt-2 pt-2 border-t border-gray-600">
                       <p className="text-yellow-300"><strong>{t('example')}:</strong></p>
@@ -501,18 +435,85 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                 if (!asset) return null;
                 
                 const monetaryValue = (allocation / 100) * totalValue;
+                const assetColor = getAssetColor(assetId, asset.type);
                 
                 return (
                   <div key={assetId} className="flex items-center justify-between text-xs">
-                   <div className="flex items-center gap-2 flex-1 mr-2">
-                     <div 
-                       className="w-2 h-2 rounded-full flex-shrink-0" 
-                       style={{ backgroundColor: ASSET_COLORS[asset.type] || '#6b7280' }}
-                     />
-                     <span className="text-gray-600 truncate">
-                      {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
-                    </span>
-                   </div>
+                    <div className="flex items-center gap-2 flex-1 mr-2">
+                      <div className="relative">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowColorPicker(showColorPicker === assetId ? null : assetId);
+                          }}
+                          className="w-2 h-2 rounded-full flex-shrink-0 hover:ring-2 hover:ring-gray-300 transition-all cursor-pointer"
+                          style={{ backgroundColor: assetColor }}
+                          title="Cambia colore"
+                        />
+                        
+                        {/* Color Picker Dropdown */}
+                        {showColorPicker === assetId && (
+                          <div 
+                            ref={colorPickerRef}
+                            className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl p-3 z-50"
+                            style={{ minWidth: '200px' }}
+                          >
+                            <div className="grid grid-cols-6 gap-2 mb-3">
+                              {colorPalette.map((color) => (
+                                <button
+                                  key={color}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleColorChange(assetId, color);
+                                    setShowColorPicker(null);
+                                  }}
+                                  className={`w-6 h-6 rounded-full border-2 hover:scale-110 transition-transform ${
+                                    assetColor === color ? 'border-gray-800' : 'border-gray-300'
+                                  }`}
+                                  style={{ backgroundColor: color }}
+                                  title={color}
+                                />
+                              ))}
+                            </div>
+                            
+                            {/* Custom Color Input */}
+                            <div className="border-t border-gray-200 pt-2">
+                              <label className="block text-xs text-gray-600 mb-1">Colore personalizzato:</label>
+                              <input
+                                type="color"
+                                value={assetColor}
+                                onChange={(e) => {
+                                  e.stopPropagation();
+                                  handleColorChange(assetId, e.target.value);
+                                }}
+                                className="w-full h-8 border border-gray-300 rounded cursor-pointer"
+                              />
+                            </div>
+                            
+                            {/* Reset Button */}
+                            {customColors[assetId] && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setCustomColors(prev => {
+                                    const newColors = { ...prev };
+                                    delete newColors[assetId];
+                                    return newColors;
+                                  });
+                                  setShowColorPicker(null);
+                                }}
+                                className="w-full mt-2 px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs hover:bg-gray-200 transition-colors"
+                              >
+                                Ripristina colore originale
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-gray-600 truncate">
+                        {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
+                      </span>
+                    </div>
                     <div className="text-right">
                       <div className="font-medium text-gray-900">{allocation}%</div>
                       <div className="text-xs text-gray-500">
