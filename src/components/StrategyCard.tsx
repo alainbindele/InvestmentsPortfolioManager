@@ -372,7 +372,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                     <p><strong>{t('sharpeRatioTitle')}:</strong> {t('sharpeRatioDescription')}</p>
                     <div className="space-y-1">
                       <p><strong>{t('interpretation')}:</strong></p>
-                      <p>• <strong>> 1.0:</strong> {t('sharpeExcellent')}</p>
+                      <p>• <strong>&gt; 1.0:</strong> {t('sharpeExcellent')}</p>
                       <p>• <strong>0.5 - 1.0:</strong> {t('sharpeGood')}</p>
                       <p>• <strong>0 - 0.5:</strong> {t('sharpeAcceptable')}</p>
                       <p>• <strong>&lt; 0:</strong> {t('sharpePoor')}</p>
