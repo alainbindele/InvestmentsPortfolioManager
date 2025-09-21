@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Strategy, Asset } from '../types/portfolio';
 import { Language } from '../types/language';
@@ -38,9 +38,44 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(strategy.name);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [customColors, setCustomColors] = useState<{ [assetId: string]: string }>({});
+  const [showColorPicker, setShowColorPicker] = useState<string | null>(null);
+  const colorPickerRef = useRef<HTMLDivElement>(null);
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
+  // Close color picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
+        setShowColorPicker(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Get color for asset (custom or default)
+  const getAssetColor = (assetId: string, assetType: string): string => {
+    return customColors[assetId] || ASSET_COLORS[assetType as keyof typeof ASSET_COLORS] || '#6b7280';
+  };
+
+  // Handle color change
+  const handleColorChange = (assetId: string, color: string) => {
+    setCustomColors(prev => ({
+      ...prev,
+      [assetId]: color
+    }));
+  };
+
+  // Predefined color palette
+  const colorPalette = [
+    '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#6B7280',
+    '#F97316', '#84CC16', '#06B6D4', '#EC4899', '#8B5A2B', '#059669',
+    '#7C3AED', '#DC2626', '#CA8A04', '#4338CA', '#BE185D', '#0891B2'
+  ];
+
   // Prepare pie chart data
   const pieChartData = Object.entries(strategy.targetAllocations)
     .map(([assetId, allocation]) => {
@@ -50,7 +85,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       return {
         name: asset.name,
         value: allocation,
-        color: ASSET_COLORS[asset.type] || '#6b7280'
+        color: getAssetColor(assetId, asset.type)
       };
     })
     .filter(Boolean) as Array<{ name: string; value: number; color: string }>;
@@ -256,14 +291,81 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       type="text"
                       value={editedName}
                       onChange={(e) => setEditedName(e.target.value)}
+              const assetColor = getAssetColor(assetId, asset.type);
                       onClick={(e) => e.stopPropagation()}
                       className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') handleNameSave();
-                        if (e.key === 'Escape') handleNameCancel();
-                      }}
-                      autoFocus
-                    />
+                    <div className="relative">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowColorPicker(showColorPicker === assetId ? null : assetId);
+                        }}
+                        className="w-2 h-2 rounded-full flex-shrink-0 hover:ring-2 hover:ring-gray-300 transition-all cursor-pointer"
+                        style={{ backgroundColor: assetColor }}
+                        title="Cambia colore"
+                      />
+                      
+                      {/* Color Picker Dropdown */}
+                      {showColorPicker === assetId && (
+                        <div 
+                          ref={colorPickerRef}
+                          className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl p-3 z-50"
+                          style={{ minWidth: '200px' }}
+                        >
+                          <div className="grid grid-cols-6 gap-2 mb-3">
+                            {colorPalette.map((color) => (
+                              <button
+                                key={color}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleColorChange(assetId, color);
+                                  setShowColorPicker(null);
+                                }}
+                                className={`w-6 h-6 rounded-full border-2 hover:scale-110 transition-transform ${
+                                  assetColor === color ? 'border-gray-800' : 'border-gray-300'
+                                }`}
+                                style={{ backgroundColor: color }}
+                                title={color}
+                              />
+                            ))}
+                          </div>
+                          
+                          {/* Custom Color Input */}
+                          <div className="border-t border-gray-200 pt-2">
+                            <label className="block text-xs text-gray-600 mb-1">Colore personalizzato:</label>
+                            <input
+                              type="color"
+                              value={assetColor}
+                              onChange={(e) => {
+                                e.stopPropagation();
+                                handleColorChange(assetId, e.target.value);
+                              }}
+                              className="w-full h-8 border border-gray-300 rounded cursor-pointer"
+                            />
+                          </div>
+                          
+                          {/* Reset Button */}
+                          {customColors[assetId] && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCustomColors(prev => {
+                                  const newColors = { ...prev };
+                                  delete newColors[assetId];
+                                  return newColors;
+                                });
+                                setShowColorPicker(null);
+                              }}
+                              className="w-full mt-2 px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs hover:bg-gray-200 transition-colors"
+                            >
+                              Ripristina colore originale
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
