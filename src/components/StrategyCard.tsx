@@ -354,9 +354,15 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                 
                 return (
                   <div key={assetId} className="flex items-center justify-between text-xs">
-                    <span className="text-gray-600 truncate flex-1 mr-2">
+                   <div className="flex items-center gap-2 flex-1 mr-2">
+                     <div 
+                       className="w-2 h-2 rounded-full flex-shrink-0" 
+                       style={{ backgroundColor: ASSET_COLORS[asset.type] || '#6b7280' }}
+                     />
+                     <span className="text-gray-600 truncate">
                       {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
                     </span>
+                   </div>
                     <div className="text-right">
                       <div className="font-medium text-gray-900">{allocation}%</div>
                       <div className="text-xs text-gray-500">
