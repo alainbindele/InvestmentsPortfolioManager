@@ -375,7 +375,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       <p>• <strong>> 1.0:</strong> {t('sharpeExcellent')}</p>
                       <p>• <strong>0.5 - 1.0:</strong> {t('sharpeGood')}</p>
                       <p>• <strong>0 - 0.5:</strong> {t('sharpeAcceptable')}</p>
-                      <p>• <strong>< 0:</strong> {t('sharpePoor')}</p>
+                      <p>• <strong>&lt; 0:</strong> {t('sharpePoor')}</p>
                     </div>
                     <div className="mt-2 pt-2 border-t border-gray-600">
                       <p className="text-yellow-300"><strong>{t('example')}:</strong></p>
