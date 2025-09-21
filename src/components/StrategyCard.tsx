@@ -7,6 +7,7 @@ import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { ASSET_COLORS } from '../types/portfolio';
 import { getTranslation } from '../utils/translations';
+import { saveColorSchemes, loadColorSchemes } from '../utils/storage';
 import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check, Pencil, X, Trash2, AlertTriangle } from 'lucide-react';
 
 interface StrategyCardProps {
@@ -42,6 +43,12 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   const [showColorPicker, setShowColorPicker] = useState<string | null>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
   
+  // Load color schemes on component mount
+  useEffect(() => {
+    const savedColorSchemes = loadColorSchemes();
+    setCustomColors(savedColorSchemes);
+  }, []);
+  
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
   // Close color picker when clicking outside
@@ -67,6 +74,13 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       ...prev,
       [assetId]: color
     }));
+    
+    // Save to cookies immediately
+    const newColorSchemes = {
+      ...customColors,
+      [assetId]: color
+    };
+    saveColorSchemes(newColorSchemes);
   };
 
   // Predefined color palette
@@ -498,6 +512,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                                   setCustomColors(prev => {
                                     const newColors = { ...prev };
                                     delete newColors[assetId];
+                                    saveColorSchemes(newColors);
                                     return newColors;
                                   });
                                   setShowColorPicker(null);

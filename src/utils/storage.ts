@@ -8,7 +8,8 @@ const STORAGE_KEYS = {
   LANGUAGE: 'portfolio_balancer_language',
   CURRENCY: 'portfolio_balancer_currency',
   ACTIVE_TAB: 'portfolio_balancer_active_tab',
-  DISCLAIMER_ACCEPTED: 'portfolio_balancer_disclaimer_accepted'
+  DISCLAIMER_ACCEPTED: 'portfolio_balancer_disclaimer_accepted',
+  COLOR_SCHEMES: 'portfolio_balancer_color_schemes'
 };
 
 // Cookie utilities
@@ -155,6 +156,26 @@ export const loadDisclaimerAccepted = (): boolean => {
     console.error('Error loading disclaimer acceptance from cookies:', error);
   }
   return false;
+};
+
+export const saveColorSchemes = (colorSchemes: { [assetId: string]: string }) => {
+  try {
+    setCookie(STORAGE_KEYS.COLOR_SCHEMES, JSON.stringify(colorSchemes));
+  } catch (error) {
+    console.error('Error saving color schemes to cookies:', error);
+  }
+};
+
+export const loadColorSchemes = (): { [assetId: string]: string } => {
+  try {
+    const saved = getCookie(STORAGE_KEYS.COLOR_SCHEMES);
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (error) {
+    console.error('Error loading color schemes from cookies:', error);
+  }
+  return {};
 };
 
 export const clearAllData = () => {
