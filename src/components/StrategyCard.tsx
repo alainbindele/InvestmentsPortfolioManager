@@ -75,6 +75,53 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
 
   const isCurrentStrategy = strategy.id === 'current-strategy';
 
+  // Custom tooltip for pie chart
+  const CustomPieTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      const asset = assets.find(a => a.name === data.name);
+      
+      if (!asset) return null;
+      
+      const monetaryValue = (data.value / 100) * totalValue;
+      
+      return (
+        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg max-w-xs">
+          <div className="flex items-center gap-2 mb-2">
+            <div 
+              className="w-3 h-3 rounded-full" 
+              style={{ backgroundColor: data.color }}
+            />
+            <p className="font-medium text-gray-900">{asset.name}</p>
+          </div>
+          <div className="space-y-1 text-sm">
+            <p className="text-gray-600">
+              <span className="font-medium">{t('type')}:</span> {t(asset.type)}
+            </p>
+            <p className="text-gray-600">
+              <span className="font-medium">{t('allocation')}:</span> {data.value.toFixed(1)}%
+            </p>
+            <p className="text-gray-600">
+              <span className="font-medium">{t('value')}:</span> {formatCurrency(monetaryValue, currency)}
+            </p>
+            <p className="text-gray-600">
+              <span className="font-medium">{t('expectedReturn')}:</span> {formatPercentage(asset.expectedReturn)}
+            </p>
+            <p className="text-gray-600">
+              <span className="font-medium">{t('riskLevel')}:</span> {t(asset.riskLevel)}
+            </p>
+            {asset.isPAC && (
+              <p className="text-blue-600 text-xs font-medium">
+                📈 PAC: {formatCurrency(asset.pacAmount || 0, currency)}/{t(asset.pacFrequency || 'monthly')}
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   const handleNameEdit = () => {
     setIsEditingName(true);
     setEditedName(strategy.name);
@@ -335,6 +382,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
+                  <Tooltip content={<CustomPieTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
