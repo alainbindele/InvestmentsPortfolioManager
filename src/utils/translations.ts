@@ -95,7 +95,7 @@ const TRANSLATIONS = {
     zh: '资产类型'
   },
   assetCurrentValue: {
-    it: 'Valore Attuale (€)',
+    it: 'Valore attualmente investito (€)',
     en: 'Current Value (€)',
     es: 'Valor Actual (€)',
     fr: 'Valeur Actuelle (€)',

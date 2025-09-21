@@ -150,7 +150,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            {t('assetCurrentValue')} *
+            Valore attualmente investito (€) *
           </label>
           <input
             type="number"
