@@ -86,7 +86,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       const monetaryValue = (data.value / 100) * totalValue;
       
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg max-w-xs">
+        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg max-w-xs transform -translate-y-full -mt-2">
           <div className="flex items-center gap-2 mb-2">
             <div 
               className="w-3 h-3 rounded-full" 
