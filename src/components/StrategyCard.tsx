@@ -1,9 +1,11 @@
 import React from 'react';
 import { useState } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Strategy, Asset } from '../types/portfolio';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
+import { ASSET_COLORS } from '../types/portfolio';
 import { getTranslation } from '../utils/translations';
 import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check, Pencil, X, Trash2, AlertTriangle } from 'lucide-react';
 
@@ -39,6 +41,20 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
   
+  // Prepare pie chart data
+  const pieChartData = Object.entries(strategy.targetAllocations)
+    .map(([assetId, allocation]) => {
+      const asset = assets.find(a => a.id === assetId);
+      if (!asset || allocation === 0) return null;
+      
+      return {
+        name: asset.name,
+        value: allocation,
+        color: ASSET_COLORS[asset.type] || '#6b7280'
+      };
+    })
+    .filter(Boolean) as Array<{ name: string; value: number; color: string }>;
+
   // Calculate strategy metrics
   const getStrategyIcon = () => {
     if (strategy.isAIGenerated) return Bot;
@@ -299,6 +315,31 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
             </p>
           </div>
         </div>
+
+        {/* Pie Chart */}
+        {pieChartData.length > 0 && (
+          <div className="mb-4">
+            <div className="h-32 w-32 mx-auto">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={20}
+                    outerRadius={60}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {pieChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
 
         {/* Asset Allocations */}
         {Object.keys(strategy.targetAllocations).length > 0 && (
