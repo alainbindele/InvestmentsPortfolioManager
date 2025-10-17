@@ -42,29 +42,41 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   ): Array<{ year: number; value: number }> => {
     const projections = [];
     let currentValue = initialValue;
-    
+
     // Use asset's own return rate
     const annualReturn = asset.expectedReturn;
     const monthlyReturn = annualReturn / 100 / 12;
-    
-    // Calculate month by month for precision
-    const totalMonths = years * 12;
-    
-    for (let month = 0; month <= totalMonths; month++) {
-      // Add yearly projections
-      if (month % 12 === 0) {
-        projections.push({
-          year: month / 12,
-          value: Math.round(currentValue)
-        });
-      }
-      
-      if (month < totalMonths) {
-        // Apply monthly compound growth
-        currentValue *= (1 + monthlyReturn);
+
+    // Map frequency to number of months between contributions
+    const frequencyToMonths: Record<'monthly' | 'quarterly' | 'yearly', number> = {
+      monthly: 1,
+      quarterly: 3,
+      yearly: 12
+    };
+
+    for (let year = 0; year <= years; year++) {
+      if (year === 0) {
+        projections.push({ year, value: Math.round(currentValue) });
+      } else {
+        for (let month = 1; month <= 12; month++) {
+          // Add PAC contribution if enabled
+          if (asset.isPAC && asset.pacAmount && asset.pacAmount > 0) {
+            const frequency = asset.pacFrequency || 'monthly';
+            const monthsBetweenContributions = frequencyToMonths[frequency];
+
+            // Add contribution only on the appropriate months
+            if (month % monthsBetweenContributions === 0) {
+              currentValue += asset.pacAmount;
+            }
+          }
+
+          // Apply monthly compound growth
+          currentValue *= (1 + monthlyReturn);
+        }
+        projections.push({ year, value: Math.round(currentValue) });
       }
     }
-    
+
     return projections;
   };
 

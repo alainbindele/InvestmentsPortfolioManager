@@ -31,6 +31,8 @@ export const AssetForm: React.FC<AssetFormProps> = ({
     expectedReturn: asset?.expectedReturn?.toString() || '',
     rateType: asset?.rateType || 'effective' as 'nominal' | 'effective',
     riskLevel: asset?.riskLevel || 'medium' as RiskLevel,
+    pacAmount: asset?.pacAmount?.toString() || '',
+    pacFrequency: asset?.pacFrequency || 'monthly' as 'monthly' | 'quarterly' | 'yearly',
   });
   
   const [formData, setFormData] = useState({
@@ -238,7 +240,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                   </label>
                   <select
                     value={formData.pacFrequency || 'monthly'}
-                    onChange={(e) => setFormData({ ...formData, pacFrequency: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, pacFrequency: e.target.value as 'monthly' | 'quarterly' | 'yearly' })}
                     className="select-field"
                   >
                     <option value="monthly">{t('monthly')}</option>
