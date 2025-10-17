@@ -119,14 +119,8 @@ export const projectPortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // Check if any assets have PAC enabled
-  const hasPAC = assets.some(asset => asset.isPAC && asset.pacAmount && asset.pacAmount > 0);
-  
-  if (hasPAC) {
-    return calculatePACGrowth(initialValue, annualReturn, years, assets);
-  } else {
-    return calculateSimpleGrowth(initialValue, annualReturn, years);
-  }
+  // Always calculate each asset separately to respect individual return rates
+  return calculatePACGrowth(initialValue, annualReturn, years, assets);
 };
 
 // Simple compound growth without PAC
@@ -149,16 +143,13 @@ const calculateSimpleGrowth = (
 };
 
 // PAC calculation with contributions based on frequency and compounding
+// Each asset is calculated separately with its own return rate, then summed
 const calculatePACGrowth = (
   initialValue: number,
   annualReturn: number,
   years: number,
   assets: Asset[]
 ): Array<{ year: number; value: number }> => {
-  const projections = [];
-  let currentValue = initialValue;
-  const monthlyReturn = annualReturn / 100 / 12;
-
   // Map frequency to number of months between contributions
   const frequencyToMonths: Record<'monthly' | 'quarterly' | 'yearly', number> = {
     monthly: 1,
@@ -166,13 +157,18 @@ const calculatePACGrowth = (
     yearly: 12
   };
 
-  for (let year = 0; year <= years; year++) {
-    if (year === 0) {
-      projections.push({ year, value: Math.round(currentValue) });
-    } else {
-      for (let month = 1; month <= 12; month++) {
-        // Add PAC contributions based on each asset's frequency
-        assets.forEach(asset => {
+  // Calculate growth for each asset separately
+  const assetProjections = assets.map(asset => {
+    const assetValues: number[] = [];
+    let currentValue = asset.currentValue;
+    const monthlyReturn = asset.expectedReturn / 100 / 12;
+
+    for (let year = 0; year <= years; year++) {
+      if (year === 0) {
+        assetValues.push(currentValue);
+      } else {
+        for (let month = 1; month <= 12; month++) {
+          // Add PAC contribution if enabled
           if (asset.isPAC && asset.pacAmount && asset.pacAmount > 0) {
             const frequency = asset.pacFrequency || 'monthly';
             const monthsBetweenContributions = frequencyToMonths[frequency];
@@ -182,13 +178,21 @@ const calculatePACGrowth = (
               currentValue += asset.pacAmount;
             }
           }
-        });
 
-        // Apply monthly compound growth
-        currentValue = currentValue * (1 + monthlyReturn);
+          // Apply monthly compound growth with asset's own return rate
+          currentValue *= (1 + monthlyReturn);
+        }
+        assetValues.push(currentValue);
       }
-      projections.push({ year, value: Math.round(currentValue) });
     }
+    return assetValues;
+  });
+
+  // Sum all asset values for each year
+  const projections = [];
+  for (let year = 0; year <= years; year++) {
+    const totalValue = assetProjections.reduce((sum, assetVals) => sum + assetVals[year], 0);
+    projections.push({ year, value: Math.round(totalValue) });
   }
 
   return projections;
