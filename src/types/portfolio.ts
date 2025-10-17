@@ -13,7 +13,7 @@ export interface Asset {
   riskLevel: RiskLevel;
   isLocked?: boolean; // For AI rebalancing - locked assets won't be modified
   isPAC?: boolean; // Indicates if this is a PAC (recurring investment) asset
-  pacAmount?: number; // Monthly PAC amount
+  pacAmount?: number; // PAC amount per contribution (frequency determines when it's applied)
   pacFrequency?: 'monthly' | 'quarterly' | 'yearly'; // PAC frequency
 }
 

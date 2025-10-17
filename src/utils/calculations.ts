@@ -148,7 +148,7 @@ const calculateSimpleGrowth = (
   return projections;
 };
 
-// PAC calculation with monthly contributions and compounding
+// PAC calculation with contributions based on frequency and compounding
 const calculatePACGrowth = (
   initialValue: number,
   annualReturn: number,
@@ -158,26 +158,39 @@ const calculatePACGrowth = (
   const projections = [];
   let currentValue = initialValue;
   const monthlyReturn = annualReturn / 100 / 12;
-  
-  // Calculate total monthly PAC contribution
-  const totalMonthlyPAC = assets.reduce((sum, asset) => {
-    return sum + (asset.isPAC && asset.pacAmount ? asset.pacAmount : 0);
-  }, 0);
-  
+
+  // Map frequency to number of months between contributions
+  const frequencyToMonths: Record<'monthly' | 'quarterly' | 'yearly', number> = {
+    monthly: 1,
+    quarterly: 3,
+    yearly: 12
+  };
+
   for (let year = 0; year <= years; year++) {
     if (year === 0) {
       projections.push({ year, value: Math.round(currentValue) });
     } else {
       for (let month = 1; month <= 12; month++) {
-        // Add PAC contribution first
-        currentValue += totalMonthlyPAC;
-        // Then apply monthly compound growth
+        // Add PAC contributions based on each asset's frequency
+        assets.forEach(asset => {
+          if (asset.isPAC && asset.pacAmount && asset.pacAmount > 0) {
+            const frequency = asset.pacFrequency || 'monthly';
+            const monthsBetweenContributions = frequencyToMonths[frequency];
+
+            // Add contribution only on the appropriate months
+            if (month % monthsBetweenContributions === 0) {
+              currentValue += asset.pacAmount;
+            }
+          }
+        });
+
+        // Apply monthly compound growth
         currentValue = currentValue * (1 + monthlyReturn);
       }
       projections.push({ year, value: Math.round(currentValue) });
     }
   }
-  
+
   return projections;
 };
 
