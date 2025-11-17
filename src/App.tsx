@@ -538,6 +538,17 @@ function App() {
             )}
           </div>
         )}
+
+        {/* Educational Section - Portfolio Rebalancing */}
+        <div className="mt-12 card bg-gradient-to-br from-gray-50 to-white border border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('rebalancingTitle')}</h2>
+          <div className="space-y-4 text-gray-700 leading-relaxed">
+            <p>{t('rebalancingIntro')}</p>
+            <p>{t('rebalancingBuyHold')}</p>
+            <p>{t('rebalancingChallenge')}</p>
+            <p>{t('rebalancingAction')}</p>
+          </div>
+        </div>
       </main>
     </div>
   );

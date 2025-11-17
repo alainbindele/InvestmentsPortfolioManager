@@ -1543,6 +1543,48 @@ const TRANSLATIONS = {
     fr: 'Risque',
     de: 'Risiko',
     zh: '风险'
+  },
+
+  // Portfolio rebalancing explanation
+  rebalancingTitle: {
+    it: 'Cos\'è il Ribilanciamento di Portafoglio?',
+    en: 'What is Portfolio Rebalancing?',
+    es: '¿Qué es el Rebalanceo de Cartera?',
+    fr: 'Qu\'est-ce que le Rééquilibrage de Portefeuille?',
+    de: 'Was ist Portfolio-Neugewichtung?',
+    zh: '什么是投资组合再平衡？'
+  },
+  rebalancingIntro: {
+    it: 'Il ribilanciamento di portafoglio è una pratica fondamentale nella gestione degli investimenti, raccomandata da esperti finanziari di tutto il mondo e strettamente legata alla strategia buy-and-hold.',
+    en: 'Portfolio rebalancing is a fundamental practice in investment management, recommended by financial experts worldwide and closely linked to the buy-and-hold strategy.',
+    es: 'El rebalanceo de cartera es una práctica fundamental en la gestión de inversiones, recomendada por expertos financieros de todo el mundo y estrechamente vinculada a la estrategia de comprar y mantener.',
+    fr: 'Le rééquilibrage de portefeuille est une pratique fondamentale dans la gestion des investissements, recommandée par les experts financiers du monde entier et étroitement liée à la stratégie d\'achat et de conservation.',
+    de: 'Die Portfolio-Neugewichtung ist eine grundlegende Praxis im Investmentmanagement, die von Finanzexperten weltweit empfohlen wird und eng mit der Buy-and-Hold-Strategie verbunden ist.',
+    zh: '投资组合再平衡是投资管理的基本实践，受到全球金融专家的推荐，与买入并持有策略密切相关。'
+  },
+  rebalancingBuyHold: {
+    it: 'La strategia buy-and-hold si fonda sull\'evitare la negoziazione eccessiva, definendo invece un\'allocazione strategica degli asset da mantenere nel lungo periodo, senza ricorrere a pratiche come lo stock-picking o il market timing.',
+    en: 'The buy-and-hold strategy is based on avoiding excessive trading, instead defining a strategic asset allocation to maintain over the long term, without resorting to practices like stock-picking or market timing.',
+    es: 'La estrategia de comprar y mantener se basa en evitar el comercio excesivo, definiendo en su lugar una asignación estratégica de activos para mantener a largo plazo, sin recurrir a prácticas como la selección de acciones o el timing del mercado.',
+    fr: 'La stratégie d\'achat et de conservation repose sur l\'évitement du trading excessif, en définissant plutôt une allocation stratégique d\'actifs à maintenir sur le long terme, sans recourir à des pratiques comme la sélection d\'actions ou le timing du marché.',
+    de: 'Die Buy-and-Hold-Strategie basiert darauf, übermäßiges Trading zu vermeiden und stattdessen eine strategische Asset-Allokation zu definieren, die langfristig beibehalten wird, ohne auf Praktiken wie Stock-Picking oder Market-Timing zurückzugreifen.',
+    zh: '买入并持有策略基于避免过度交易，而是定义一个战略性资产配置以长期维持，不诉诸于选股或择时等做法。'
+  },
+  rebalancingChallenge: {
+    it: 'Tuttavia, mantenere invariata l\'allocazione nel tempo rappresenta una vera sfida. Anche senza effettuare alcuna modifica attiva, la struttura del tuo portafoglio tende naturalmente a deviare a causa delle diverse performance di mercato dei singoli asset. Queste fluttuazioni possono portare a un significativo disallineamento rispetto alla tua allocazione strategica originale.',
+    en: 'However, maintaining the same allocation over time presents a real challenge. Even without making any active changes, your portfolio structure naturally tends to drift due to different market performances of individual assets. These fluctuations can lead to significant misalignment from your original strategic allocation.',
+    es: 'Sin embargo, mantener la misma asignación a lo largo del tiempo presenta un verdadero desafío. Incluso sin realizar cambios activos, la estructura de tu cartera tiende naturalmente a desviarse debido a los diferentes rendimientos del mercado de los activos individuales. Estas fluctuaciones pueden llevar a una desalineación significativa respecto a tu asignación estratégica original.',
+    fr: 'Cependant, maintenir la même allocation dans le temps représente un vrai défi. Même sans apporter de modifications actives, la structure de votre portefeuille a tendance à dériver naturellement en raison des différentes performances de marché des actifs individuels. Ces fluctuations peuvent entraîner un désalignement significatif par rapport à votre allocation stratégique d\'origine.',
+    de: 'Die Aufrechterhaltung derselben Allokation im Laufe der Zeit stellt jedoch eine echte Herausforderung dar. Selbst ohne aktive Änderungen neigt Ihre Portfolio-Struktur natürlich dazu, aufgrund unterschiedlicher Marktleistungen einzelner Assets abzuweichen. Diese Schwankungen können zu einer erheblichen Fehlausrichtung von Ihrer ursprünglichen strategischen Allokation führen.',
+    zh: '然而，长期保持相同的配置是一个真正的挑战。即使不进行任何主动更改，由于各个资产的不同市场表现，您的投资组合结构自然会发生偏离。这些波动可能导致与您最初的战略配置显著不一致。'
+  },
+  rebalancingAction: {
+    it: 'Quando ciò accade, è il momento di agire con il ribilanciamento. Il processo consiste nel vendere proporzionalmente gli asset che hanno generato profitti significativi e acquistare quelli che sono in perdita o hanno sottoperformato. Questa azione riporta il tuo portafoglio all\'allocazione strategica iniziale, mantenendo il profilo di rischio-rendimento desiderato.',
+    en: 'When this happens, it\'s time to take action through rebalancing. The process involves proportionally selling assets that have generated significant profits and buying those that are at a loss or have underperformed. This action brings your portfolio back to its initial strategic allocation, maintaining your desired risk-return profile.',
+    es: 'Cuando esto sucede, es el momento de actuar mediante el rebalanceo. El proceso consiste en vender proporcionalmente los activos que han generado ganancias significativas y comprar aquellos que están en pérdida o han tenido un rendimiento inferior. Esta acción devuelve tu cartera a su asignación estratégica inicial, manteniendo el perfil de riesgo-rendimiento deseado.',
+    fr: 'Lorsque cela se produit, il est temps d\'agir par le rééquilibrage. Le processus consiste à vendre proportionnellement les actifs qui ont généré des profits significatifs et à acheter ceux qui sont en perte ou ont sous-performé. Cette action ramène votre portefeuille à son allocation stratégique initiale, en maintenant votre profil risque-rendement souhaité.',
+    de: 'Wenn dies geschieht, ist es Zeit, durch Neugewichtung zu handeln. Der Prozess beinhaltet den proportionalen Verkauf von Assets, die signifikante Gewinne erzielt haben, und den Kauf derjenigen, die Verluste erlitten haben oder unterdurchschnittlich abgeschnitten haben. Diese Maßnahme bringt Ihr Portfolio zurück zu seiner ursprünglichen strategischen Allokation und erhält Ihr gewünschtes Risiko-Rendite-Profil.',
+    zh: '当这种情况发生时，就该通过再平衡采取行动了。该过程涉及按比例出售产生显著利润的资产，并购买那些亏损或表现不佳的资产。此操作将您的投资组合恢复到最初的战略配置，保持您所期望的风险收益特征。'
   }
 };
 
