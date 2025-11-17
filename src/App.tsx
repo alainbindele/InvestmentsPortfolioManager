@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, BarChart3, Bot, Briefcase, TrendingUp, Edit, Trash2, Lock, Unlock } from 'lucide-react';
+import { PieChart, BarChart3, Bot, Briefcase, TrendingUp, Edit, Trash2, Lock, Unlock, ArrowRight } from 'lucide-react';
 import { Asset, Strategy } from './types/portfolio';
 import { Language } from './types/language';
 import { Currency } from './types/currency';
@@ -258,6 +258,27 @@ function App() {
           </div>
         </div>
       </nav>
+
+      {/* FIRE Calculator Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 border-b border-blue-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <a
+            href="https://firecalculator.info/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between gap-3 text-white hover:text-blue-100 transition-colors group"
+          >
+            <div className="flex-1">
+              <p className="text-sm font-medium">
+                {language === 'it'
+                  ? 'Quanti anni ti separano dalla libertà finanziaria? Scoprilo con FIRE Calculator.'
+                  : 'How many years until financial freedom? Find out with FIRE Calculator.'}
+              </p>
+            </div>
+            <ArrowRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+          </a>
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
