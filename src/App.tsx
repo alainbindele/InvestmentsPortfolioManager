@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, BarChart3, Bot, Briefcase, TrendingUp, Edit, Trash2, Lock, Unlock, ArrowRight } from 'lucide-react';
-import { Asset, Strategy } from './types/portfolio';
+import { PieChart, BarChart3, Bot, Briefcase, TrendingUp, Edit, Trash2, Lock, Unlock, ArrowRight, Wallet, Gauge, Layers, Flame, MoveHorizontal, BookOpen, Sparkles } from 'lucide-react';
+import { Asset, Strategy, ASSET_COLORS } from './types/portfolio';
 import { Language } from './types/language';
 import { Currency } from './types/currency';
 import { AssetForm } from './components/AssetForm';
@@ -188,14 +188,21 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <SEOHead 
+    <div className="relative min-h-screen text-ink">
+      {/* Ambient background */}
+      <div className="app-bg" aria-hidden="true">
+        <div className="app-orb app-orb--blue" />
+        <div className="app-orb app-orb--cyan" />
+        <div className="app-orb app-orb--indigo" />
+      </div>
+
+      <SEOHead
         language={language}
         assets={assets}
         strategies={aiStrategies}
         activeTab={activeTab}
       />
-      
+
       <DisclaimerModal
         language={language}
         isOpen={showDisclaimer}
@@ -205,86 +212,167 @@ function App() {
 
       <CookieConsent language={language} />
 
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+      {/* Header + navigation */}
+      <header className="glass-bar sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary-100 rounded-lg">
-                <PieChart className="w-6 h-6 text-primary-600" />
+          <div className="flex items-center justify-between gap-3 h-16">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 shadow-glow flex-shrink-0">
+                <PieChart className="w-5 h-5 text-white" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">Portfolio Balancer</h1>
-                <p className="text-sm text-gray-600 hidden sm:block">{t('appSubtitle')}</p>
+              <div className="min-w-0 sr-only sm:not-sr-only">
+                <h1 className="text-base sm:text-lg font-semibold tracking-tight text-ink leading-tight truncate">
+                  Portfolio Balancer
+                </h1>
+                <p className="text-xs text-ink-subtle hidden sm:block truncate">{t('appSubtitle')}</p>
               </div>
             </div>
-            
-            <div className="flex items-center gap-2 sm:gap-3">
+
+            <div className="flex items-center gap-2 sm:gap-2.5">
               <ResetButton language={language} />
-              <CurrencySelector 
+              <CurrencySelector
                 currentCurrency={currency}
                 onCurrencyChange={setCurrency}
               />
-              <LanguageSelector 
+              <LanguageSelector
                 currentLanguage={language}
                 onLanguageChange={setLanguage}
               />
             </div>
           </div>
-        </div>
-      </header>
 
-      {/* Navigation Tabs */}
-      <nav className="bg-white border-b border-gray-200 sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-1 sm:space-x-8 overflow-x-auto">
+          {/* Navigation Tabs */}
+          <nav className="flex items-center gap-1 pb-3 scroll-row">
             {tabs.map((tab) => {
               const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3 py-4 text-sm font-medium border-b-2 transition-colors duration-200 whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                  className={`tab-pill ${isActive ? 'active' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   <Icon className="w-4 h-4" />
                   {tab.label}
                 </button>
               );
             })}
-          </div>
+          </nav>
         </div>
-      </nav>
+      </header>
 
       {/* FIRE Calculator Banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 border-b border-blue-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <a
-            href="https://firecalculator.info/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between gap-3 text-white hover:text-blue-100 transition-colors group"
-          >
-            <div className="flex-1">
-              <p className="text-sm font-medium">
-                {language === 'it'
-                  ? 'Quanti anni ti separano dalla libertà finanziaria? Scoprilo con FIRE Calculator.'
-                  : 'How many years until financial freedom? Find out with FIRE Calculator.'}
-              </p>
-            </div>
-            <ArrowRight className="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
-          </a>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5">
+        <a
+          href="https://firecalculator.info/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center justify-between gap-3 rounded-xl px-3 sm:px-4 py-2.5 border border-accent-400/20 bg-gradient-to-r from-primary-500/15 via-accent-500/[0.07] to-transparent hover:border-accent-400/40 transition-colors duration-200"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="icon-tile icon-tile-accent w-8 h-8">
+              <Flame className="w-4 h-4" />
+            </span>
+            <p className="text-sm font-medium text-ink-soft group-hover:text-ink transition-colors">
+              {language === 'it'
+                ? 'Quanti anni ti separano dalla libertà finanziaria? Scoprilo con FIRE Calculator.'
+                : 'How many years until financial freedom? Find out with FIRE Calculator.'}
+            </p>
+          </div>
+          <ArrowRight className="w-4 h-4 text-accent-300 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+        </a>
       </div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Portfolio Tab */}
         {activeTab === 'portfolio' && (
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-6 sm:space-y-8 animate-fade-in">
+            {/* Portfolio Metrics */}
+            {assets.length > 0 && (
+              <section aria-label={t('portfolioMetrics')} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="card relative overflow-hidden">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="eyebrow">{t('totalValue')}</p>
+                      <p className="mt-2 text-lg sm:text-2xl font-semibold text-ink num truncate">
+                        {formatCurrency(metrics.totalValue, currency)}
+                      </p>
+                    </div>
+                    <span className="icon-tile icon-tile-primary hidden sm:inline-flex">
+                      <Wallet className="w-5 h-5" />
+                    </span>
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary-400/60 to-transparent" />
+                </div>
+
+                <div className="card relative overflow-hidden">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="eyebrow">{t('expectedReturn')}</p>
+                      <p className="mt-2 text-lg sm:text-2xl font-semibold text-success-400 num">
+                        {formatPercentage(metrics.expectedReturn)}
+                      </p>
+                    </div>
+                    <span className="icon-tile icon-tile-success hidden sm:inline-flex">
+                      <TrendingUp className="w-5 h-5" />
+                    </span>
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-success-400/60 to-transparent" />
+                </div>
+
+                <div className="card relative overflow-hidden">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="eyebrow">{t('riskScore')}</p>
+                      <p className={`mt-2 text-lg sm:text-2xl font-semibold num ${
+                        metrics.riskScore < 2 ? 'text-success-400' :
+                        metrics.riskScore < 3 ? 'text-warning-400' : 'text-error-400'
+                      }`}>
+                        {metrics.riskScore.toFixed(1)}<span className="text-sm text-ink-subtle font-medium">/5</span>
+                      </p>
+                    </div>
+                    <span className={`icon-tile hidden sm:inline-flex ${
+                      metrics.riskScore < 2 ? 'icon-tile-success' :
+                      metrics.riskScore < 3 ? 'icon-tile-warning' : 'icon-tile-error'
+                    }`}>
+                      <Gauge className="w-5 h-5" />
+                    </span>
+                  </div>
+                  <div className="mt-3 h-1.5 rounded-full bg-white/[0.07] overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${
+                        metrics.riskScore < 2 ? 'bg-success-400' :
+                        metrics.riskScore < 3 ? 'bg-warning-400' : 'bg-error-400'
+                      }`}
+                      style={{ width: `${Math.min(100, (metrics.riskScore / 5) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div className="card relative overflow-hidden">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="eyebrow">{t('diversification')}</p>
+                      <p className="mt-2 text-lg sm:text-2xl font-semibold text-accent-300 num">
+                        {metrics.diversificationScore}<span className="text-sm text-ink-subtle font-medium">/100</span>
+                      </p>
+                    </div>
+                    <span className="icon-tile icon-tile-accent hidden sm:inline-flex">
+                      <Layers className="w-5 h-5" />
+                    </span>
+                  </div>
+                  <div className="mt-3 h-1.5 rounded-full bg-white/[0.07] overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-primary-500 to-accent-400"
+                      style={{ width: `${Math.min(100, metrics.diversificationScore)}%` }}
+                    />
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* Asset Form */}
             <AssetForm
               onAddAsset={handleAddAsset}
@@ -296,135 +384,115 @@ function App() {
 
             {/* Portfolio Overview */}
             {assets.length > 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              <div className="space-y-6 sm:space-y-8">
                 {/* Portfolio Chart */}
                 <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioAllocation')}</h3>
+                  <h3 className="section-title mb-4">{t('portfolioAllocation')}</h3>
                   <PortfolioChart assets={assets} language={language} currency={currency} />
                 </div>
 
-                {/* Portfolio Metrics */}
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('portfolioMetrics')}</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('totalValue')}</p>
-                      <p className="text-xl font-bold text-gray-900">
-                        {formatCurrency(metrics.totalValue, currency)}
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-                      <p className="text-xl font-bold text-success-600">
-                        {formatPercentage(metrics.expectedReturn)}
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('riskScore')}</p>
-                      <p className={`text-xl font-bold ${
-                        metrics.riskScore < 2 ? 'text-success-600' :
-                        metrics.riskScore < 3 ? 'text-warning-600' : 'text-error-600'
-                      }`}>
-                        {metrics.riskScore.toFixed(1)}/5
-                      </p>
-                    </div>
-                    <div className="metric-card">
-                      <p className="text-sm text-gray-600">{t('diversification')}</p>
-                      <p className="text-xl font-bold text-primary-600">
-                        {metrics.diversificationScore}/100
-                      </p>
-                    </div>
+                {/* Assets List */}
+                <div className="card min-w-0">
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <h3 className="section-title">{t('assetsList')}</h3>
+                    <span className="badge badge-neutral num">{assets.length}</span>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {/* Assets List */}
-            {assets.length > 0 && (
-              <div className="card">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('assetsList')}</h3>
-                <div className="overflow-x-auto border border-gray-200 rounded-lg">
-                  <div className="sm:hidden text-xs text-gray-500 p-2 bg-gray-50 border-b border-gray-200 flex items-center gap-1">
-                    <span>👈</span>
-                    <span>{t('swipeToSeeMore') || 'Scorri per vedere tutti i dati'}</span>
+                  <div className="table-shell">
+                    <div className="sm:hidden text-xs text-ink-subtle px-3 py-2 border-b border-line flex items-center gap-1.5">
+                      <MoveHorizontal className="w-3.5 h-3.5" />
+                      <span>{t('swipeToSeeMore') || 'Scorri per vedere tutti i dati'}</span>
+                    </div>
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th className="text-left">{t('asset')}</th>
+                          <th className="text-left">{t('type')}</th>
+                          <th className="text-right">{t('value')}</th>
+                          <th className="text-right">{t('allocation')}</th>
+                          <th className="text-right">{t('expectedReturn')}</th>
+                          <th className="text-center">{t('actions')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {assets.map((asset) => {
+                          const allocation = metrics.totalValue > 0 ? (asset.currentValue / metrics.totalValue) * 100 : 0;
+                          return (
+                            <tr key={asset.id}>
+                              <td>
+                                <div className="flex items-center gap-2.5">
+                                  <span
+                                    className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                                    style={{ backgroundColor: ASSET_COLORS[asset.type] }}
+                                  />
+                                  <span className="font-medium text-ink whitespace-nowrap">{asset.name}</span>
+                                  {asset.isPAC && (
+                                    <span className="badge badge-accent">PAC</span>
+                                  )}
+                                  {asset.isLocked && (
+                                    <span className="badge badge-primary" title={t('unlockAsset')}>
+                                      <Lock className="w-3 h-3" />
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="text-ink-muted whitespace-nowrap">
+                                {t(asset.type)}
+                              </td>
+                              <td className="text-right font-semibold text-ink whitespace-nowrap num">
+                                {formatCurrency(asset.currentValue, currency)}
+                              </td>
+                              <td className="text-right whitespace-nowrap">
+                                <div className="flex items-center justify-end gap-2">
+                                  <div className="hidden md:block w-14 h-1.5 rounded-full bg-white/[0.08] overflow-hidden">
+                                    <div
+                                      className="h-full rounded-full bg-gradient-to-r from-primary-500 to-accent-400"
+                                      style={{ width: `${Math.min(100, allocation)}%` }}
+                                    />
+                                  </div>
+                                  <span className="font-semibold text-primary-300 num">{allocation.toFixed(1)}%</span>
+                                </div>
+                              </td>
+                              <td className="text-right font-semibold text-success-400 whitespace-nowrap num">
+                                {formatPercentage(asset.expectedReturn)}
+                              </td>
+                              <td className="text-center whitespace-nowrap">
+                                <div className="flex items-center justify-center gap-1">
+                                  <button
+                                    onClick={() => handleToggleAssetLock(asset.id)}
+                                    className={`btn-icon ${
+                                      asset.isLocked
+                                        ? 'text-primary-300 bg-primary-500/15 hover:bg-primary-500/25 hover:text-primary-200'
+                                        : ''
+                                    }`}
+                                    title={asset.isLocked ? t('unlockAsset') : t('lockAsset')}
+                                    aria-label={asset.isLocked ? t('unlockAsset') : t('lockAsset')}
+                                  >
+                                    {asset.isLocked ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
+                                  </button>
+                                  <button
+                                    onClick={() => handleEditAsset(asset)}
+                                    className="btn-icon hover:!text-primary-300"
+                                    title={t('editAsset')}
+                                    aria-label={t('editAsset')}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteAsset(asset.id)}
+                                    className="btn-icon hover:!text-error-400 hover:!bg-error-500/10"
+                                    title={t('deleteAsset')}
+                                    aria-label={t('deleteAsset')}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">{t('asset')}</th>
-                        <th className="text-left py-3 px-4 font-medium text-gray-900">{t('type')}</th>
-                        <th className="text-right py-3 px-4 font-medium text-gray-900">{t('value')}</th>
-                        <th className="text-right py-3 px-4 font-medium text-gray-900">{t('allocation')}</th>
-                        <th className="text-right py-3 px-4 font-medium text-gray-900">{t('expectedReturn')}</th>
-                        <th className="text-center py-3 px-4 font-medium text-gray-900">{t('actions')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {assets.map((asset, index) => {
-                        const allocation = metrics.totalValue > 0 ? (asset.currentValue / metrics.totalValue) * 100 : 0;
-                        return (
-                          <tr key={asset.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                            <td className="py-3 px-4">
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium text-gray-900 whitespace-nowrap">{asset.name}</span>
-                                {asset.isPAC && (
-                                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-                                    PAC
-                                  </span>
-                                )}
-                                {asset.isLocked && (
-                                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-                                    🔒
-                                  </span>
-                                )}
-                              </div>
-                            </td>
-                            <td className="py-3 px-4 text-gray-600 whitespace-nowrap">
-                              {t(asset.type)}
-                            </td>
-                            <td className="text-right py-3 px-4 font-semibold text-gray-900 whitespace-nowrap">
-                              {formatCurrency(asset.currentValue, currency)}
-                            </td>
-                            <td className="text-right py-3 px-4 font-semibold text-primary-600 whitespace-nowrap">
-                              {allocation.toFixed(1)}%
-                            </td>
-                            <td className="text-right py-3 px-4 font-semibold text-success-600 whitespace-nowrap">
-                              {formatPercentage(asset.expectedReturn)}
-                            </td>
-                            <td className="text-center py-3 px-4 whitespace-nowrap">
-                              <div className="flex items-center justify-center gap-2">
-                                <button
-                                  onClick={() => handleToggleAssetLock(asset.id)}
-                                  className={`p-1 rounded transition-colors ${
-                                    asset.isLocked 
-                                      ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
-                                      : 'bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600'
-                                  }`}
-                                  title={asset.isLocked ? t('unlockAsset') : t('lockAsset')}
-                                >
-                                  {asset.isLocked ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
-                                </button>
-                                <button
-                                  onClick={() => handleEditAsset(asset)}
-                                  className="p-1 text-blue-600 hover:text-blue-800 transition-colors"
-                                  title={t('editAsset')}
-                                >
-                                  <Edit className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteAsset(asset.id)}
-                                  className="p-1 text-red-600 hover:text-red-800 transition-colors"
-                                  title={t('deleteAsset')}
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
                 </div>
               </div>
             )}
@@ -433,7 +501,7 @@ function App() {
 
         {/* Strategies Tab */}
         {activeTab === 'strategies' && (
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-6 sm:space-y-8 animate-fade-in">
             {editingStrategy ? (
               <AllocationEditor
                 strategy={editingStrategy}
@@ -448,15 +516,16 @@ function App() {
                 {/* Strategy Cards */}
                 {allStrategies.length > 0 && (
                   <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-bold text-gray-900">{t('investmentStrategies')}</h2>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-ink">{t('investmentStrategies')}</h2>
                       {selectedStrategy && (
-                        <div className="text-sm text-gray-600">
-                          {t('selectedStrategy')}: <span className="font-medium">{selectedStrategy.name}</span>
+                        <div className="badge badge-primary text-sm px-3 py-1">
+                          <span className="text-ink-muted">{t('selectedStrategy')}:</span>
+                          <span className="font-semibold">{selectedStrategy.name}</span>
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {allStrategies.map((strategy) => (
                         <StrategyCard
@@ -492,10 +561,12 @@ function App() {
                 )}
 
                 {assets.length === 0 && (
-                  <div className="text-center py-12">
-                    <TrendingUp className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noAssetsTitle')}</h3>
-                    <p className="text-gray-600 mb-4">{t('noAssetsMessage')}</p>
+                  <div className="card text-center py-12 sm:py-16">
+                    <div className="icon-tile icon-tile-primary w-14 h-14 mx-auto mb-4">
+                      <TrendingUp className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-ink mb-2">{t('noAssetsTitle')}</h3>
+                    <p className="text-ink-muted mb-6 max-w-md mx-auto">{t('noAssetsMessage')}</p>
                     <button
                       onClick={() => setActiveTab('portfolio')}
                       className="btn-primary"
@@ -511,10 +582,13 @@ function App() {
 
         {/* AI Assistant Tab */}
         {activeTab === 'ai' && (
-          <div className="space-y-6 sm:space-y-8">
+          <div className="space-y-6 sm:space-y-8 animate-fade-in">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('aiAssistant')}</h2>
-              <p className="text-gray-600">{t('aiAssistantDescription')}</p>
+              <div className="icon-tile icon-tile-accent w-12 h-12 mx-auto mb-4 shadow-glow-accent">
+                <Sparkles className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-gradient mb-2">{t('aiAssistant')}</h2>
+              <p className="text-ink-muted max-w-2xl mx-auto">{t('aiAssistantDescription')}</p>
             </div>
 
             {assets.length > 0 ? (
@@ -524,10 +598,12 @@ function App() {
                 onStrategyGenerated={handleStrategyGenerated}
               />
             ) : (
-              <div className="text-center py-12">
-                <Bot className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noAssetsForAI')}</h3>
-                <p className="text-gray-600 mb-4">{t('addAssetsForAI')}</p>
+              <div className="card text-center py-12 sm:py-16">
+                <div className="icon-tile icon-tile-accent w-14 h-14 mx-auto mb-4">
+                  <Bot className="w-7 h-7" />
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-2">{t('noAssetsForAI')}</h3>
+                <p className="text-ink-muted mb-6 max-w-md mx-auto">{t('addAssetsForAI')}</p>
                 <button
                   onClick={() => setActiveTab('portfolio')}
                   className="btn-primary"
@@ -540,15 +616,20 @@ function App() {
         )}
 
         {/* Educational Section - Portfolio Rebalancing */}
-        <div className="mt-12 card bg-gradient-to-br from-gray-50 to-white border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('rebalancingTitle')}</h2>
-          <div className="space-y-4 text-gray-700 leading-relaxed">
+        <section className="mt-12 card">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="icon-tile icon-tile-neutral">
+              <BookOpen className="w-5 h-5" />
+            </span>
+            <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-ink">{t('rebalancingTitle')}</h2>
+          </div>
+          <div className="space-y-4 text-ink-muted leading-relaxed max-w-4xl">
             <p>{t('rebalancingIntro')}</p>
             <p>{t('rebalancingBuyHold')}</p>
             <p>{t('rebalancingChallenge')}</p>
             <p>{t('rebalancingAction')}</p>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

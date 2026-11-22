@@ -1,3 +1,5 @@
+import { ASSET_TYPE_COLORS } from '../theme/chartTheme';
+
 // Asset Types
 export type AssetType = 'stocks' | 'bonds' | 'etf' | 'crypto' | 'real_estate' | 'cash' | 'commodities' | 'other';
 
@@ -74,13 +76,5 @@ export const RISK_LEVEL_LABELS: Record<RiskLevel, string> = {
   'very_high': 'Molto Alto'
 };
 
-export const ASSET_COLORS: Record<AssetType, string> = {
-  stocks: '#3B82F6',
-  bonds: '#10B981',
-  etf: '#8B5CF6',
-  crypto: '#F59E0B',
-  real_estate: '#EF4444',
-  cash: '#6B7280',
-  commodities: '#F97316',
-  other: '#84CC16'
-};
+// Colors live in the theme so charts and UI share one palette
+export const ASSET_COLORS: Record<AssetType, string> = ASSET_TYPE_COLORS;

@@ -39,27 +39,27 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ language }) => {
   if (!isVisible) return null;
 
   return (
-    <div 
-      className={`fixed bottom-0 left-0 right-0 z-[999999] transition-transform duration-300 ease-in-out ${
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-[999999] p-3 sm:p-4 transition-transform duration-300 ease-in-out ${
         isAnimating ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
-      <div className="bg-white border-t border-gray-200 shadow-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="glass-modal max-w-5xl mx-auto">
+        <div className="px-4 sm:px-6 py-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             {/* Content */}
             <div className="flex items-start gap-3 flex-1">
-              <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
-                <Cookie className="w-5 h-5 text-blue-600" />
-              </div>
+              <span className="icon-tile icon-tile-primary">
+                <Cookie className="w-5 h-5" />
+              </span>
               <div className="flex-1 min-w-0">
-                <h4 className="font-semibold text-gray-900 mb-1">
+                <h4 className="font-semibold text-ink mb-1">
                   {t('cookieConsentTitle')}
                 </h4>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-ink-muted leading-relaxed">
                   {t('cookieConsentMessage')}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-ink-subtle mt-1">
                   {t('cookieConsentDetails')}
                 </p>
               </div>
@@ -69,13 +69,14 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({ language }) => {
             <div className="flex items-center gap-2 flex-shrink-0 w-full sm:w-auto">
               <button
                 onClick={handleDecline}
-                className="flex-1 sm:flex-none px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                className="btn-secondary flex-1 sm:flex-none !text-sm"
               >
+                <X className="w-4 h-4" />
                 {t('decline')}
               </button>
               <button
                 onClick={handleAccept}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                className="btn-primary flex-1 sm:flex-none !text-sm"
               >
                 <Check className="w-4 h-4" />
                 {t('acceptCookies')}

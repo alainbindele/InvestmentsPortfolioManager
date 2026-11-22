@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Globe } from 'lucide-react';
+import { ChevronDown, Globe, Check } from 'lucide-react';
 import { Language, LANGUAGES } from '../types/language';
 
 interface LanguageSelectorProps {
@@ -36,41 +36,49 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 px-2 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm min-w-[70px] sm:min-w-auto"
+        className="control-chip min-w-[70px] sm:min-w-0"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
       >
-        <Globe className="w-4 h-4 text-gray-600" />
-        <span className="text-sm sm:text-lg">{currentLang.flag}</span>
-        <span className="text-sm font-medium text-gray-700 hidden sm:block">
+        <Globe className="w-4 h-4 text-ink-muted" />
+        <span className="text-sm sm:text-base leading-none">{currentLang.flag}</span>
+        <span className="text-sm font-medium hidden sm:block">
           {currentLang.name}
         </span>
-        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+        <ChevronDown className={`w-4 h-4 text-ink-subtle transition-transform duration-200 ${
           isOpen ? 'rotate-180' : ''
         }`} />
       </button>
 
       {isOpen && (
-        <div 
-          className="absolute right-0 mt-2 w-40 sm:w-48 bg-white border border-gray-200 rounded-lg shadow-xl animate-slide-up" 
-          style={{ 
+        <div
+          className="glass-popover absolute right-0 mt-2 w-44 sm:w-52 animate-slide-up overflow-hidden"
+          style={{
             zIndex: 999999
           }}
+          role="listbox"
         >
-          <div className="py-2">
-            {LANGUAGES.map((language) => (
-              <button
-                key={language.code}
-                onClick={() => handleLanguageSelect(language.code)}
-                className={`w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-150 ${
-                  currentLanguage === language.code ? 'bg-primary-50 text-primary-700' : 'text-gray-700'
-                }`}
-              >
-                <span className="text-lg">{language.flag}</span>
-                <span className="font-medium">{language.name}</span>
-                {currentLanguage === language.code && (
-                  <div className="ml-auto w-2 h-2 bg-primary-500 rounded-full" />
-                )}
-              </button>
-            ))}
+          <div className="p-1.5">
+            {LANGUAGES.map((language) => {
+              const isCurrent = currentLanguage === language.code;
+              return (
+                <button
+                  key={language.code}
+                  onClick={() => handleLanguageSelect(language.code)}
+                  role="option"
+                  aria-selected={isCurrent}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left text-sm transition-colors duration-150 ${
+                    isCurrent ? 'bg-primary-500/15 text-primary-200' : 'text-ink-soft hover:bg-white/[0.06] hover:text-ink'
+                  }`}
+                >
+                  <span className="text-base leading-none">{language.flag}</span>
+                  <span className="font-medium">{language.name}</span>
+                  {isCurrent && (
+                    <Check className="ml-auto w-4 h-4 text-primary-300" />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

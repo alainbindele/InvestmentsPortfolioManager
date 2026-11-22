@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Sliders, Check, X, Copy, TrendingUp, AlertTriangle, Lock, Unlock } from 'lucide-react';
-import { Asset, Strategy } from '../types/portfolio';
+import { Sliders, Check, X, TrendingUp, AlertTriangle, Lock, Unlock, Lightbulb } from 'lucide-react';
+import { Asset, Strategy, ASSET_COLORS } from '../types/portfolio';
+import { CHART } from '../theme/chartTheme';
 import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatCurrency, formatPercentage, projectPortfolioGrowth } from '../utils/calculations';
@@ -25,12 +26,12 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   onCancel
 }) => {
   const t = (key: string) => getTranslation(language, key);
-  
+
   const [allocations, setAllocations] = useState<{ [assetId: string]: number }>({});
   const [lockedAssets, setLockedAssets] = useState<Set<string>>(new Set());
   const [isValid, setIsValid] = useState(true);
   const [projectionKey, setProjectionKey] = useState(0);
-  
+
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
 
   // Initialize allocations from strategy
@@ -64,10 +65,10 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   const handleAllocationChange = (assetId: string, newValue: number) => {
     const oldValue = allocations[assetId] || 0;
     const difference = newValue - oldValue;
-    
+
     const currentTotal = Object.values(allocations).reduce((sum, val) => sum + val, 0);
     const newTotal = currentTotal - oldValue + newValue;
-    
+
     if (newTotal <= 100) {
       // If new total is 100% or less, just update this asset (don't touch others)
       setAllocations({ ...allocations, [assetId]: Math.max(0, newValue) });
@@ -76,11 +77,11 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       const excess = newTotal - 100;
       const unlockableAssets = assets.filter(a => a.id !== assetId && !lockedAssets.has(a.id));
       const unlockableTotal = unlockableAssets.reduce((sum, asset) => sum + (allocations[asset.id] || 0), 0);
-      
+
       if (unlockableTotal >= excess) {
         const newAllocations = { ...allocations };
         newAllocations[assetId] = newValue;
-        
+
         // Distribute the excess decrease proportionally among unlocked assets
         unlockableAssets.forEach(asset => {
           const currentAllocation = allocations[asset.id] || 0;
@@ -90,7 +91,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
             newAllocations[asset.id] = Math.max(0, currentAllocation - decrease);
           }
         });
-        
+
         setAllocations(newAllocations);
       } else {
         // If unlocked assets can't provide enough, set this asset to maximum possible
@@ -107,24 +108,24 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   const getAvailableMargin = (assetId: string): number => {
     const currentAllocation = allocations[assetId] || 0;
     const currentTotal = Object.values(allocations).reduce((sum, val) => sum + val, 0);
-    
+
     // Calculate how much locked assets are using
     const lockedTotal = assets
       .filter(a => a.id !== assetId && lockedAssets.has(a.id))
       .reduce((sum, asset) => sum + (allocations[asset.id] || 0), 0);
-    
+
     // Calculate how much unlocked assets (excluding current) can give up
     const unlockableAssets = assets.filter(a => a.id !== assetId && !lockedAssets.has(a.id));
     const unlockableTotal = unlockableAssets.reduce((sum, asset) => sum + (allocations[asset.id] || 0), 0);
-    
+
     // Maximum this asset can have is current allocation + what unlocked assets can give up
     const maxPossible = currentAllocation + unlockableTotal + (100 - currentTotal);
-    
+
     return Math.min(100, maxPossible);
   };
   const handleSave = () => {
     if (!isValid) return;
-    
+
     // Calculate new expected return based on allocations
     let newExpectedReturn = 0;
     Object.entries(allocations).forEach(([assetId, allocation]) => {
@@ -133,7 +134,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
         newExpectedReturn += (asset.expectedReturn * allocation / 100);
       }
     });
-    
+
     const newStrategy: Strategy = {
       ...strategy,
       id: `edited-${strategy.id}-${Date.now()}`,
@@ -144,7 +145,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       createdAt: new Date(),
       isAIGenerated: false
     };
-    
+
     onSaveAllocation(newStrategy);
   };
 
@@ -152,7 +153,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   const totalLocked = assets
     .filter(asset => lockedAssets.has(asset.id))
     .reduce((sum, asset) => sum + (allocations[asset.id] || 0), 0);
-  
+
   // Create a temporary strategy for projection
   const tempStrategy: Strategy = {
     ...strategy,
@@ -162,25 +163,25 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary-100 rounded-lg">
-            <Sliders className="w-5 h-5 text-primary-600" />
-          </div>
+          <span className="icon-tile icon-tile-primary">
+            <Sliders className="w-5 h-5" />
+          </span>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="section-title">
               {t('editAllocation')}
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-ink-muted">
               {strategy.name}
             </p>
           </div>
         </div>
-        
+
         {/* Total Allocation and Lock Status */}
         <div className="flex items-center gap-3">
           {lockedAssets.size > 0 && (
-            <div className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium">
+            <div className="badge badge-primary !text-sm !px-3 !py-1.5">
               <div className="flex items-center gap-2">
                 <Lock className="w-4 h-4" />
                 <span className="text-sm">
@@ -189,10 +190,10 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
               </div>
             </div>
           )}
-          <div className={`px-3 py-2 rounded-lg font-medium ${
-            isValid 
-              ? 'bg-success-100 text-success-700' 
-              : 'bg-error-100 text-error-700'
+          <div className={`badge !text-sm !px-3 !py-1.5 num ${
+            isValid
+              ? 'badge-success'
+              : 'badge-error'
           }`}>
             <div className="flex items-center gap-2">
               {isValid ? (
@@ -211,11 +212,11 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       {/* Allocation Sliders */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold text-gray-900">{t('adjustAllocations')}</h4>
+          <h4 className="section-title">{t('adjustAllocations')}</h4>
           {lockedAssets.size > 0 && (
             <button
               onClick={() => setLockedAssets(new Set())}
-              className="text-sm text-blue-600 hover:text-blue-700 underline flex items-center gap-1"
+              className="text-sm text-primary-300 hover:text-primary-200 underline underline-offset-4 flex items-center gap-1"
             >
               <Unlock className="w-3 h-3" />
               Sblocca tutti
@@ -228,28 +229,22 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
             const monetaryValue = (allocation / 100) * totalValue;
             const isLocked = lockedAssets.has(asset.id);
             const availableMargin = getAvailableMargin(asset.id);
-            
+
             return (
-              <div key={asset.id} className="space-y-2">
+              <div key={asset.id} className="space-y-3 panel-inset p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
-                      style={{ backgroundColor: asset.type === 'stocks' ? '#3B82F6' : 
-                                                asset.type === 'bonds' ? '#10B981' :
-                                                asset.type === 'etf' ? '#8B5CF6' :
-                                                asset.type === 'crypto' ? '#F59E0B' :
-                                                asset.type === 'real_estate' ? '#EF4444' :
-                                                asset.type === 'cash' ? '#6B7280' :
-                                                asset.type === 'commodities' ? '#F97316' : '#84CC16' }}
+                    <div
+                      className="w-2.5 h-2.5 rounded-full"
+                      style={{ backgroundColor: ASSET_COLORS[asset.type], boxShadow: `0 0 10px ${ASSET_COLORS[asset.type]}66` }}
                     />
-                    <span className="font-medium text-gray-900">{asset.name}</span>
+                    <span className="font-medium text-ink">{asset.name}</span>
                     <button
                       onClick={() => toggleAssetLock(asset.id)}
-                      className={`p-1 rounded transition-colors ${
-                        isLocked 
-                          ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
-                          : 'bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600'
+                      className={`btn-icon !w-7 !h-7 ${
+                        isLocked
+                          ? '!text-primary-300 bg-primary-500/15 hover:!bg-primary-500/25'
+                          : ''
                       }`}
                       title={isLocked ? 'Sblocca asset' : 'Blocca asset'}
                     >
@@ -257,16 +252,16 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                     </button>
                   </div>
                   <div className="text-right">
-                    <div className={`font-bold ${isLocked ? 'text-blue-600' : 'text-gray-900'}`}>
+                    <div className={`font-semibold num flex items-center justify-end gap-1 ${isLocked ? 'text-primary-300' : 'text-ink'}`}>
                       {allocation.toFixed(1)}%
-                      {isLocked && <span className="ml-1 text-xs">🔒</span>}
+                      {isLocked && <Lock className="w-3 h-3" />}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-ink-subtle">
                       {formatCurrency(monetaryValue, currency)}
                     </div>
                   </div>
                 </div>
-                
+
                 <div className={`relative ${isLocked ? 'opacity-60' : ''}`}>
                   <input
                     type="range"
@@ -274,60 +269,48 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                     max={availableMargin}
                     value={allocation}
                     onChange={(e) => handleAllocationChange(asset.id, parseFloat(e.target.value))}
-                    className={`w-full h-2 bg-gray-200 rounded-lg appearance-none ${
+                    className={`w-full h-1.5 rounded-full appearance-none ${
                       isLocked ? 'cursor-not-allowed' : 'cursor-pointer'
                     }`}
                     disabled={isLocked}
                     style={{
                       background: `linear-gradient(to right, ${
-                        asset.type === 'stocks' ? '#3B82F6' : 
-                        asset.type === 'bonds' ? '#10B981' :
-                        asset.type === 'etf' ? '#8B5CF6' :
-                        asset.type === 'crypto' ? '#F59E0B' :
-                        asset.type === 'real_estate' ? '#EF4444' :
-                        asset.type === 'cash' ? '#6B7280' :
-                        asset.type === 'commodities' ? '#F97316' : '#84CC16'
-                      } 0%, ${isLocked ? '#94a3b8' : 
-                        asset.type === 'stocks' ? '#3B82F6' : 
-                        asset.type === 'bonds' ? '#10B981' :
-                        asset.type === 'etf' ? '#8B5CF6' :
-                        asset.type === 'crypto' ? '#F59E0B' :
-                        asset.type === 'real_estate' ? '#EF4444' :
-                        asset.type === 'cash' ? '#6B7280' :
-                        asset.type === 'commodities' ? '#F97316' : '#84CC16'
-                      } ${(allocation / availableMargin) * 100}%, #e5e7eb ${(allocation / availableMargin) * 100}%, #e5e7eb 100%)`
+                        ASSET_COLORS[asset.type]
+                      } 0%, ${isLocked ? CHART.lockedFill :
+                        ASSET_COLORS[asset.type]
+                      } ${(allocation / availableMargin) * 100}%, ${CHART.track} ${(allocation / availableMargin) * 100}%, ${CHART.track} 100%)`
                     }}
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <div className="flex justify-between text-xs text-ink-subtle mt-1">
                     <span>0%</span>
                     <span>{(availableMargin / 2).toFixed(0)}%</span>
                     <span>{availableMargin.toFixed(0)}%</span>
                   </div>
                   {availableMargin < 100 && !isLocked && (
-                    <div className="text-xs text-warning-600 mt-1">
-                      ⚠️ Margine limitato: max {availableMargin.toFixed(1)}%
+                    <div className="text-xs text-warning-300 mt-1 flex items-center gap-1">
+                      <AlertTriangle className="w-3 h-3" /> Margine limitato: max {availableMargin.toFixed(1)}%
                     </div>
                   )}
                 </div>
-                
+
                 {/* Manual input */}
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
                     value={allocation.toFixed(1)}
                     onChange={(e) => handleAllocationChange(asset.id, parseFloat(e.target.value) || 0)}
-                    className={`w-20 px-2 py-1 border rounded text-sm text-center ${
-                      isLocked 
-                        ? 'border-blue-300 bg-blue-50 text-blue-600 cursor-not-allowed' 
-                        : 'border-gray-300 bg-white'
+                    className={`input-field !w-20 !px-2 !py-1 !text-sm text-center num ${
+                      isLocked
+                        ? '!border-primary-400/40 !bg-primary-500/10 !text-primary-300 cursor-not-allowed'
+                        : ''
                     }`}
                     min="0"
                     max={availableMargin}
                     step="0.1"
                     disabled={isLocked}
                   />
-                  <span className="text-sm text-gray-500">%</span>
-                  <span className="text-sm text-gray-600 ml-2">
+                  <span className="text-sm text-ink-subtle">%</span>
+                  <span className="text-sm text-ink-muted ml-2">
                     = {formatCurrency(monetaryValue, currency)}
                   </span>
                   {/* Quick allocation buttons */}
@@ -335,10 +318,10 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                     <button
                       type="button"
                       onClick={() => handleAllocationChange(asset.id, 0)}
-                      className={`px-2 py-1 rounded text-xs transition-colors ${
-                        isLocked 
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                      className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
+                        isLocked
+                          ? 'bg-white/[0.06] text-ink-faint cursor-not-allowed'
+                          : 'bg-white/[0.06] hover:bg-white/10 text-ink-soft'
                       }`}
                       title={t('azzera')}
                       disabled={isLocked}
@@ -350,10 +333,10 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                       onClick={() => {
                         handleAllocationChange(asset.id, availableMargin);
                       }}
-                      className={`px-2 py-1 rounded text-xs transition-colors ${
-                        isLocked 
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                          : 'bg-primary-100 hover:bg-primary-200 text-primary-600'
+                      className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
+                        isLocked
+                          ? 'bg-white/[0.06] text-ink-faint cursor-not-allowed'
+                          : 'bg-primary-500/15 hover:bg-primary-500/25 text-primary-300'
                       }`}
                       title={t('usaRimanente')}
                       disabled={isLocked}
@@ -362,59 +345,59 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
                     </button>
                   </div>
                 </div>
-                
+
                 {isLocked && (
-                  <div className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                    🔒 Asset bloccato - l'allocazione non cambierà automaticamente
+                  <div className="text-xs text-primary-200 bg-primary-500/10 border border-primary-400/20 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5">
+                    <Lock className="w-3 h-3 flex-shrink-0" /> Asset bloccato - l'allocazione non cambierà automaticamente
                   </div>
                 )}
               </div>
             );
           })}
         </div>
-        
+
         {/* Total Validation */}
-        <div className={`mt-4 p-3 rounded-lg border ${
-          isValid 
-            ? 'bg-success-50 border-success-200' 
-            : 'bg-error-50 border-error-200'
+        <div className={`mt-4 p-3 sm:p-4 rounded-xl border ${
+          isValid
+            ? 'bg-success-500/10 border-success-400/25'
+            : 'bg-error-500/10 border-error-400/25'
         }`}>
           <div className="flex items-center justify-between">
-            <span className="font-medium text-gray-900">
+            <span className="font-medium text-ink">
               {t('totalAllocation')}:
             </span>
-            <span className={`font-bold ${
-              isValid ? 'text-success-700' : 'text-error-700'
+            <span className={`font-semibold num ${
+              isValid ? 'text-success-300' : 'text-error-300'
             }`}>
               {totalAllocation.toFixed(1)}%
             </span>
           </div>
           {lockedAssets.size > 0 && (
             <div className="flex items-center justify-between mt-1">
-              <span className="text-sm text-blue-600">
+              <span className="text-sm text-primary-400">
                 Asset bloccati:
               </span>
-              <span className="text-sm font-medium text-blue-700">
+              <span className="text-sm font-medium text-primary-300">
                 {totalLocked.toFixed(1)}%
               </span>
             </div>
           )}
           {!isValid && (
-            <p className="text-sm text-error-600 mt-1">
-              {totalAllocation > 100 
-                ? t('allocationTooHigh') 
+            <p className="text-sm text-error-400 mt-1">
+              {totalAllocation > 100
+                ? t('allocationTooHigh')
                 : `${t('allocationTooLow')} Mancano ${(100 - totalAllocation).toFixed(1)}% da distribuire.`
               }
             </p>
           )}
           {isValid && (
-            <p className="text-sm text-success-600 mt-1">
-              ✓ Allocazione perfettamente bilanciata al 100%
+            <p className="text-sm text-success-300 mt-1 flex items-center gap-1.5">
+              <Check className="w-4 h-4" /> Allocazione perfettamente bilanciata al 100%
             </p>
           )}
           {lockedAssets.size > 0 && (
-            <p className="text-xs text-blue-600 mt-1">
-              💡 Suggerimento: Gli asset bloccati mantengono la loro allocazione fissa durante le modifiche
+            <p className="text-xs text-primary-300 mt-1 flex items-center gap-1.5">
+              <Lightbulb className="w-3.5 h-3.5 flex-shrink-0" /> Suggerimento: Gli asset bloccati mantengono la loro allocazione fissa durante le modifiche
             </p>
           )}
         </div>
@@ -423,12 +406,12 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
       {/* Live Projection Preview */}
       <div key={projectionKey} className="card">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-success-100 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-success-600" />
-          </div>
-          <h4 className="font-semibold text-gray-900">{t('liveProjection')}</h4>
+          <span className="icon-tile icon-tile-success">
+            <TrendingUp className="w-5 h-5" />
+          </span>
+          <h4 className="section-title">{t('liveProjection')}</h4>
         </div>
-        
+
         <ProjectionChart
           strategies={[{
             ...strategy,
@@ -453,11 +436,7 @@ export const AllocationEditor: React.FC<AllocationEditorProps> = ({
         <button
           onClick={handleSave}
           disabled={!isValid}
-          className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-            isValid
-              ? 'bg-success-600 hover:bg-success-700 text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+          className="btn-primary flex-1"
         >
           <Check className="w-4 h-4" />
           {t('saveAllocation')}

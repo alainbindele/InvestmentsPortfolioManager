@@ -11,7 +11,7 @@ interface ResetButtonProps {
 export const ResetButton: React.FC<ResetButtonProps> = ({ language }) => {
   const t = (key: string) => getTranslation(language, key);
   const [showConfirm, setShowConfirm] = useState(false);
-  
+
   const storageInfo = getStorageInfo();
 
   const handleReset = () => {
@@ -27,47 +27,51 @@ export const ResetButton: React.FC<ResetButtonProps> = ({ language }) => {
       {!showConfirm ? (
         <button
           onClick={() => setShowConfirm(true)}
-          className="flex items-center gap-1 px-2 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors duration-200 text-sm min-w-[60px] sm:min-w-auto"
+          className="control-chip !text-error-300 hover:!text-error-200 !border-error-400/25 hover:!border-error-400/45 !bg-error-500/10 hover:!bg-error-500/15 text-sm min-w-[44px] sm:min-w-0 justify-center"
           title={t('resetData')}
+          aria-label={t('resetData')}
         >
           <RotateCcw className="w-4 h-4" />
           <span className="hidden sm:inline">{t('reset')}</span>
         </button>
       ) : (
-        <div className="fixed bg-white border border-red-300 rounded-lg shadow-xl p-3 sm:p-4 w-80 max-w-[calc(100vw-2rem)] sm:min-w-80" style={{ 
+        <div className="glass-popover fixed p-4 w-80 max-w-[calc(100vw-2rem)] sm:min-w-80 animate-slide-up !border-error-400/30" style={{
             zIndex: 999999,
             top: '120px',
             right: '16px'
-          }}>
+          }}
+          role="alertdialog"
+          aria-labelledby="reset-title"
+        >
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-red-100 rounded-full">
-              <AlertTriangle className="w-5 h-5 text-red-600" />
-            </div>
+            <span className="icon-tile icon-tile-error">
+              <AlertTriangle className="w-5 h-5" />
+            </span>
             <div>
-              <h4 className="font-semibold text-red-900">{t('confirmReset')}</h4>
-              <p className="text-sm text-red-700">{t('resetWarning')}</p>
+              <h4 id="reset-title" className="font-semibold text-ink">{t('confirmReset')}</h4>
+              <p className="text-sm text-ink-muted">{t('resetWarning')}</p>
             </div>
           </div>
-          
-          <div className="bg-red-50 rounded-lg p-3 mb-4">
-            <p className="text-sm text-red-800 mb-2">{t('dataToDelete')}:</p>
-            <ul className="text-xs text-red-700 space-y-1">
+
+          <div className="callout callout-error mb-4">
+            <p className="text-sm text-error-200 mb-2">{t('dataToDelete')}:</p>
+            <ul className="text-xs text-error-300 space-y-1">
               <li>• {storageInfo.assetsCount} {t('assets')}</li>
               <li>• {storageInfo.strategiesCount} {t('aiStrategies')}</li>
               <li>• {t('languageAndCurrency')}: {storageInfo.language.toUpperCase()}, {storageInfo.currency}</li>
             </ul>
           </div>
-          
+
           <div className="flex gap-2">
             <button
               onClick={() => setShowConfirm(false)}
-              className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+              className="btn-secondary flex-1 !text-sm"
             >
               {t('cancel')}
             </button>
             <button
               onClick={handleReset}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+              className="btn-danger flex-1"
             >
               <Trash2 className="w-4 h-4" />
               {t('resetConfirm')}

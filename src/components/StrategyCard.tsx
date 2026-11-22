@@ -6,9 +6,10 @@ import { Language } from '../types/language';
 import { Currency } from '../types/currency';
 import { formatPercentage, formatCurrency } from '../utils/calculations';
 import { ASSET_COLORS } from '../types/portfolio';
+import { CHART, COLOR_PICKER_PALETTE } from '../theme/chartTheme';
 import { getTranslation } from '../utils/translations';
 import { saveColorSchemes, loadColorSchemes } from '../utils/storage';
-import { Target, TrendingUp, Shield, Zap, Bot, Copy, Edit, Check, Pencil, X, Trash2, AlertTriangle } from 'lucide-react';
+import { Target, TrendingUp, Shield, Zap, Bot, Copy, Check, Pencil, X, Trash2, AlertTriangle, Info, CheckCircle2 } from 'lucide-react';
 
 interface StrategyCardProps {
   strategy: Strategy;
@@ -65,7 +66,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
 
   // Get color for asset (custom or default)
   const getAssetColor = (assetId: string, assetType: string): string => {
-    return customColors[assetId] || ASSET_COLORS[assetType as keyof typeof ASSET_COLORS] || '#6b7280';
+    return customColors[assetId] || ASSET_COLORS[assetType as keyof typeof ASSET_COLORS] || CHART.fallback;
   };
 
   // Handle color change
@@ -84,11 +85,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   };
 
   // Predefined color palette
-  const colorPalette = [
-    '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#6B7280',
-    '#F97316', '#84CC16', '#06B6D4', '#EC4899', '#8B5A2B', '#059669',
-    '#7C3AED', '#DC2626', '#CA8A04', '#4338CA', '#BE185D', '#0891B2'
-  ];
+  const colorPalette = COLOR_PICKER_PALETTE;
 
   // Prepare pie chart data
   const pieChartData = Object.entries(strategy.targetAllocations)
@@ -135,33 +132,33 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
       const monetaryValue = (data.value / 100) * totalValue;
       
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg max-w-xs transform -translate-y-full -mt-2">
+        <div className="glass-popover p-3 max-w-xs transform -translate-y-full -mt-2">
           <div className="flex items-center gap-2 mb-2">
             <div 
               className="w-3 h-3 rounded-full" 
               style={{ backgroundColor: data.color }}
             />
-            <p className="font-medium text-gray-900">{asset.name}</p>
+            <p className="font-medium text-ink">{asset.name}</p>
           </div>
           <div className="space-y-1 text-sm">
-            <p className="text-gray-600">
+            <p className="text-ink-muted">
               <span className="font-medium">{t('type')}:</span> {t(asset.type)}
             </p>
-            <p className="text-gray-600">
+            <p className="text-ink-muted">
               <span className="font-medium">{t('allocation')}:</span> {data.value.toFixed(1)}%
             </p>
-            <p className="text-gray-600">
+            <p className="text-ink-muted">
               <span className="font-medium">{t('value')}:</span> {formatCurrency(monetaryValue, currency)}
             </p>
-            <p className="text-gray-600">
+            <p className="text-ink-muted">
               <span className="font-medium">{t('expectedReturn')}:</span> {formatPercentage(asset.expectedReturn)}
             </p>
-            <p className="text-gray-600">
+            <p className="text-ink-muted">
               <span className="font-medium">{t('riskLevel')}:</span> {t(asset.riskLevel)}
             </p>
             {asset.isPAC && (
-              <p className="text-blue-600 text-xs font-medium">
-                📈 PAC: {formatCurrency(asset.pacAmount || 0, currency)}/{t(asset.pacFrequency || 'monthly')}
+              <p className="text-accent-300 text-xs font-medium flex items-center gap-1">
+                <TrendingUp className="w-3 h-3" /> PAC: {formatCurrency(asset.pacAmount || 0, currency)}/{t(asset.pacFrequency || 'monthly')}
               </p>
             )}
           </div>
@@ -196,25 +193,25 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative hover:z-20 focus-within:z-20">
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="absolute inset-0 bg-white bg-opacity-95 rounded-xl flex items-center justify-center z-10 border-2 border-red-200">
+        <div className="absolute inset-0 glass-modal !rounded-2xl flex items-center justify-center z-10 !border-error-400/40 animate-fade-in">
           <div className="text-center p-4">
             <div className="flex justify-center mb-3">
-              <div className="p-2 bg-red-100 rounded-full">
-                <AlertTriangle className="w-6 h-6 text-red-600" />
-              </div>
+              <span className="icon-tile icon-tile-error w-12 h-12">
+                <AlertTriangle className="w-6 h-6" />
+              </span>
             </div>
-            <h4 className="font-semibold text-gray-900 mb-2">{t('confirmDeleteStrategy')}</h4>
-            <p className="text-sm text-gray-600 mb-4">{t('deleteStrategyWarning')}</p>
+            <h4 className="font-semibold text-ink mb-2">{t('confirmDeleteStrategy')}</h4>
+            <p className="text-sm text-ink-muted mb-4">{t('deleteStrategyWarning')}</p>
             <div className="flex gap-2">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowDeleteConfirm(false);
                 }}
-                className="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200 transition-colors"
+                className="btn-secondary !text-sm !py-1.5"
               >
                 {t('cancel')}
               </button>
@@ -223,7 +220,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                   e.stopPropagation();
                   handleDelete();
                 }}
-                className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700 transition-colors"
+                className="btn-danger !py-1.5"
               >
                 {t('delete')}
               </button>
@@ -234,14 +231,14 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
 
       <div
         onClick={strategy.isAIGenerated ? onSelect : undefined}
-        className={`card transition-all duration-200 ${
-          showSelectionCheckbox || strategy.isAIGenerated ? 'cursor-pointer hover:shadow-lg' : ''
+        className={`card h-full transition-all duration-300 ${
+          showSelectionCheckbox || strategy.isAIGenerated ? 'cursor-pointer hover:-translate-y-0.5 hover:border-primary-400/30' : ''
         } ${
           isSelected
-            ? 'ring-2 ring-primary-500 bg-primary-50 border-primary-200'
+            ? '!border-primary-400/60 ring-1 ring-primary-400/40 shadow-glow bg-primary-500/[0.08]'
             : isCurrentStrategy
-            ? 'bg-gray-50 border-gray-300'
-            : 'hover:shadow-md'
+            ? 'border-line-strong'
+            : ''
         }`}
       >
         <div className="flex items-center justify-between mb-4">
@@ -253,26 +250,22 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                   checked={isSelected}
                   onChange={onSelect}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                  className="w-4 h-4 rounded cursor-pointer"
                 />
               </div>
             )}
-            <div className={`p-2 rounded-lg ${
-              colorClass === 'primary' ? 'bg-primary-100' :
-              colorClass === 'success' ? 'bg-success-100' :
-              colorClass === 'warning' ? 'bg-warning-100' : 'bg-gray-100'
+            <span className={`icon-tile ${
+              colorClass === 'primary' ? 'icon-tile-primary' :
+              colorClass === 'success' ? 'icon-tile-success' :
+              colorClass === 'warning' ? 'icon-tile-warning' : 'icon-tile-neutral'
             }`}>
-              <Icon className={`w-5 h-5 ${
-                colorClass === 'primary' ? 'text-primary-600' :
-                colorClass === 'success' ? 'text-success-600' :
-                colorClass === 'warning' ? 'text-warning-600' : 'text-gray-600'
-              }`} />
-            </div>
+              <Icon className="w-5 h-5" />
+            </span>
             <div>
               <div className="flex items-center gap-2">
                 {!isEditingName ? (
                   <>
-                    <h3 className="font-semibold text-gray-900">{strategy.name}</h3>
+                    <h3 className="font-semibold text-ink">{strategy.name}</h3>
                     {onUpdateName && !isCurrentStrategy && (
                       <div className="flex items-center gap-1">
                         <button
@@ -280,7 +273,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                             e.stopPropagation();
                             handleNameEdit();
                           }}
-                          className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                          className="btn-icon !w-6 !h-6 hover:!text-primary-300"
                           title={t('editName')}
                         >
                           <Pencil className="w-3 h-3" />
@@ -291,7 +284,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                               e.stopPropagation();
                               setShowDeleteConfirm(true);
                             }}
-                            className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                            className="btn-icon !w-6 !h-6 hover:!text-error-400"
                             title={t('deleteStrategy')}
                           >
                             <Trash2 className="w-3 h-3" />
@@ -307,7 +300,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       value={editedName}
                       onChange={(e) => setEditedName(e.target.value)}
                       onClick={(e) => e.stopPropagation()}
-                      className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm font-semibold text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="input-field !py-1 !px-2 !text-sm font-semibold flex-1"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') handleNameSave();
                         if (e.key === 'Escape') handleNameCancel();
@@ -319,7 +312,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                         e.stopPropagation();
                         handleNameSave();
                       }}
-                      className="p-1 text-green-600 hover:text-green-700 transition-colors"
+                      className="btn-icon !w-6 !h-6 !text-success-400 hover:!text-success-300"
                       title={t('save')}
                     >
                       <Check className="w-3 h-3" />
@@ -329,7 +322,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                         e.stopPropagation();
                         handleNameCancel();
                       }}
-                      className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                      className="btn-icon !w-6 !h-6 hover:!text-error-400"
                       title={t('cancel')}
                     >
                       <X className="w-3 h-3" />
@@ -337,51 +330,49 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-600">{strategy.description}</p>
+              <p className="text-sm text-ink-muted">{strategy.description}</p>
             </div>
           </div>
           
           {isSelected && (
-            <div className="px-3 py-1 bg-primary-600 text-white rounded-full text-xs font-medium">
+            <div className="px-2.5 py-1 rounded-full text-xs font-medium text-white bg-gradient-to-r from-primary-500 to-accent-500 shadow-glow whitespace-nowrap">
               {showSelectionCheckbox ? t('selectedForComparison') : t('selectedStrategy')}
             </div>
           )}
           
           {strategy.isAIGenerated && !isSelected && (
-            <div className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
+            <div className="badge badge-accent">
               AI
             </div>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="text-center">
-            <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-            <p className="text-lg font-bold text-success-600">
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div className="metric-card text-center">
+            <p className="eyebrow">{t('expectedReturn')}</p>
+            <p className="mt-1 text-lg font-semibold text-success-400 num">
               {formatPercentage(strategy.expectedReturn)}
             </p>
           </div>
           
-          <div className="text-center">
-            <p className="text-sm text-gray-600">{t('riskScore')}</p>
-            <p className={`text-lg font-bold ${
-              strategy.riskScore < 2 ? 'text-success-600' :
-              strategy.riskScore < 3 ? 'text-warning-600' : 'text-error-600'
+          <div className="metric-card text-center">
+            <p className="eyebrow">{t('riskScore')}</p>
+            <p className={`mt-1 text-lg font-semibold num ${
+              strategy.riskScore < 2 ? 'text-success-400' :
+              strategy.riskScore < 3 ? 'text-warning-400' : 'text-error-400'
             }`}>
               {strategy.riskScore.toFixed(1)}/5
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <p className="text-sm text-gray-600">Sharpe Ratio</p>
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="metric-card text-center">
+            <div className="flex items-center justify-center gap-1">
+              <p className="eyebrow">Sharpe Ratio</p>
               <div className="relative group">
-                <div className="w-3 h-3 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold cursor-help">
-                  i
-                </div>
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-gray-900 text-white text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+                <Info className="w-3.5 h-3.5 text-primary-300 cursor-help" />
+                <div className="glass-popover absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-72 sm:w-80 text-ink-soft text-xs text-left p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
                   <div className="space-y-2">
                     <p><strong>{t('sharpeRatioTitle')}:</strong> {t('sharpeRatioDescription')}</p>
                     <div className="space-y-1">
@@ -391,23 +382,23 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                       <p>• <strong>0 - 0.5:</strong> {t('sharpeAcceptable')}</p>
                       <p>• <strong>&lt; 0:</strong> {t('sharpePoor')}</p>
                     </div>
-                    <div className="mt-2 pt-2 border-t border-gray-600">
-                      <p className="text-yellow-300"><strong>{t('example')}:</strong></p>
+                    <div className="mt-2 pt-2 border-t border-line-strong">
+                      <p className="text-warning-300"><strong>{t('example')}:</strong></p>
                       <p>{t('sharpeExample')}</p>
                     </div>
                   </div>
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-navy-850"></div>
                 </div>
               </div>
             </div>
-            <p className="text-sm font-semibold text-primary-600">
+            <p className="mt-1 text-base font-semibold text-primary-300 num">
               {strategy.sharpeRatio.toFixed(2)}
             </p>
           </div>
           
-          <div className="text-center">
-            <p className="text-sm text-gray-600">{t('volatility')}</p>
-            <p className="text-sm font-semibold text-warning-600">
+          <div className="metric-card text-center">
+            <p className="eyebrow">{t('volatility')}</p>
+            <p className="mt-1 text-base font-semibold text-warning-400 num">
               {formatPercentage(strategy.volatility)}
             </p>
           </div>
@@ -423,10 +414,12 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                     data={pieChartData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={20}
+                    innerRadius={34}
                     outerRadius={60}
                     paddingAngle={2}
                     dataKey="value"
+                    stroke={CHART.pieStroke}
+                    strokeWidth={2}
                   >
                     {pieChartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -442,7 +435,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
         {/* Asset Allocations */}
         {Object.keys(strategy.targetAllocations).length > 0 && (
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-700">{t('allocationTarget')}</p>
+            <p className="eyebrow">{t('allocationTarget')}</p>
             <div className="space-y-1">
               {Object.entries(strategy.targetAllocations).map(([assetId, allocation]) => {
                 const asset = assets.find(a => a.id === assetId);
@@ -460,7 +453,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                             e.stopPropagation();
                             setShowColorPicker(showColorPicker === assetId ? null : assetId);
                           }}
-                          className="w-2 h-2 rounded-full flex-shrink-0 hover:ring-2 hover:ring-gray-300 transition-all cursor-pointer"
+                          className="w-2.5 h-2.5 rounded-full flex-shrink-0 ring-offset-2 ring-offset-navy-900 hover:ring-2 hover:ring-white/40 transition-all cursor-pointer"
                           style={{ backgroundColor: assetColor }}
                           title="Cambia colore"
                         />
@@ -469,7 +462,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                         {showColorPicker === assetId && (
                           <div 
                             ref={colorPickerRef}
-                            className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl p-3 z-50"
+                            className="glass-popover absolute top-full left-0 mt-2 p-3 z-50 animate-slide-up"
                             style={{ minWidth: '200px' }}
                           >
                             <div className="grid grid-cols-6 gap-2 mb-3">
@@ -482,7 +475,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                                     setShowColorPicker(null);
                                   }}
                                   className={`w-6 h-6 rounded-full border-2 hover:scale-110 transition-transform ${
-                                    assetColor === color ? 'border-gray-800' : 'border-gray-300'
+                                    assetColor === color ? 'border-white' : 'border-white/10'
                                   }`}
                                   style={{ backgroundColor: color }}
                                   title={color}
@@ -491,8 +484,8 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                             </div>
                             
                             {/* Custom Color Input */}
-                            <div className="border-t border-gray-200 pt-2">
-                              <label className="block text-xs text-gray-600 mb-1">Colore personalizzato:</label>
+                            <div className="border-t border-line pt-2">
+                              <label className="block text-xs text-ink-muted mb-1">Colore personalizzato:</label>
                               <input
                                 type="color"
                                 value={assetColor}
@@ -500,7 +493,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                                   e.stopPropagation();
                                   handleColorChange(assetId, e.target.value);
                                 }}
-                                className="w-full h-8 border border-gray-300 rounded cursor-pointer"
+                                className="w-full h-8 rounded-lg border border-line-strong bg-transparent cursor-pointer"
                               />
                             </div>
                             
@@ -517,7 +510,7 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                                   });
                                   setShowColorPicker(null);
                                 }}
-                                className="w-full mt-2 px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs hover:bg-gray-200 transition-colors"
+                                className="btn-secondary w-full mt-2 !text-xs !py-1.5"
                               >
                                 Ripristina colore originale
                               </button>
@@ -525,13 +518,13 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
                           </div>
                         )}
                       </div>
-                      <span className="text-gray-600 truncate">
+                      <span className="text-ink-muted truncate">
                         {asset.name.length > 20 ? asset.name.substring(0, 20) + '...' : asset.name}
                       </span>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium text-gray-900">{allocation.toFixed(3)}%</div>
-                      <div className="text-xs text-gray-500">
+                      <div className="font-medium text-ink num">{allocation.toFixed(3)}%</div>
+                      <div className="text-xs text-ink-subtle">
                         {new Intl.NumberFormat('it-IT', {
                           style: 'currency',
                           currency: currency,
@@ -546,10 +539,10 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
             </div>
             
             {/* Portfolio Total */}
-            <div className="pt-2 mt-2 border-t border-gray-200">
+            <div className="pt-2 mt-2 border-t border-line">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-gray-700">{t('totalPortfolio')}</span>
-                <span className="font-bold text-gray-900">
+                <span className="font-medium text-ink-soft">{t('totalPortfolio')}</span>
+                <span className="font-semibold text-ink num">
                   {formatCurrency(totalValue, currency)}
                 </span>
               </div>
@@ -558,30 +551,30 @@ export const StrategyCard: React.FC<StrategyCardProps> = ({
         )}
 
         {strategy.isAIGenerated && !isSelected && (
-          <div className="mt-4 pt-3 border-t border-gray-200">
-            <p className="text-xs text-gray-500 text-center">
+          <div className="mt-4 pt-3 border-t border-line">
+            <p className="text-xs text-ink-subtle text-center">
               {showSelectionCheckbox ? 'Seleziona per confrontare' : 'Clicca per selezionare e vedere il confronto'}
             </p>
           </div>
         )}
 
         {isSelected && !showSelectionCheckbox && (
-          <div className="mt-4 pt-3 border-t border-primary-200">
-            <p className="text-xs text-primary-600 text-center font-medium">
-              ✓ {t('selectedForComparison')}
+          <div className="mt-4 pt-3 border-t border-primary-400/30">
+            <p className="text-xs text-primary-300 text-center font-medium flex items-center justify-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" /> {t('selectedForComparison')}
             </p>
           </div>
         )}
 
         {/* Clone & Edit Button */}
         {Object.keys(strategy.targetAllocations).length > 0 && onCloneAndEdit && (
-          <div className="mt-4 pt-3 border-t border-gray-200">
+          <div className="mt-4 pt-3 border-t border-line">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onCloneAndEdit();
               }}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 text-sm font-medium"
+              className="btn-secondary w-full !text-sm"
             >
               <Copy className="w-4 h-4" />
               {t('cloneAndEdit')}

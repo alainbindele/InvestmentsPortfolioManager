@@ -106,21 +106,28 @@ export const AssetForm: React.FC<AssetFormProps> = ({
 
   return (
     <div className="card">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
-          {editingAsset ? t('editAsset') : t('addAsset')}
-        </h3>
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <span className="icon-tile icon-tile-primary">
+            {editingAsset ? <Edit className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+          </span>
+          <h3 className="section-title">
+            {editingAsset ? t('editAsset') : t('addAsset')}
+          </h3>
+        </div>
         <button
           onClick={handleCancel}
-          className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+          className="btn-icon"
+          aria-label={t('cancel')}
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="field-label">
             {t('assetName')} *
           </label>
           <input
@@ -134,7 +141,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="field-label">
             {t('assetType')}
           </label>
           <select
@@ -151,7 +158,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="field-label">
             Valore attualmente investito (€) *
           </label>
           <input
@@ -167,7 +174,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="field-label">
             {t('expectedReturnLabel')} *
           </label>
           <input
@@ -184,7 +191,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="field-label">
             {t('riskLevel')}
           </label>
           <select
@@ -200,26 +207,28 @@ export const AssetForm: React.FC<AssetFormProps> = ({
           </select>
         </div>
 
+        </div>
+
         {/* PAC Toggle */}
-        <div className="border-t border-gray-200 pt-4">
+        <div className="border-t border-line pt-4">
           <div className="flex items-center gap-3 mb-4">
             <input
               type="checkbox"
               id="pac-enabled"
               checked={isPACEnabled}
               onChange={(e) => setIsPACEnabled(e.target.checked)}
-              className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+              className="w-4 h-4 rounded cursor-pointer"
             />
-            <label htmlFor="pac-enabled" className="text-sm font-medium text-gray-700">
+            <label htmlFor="pac-enabled" className="text-sm font-medium text-ink-soft cursor-pointer">
               {t('enablePAC')} ({t('pacFullName')})
             </label>
           </div>
           
           {isPACEnabled && (
-            <div className="space-y-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="space-y-4 rounded-xl p-4 bg-primary-500/[0.07] border border-primary-400/20 animate-fade-in">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="field-label">
                     {t('pacAmount')} (€) *
                   </label>
                   <input
@@ -235,7 +244,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="field-label">
                     {t('pacFrequency')}
                   </label>
                   <select
@@ -250,7 +259,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
                 </div>
               </div>
               
-              <div className="text-xs text-blue-700 bg-blue-100 p-2 rounded">
+              <div className="text-xs text-primary-200 bg-primary-500/10 border border-primary-400/20 px-3 py-2 rounded-lg">
                 <p><strong>{t('pacNote')}:</strong> {t('pacDescription')}</p>
               </div>
             </div>
@@ -258,7 +267,7 @@ export const AssetForm: React.FC<AssetFormProps> = ({
         </div>
 
 
-        <div className="flex gap-3 pt-4">
+        <div className="flex gap-3 pt-2">
           <button
             type="button"
             onClick={handleCancel}

@@ -11,13 +11,13 @@ interface ChatGPTIntegrationProps {
   onStrategyGenerated: (strategy: Strategy) => void;
 }
 
-export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({ 
-  assets, 
+export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
+  assets,
   language,
-  onStrategyGenerated 
+  onStrategyGenerated
 }) => {
   const t = (key: string) => getTranslation(language, key);
-  
+
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGeneratingStrategy, setIsGeneratingStrategy] = useState(false);
   const [analysis, setAnalysis] = useState<PortfolioAnalysis | null>(null);
@@ -95,8 +95,8 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
   };
 
   const handleGoalToggle = (goal: string) => {
-    setGoals(prev => 
-      prev.includes(goal) 
+    setGoals(prev =>
+      prev.includes(goal)
         ? prev.filter(g => g !== goal)
         : [...prev, goal]
     );
@@ -115,10 +115,10 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       {/* Portfolio Analysis */}
       <div className="card">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-success-100 rounded-lg">
-            <TrendingUp className="w-5 h-5 text-success-600" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900">{t('aiPortfolioAnalysis')}</h3>
+          <span className="icon-tile icon-tile-success">
+            <TrendingUp className="w-5 h-5" />
+          </span>
+          <h3 className="section-title">{t('aiPortfolioAnalysis')}</h3>
         </div>
 
         <button
@@ -144,45 +144,45 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
             {/* Current Metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="metric-card">
-                <p className="text-sm text-gray-600">{t('totalValue')}</p>
-                <p className="text-lg font-bold text-gray-900">
+                <p className="eyebrow">{t('totalValue')}</p>
+                <p className="mt-1 text-lg font-semibold text-ink num">
                   €{analysis.currentMetrics.totalValue.toLocaleString('it-IT')}
                 </p>
               </div>
               <div className="metric-card">
-                <p className="text-sm text-gray-600">{t('expectedReturn')}</p>
-                <p className="text-lg font-bold text-success-600">
+                <p className="eyebrow">{t('expectedReturn')}</p>
+                <p className="mt-1 text-lg font-semibold text-success-400 num">
                   {analysis.currentMetrics.expectedReturn.toFixed(1)}%
                 </p>
               </div>
               <div className="metric-card">
-                <p className="text-sm text-gray-600">{t('risk')}</p>
-                <p className="text-lg font-bold text-warning-600">
+                <p className="eyebrow">{t('risk')}</p>
+                <p className="mt-1 text-lg font-semibold text-warning-400 num">
                   {analysis.currentMetrics.riskScore.toFixed(1)}/5
                 </p>
               </div>
               <div className="metric-card">
-                <p className="text-sm text-gray-600">{t('diversification')}</p>
-                <p className="text-lg font-bold text-primary-600">
+                <p className="eyebrow">{t('diversification')}</p>
+                <p className="mt-1 text-lg font-semibold text-accent-300 num">
                   {analysis.currentMetrics.diversificationScore}/100
                 </p>
               </div>
             </div>
 
             {/* Recommendations */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="callout callout-info !p-4">
               <div className="flex items-center gap-2 mb-3">
-                <Lightbulb className="w-5 h-5 text-blue-600" />
-                <h4 className="font-semibold text-blue-900">
+                <Lightbulb className="w-5 h-5 text-primary-300" />
+                <h4 className="font-semibold text-primary-200">
                   {t('aiRecommendations')}
-                  {apiStatus === 'working' && <span className="ml-2 text-xs bg-success-100 text-success-700 px-2 py-1 rounded-full">AI</span>}
-                  {apiStatus === 'error' && <span className="ml-2 text-xs bg-warning-100 text-warning-700 px-2 py-1 rounded-full">Fallback</span>}
+                  {apiStatus === 'working' && <span className="ml-2 badge badge-success">AI</span>}
+                  {apiStatus === 'error' && <span className="ml-2 badge badge-warning">Fallback</span>}
                 </h4>
               </div>
               <ul className="space-y-2">
                 {analysis.recommendations.map((rec, index) => (
-                  <li key={index} className="text-sm text-blue-800 flex items-start gap-2">
-                    <span className="text-blue-600 mt-1">•</span>
+                  <li key={index} className="text-sm text-primary-200 flex items-start gap-2">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent-400 flex-shrink-0" />
                     {rec}
                   </li>
                 ))}
@@ -191,24 +191,24 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
             {/* Market Insights */}
             <div className="space-y-3">
-              <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-gray-600" />
+              <h4 className="font-semibold text-ink flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-ink-muted" />
                 {t('marketInsights')}
-                {apiStatus === 'working' && <span className="text-xs bg-success-100 text-success-700 px-2 py-1 rounded-full">AI</span>}
+                {apiStatus === 'working' && <span className="badge badge-success">AI</span>}
               </h4>
               {analysis.marketInsights.map((insight, index) => (
-                <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <div key={index} className="panel-inset p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h5 className="font-medium text-gray-900">{insight.asset}</h5>
+                    <h5 className="font-medium text-ink">{insight.asset}</h5>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-500">{insight.timeframe}</span>
+                      <span className="text-xs text-ink-subtle">{insight.timeframe}</span>
                       <div className={`w-2 h-2 rounded-full ${
-                        insight.confidence > 0.8 ? 'bg-success-500' :
-                        insight.confidence > 0.6 ? 'bg-warning-500' : 'bg-error-500'
+                        insight.confidence > 0.8 ? 'bg-success-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]' :
+                        insight.confidence > 0.6 ? 'bg-warning-400 shadow-[0_0_8px_rgba(251,191,36,0.7)]' : 'bg-error-400 shadow-[0_0_8px_rgba(251,113,133,0.7)]'
                       }`} />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-700">{insight.insight}</p>
+                  <p className="text-sm text-ink-soft">{insight.insight}</p>
                 </div>
               ))}
             </div>
@@ -219,19 +219,19 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
       {/* Strategy Generation */}
       <div className="card">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-warning-100 rounded-lg">
-            <Bot className="w-5 h-5 text-warning-600" />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <span className="icon-tile icon-tile-accent">
+            <Bot className="w-5 h-5" />
+          </span>
+          <h3 className="section-title">
             {t('aiStrategyGeneration')}
-            {apiStatus === 'working' && <span className="ml-2 text-xs bg-success-100 text-success-700 px-2 py-1 rounded-full">{t('aiActive')}</span>}
+            {apiStatus === 'working' && <span className="ml-2 badge badge-success">{t('aiActive')}</span>}
           </h3>
         </div>
 
         <div className="space-y-4">
           {/* Risk Profile Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="field-label !mb-2">
               {t('riskProfile')}
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -243,14 +243,14 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
                 <button
                   key={profile.id}
                   onClick={() => setSelectedRiskProfile(profile.id as any)}
-                  className={`p-3 rounded-lg border text-center transition-all ${
+                  className={`p-3 rounded-xl border text-center transition-all duration-200 ${
                     selectedRiskProfile === profile.id
-                      ? 'border-primary-500 bg-primary-50 text-primary-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                      ? 'border-primary-400/60 bg-primary-500/15 text-primary-200 shadow-glow'
+                      : 'border-line bg-white/[0.04] text-ink-soft hover:bg-white/[0.07] hover:border-line-strong'
                   }`}
                 >
                   <p className="font-medium text-sm">{profile.label}</p>
-                  <p className="text-xs text-gray-500">{profile.desc}</p>
+                  <p className="text-xs text-ink-subtle">{profile.desc}</p>
                 </button>
               ))}
             </div>
@@ -258,7 +258,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
 
           {/* Goals Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="field-label !mb-2">
               {t('investmentGoals')}
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -266,10 +266,10 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
                 <button
                   key={goal.id}
                   onClick={() => handleGoalToggle(goal.id)}
-                  className={`p-2 rounded-lg border text-left transition-all ${
+                  className={`px-3 py-2.5 rounded-xl border text-left transition-all duration-200 ${
                     goals.includes(goal.id)
-                      ? 'border-primary-500 bg-primary-50 text-primary-700'
-                      : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                      ? 'border-accent-400/50 bg-accent-500/10 text-accent-200'
+                      : 'border-line bg-white/[0.04] text-ink-soft hover:bg-white/[0.07] hover:border-line-strong'
                   }`}
                 >
                   <p className="text-sm font-medium">{goal.label}</p>
@@ -281,13 +281,7 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
           <button
             onClick={handleGenerateStrategy}
             disabled={isGeneratingStrategy || assets.length === 0}
-            className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-              isGeneratingStrategy || assets.length === 0
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : apiStatus === 'working'
-                ? 'bg-success-600 hover:bg-success-700 text-white' 
-                : 'bg-primary-600 hover:bg-primary-700 text-white'
-            }`}
+            className="btn-primary w-full !py-2.5"
           >
             {isGeneratingStrategy ? (
               <>
@@ -301,13 +295,13 @@ export const ChatGPTIntegration: React.FC<ChatGPTIntegrationProps> = ({
               </>
             )}
           </button>
-          
+
           {!import.meta.env.VITE_OPENAI_API_KEY_PFB && (
-            <div className="mt-3 p-3 bg-warning-50 border border-warning-200 rounded-lg">
-              <p className="text-sm text-warning-700">
+            <div className="callout callout-warning mt-3">
+              <p className="text-sm text-warning-300">
                <strong>{t('note')}:</strong> {t('aiConfigNote')}
               </p>
-              <p className="text-xs text-warning-600 mt-1">
+              <p className="text-xs text-warning-300/80 mt-1">
                {t('fallbackStrategyNote')}
               </p>
             </div>

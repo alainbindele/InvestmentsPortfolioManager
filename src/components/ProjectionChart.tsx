@@ -6,6 +6,7 @@ import { Currency } from '../types/currency';
 import { formatCurrency, formatPercentage, projectPortfolioGrowth } from '../utils/calculations';
 import { getTranslation } from '../utils/translations';
 import { TrendingUp, ChevronDown } from 'lucide-react';
+import { CHART, SERIES_COLORS } from '../theme/chartTheme';
 
 interface ProjectionChartProps {
   strategies: Strategy[];
@@ -26,14 +27,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   const [timeHorizon, setTimeHorizon] = useState(20);
   const [selectedAsset, setSelectedAsset] = useState<string>('portfolio');
   const [chartKey, setChartKey] = useState(0);
-  
+
   const totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
-  
+
   // Force chart re-render when assets change
   React.useEffect(() => {
     setChartKey(prev => prev + 1);
   }, [assets, strategies, timeHorizon, selectedAsset]);
-  
+
   // Helper function for single asset projection
   const projectAssetGrowth = (
     initialValue: number,
@@ -93,12 +94,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           assets,
           strategy
         ),
-        color: index === 0 ? '#6b7280' : 
-               index === 1 ? '#10b981' : 
-               index === 2 ? '#3b82f6' : 
-               index === 3 ? '#f59e0b' : 
-               index === 4 ? '#ef4444' : 
-               `hsl(${(index - 1) * 60 + 30}, 70%, 50%)`,
+        color: SERIES_COLORS[index] ?? `hsl(${(index - 1) * 60 + 30}, 75%, 65%)`,
         initialValue: totalValue
       };
     } else {
@@ -108,7 +104,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
         // Calculate initial value based on strategy allocation
         let initialValue: number;
         const targetAllocation = strategy.targetAllocations[asset.id] || 0;
-        
+
         if (strategy.id === 'current-strategy') {
           // For current strategy, use actual current value
           initialValue = asset.currentValue;
@@ -116,55 +112,55 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           // For AI strategies, use the allocated portion
           initialValue = targetAllocation > 0 ? (targetAllocation / 100) * totalValue : 0;
         }
-        
+
         // Create modified strategy name with allocation info
-        const strategyName = strategy.id === 'current-strategy' 
+        const strategyName = strategy.id === 'current-strategy'
           ? `${strategy.name} - ${asset.name} (${((asset.currentValue / totalValue) * 100).toFixed(1)}%)`
           : `${strategy.name} - ${asset.name} (${targetAllocation.toFixed(1)}%)`;
-        
+
         const modifiedStrategy = {
           ...strategy,
           name: strategyName,
           expectedReturn: asset.expectedReturn // Use asset's own return
         };
-        
+
         return {
           strategy: modifiedStrategy,
           data: projectAssetGrowth(initialValue, asset, timeHorizon),
-          color: ASSET_COLORS[asset.type] || '#6b7280',
+          color: ASSET_COLORS[asset.type] || CHART.fallback,
           initialValue: initialValue
         };
       }
       return null;
     }
-  }).filter(Boolean) as Array<{ 
-    strategy: Strategy; 
-    data: Array<{ year: number; value: number }>; 
+  }).filter(Boolean) as Array<{
+    strategy: Strategy;
+    data: Array<{ year: number; value: number }>;
     color: string;
     initialValue: number;
   }>;
-  
+
   // Combine data for chart
   const chartData = allProjections.length > 0 ? allProjections[0].data.map((_, yearIndex) => {
     const yearData: any = {
       year: yearIndex
     };
-    
+
     allProjections.forEach((projection, strategyIndex) => {
       const key = `strategy_${strategyIndex}`;
       yearData[key] = projection.data[yearIndex]?.value || 0;
       yearData[`${key}_name`] = projection.strategy.name;
       yearData[`${key}_color`] = projection.color;
     });
-    
+
     return yearData;
   }) : [];
-  
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium text-gray-900 mb-2">{t('anno')} {label}</p>
+        <div className="glass-popover p-4">
+          <p className="font-medium text-ink mb-2">{t('anno')} {label}</p>
           {payload.map((entry: any, index: number) => {
             const strategyIndex = parseInt(entry.dataKey.split('_')[1]);
             const projection = allProjections[strategyIndex];
@@ -172,7 +168,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
               <p key={index} className="text-sm" style={{ color: entry.color }}>
                 <strong>{projection?.strategy.name}:</strong> {formatCurrency(entry.value, currency)}
                 {projection && (
-                  <span className="ml-2 text-xs text-gray-500">
+                  <span className="ml-2 text-xs text-ink-subtle">
                     ({formatPercentage(projection.strategy.expectedReturn)} annuo)
                   </span>
                 )}
@@ -190,11 +186,11 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         {allProjections.map((projection, index) => (
           <div key={index} className="flex items-center gap-2">
-            <div 
-              className="w-3 h-3 rounded-full" 
+            <div
+              className="w-3 h-3 rounded-full"
               style={{ backgroundColor: projection.color }}
             />
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-ink-muted">
               {projection.strategy.name}
             </span>
           </div>
@@ -205,7 +201,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
 
   if (strategies.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-8 text-ink-subtle">
         <p>Nessuna strategia disponibile per il confronto</p>
       </div>
     );
@@ -216,14 +212,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
   return (
     <div className="card">
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-primary-100 rounded-lg">
-          <TrendingUp className="w-5 h-5 text-primary-600" />
-        </div>
+        <span className="icon-tile icon-tile-primary">
+          <TrendingUp className="w-5 h-5" />
+        </span>
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">{t('portfolioProjection')}</h3>
-          <p className="text-sm text-gray-600">
-            {selectedAsset === 'portfolio' ? 
-              t('growthProjectionComparison') : 
+          <h3 className="section-title">{t('portfolioProjection')}</h3>
+          <p className="text-sm text-ink-muted">
+            {selectedAsset === 'portfolio' ?
+              t('growthProjectionComparison') :
               `${t('singleAssetProjection')} ${selectedAssetData?.name}`
             }
           </p>
@@ -233,14 +229,14 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       {/* Asset Selector */}
       {showAssetSelection && (
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="field-label">
             {t('selectAssetToAnalyze')}
           </label>
           <div className="relative">
             <select
               value={selectedAsset}
               onChange={(e) => setSelectedAsset(e.target.value)}
-              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none cursor-pointer"
+              className="input-field appearance-none pr-10 cursor-pointer"
             >
               <option value="portfolio">{t('entirePortfolio')}</option>
               {assets.map((asset) => (
@@ -249,7 +245,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-ink-faint pointer-events-none" />
           </div>
         </div>
       )}
@@ -257,15 +253,15 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       {/* Time Horizon Slider */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <label className="text-sm font-medium text-gray-700">
+          <label className="text-sm font-medium text-ink-soft">
             {t('timeHorizon')}: {timeHorizon} {t('years')}
           </label>
           {assets.some(asset => asset.isPAC) && (
-            <div className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
-              📈 PAC attivo
+            <div className="badge badge-accent">
+              <TrendingUp className="w-3 h-3" /> PAC attivo
             </div>
           )}
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-ink-subtle">
             1 - 50 anni
           </div>
         </div>
@@ -276,12 +272,12 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
             max="50"
             value={timeHorizon}
             onChange={(e) => setTimeHorizon(parseInt(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            className="w-full h-1.5 rounded-full appearance-none cursor-pointer slider"
             style={{
-              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(timeHorizon - 1) / 49 * 100}%, #e5e7eb ${(timeHorizon - 1) / 49 * 100}%, #e5e7eb 100%)`
+              background: `linear-gradient(to right, ${CHART.trackFill} 0%, ${CHART.trackFill} ${(timeHorizon - 1) / 49 * 100}%, ${CHART.track} ${(timeHorizon - 1) / 49 * 100}%, ${CHART.track} 100%)`
             }}
           />
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <div className="flex justify-between text-xs text-ink-subtle mt-1">
             <span>1</span>
             <span>25</span>
             <span>50</span>
@@ -293,18 +289,18 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
       <div key={chartKey} className="h-80 mb-6">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-            <XAxis 
-              dataKey="year" 
-              stroke="#6b7280"
-              tick={{ fontSize: 12 }}
+            <CartesianGrid strokeDasharray="3 3" stroke={CHART.grid} vertical={false} />
+            <XAxis
+              dataKey="year"
+              stroke={CHART.axis}
+              tick={{ fontSize: 12, fill: CHART.tick }}
             />
-            <YAxis 
-              stroke="#6b7280"
-              tick={{ fontSize: 12 }}
+            <YAxis
+              stroke={CHART.axis}
+              tick={{ fontSize: 12, fill: CHART.tick }}
               tickFormatter={(value) => formatCurrency(value, currency)}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: CHART.axis, strokeDasharray: '3 3' }} />
             <Legend content={<CustomLegend />} />
             {allProjections.map((projection, index) => (
               <Line
@@ -315,6 +311,7 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
                 strokeWidth={index === 0 ? 2 : 3}
                 strokeDasharray={index === 0 ? "5 5" : "0"}
                 dot={false}
+                activeDot={{ r: 4, strokeWidth: 0 }}
                 name={projection.strategy.name}
               />
             ))}
@@ -329,30 +326,30 @@ export const ProjectionChart: React.FC<ProjectionChartProps> = ({
           const initialValue = projection.initialValue;
           const totalGrowth = finalValue - initialValue;
           const growthPercentage = initialValue > 0 ? (totalGrowth / initialValue) * 100 : 0;
-          
+
           return (
             <div key={index} className="metric-card">
               <div className="flex items-center gap-2 mb-2">
-                <div 
-                  className="w-3 h-3 rounded-full" 
+                <div
+                  className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: projection.color }}
                 />
-                <p className="text-sm text-gray-600 font-medium truncate">
+                <p className="text-sm text-ink-muted font-medium truncate">
                   {projection.strategy.name}
                 </p>
               </div>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-lg font-semibold text-ink num">
                 {formatCurrency(finalValue, currency)}
               </p>
               <p className={`text-sm font-medium ${
-                totalGrowth > 0 ? 'text-success-600' : 'text-error-600'
+                totalGrowth > 0 ? 'text-success-400 num' : 'text-error-400 num'
               }`}>
                 {totalGrowth > 0 ? '+' : ''}{formatCurrency(totalGrowth, currency)} ({growthPercentage > 0 ? '+' : ''}{growthPercentage.toFixed(1)}%)
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-ink-subtle mt-1">
                 Valore iniziale: {formatCurrency(initialValue, currency)}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-ink-subtle">
                 Rendimento: {formatPercentage(projection.strategy.expectedReturn)} annuo
               </p>
             </div>
