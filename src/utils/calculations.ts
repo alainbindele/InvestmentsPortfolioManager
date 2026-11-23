@@ -119,8 +119,66 @@ export const projectPortfolioGrowth = (
   assets: Asset[],
   strategy?: Strategy
 ): Array<{ year: number; value: number }> => {
-  // Always calculate each asset separately to respect individual return rates
+  // Alternative strategies: value and PAC follow the strategy's target allocations
+  if (strategy && strategy.id !== 'current-strategy' && Object.keys(strategy.targetAllocations || {}).length > 0) {
+    return calculateAllocatedGrowth(initialValue, annualReturn, years, assets, strategy.targetAllocations);
+  }
+  // Current portfolio: calculate each asset separately with its real PAC plan
   return calculatePACGrowth(initialValue, annualReturn, years, assets);
+};
+
+// Strategy projection: the portfolio value and the total PAC contributions are
+// redistributed according to the target allocations, then each slice grows at
+// its own asset's return. Allocations to unknown assets use the strategy return.
+const calculateAllocatedGrowth = (
+  initialValue: number,
+  annualReturn: number,
+  years: number,
+  assets: Asset[],
+  targetAllocations: { [assetId: string]: number }
+): Array<{ year: number; value: number }> => {
+  const frequencyToMonths: Record<'monthly' | 'quarterly' | 'yearly', number> = {
+    monthly: 1,
+    quarterly: 3,
+    yearly: 12
+  };
+
+  // Total PAC expressed as an average monthly contribution
+  const monthlyPAC = assets.reduce((sum, asset) => {
+    if (!asset.isPAC || !asset.pacAmount || asset.pacAmount <= 0) return sum;
+    return sum + asset.pacAmount / frequencyToMonths[asset.pacFrequency || 'monthly'];
+  }, 0);
+
+  const allocations = Object.entries(targetAllocations).filter(([, pct]) => pct > 0);
+  const totalPct = allocations.reduce((sum, [, pct]) => sum + pct, 0);
+  if (totalPct <= 0) {
+    return calculatePACGrowth(initialValue, annualReturn, years, assets);
+  }
+
+  const slices = allocations.map(([assetId, pct]) => {
+    const weight = pct / totalPct;
+    const asset = assets.find(a => a.id === assetId);
+    return {
+      value: initialValue * weight,
+      contribution: monthlyPAC * weight,
+      monthlyReturn: (asset ? asset.expectedReturn : annualReturn) / 100 / 12
+    };
+  });
+
+  const projections = [];
+  for (let year = 0; year <= years; year++) {
+    if (year > 0) {
+      for (let month = 1; month <= 12; month++) {
+        slices.forEach(slice => {
+          slice.value += slice.contribution;
+          slice.value *= (1 + slice.monthlyReturn);
+        });
+      }
+    }
+    projections.push({ year, value: Math.round(slices.reduce((sum, s) => sum + s.value, 0)) });
+  }
+
+  return projections;
 };
 
 // Simple compound growth without PAC
